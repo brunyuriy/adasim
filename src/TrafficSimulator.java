@@ -1,3 +1,8 @@
+/**
+ * TrafficSimulator is the main program for running the simulator. It keeps track
+ * of the grid and where all the cars are located on it, and outputs position information
+ * to the GUI
+ */
 import java.io.*;
 import java.util.*;
 

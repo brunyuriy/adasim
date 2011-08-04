@@ -1,3 +1,7 @@
+/**
+ * TrafficGUI is the GUI class for the simulator. It represents the cars as text strings,
+ * and outputs each location the car has been to on the road to its final destination.
+ */
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.GridLayout;
@@ -12,6 +16,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import org.apache.log4j.Logger;
+import org.apache.log4j.BasicConfigurator;
+
 
 public class TrafficGUI {
 	private JFrame frame;
@@ -23,7 +30,10 @@ public class TrafficGUI {
 	private JButton step;
 	private JButton end;
 	
+	private static Logger logger = Logger.getLogger(TrafficGUI.class);
+	
 	public TrafficGUI() {
+		BasicConfigurator.configure();
 		tsim = TrafficSimulator.getInstance();
 		createComponents();
 		setGUI();
@@ -86,6 +96,7 @@ public class TrafficGUI {
 	private class SimListener implements ActionListener {
 
 		public void actionPerformed(ActionEvent arg0) {
+			logger.info("Starting simulation");
 			tsim.setFileName(fileName.getText());
 			tsim.readPositions();
 			step.setEnabled(true);
@@ -98,6 +109,7 @@ public class TrafficGUI {
 	private class StepListener implements ActionListener {
 
 		public void actionPerformed(ActionEvent arg0) {
+			logger.info("Taking step");
 			tsim.takeStep();
 			setCarText();
 		}

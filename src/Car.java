@@ -1,3 +1,8 @@
+/**
+ * The car object represents a single car on the graph, and knows its starting
+ * position, current position, and end position. The car will move in a random direction
+ * towards its destination until it is reached.
+ */
 import java.util.Random;
 
 public class Car {
