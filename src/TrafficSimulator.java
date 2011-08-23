@@ -3,11 +3,16 @@
  * of the grid and where all the cars are located on it, and outputs position information
  * to the GUI
  */
+
 import java.io.*;
 import java.util.*;
 
-public class TrafficSimulator {
+import org.apache.log4j.Logger;
+
+public class TrafficSimulator{
 	private static TrafficSimulator instance = null;
+	
+	private static Logger logger = Logger.getLogger(TrafficSimulator.class);
 	
 	public static TrafficSimulator getInstance() {
 		if (instance == null) {
@@ -61,6 +66,7 @@ public class TrafficSimulator {
 			for(Car c: cars) {
 				setCarPositions(c);
 			}
+			logger.info("Positions on grid set");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -75,10 +81,20 @@ public class TrafficSimulator {
 		}
 	}
 	
-	public void takeStep() {
+	private boolean checkAllFinish() {
 		for(Car c: cars) {
-			c.moveOneStep();
+			if(!c.checkFinish()) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public boolean runSim() {
+		for(Car c: cars) {
+			c.tryMove();
 			setCarPositions(c);
 		}
+		return checkAllFinish();
 	}
 }

@@ -5,6 +5,8 @@
  */
 import java.util.Random;
 
+import org.apache.log4j.Logger;
+
 public class Car {
 	
 	private int startx;
@@ -15,8 +17,12 @@ public class Car {
 	private int currenty;
 	private int carNum;
 	private int carConflict;
+	private int speed;
+	private int moves;
 	private String path;
 	private boolean finish;
+	
+	private static Logger logger = Logger.getLogger(Car.class);
 	
 	public Car(String positions, int num) {
 		startx = Integer.parseInt(positions.substring(0, 2));
@@ -27,11 +33,13 @@ public class Car {
 		currenty = starty;
 		carNum = num;
 		carConflict = -1;
+		speed = Integer.parseInt(positions.substring(12, 14));
+		moves = speed;
 		path = "(" + startx + "," + starty + ")";
 		finish = false;
 	}
 	
-	public void moveOneStep() {
+	private void moveOneStep() {
 		if(!finish) {
 			if(currentx != endx && currenty != endy) {
 				Random generator = new Random();
@@ -67,6 +75,20 @@ public class Car {
 			if(finish) {
 				path = path.concat(", Finished");	
 			}
+			logger.info("Car " + carNum + " moves one step to (" + currentx + ", " + currenty + ")");
+		}
+	}
+	
+	public void tryMove() {
+		if(!finish) {
+			logger.info("Trying to move car " + carNum);
+			if(moves == 1) {
+				moveOneStep();
+				moves = speed;
+			} else {
+				moves--;
+				logger.info("Car " + carNum + " must wait " + moves + " more steps");
+			}
 		}
 	}
 	
@@ -96,6 +118,14 @@ public class Car {
 	
 	public boolean checkFinish() {
 		return finish;
+	}
+	
+	public int getSpeed() {
+		return speed;
+	}
+	
+	public int getMoves() {
+		return moves;
 	}
 	
 	public String toString() {
