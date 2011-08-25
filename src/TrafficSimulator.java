@@ -1,4 +1,6 @@
 /**
+ * Jonathan Ramaswamy
+ * TrafficSimulator Version 4
  * TrafficSimulator is the main program for running the simulator. It keeps track
  * of the grid and where all the cars are located on it, and outputs position information
  * to the GUI
@@ -10,10 +12,13 @@ import java.util.*;
 import org.apache.log4j.Logger;
 
 public class TrafficSimulator{
-	private static TrafficSimulator instance = null;
+	private static TrafficSimulator instance = null; //The single instance of the simulator
 	
 	private static Logger logger = Logger.getLogger(TrafficSimulator.class);
 	
+	/**
+	 * Returns the single instance of the traffic simualtor
+	 */
 	public static TrafficSimulator getInstance() {
 		if (instance == null) {
 			instance = new TrafficSimulator();
@@ -21,10 +26,10 @@ public class TrafficSimulator{
 		return instance;
 	}
 	
-	private List<Car> cars;
-	private int carNum;
-	private Car[][] grid;
-	private String fileName;
+	private List<Car> cars; //List of cars in the simulation
+	private int carNum; //Number of cars in the simulation
+	private Car[][] grid; //The grid of locations the cars move between
+	private String fileName; //The name of the file with the positions
 	
 	public TrafficSimulator() {
 		cars = new ArrayList<Car>();
