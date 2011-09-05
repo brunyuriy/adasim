@@ -20,15 +20,13 @@ public class TrafficMain {
 	
 	public static void main(String[] args) {
 		BasicConfigurator.configure();
-		tsim = TrafficSimulator.getInstance();
+		tsim = TrafficSimulator.getInstance(args[0], args[1]);
 		timer = new Timer();
-		runSimulation(args[0]);
+		runSimulation();
 	}
 	
-	//Sets up the positions of the cars in the simulator and runs the simulation
-	private static void runSimulation(String file) {
-		tsim.setFileName(file);
-		tsim.readPositions();
+	//Runs the timer for the simulation
+	private static void runSimulation() {
 		logger.info("Starting Simulation");
 		timer.scheduleAtFixedRate(new SimTask(), 0, move);
 	}

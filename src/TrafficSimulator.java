@@ -17,50 +17,65 @@ public class TrafficSimulator{
 	private static Logger logger = Logger.getLogger(TrafficSimulator.class);
 	
 	/**
-	 * Returns the single instance of the traffic simualtor
+	 * Returns the single instance of the traffic simulator
 	 */
-	public static TrafficSimulator getInstance() {
+	public static TrafficSimulator getInstance(String positions, String graph) {
 		if (instance == null) {
-			instance = new TrafficSimulator();
+			instance = new TrafficSimulator(positions, graph);
 		}
 		return instance;
 	}
 	
 	private List<Car> cars; //List of cars in the simulation
 	private int carNum; //Number of cars in the simulation
-	private Car[][] grid; //The grid of locations the cars move between
-	private String fileName; //The name of the file with the positions
+	private Graph graph; //The graph the cars run on
 	
-	public TrafficSimulator() {
+	public TrafficSimulator(String positions, String graphP) {
 		cars = new ArrayList<Car>();
 		carNum = 0;
-		grid = new Car[10][10];
-		setGrid();
-		fileName = "";
+		graph = new Graph();
+		setGraph(graphP);
+		readPositions(positions);
 	}
 	
-	private void setGrid() {
-		for(int i = 0; i < 10; i++) {
-			for(int j = 0; j < 10; j++) {
-				grid[i][j] = null;
+	//Reads in the file containing the graph edges and nodes and builds a graph
+	private void setGraph(String g) {
+		File graphP = new File(g);
+		try {
+			Scanner input = new Scanner(graphP);
+			int nodes = Integer.parseInt(input.nextLine());
+			for(int i = 0; i < nodes; i++) {
+				graph.addNode();
 			}
+			while(input.hasNextLine()) {
+				String edge = input.nextLine();
+				int i = Integer.parseInt(edge.substring(0,1));
+				int o = Integer.parseInt(edge.substring(2,3));
+				graph.addEdge(i, o);
+			}
+			logger.info("Graph set");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
 		}
 	}
 	
+	/**
+	 * Returns the car with the given number
+	 */
 	public Car getCar(int index) {
 		return cars.get(index);
 	}
 	
+	/**
+	 * Returns the number of cars in the simulation
+	 */
 	public int getNumberOfCars() {
 		return carNum;
 	}
 	
-	public void setFileName(String fn) {
-		fileName = fn;
-	}
-	
-	public void readPositions() {
-		File positions = new File(fileName);
+	//Reads in the positions of the cars on the graph
+	public void readPositions(String carFile) {
+		File positions = new File(carFile);
 		try {
 			Scanner input = new Scanner(positions);
 			while(input.hasNextLine()) {
@@ -68,24 +83,13 @@ public class TrafficSimulator{
 				cars.add(new Car(position, carNum));
 				carNum++;
 			}
-			for(Car c: cars) {
-				setCarPositions(c);
-			}
-			logger.info("Positions on grid set");
+			logger.info("Positions on graph set");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	private void setCarPositions(Car c) {
-		Car d = grid[c.getCurrentX()][c.getCurrentY()];
-		if(d == null) {
-			d = c;
-		} else {
-			c.setConflict(d.getCarNumber());
-		}
-	}
-	
+	//Checks to see if all cars have finished moving, returns true if so
 	private boolean checkAllFinish() {
 		for(Car c: cars) {
 			if(!c.checkFinish()) {
@@ -94,11 +98,14 @@ public class TrafficSimulator{
 		}
 		return true;
 	}
-
+	
+	/**
+	 * Runs the simulation by trying to move each car one at a time
+	 * @return True if the simulation is over
+	 */
 	public boolean runSim() {
 		for(Car c: cars) {
-			c.tryMove();
-			setCarPositions(c);
+			c.tryMove(graph);
 		}
 		return checkAllFinish();
 	}
