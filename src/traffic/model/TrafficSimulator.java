@@ -1,3 +1,4 @@
+package traffic.model;
 /**
  * Jonathan Ramaswamy
  * TrafficSimulator Version 4
@@ -6,10 +7,13 @@
  * to the GUI
  */
 
+
 import java.io.*;
 import java.util.*;
 
 import org.apache.log4j.Logger;
+
+import traffic.graph.Graph;
 
 public class TrafficSimulator{
 	private static TrafficSimulator instance = null; //The single instance of the simulator
@@ -45,7 +49,9 @@ public class TrafficSimulator{
 			Scanner input = new Scanner(graphP);
 			int nodes = Integer.parseInt(input.nextLine());
 			for(int i = 0; i < nodes; i++) {
-				graph.addNode();
+				String stop = input.nextLine();
+				int s = Integer.parseInt(stop.substring(2,3));
+				graph.addNode(i, s);
 			}
 			while(input.hasNextLine()) {
 				String edge = input.nextLine();
@@ -80,7 +86,9 @@ public class TrafficSimulator{
 			Scanner input = new Scanner(positions);
 			while(input.hasNextLine()) {
 				String position = input.nextLine();
-				cars.add(new Car(position, carNum));
+				Car c = new Car(position, carNum);
+				cars.add(c);
+				graph.addCarAtNode(carNum, c.getCurrent());
 				carNum++;
 			}
 			logger.info("Positions on graph set");

@@ -9,6 +9,8 @@ import java.util.TimerTask;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.BasicConfigurator;
+
+import traffic.model.TrafficSimulator;
  
 public class TrafficMain {
 	
