@@ -6,14 +6,18 @@ package traffic.model;
  * position, current position, and end position. The car will move in a random direction
  * towards its destination until it is reached.
  */
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import org.apache.log4j.Logger;
 
 import traffic.graph.Graph;
+import traffic.strategy.CarStrategy;
+import traffic.strategy.DijkstraStrategy;
+import traffic.strategy.RandomStrategy;
 
-public class Car {
+public class Car implements Path {
 	
 	private int start; //Starting position
 	private int end; //Destination position
@@ -21,6 +25,8 @@ public class Car {
 	private int carNum; //This car's number in the list of cars
 	private int stop; //The time the car must wait at its current node
 	private boolean finish; //True if the car has reached its destination
+	private List<Integer> path; //Path the car travels
+	private CarStrategy cs;
 	
 	private static Logger logger = Logger.getLogger(Car.class);
 	
@@ -31,6 +37,8 @@ public class Car {
 		carNum = num;
 		stop = -1;
 		finish = false;
+		path = new ArrayList<Integer>();
+		cs = new DijkstraStrategy();
 	}
 	
 	/**
@@ -44,40 +52,50 @@ public class Car {
 			if(stop == -1) {
 				stop = g.getStopAtNode(current);
 			}
-			if(stop == 0) {
-				int n = getNewNode(g);
-				if(n == -1) {
-					logger.info("All neighboring nodes are full, car " + carNum + "must wait another turn to move");
+			if(stop == 0){
+				if(g.getCarsAtNode(path.get(0)) > 1) {
+					if(!redoPath(g)) {
+						logger.info("All neighboring nodes are full, car " + carNum + "must wait another turn to move");
+					} else {
+						logger.info("The path for car " + carNum + " has been changed");
+						moveCar(g);
+					}
 				} else {
-					int o = current;
-					current = n;
-					g.changeCarNode(carNum, o, n);
-					setFinish();
-					logger.info("Car " + carNum + " moved to node " + current + " from node " + o);
-					stop = -1;
+					moveCar(g);
 				}
+				//moveCar(g);
 			} else {
-				logger.info("Car " + carNum + " must wait at node " + current + " for " + stop + "more turns");
+				logger.info("Car " + carNum + " must wait at node " + current + " for " + stop + " more turns");
 				stop--;
 			}
 		}
 	}
 	
-	//Gets a node for the car to move to. If all neighboring nodes are full, returns -1
-	private int getNewNode(Graph g) {
-		boolean found = false;
-		int n = -1;
-		List<Integer> d = g.getDestinations(current);
-		while(!found) {
-			Random generator = new Random();
-			int rand = generator.nextInt(d.size());
-			n = d.get(rand);
-			if(g.getCarsAtNode(n) < 2) {
-				found = true;
-			}
-			d.remove(rand);
+	private void moveCar(Graph g) {
+		int o = current;
+		current = path.get(0);
+		g.changeCarNode(carNum, o, current);
+		setFinish();
+		logger.info("Car " + carNum + " moved to node " + current + " from node " + o);
+		stop = -1;
+		path.remove(0);
+	}
+	
+	public void makePath(Graph g, int c) {
+		path.addAll(cs.getPath(g, c, end));
+		logger.info("The path for car " + carNum + " is " + path.toString());
+	}
+	
+	public boolean redoPath(Graph g) {
+		path.clear();
+		int n = cs.redoPath(g, current);
+		if(n != -1) {
+			path.add(n);
+			makePath(g, n);
+			return true;
+		} else {
+			return false;
 		}
-		return n;
 	}
 	
 	/**

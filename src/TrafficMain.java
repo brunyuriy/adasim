@@ -30,7 +30,12 @@ public class TrafficMain {
 	//Runs the timer for the simulation
 	private static void runSimulation() {
 		logger.info("Starting Simulation");
-		timer.scheduleAtFixedRate(new SimTask(), 0, move);
+		boolean done = false;
+		while(!done) {
+			done = tsim.runSim();
+		}
+		endSimulation();
+		//timer.scheduleAtFixedRate(new SimTask(), 0, move);
 	}
 	
 	//A timer task that runs whenever called to perform a move in the simulation
@@ -52,7 +57,7 @@ public class TrafficMain {
 	//Ends the simulation, stops the timer, and exits the program
 	private static void endSimulation() {
 		logger.info("Stopping simulation");
-		timer.cancel();
+		//timer.cancel();
 		System.exit(0);
 	}
 }

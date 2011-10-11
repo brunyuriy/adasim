@@ -25,6 +25,10 @@ public class Graph {
 		numNodes++;
 	}
 	
+	public void makeNode(int n, int[] c, int[] o) {
+		nodes.get(n).makeNode(c, o);
+	}
+	
 	/**
 	 * Adds an edge between two nodes
 	 * Each node keeps track of the other nodes it has an edge to
@@ -42,6 +46,11 @@ public class Graph {
 	public List<Integer> getDestinations(int i) {
 		GraphNode n = nodes.get(i);
 		return n.getNeighbors();
+	}
+	
+	public int[] getNeighbors(int i) {
+		GraphNode n = nodes.get(i);
+		return n.getNeighborsArray();
 	}
 	
 	/**
@@ -81,6 +90,10 @@ public class Graph {
 	 */
 	public int getCarsAtNode(int n) {
 		return nodes.get(n).numCarsAtNode();
+	}
+	
+	public int getNumNodes() {
+		return numNodes;
 	}
 
 }

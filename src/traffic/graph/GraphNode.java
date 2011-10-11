@@ -12,13 +12,24 @@ public class GraphNode {
 	public List<Integer> outgoing; //Nodes that this node has an edge directed towards
 	public int nodeNum; //The number of this node on the graph
 	public List<Integer> cars; //The cars at this node
+	public int oStop; //The original stop time for a car at this node
 	public int stop; //The time a car must wait at this node
 	
 	public GraphNode(int n, int s) {
 		nodeNum = n;
 		outgoing = new ArrayList<Integer>();
 		cars = new ArrayList<Integer>();
-		stop = s;
+		oStop = s;
+		stop = oStop;
+	}
+	
+	public void makeNode(int[] c, int[] o) {
+		for(int car: c) {
+			cars.add(car);
+		}
+		for(int out: o) {
+			outgoing.add(out);
+		}
 	}
 	
 	/**
@@ -40,11 +51,20 @@ public class GraphNode {
 		return clone;
 	}
 	
+	public int[] getNeighborsArray() {
+		int[] n = new int[outgoing.size()];
+		for(int i = 0; i < outgoing.size(); i++) {
+			n[i] = outgoing.get(i);
+		}
+		return n;
+	}
+	
 	/**
 	 * Adds the given car number to the list of cars currently at the node
 	 */
 	public void addCar(int i) {
 		cars.add(i);
+		stop = oStop * cars.size();
 	}
 	
 	/**
@@ -52,6 +72,7 @@ public class GraphNode {
 	 */
 	public void removeCar(int i) {
 		cars.remove(cars.indexOf(i));
+		stop = oStop * cars.size();
 	}
 	
 	/**

@@ -40,6 +40,7 @@ public class TrafficSimulator{
 		graph = new Graph();
 		setGraph(graphP);
 		readPositions(positions);
+		setPaths();
 	}
 	
 	//Reads in the file containing the graph edges and nodes and builds a graph
@@ -116,5 +117,11 @@ public class TrafficSimulator{
 			c.tryMove(graph);
 		}
 		return checkAllFinish();
+	}
+	
+	private void setPaths() {
+		for(Car c: cars) {
+			c.makePath(graph, c.getCurrent());
+		}
 	}
 }
