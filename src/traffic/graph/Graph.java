@@ -48,11 +48,6 @@ public class Graph {
 		return n.getNeighbors();
 	}
 	
-	public int[] getNeighbors(int i) {
-		GraphNode n = nodes.get(i);
-		return n.getNeighborsArray();
-	}
-	
 	/**
 	 * Adds the given car number to the given node
 	 * @param c The number of the car to be added

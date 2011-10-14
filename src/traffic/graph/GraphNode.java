@@ -51,14 +51,6 @@ public class GraphNode {
 		return clone;
 	}
 	
-	public int[] getNeighborsArray() {
-		int[] n = new int[outgoing.size()];
-		for(int i = 0; i < outgoing.size(); i++) {
-			n[i] = outgoing.get(i);
-		}
-		return n;
-	}
-	
 	/**
 	 * Adds the given car number to the list of cars currently at the node
 	 */

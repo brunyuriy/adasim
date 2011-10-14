@@ -14,7 +14,7 @@ public class Extra {
 
 	public static void main(String[] args) {
 		Graph graph = new Graph();
-		File graphP = new File("graph2.txt");
+		File graphP = new File("graph3.txt");
 		try {
 			Scanner input = new Scanner(graphP);
 			int nodes = Integer.parseInt(input.nextLine());
@@ -33,7 +33,7 @@ public class Extra {
 			e.printStackTrace();
 		}
 		CarStrategy cs = new DijkstraStrategy();
-		List<Integer> path = cs.getPath(graph, 4, 6);
+		List<Integer> path = cs.getPath(graph, 0, 9);
 		System.out.println(path);
 	}
 }
