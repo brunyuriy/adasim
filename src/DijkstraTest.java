@@ -1,4 +1,4 @@
-package traffic.strategy;
+
 
 import static org.junit.Assert.*;
 
@@ -12,10 +12,13 @@ import org.junit.Test;
 
 import traffic.graph.Graph;
 import traffic.model.Car;
+import traffic.strategy.CarStrategy;
+import traffic.strategy.DijkstraCarStrategy;
 
 
 public class DijkstraTest {
 	
+	@SuppressWarnings("deprecation")
 	@Test
 	public void Test() {
 		Graph graph = new Graph();
@@ -24,8 +27,8 @@ public class DijkstraTest {
 			Scanner input = new Scanner(graphP);
 			int nodes = Integer.parseInt(input.nextLine());
 			for(int i = 0; i < nodes; i++) {
-				String stop = input.nextLine();
-				int s = Integer.parseInt(stop.substring(2,3));
+				String speed = input.nextLine();
+				String s = speed.substring(2,3);
 				graph.addNode(i, s);
 			}
 			while(input.hasNextLine()) {
@@ -37,24 +40,10 @@ public class DijkstraTest {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		/*int carNum = 0;
-		List<Car> cars = new ArrayList<Car>();
-		File positions = new File("cars2.txt");
-		try {
-			Scanner input = new Scanner(positions);
-			while(input.hasNextLine()) {
-				String position = input.nextLine();
-				Car c = new Car(position, carNum);
-				cars.add(c);
-				graph.addCarAtNode(carNum, c.getCurrent());
-				carNum++;
-			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}*/
-		CarStrategy cs = new DijkstraStrategy();
+		CarStrategy cs = new DijkstraCarStrategy();
 		List<Integer> path = cs.getPath(graph, 4, 6);
-		assertEquals(null, path);
+		Object[] expect = {4, 7, 8, 6};
+		assertEquals(expect , path.toArray());
 	}
 
 }

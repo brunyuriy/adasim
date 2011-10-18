@@ -1,12 +1,16 @@
+/**
+ * Jonathan Ramaswamy
+ * Path
+ * An path interface for the car or any other object on the graph to follow
+ */
 package traffic.model;
 import traffic.graph.Graph;
 
-
 public interface Path {
 	
-	void makePath(Graph g, int s);
-	void tryMove(Graph g);
-	boolean redoPath(Graph g);
+	void makePath(Graph g, int s); //Makes the path the object will follow
+	void tryMove(Graph g); //Tries to move the object along the path
+	boolean redoPath(Graph g); //Rewrites the path if obstacles are in the way
 
 }
 

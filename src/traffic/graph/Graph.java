@@ -9,8 +9,8 @@ import java.util.List;
 
 public class Graph {
 	
-	public List<GraphNode> nodes; //The nodes within the graph
-	public int numNodes; //The number of nodes in the graph
+	private List<GraphNode> nodes; //The nodes within the graph
+	private int numNodes; //The number of nodes in the graph
 	
 	public Graph() {
 		nodes = new ArrayList<GraphNode>();
@@ -20,11 +20,18 @@ public class Graph {
 	/**
 	 * Adds a new node to the graph and increases the tracker for the number of nodes by one
 	 */
-	public void addNode(int num, int stop) {
-		nodes.add(new GraphNode(num, stop));
+	public void addNode(int num, String speed) {
+		nodes.add(new GraphNode(num, speed));
 		numNodes++;
 	}
 	
+	/**
+	 * Quick method to make an entire node at once with cars and edges
+	 * Used mainly for testing purposes
+	 * @param n The node number to add the cars and edges at
+	 * @param c The list of cars
+	 * @param o The list of edges
+	 */
 	public void makeNode(int n, int[] c, int[] o) {
 		nodes.get(n).makeNode(c, o);
 	}
@@ -43,7 +50,7 @@ public class Graph {
 	/**
 	 * Returns a list of nodes by number that the given node is connected to
 	 */
-	public List<Integer> getDestinations(int i) {
+	public List<Integer> getNeighbors(int i) {
 		GraphNode n = nodes.get(i);
 		return n.getNeighbors();
 	}
@@ -72,12 +79,12 @@ public class Graph {
 	}
 	
 	/**
-	 * Gets the stop number at the given node
-	 * @param n The node to get the stop number from
+	 * Gets the speed limit at the given node
+	 * @param n The node to get the speed limit from
 	 * @return The number of turns a car must stay stopped at the given node
 	 */
-	public int getStopAtNode(int n) {
-		return nodes.get(n).getStopNum();
+	public int getLimitAtNode(int n) {
+		return nodes.get(n).getLimit();
 	}
 	
 	/**
@@ -87,6 +94,9 @@ public class Graph {
 		return nodes.get(n).numCarsAtNode();
 	}
 	
+	/**
+	 * Returns the number of nodes on the graph
+	 */
 	public int getNumNodes() {
 		return numNodes;
 	}

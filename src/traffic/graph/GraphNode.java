@@ -6,23 +6,39 @@ package traffic.graph;
 import java.util.ArrayList;
 import java.util.List;
 
+import traffic.strategy.LinearSpeedStrategy;
+import traffic.strategy.QuadraticSpeedStrategy;
+import traffic.strategy.RandomSpeedStrategy;
+import traffic.strategy.SpeedStrategy;
+
 
 public class GraphNode {
 	
-	public List<Integer> outgoing; //Nodes that this node has an edge directed towards
-	public int nodeNum; //The number of this node on the graph
-	public List<Integer> cars; //The cars at this node
-	public int oStop; //The original stop time for a car at this node
-	public int stop; //The time a car must wait at this node
+	private List<Integer> outgoing; //Nodes that this node has an edge directed towards
+	private int nodeNum; //The number of this node on the graph
+	private List<Integer> cars; //The cars at this node
+	private SpeedStrategy ss; //The strategy by which the speed changes
+	private int limit; //The time a car must wait at this node
 	
-	public GraphNode(int n, int s) {
+	public GraphNode(int n, String s) {
 		nodeNum = n;
 		outgoing = new ArrayList<Integer>();
 		cars = new ArrayList<Integer>();
-		oStop = s;
-		stop = oStop;
+		if(s.equals("R")) {
+			ss = new RandomSpeedStrategy();
+		} else if(s.equals("Q")) {
+			ss = new QuadraticSpeedStrategy();
+		} else {
+			ss = new LinearSpeedStrategy();
+		}
+		limit = ss.getSpeedLimit(cars.size());
 	}
 	
+	/**
+	 * Quick method to make an entire graph at once, used for testing purposes
+	 * @param c List of cars
+	 * @param o List of nodes
+	 */
 	public void makeNode(int[] c, int[] o) {
 		for(int car: c) {
 			cars.add(car);
@@ -53,25 +69,27 @@ public class GraphNode {
 	
 	/**
 	 * Adds the given car number to the list of cars currently at the node
+	 * Changes the speed limit at the node
 	 */
 	public void addCar(int i) {
 		cars.add(i);
-		stop = oStop * cars.size();
+		limit = ss.getSpeedLimit(cars.size());
 	}
 	
 	/**
 	 * Removes the given car from the list of cars at this node
+	 * Changes the speed limit at the node
 	 */
 	public void removeCar(int i) {
 		cars.remove(cars.indexOf(i));
-		stop = oStop * cars.size();
+		limit = ss.getSpeedLimit(cars.size());
 	}
 	
 	/**
-	 * Returns the number of turns a car must stay stopped at this node
+	 * Returns the number of turns a car must stay limited at this node
 	 */
-	public int getStopNum() {
-		return stop;
+	public int getLimit() {
+		return limit;
 	}
 	
 	/**

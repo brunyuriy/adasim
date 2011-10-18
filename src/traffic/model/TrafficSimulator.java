@@ -50,8 +50,8 @@ public class TrafficSimulator{
 			Scanner input = new Scanner(graphP);
 			int nodes = Integer.parseInt(input.nextLine());
 			for(int i = 0; i < nodes; i++) {
-				String stop = input.nextLine();
-				int s = Integer.parseInt(stop.substring(2,3));
+				String speed = input.nextLine();
+				String s = speed.substring(2,3);
 				graph.addNode(i, s);
 			}
 			while(input.hasNextLine()) {
@@ -66,22 +66,8 @@ public class TrafficSimulator{
 		}
 	}
 	
-	/**
-	 * Returns the car with the given number
-	 */
-	public Car getCar(int index) {
-		return cars.get(index);
-	}
-	
-	/**
-	 * Returns the number of cars in the simulation
-	 */
-	public int getNumberOfCars() {
-		return carNum;
-	}
-	
 	//Reads in the positions of the cars on the graph
-	public void readPositions(String carFile) {
+	private void readPositions(String carFile) {
 		File positions = new File(carFile);
 		try {
 			Scanner input = new Scanner(positions);
@@ -98,14 +84,11 @@ public class TrafficSimulator{
 		}
 	}
 	
-	//Checks to see if all cars have finished moving, returns true if so
-	private boolean checkAllFinish() {
+	//Uses the previously specified algorithm to create paths for each car on the graph
+	private void setPaths() {
 		for(Car c: cars) {
-			if(!c.checkFinish()) {
-				return false;
-			}
+			c.makePath(graph, c.getCurrent());
 		}
-		return true;
 	}
 	
 	/**
@@ -119,9 +102,14 @@ public class TrafficSimulator{
 		return checkAllFinish();
 	}
 	
-	private void setPaths() {
+	//Checks to see if all cars have finished moving, returns true if so
+	private boolean checkAllFinish() {
 		for(Car c: cars) {
-			c.makePath(graph, c.getCurrent());
+			if(!c.checkFinish()) {
+				return false;
+			}
 		}
+		return true;
 	}
+
 }

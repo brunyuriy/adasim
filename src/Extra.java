@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 import traffic.graph.Graph;
 import traffic.strategy.CarStrategy;
-import traffic.strategy.DijkstraStrategy;
+import traffic.strategy.DijkstraCarStrategy;
 
 
 public class Extra {
@@ -21,7 +21,7 @@ public class Extra {
 			for(int i = 0; i < nodes; i++) {
 				String stop = input.nextLine();
 				int s = Integer.parseInt(stop.substring(2,3));
-				graph.addNode(i, s);
+				graph.addNode(i, "L");
 			}
 			while(input.hasNextLine()) {
 				String edge = input.nextLine();
@@ -32,7 +32,7 @@ public class Extra {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		CarStrategy cs = new DijkstraStrategy();
+		CarStrategy cs = new DijkstraCarStrategy();
 		List<Integer> path = cs.getPath(graph, 0, 9);
 		System.out.println(path);
 	}
