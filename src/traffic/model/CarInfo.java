@@ -18,9 +18,9 @@ public class CarInfo {
 	private List<Integer> path; //Path the car travels
 	private NoiseStrategy noise; //The noise strategy
 	
-	public CarInfo(String positions, int num) {
-		start = Integer.parseInt(positions.substring(0, 2));
-		end = Integer.parseInt(positions.substring(3, 5));
+	public CarInfo(int start, int end, int num) {
+		this.start = start;
+		this.end = end;
 		current = start;
 		carNum = num;
 		limit = -1;

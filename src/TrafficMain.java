@@ -21,7 +21,7 @@ public class TrafficMain {
 		logger.info("Starting Simulation");
 		boolean done = false;
 		while(!done) {
-			done = tsim.runSim();
+			done = tsim.takeSimulationStep();
 		}
 		logger.info("Stopping simulation");
 		System.exit(0);

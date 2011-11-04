@@ -13,6 +13,8 @@ import java.util.*;
 
 import org.apache.log4j.Logger;
 
+import traffic.factory.CarFactory;
+import traffic.factory.GraphFactory;
 import traffic.graph.Graph;
 
 public class TrafficSimulator{
@@ -37,7 +39,6 @@ public class TrafficSimulator{
 	public TrafficSimulator(String positions, String graphP) {
 		cars = new ArrayList<Car>();
 		carNum = 0;
-		graph = new Graph();
 		setGraph(graphP);
 		readPositions(positions);
 		setPaths();
@@ -45,25 +46,7 @@ public class TrafficSimulator{
 	
 	//Reads in the file containing the graph edges and nodes and builds a graph
 	private void setGraph(String g) {
-		File graphP = new File(g);
-		try {
-			Scanner input = new Scanner(graphP);
-			int nodes = Integer.parseInt(input.nextLine());
-			for(int i = 0; i < nodes; i++) {
-				String speed = input.nextLine();
-				String s = speed.substring(2,3);
-				graph.addNode(i, s);
-			}
-			while(input.hasNextLine()) {
-				String edge = input.nextLine();
-				int i = Integer.parseInt(edge.substring(0,1));
-				int o = Integer.parseInt(edge.substring(2,3));
-				graph.addEdge(i, o);
-			}
-			logger.info("Graph set");
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+		graph = GraphFactory.loadGraph(g);
 	}
 	
 	//Reads in the positions of the cars on the graph
@@ -71,9 +54,10 @@ public class TrafficSimulator{
 		File positions = new File(carFile);
 		try {
 			Scanner input = new Scanner(positions);
-			while(input.hasNextLine()) {
-				String position = input.nextLine();
-				Car c = new Car(position, carNum);
+			String num = input.nextLine();
+			int numCars = Integer.parseInt(num);
+			for(int i = 0; i < numCars; i++) {
+				Car c = CarFactory.loadCar(input.nextLine(), carNum);
 				cars.add(c);
 				graph.addCarAtNode(carNum, c.getCurrent());
 				carNum++;
@@ -95,7 +79,7 @@ public class TrafficSimulator{
 	 * Runs the simulation by trying to move each car one at a time
 	 * @return True if the simulation is over
 	 */
-	public boolean runSim() {
+	public boolean takeSimulationStep() {
 		for(Car c: cars) {
 			c.tryMove(graph);
 		}

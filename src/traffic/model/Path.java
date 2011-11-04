@@ -10,7 +10,6 @@ public interface Path {
 	
 	void makePath(Graph g, int s); //Makes the path the object will follow
 	void tryMove(Graph g); //Tries to move the object along the path
-	boolean redoPath(Graph g); //Rewrites the path if obstacles are in the way
 
 }
 

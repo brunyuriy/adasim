@@ -64,31 +64,6 @@ public class DijkstraCarStrategy implements CarStrategy {
 	        }
 	    }
 	    return y;
-	}
-
-	/**
-	 * Picks a random neighbor node to go to next, if the current path does not work
-	 */
-	public int redoPath(Graph g, int c, int d) {
-		boolean found = false;
-		int n = -1;
-		List<Integer> dest = g.getNeighbors(c);
-		while(!found) {
-			if(dest.size() > 0) {
-				Random generator = new Random();
-				int rand = generator.nextInt(dest.size());
-				n = dest.get(rand);
-				if(g.getCarsAtNode(n) < 2) {
-					found = true;
-				}
-				dest.remove(rand);
-			} else {
-				found = true;
-			}
-		}
-		return n;
-	}
-	
-	
+	}	
 
 }

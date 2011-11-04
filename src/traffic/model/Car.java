@@ -23,9 +23,9 @@ public class Car implements Path {
 	
 	private static Logger logger = Logger.getLogger(Car.class);
 	
-	public Car(String positions, int num) {
-		info = new CarInfo(positions, num);
-		if(positions.substring(6, 7).equals("D")) {
+	public Car(int start, int end, String strat, int num) {
+		info = new CarInfo(start, end, num);
+		if(strat.equals("D")) {
 			cs = new DijkstraCarStrategy();
 		} else {
 			cs = new RandomCarStrategy();
@@ -44,16 +44,6 @@ public class Car implements Path {
 				info.setLimit(g.getLimitAtNode(info.getCurrent()));
 			}
 			if(info.getLimit() == 0) { //Car is free to move if path is clear
-				/*if(g.getCarsAtNode(info.getPath().get(0)) > 1) {
-					if(!redoPath(g)) {
-						logger.info("All neighboring nodes are full, car " + info.getCarNum() + "must wait another turn to move");
-					} else {
-						logger.info("The path for car " + info.getCarNum() + " has been changed");
-						moveCar(g);
-					}
-				} else {
-					moveCar(g);
-				}*/
 				moveCar(g);
 			} else { //Car must wait a certain number of turns to move again
 				logger.info("Car " + info.getCarNum() + " must wait at node " + info.getCurrent() + " for " + info.getLimit() + " more turns");
@@ -83,25 +73,6 @@ public class Car implements Path {
 	public void makePath(Graph g, int c) {
 		info.setPath(cs.getPath(g, c, info.getEnd()));
 		logger.info("The path for car " + info.getCarNum() + " is " + info.getPath().toString());
-	}
-	
-	/**
-	 * Re-does the current path due to an obstacle in the car's way
-	 * Returns true if a suitable new path could be found, false otherwise
-	 */
-	public boolean redoPath(Graph g) {
-		List<Integer> temp = info.getPath();
-		temp.clear();
-		info.setPath(temp);
-		int n = cs.redoPath(g, info.getCurrent(), info.getEnd());
-		if(n != -1) {
-			temp.add(n);
-			info.setPath(temp);
-			makePath(g, n);
-			return true;
-		} else {
-			return false;
-		}
 	}
 	
 	/**
