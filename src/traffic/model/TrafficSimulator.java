@@ -51,20 +51,9 @@ public class TrafficSimulator{
 	
 	//Reads in the positions of the cars on the graph
 	private void readPositions(String carFile) {
-		File positions = new File(carFile);
-		try {
-			Scanner input = new Scanner(positions);
-			String num = input.nextLine();
-			int numCars = Integer.parseInt(num);
-			for(int i = 0; i < numCars; i++) {
-				Car c = CarFactory.loadCar(input.nextLine(), carNum);
-				cars.add(c);
-				graph.addCarAtNode(carNum, c.getCurrent());
-				carNum++;
-			}
-			logger.info("Positions on graph set");
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+		cars = CarFactory.loadCar(carFile);
+		for(Car c: cars) {
+			graph.addCarAtNode(c.getCarNumber(), c.getCurrent());
 		}
 	}
 	
