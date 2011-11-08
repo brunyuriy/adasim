@@ -33,12 +33,10 @@ public class TrafficSimulator{
 	}
 	
 	private List<Car> cars; //List of cars in the simulation
-	private int carNum; //Number of cars in the simulation
 	private Graph graph; //The graph the cars run on
 	
 	public TrafficSimulator(String positions, String graphP) {
 		cars = new ArrayList<Car>();
-		carNum = 0;
 		setGraph(graphP);
 		readPositions(positions);
 		setPaths();
