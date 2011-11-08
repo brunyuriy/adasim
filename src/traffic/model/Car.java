@@ -16,7 +16,7 @@ import traffic.strategy.CarStrategy;
 import traffic.strategy.DijkstraCarStrategy;
 import traffic.strategy.RandomCarStrategy;
 
-public class Car implements Path {
+public class Car {
 	
 	private CarInfo info; //Info for the car
 	private CarStrategy cs; //Strategy the car uses to traverse the graph
