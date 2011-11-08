@@ -29,27 +29,27 @@ public class CarInfo {
 		noise = new RandomNoiseStrategy();
 	}
 	
-	public int getStart() {
+	public int getStartNode() {
 		return start;
 	}
 	
-	public void setStart(int s) {
+	public void setStartNode(int s) {
 		start = s;
 	}
 	
-	public int getEnd() {
+	public int getEndNode() {
 		return end;
 	}
 	
-	public void setEnd(int e) {
+	public void setEndNode(int e) {
 		end = e;
 	}
 	
-	public int getCurrent() {
+	public int getCurrentPosition() {
 		return current;
 	}
 	
-	public void setCurrent(int c) {
+	public void setCurrentPosition(int c) {
 		current = c;
 	}
 	
@@ -69,7 +69,7 @@ public class CarInfo {
 		limit = l;
 	}
 	
-	public boolean getFinish() {
+	public boolean atDestination() {
 		return finish;
 	}
 	

@@ -39,14 +39,14 @@ public class Car implements Path {
 	 * it stays at the current node until a node with space is found
 	 */
 	public void tryMove(Graph g) {
-		if(!info.getFinish()) {
+		if(!info.atDestination()) {
 			if(info.getLimit() == -1) { //Speed limit hasn't been found yet
-				info.setLimit(g.getLimitAtNode(info.getCurrent()));
+				info.setLimit(g.getLimitAtNode(info.getCurrentPosition()));
 			}
 			if(info.getLimit() == 0) { //Car is free to move if path is clear
 				moveCar(g);
 			} else { //Car must wait a certain number of turns to move again
-				logger.info("Car " + info.getCarNum() + " must wait at node " + info.getCurrent() + " for " + info.getLimit() + " more turns");
+				logger.info("Car " + info.getCarNum() + " must wait at node " + info.getCurrentPosition() + " for " + info.getLimit() + " more turns");
 				info.setLimit(info.getLimit()-1);
 			}
 		}
@@ -54,11 +54,11 @@ public class Car implements Path {
 	
 	//Moves the car to the next node on its path
 	private void moveCar(Graph g) {
-		int o = info.getCurrent();
-		info.setCurrent(info.getPath().get(0));
-		g.changeCarNode(info.getCarNum(), o, info.getCurrent());
+		int o = info.getCurrentPosition();
+		info.setCurrentPosition(info.getPath().get(0));
+		g.changeCarNode(info.getCarNum(), o, info.getCurrentPosition());
 		setFinish();
-		logger.info("Car " + info.getCarNum() + " moved to node " + info.getCurrent() + " from node " + o);
+		logger.info("Car " + info.getCarNum() + " moved to node " + info.getCurrentPosition() + " from node " + o);
 		info.setLimit(-1);
 		List<Integer> temp = info.getPath();
 		temp.remove(0);
@@ -71,7 +71,7 @@ public class Car implements Path {
 	 * until an obstacle prevents it from doing so
 	 */
 	public void makePath(Graph g, int c) {
-		info.setPath(cs.getPath(g, c, info.getEnd()));
+		info.setPath(cs.getPath(g, c, info.getEndNode()));
 		logger.info("The path for car " + info.getCarNum() + " is " + info.getPath().toString());
 	}
 	
@@ -79,7 +79,7 @@ public class Car implements Path {
 	 * Returns the car's current position
 	 */
 	public int getCurrent() {
-		return info.getCurrent();
+		return info.getCurrentPosition();
 	}
 	
 	/**
@@ -101,6 +101,6 @@ public class Car implements Path {
 	 * Returns true if the car is at the end, false if not
 	 */
 	public boolean checkFinish() {
-		return info.getFinish();
+		return info.atDestination();
 	}
 }
