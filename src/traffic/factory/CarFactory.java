@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import traffic.graph.Graph;
 import traffic.model.Car;
 
 

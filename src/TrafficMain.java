@@ -1,6 +1,6 @@
 /**
  * Jonathan Ramaswamy
- * TrafficMain Version 4
+ * TrafficMain
  * Main class for running the traffic simulator
  */
 

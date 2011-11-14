@@ -1,10 +1,11 @@
 package traffic.model;
 /**
  * Jonathan Ramaswamy
- * Car Version 4
- * The car object represents a single car on the graph, and knows its starting
- * position, current position, and end position. The car will move in a random direction
- * towards its destination until it is reached.
+ * Car
+ * The car object represents a single car on the graph, and holds an info object
+ * with important information about itself. The car is given a graph traversal strategy
+ * that it will use to select its path from start to end
+ * 
  */
 import java.util.ArrayList;
 import java.util.List;

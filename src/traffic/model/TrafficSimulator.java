@@ -1,10 +1,10 @@
 package traffic.model;
 /**
  * Jonathan Ramaswamy
- * TrafficSimulator Version 4
+ * TrafficSimulator
  * TrafficSimulator is the main program for running the simulator. It keeps track
- * of the grid and where all the cars are located on it, and outputs position information
- * to the GUI
+ * of the graph and where all the cars are located on it, and outputs information to
+ * the logger object with every step taken.
  */
 
 
