@@ -11,7 +11,7 @@ public class LinearSpeedStrategy implements SpeedStrategy {
 	 * Sets the number of turns a car must wait at a node to be equal to
 	 * the number of cars currently at the node
 	 */
-	public int getSpeedLimit(int n) {
+	public int getDelay(int n) {
 		return n;
 	}
 

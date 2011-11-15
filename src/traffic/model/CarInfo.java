@@ -13,7 +13,7 @@ public class CarInfo {
 	private int end; //Destination position
 	private int current; //Current position
 	private int carNum; //This car's number in the list of cars
-	private int limit; //The time the car must wait at its current node
+	private int delay; //The time the car must wait at its current node
 	private boolean finish; //True if the car has reached its destination
 	private List<Integer> path; //Path the car travels
 	private NoiseStrategy noise; //The noise strategy
@@ -23,7 +23,7 @@ public class CarInfo {
 		this.end = end;
 		current = start;
 		carNum = num;
-		limit = -1;
+		delay = -1;
 		finish = false;
 		path = new ArrayList<Integer>();
 		noise = new RandomNoiseStrategy();
@@ -61,12 +61,12 @@ public class CarInfo {
 		carNum = cn;
 	}
 	
-	public int getLimit() {
-		return limit;
+	public int getDelay() {
+		return delay;
 	}
 	
-	public void setLimit(int l) {
-		limit = l;
+	public void setDelay(int l) {
+		delay = l;
 	}
 	
 	public boolean atDestination() {

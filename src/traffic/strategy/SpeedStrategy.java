@@ -7,6 +7,6 @@ package traffic.strategy;
 
 public interface SpeedStrategy {
 	
-	public int getSpeedLimit(int n); //Returns the speed limit for the node depending on the number of cars
+	public int getDelay(int n); //Returns the speed limit for the node depending on the number of cars
 
 }

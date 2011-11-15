@@ -80,8 +80,8 @@ public class Graph {
 	 * @param n The node to get the speed limit from
 	 * @return The number of turns a car must stay stopped at the given node
 	 */
-	public int getLimitAtNode(int n) {
-		return nodes.get(n).getLimit();
+	public int getDelayAtNode(int n) {
+		return nodes.get(n).getDelay();
 	}
 	
 	/**

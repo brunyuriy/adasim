@@ -19,7 +19,7 @@ public class GraphNode {
 	private int nodeNum; //The number of this node on the graph
 	private List<Integer> cars; //The cars at this node
 	private SpeedStrategy ss; //The strategy by which the speed changes
-	private int limit; //The time a car must wait at this node
+	private int delay; //The time a car must wait at this node
 	
 	public GraphNode(int n, String s) {
 		nodeNum = n;
@@ -32,7 +32,7 @@ public class GraphNode {
 		} else {
 			ss = new LinearSpeedStrategy();
 		}
-		limit = ss.getSpeedLimit(cars.size());
+		delay = ss.getDelay(cars.size());
 	}
 	
 	/**
@@ -60,7 +60,7 @@ public class GraphNode {
 	 */
 	public void addCar(int i) {
 		cars.add(i);
-		limit = ss.getSpeedLimit(cars.size());
+		delay = ss.getDelay(cars.size());
 	}
 	
 	/**
@@ -69,14 +69,14 @@ public class GraphNode {
 	 */
 	public void removeCar(int i) {
 		cars.remove(cars.indexOf(i));
-		limit = ss.getSpeedLimit(cars.size());
+		delay = ss.getDelay(cars.size());
 	}
 	
 	/**
 	 * Returns the number of turns a car must stay limited at this node
 	 */
-	public int getLimit() {
-		return limit;
+	public int getDelay() {
+		return delay;
 	}
 	
 	/**

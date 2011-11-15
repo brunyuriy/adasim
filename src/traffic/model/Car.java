@@ -7,7 +7,6 @@ package traffic.model;
  * that it will use to select its path from start to end
  * 
  */
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -41,14 +40,14 @@ public class Car {
 	 */
 	public void tryMove(Graph g) {
 		if(!info.atDestination()) {
-			if(info.getLimit() == -1) { //Speed limit hasn't been found yet
-				info.setLimit(g.getLimitAtNode(info.getCurrentPosition()));
+			if(info.getDelay() == -1) { //Speed limit hasn't been found yet
+				info.setDelay(g.getDelayAtNode(info.getCurrentPosition()));
 			}
-			if(info.getLimit() == 0) { //Car is free to move if path is clear
+			if(info.getDelay() == 0) { //Car is free to move if path is clear
 				moveCar(g);
 			} else { //Car must wait a certain number of turns to move again
-				logger.info("Car " + info.getCarNum() + " must wait at node " + info.getCurrentPosition() + " for " + info.getLimit() + " more turns");
-				info.setLimit(info.getLimit()-1);
+				logger.info("Car " + info.getCarNum() + " must wait at node " + info.getCurrentPosition() + " for " + info.getDelay() + " more turns");
+				info.setDelay(info.getDelay()-1);
 			}
 		}
 	}
@@ -60,7 +59,7 @@ public class Car {
 		g.changeCarNode(info.getCarNum(), o, info.getCurrentPosition());
 		setFinish();
 		logger.info("Car " + info.getCarNum() + " moved to node " + info.getCurrentPosition() + " from node " + o);
-		info.setLimit(-1);
+		info.setDelay(-1);
 		List<Integer> temp = info.getPath();
 		temp.remove(0);
 		info.setPath(temp);

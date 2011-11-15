@@ -10,7 +10,7 @@ public class QuadraticSpeedStrategy implements SpeedStrategy {
 	/**
 	 * The speed limit is set to be proportionate to the square of the number of cars at the node
 	 */
-	public int getSpeedLimit(int n) {
+	public int getDelay(int n) {
 		return n * n;
 	}
 
