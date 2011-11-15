@@ -1,27 +1,27 @@
 package traffic.graph;
 /**
  * Jonathan Ramaswamy
+ * Graph
  * Graph is a simple object representing an weighted, directed graph using nodes
  */
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class Graph {
 	
 	private List<GraphNode> nodes; //The nodes within the graph
 	private int numNodes; //The number of nodes in the graph
 	
-	public Graph(List<Integer> node, List<String> strats, 
+	public Graph(List<Integer> node, List<String> strategies, 
 			     List<Integer> startNodes, List<Integer> endNodes) {
 		nodes = new ArrayList<GraphNode>();
 		numNodes = 0;
 		for(int i = 0; i < node.size(); i++) {
-			addNode(node.get(i), strats.get(i));
+			addNode(node.get(i), strategies.get(i)); //Creates the nodes in the graph
 		}
 		for(int j = 0; j < startNodes.size(); j++) {
-			addEdge(startNodes.get(j), endNodes.get(j));
+			addEdge(startNodes.get(j), endNodes.get(j)); //Adds edges to the given nodes
 		}
 	}
 	
@@ -31,17 +31,6 @@ public class Graph {
 	public void addNode(int num, String speed) {
 		nodes.add(new GraphNode(num, speed));
 		numNodes++;
-	}
-	
-	/**
-	 * Quick method to make an entire node at once with cars and edges
-	 * Used mainly for testing purposes
-	 * @param n The node number to add the cars and edges at
-	 * @param c The list of cars
-	 * @param o The list of edges
-	 */
-	public void makeNode(int n, int[] c, int[] o) {
-		nodes.get(n).makeNode(c, o);
 	}
 	
 	/**
@@ -56,7 +45,7 @@ public class Graph {
 	}
 	
 	/**
-	 * Returns a list of nodes by number that the given node is connected to
+	 * Returns a list of nodes that the given node has outgoing edges towards
 	 */
 	public List<Integer> getNeighbors(int i) {
 		GraphNode n = nodes.get(i);
@@ -93,13 +82,6 @@ public class Graph {
 	 */
 	public int getLimitAtNode(int n) {
 		return nodes.get(n).getLimit();
-	}
-	
-	/**
-	 * Returns the number of cars at a given node
-	 */
-	public int getCarsAtNode(int n) {
-		return nodes.get(n).numCarsAtNode();
 	}
 	
 	/**

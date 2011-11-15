@@ -30,12 +30,12 @@ public class GraphFactory {
 			Scanner input = new Scanner(graphP);
 			int nodes = Integer.parseInt(input.nextLine());
 			List<Integer> node = new ArrayList<Integer>();
-			List<String> strats = new ArrayList<String>();
+			List<String> strategies = new ArrayList<String>();
 			for(int i = 0; i < nodes; i++) {
 				String speed = input.nextLine();
 				String s = speed.substring(2,3);
 				node.add(i);
-				strats.add(s);
+				strategies.add(s);
 			}
 			List<Integer> start = new ArrayList<Integer>();
 			List<Integer> end = new ArrayList<Integer>();
@@ -44,11 +44,14 @@ public class GraphFactory {
 				start.add(Integer.parseInt(edge.substring(0,1)));
 				end.add(Integer.parseInt(edge.substring(2,3)));
 			}
-			return new Graph(node, strats, start, end);
-		} catch (FileNotFoundException e) {
+			return new Graph(node, strategies, start, end);
+		} catch (FileNotFoundException fe) {
 			logger.error("Configuration file not found");
 			System.exit(0);
-			return null;
+		} catch (Exception e) {
+			logger.error("Configuration file has invalid format");
+			System.exit(0);
 		}
+		return null;
 	}
 }

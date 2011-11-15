@@ -1,6 +1,7 @@
 package traffic.graph;
 /**
  * Jonathan Ramaswamy
+ * GraphNode
  * GraphNode represents the nodes that make up the graph
  */
 import java.util.ArrayList;
@@ -32,20 +33,6 @@ public class GraphNode {
 			ss = new LinearSpeedStrategy();
 		}
 		limit = ss.getSpeedLimit(cars.size());
-	}
-	
-	/**
-	 * Quick method to make an entire graph at once, used for testing purposes
-	 * @param c List of cars
-	 * @param o List of nodes
-	 */
-	public void makeNode(int[] c, int[] o) {
-		for(int car: c) {
-			cars.add(car);
-		}
-		for(int out: o) {
-			outgoing.add(out);
-		}
 	}
 	
 	/**

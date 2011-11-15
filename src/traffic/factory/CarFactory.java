@@ -43,8 +43,11 @@ public class CarFactory {
 		} catch (FileNotFoundException e) {
 			logger.error("Configuration file not found");
 			System.exit(0);
-			return null;
+		} catch (Exception e) {
+			logger.error("Configuration file has invalid format");
+			System.exit(0);
 		}
+		return null;
 	}
 	
 }
