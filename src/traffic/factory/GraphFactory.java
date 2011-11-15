@@ -1,3 +1,8 @@
+/**
+ * Jonathan Ramaswamy
+ * GraphFactory
+ * Creates the graph used in the simulation from information given in a configuration file
+ */
 package traffic.factory;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -5,11 +10,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import org.apache.log4j.Logger;
+
 import traffic.graph.Graph;
 
 
 public class GraphFactory {
 
+	private static Logger logger = Logger.getLogger(GraphFactory.class);
+
+	/**
+	 * Reads in a file of nodes with their neighbors and speed limits
+	 * @param g The configuration file with all information about the graph
+	 * @return The fully configured graph object
+	 */
 	public static Graph loadGraph(String g) {
 		File graphP = new File(g);
 		try {
@@ -32,7 +46,8 @@ public class GraphFactory {
 			}
 			return new Graph(node, strats, start, end);
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			logger.error("Configuration file not found");
+			System.exit(0);
 			return null;
 		}
 	}
