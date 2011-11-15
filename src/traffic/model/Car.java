@@ -70,8 +70,9 @@ public class Car {
 	 * The car will attempt to follow this path to its destination
 	 * until an obstacle prevents it from doing so
 	 */
-	public void makePath(Graph g, int c) {
-		info.setPath(cs.getPath(g, c, info.getEndNode()));
+	public void makePath(Graph g) {
+		info.setPath(cs.getPath(g, info.getStartNode(), info.getEndNode()));
+		logger.info("Car " + info.getCarNum() + " is at node " + info.getCurrentPosition());
 		logger.info("The path for car " + info.getCarNum() + " is " + info.getPath().toString());
 	}
 	

@@ -9,8 +9,6 @@ package traffic.model;
 
 import java.util.*;
 
-import org.apache.log4j.Logger;
-
 import traffic.factory.CarFactory;
 import traffic.factory.GraphFactory;
 import traffic.graph.Graph;
@@ -54,7 +52,7 @@ public class TrafficSimulator{
 	//Uses the previously specified algorithm to create paths for each car on the graph
 	private void setPaths() {
 		for(Car c: cars) {
-			c.makePath(graph, c.getCurrent());
+			c.makePath(graph);
 		}
 	}
 	

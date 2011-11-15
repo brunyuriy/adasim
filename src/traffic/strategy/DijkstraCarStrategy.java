@@ -8,7 +8,6 @@ package traffic.strategy;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import traffic.graph.Graph;
 
@@ -38,6 +37,7 @@ public class DijkstraCarStrategy implements CarStrategy {
 					path.add(0, next);
 					next = prev[next];
 				}
+				path.remove(0);
 				return path;
 			}
 			List<Integer> n = g.getNeighbors(next);
