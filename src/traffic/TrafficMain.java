@@ -1,3 +1,4 @@
+package traffic;
 /**
  * Jonathan Ramaswamy
  * TrafficMain
