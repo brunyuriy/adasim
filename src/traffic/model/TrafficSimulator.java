@@ -7,8 +7,6 @@ package traffic.model;
  * the logger object with every step taken.
  */
 
-
-import java.io.*;
 import java.util.*;
 
 import org.apache.log4j.Logger;
@@ -19,9 +17,7 @@ import traffic.graph.Graph;
 
 public class TrafficSimulator{
 	private static TrafficSimulator instance = null; //The single instance of the simulator
-	
-	private static Logger logger = Logger.getLogger(TrafficSimulator.class);
-	
+		
 	/**
 	 * Returns the single instance of the traffic simulator
 	 */
