@@ -1,3 +1,8 @@
+/**
+ * Jonathan Ramaswamy
+ * CarFactory
+ * Creates the cars used in the simulation from information given in a configuration file
+ */
 package traffic.factory;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -5,11 +10,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import org.apache.log4j.Logger;
+
 import traffic.model.Car;
 
 
 public class CarFactory {
 
+	private static Logger logger = Logger.getLogger(CarFactory.class);
+
+	/**
+	 * Reads in a file of positions and strategies for each car
+	 * @param carFile The configuration file with all information about the cars
+	 * @return The list of cars with their information set up
+	 */
 	public static List<Car> loadCar(String carFile) {
 		File positions = new File(carFile);
 		try {
@@ -27,7 +41,8 @@ public class CarFactory {
 			}
 			return cars;
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			logger.error("Configuration file not found");
+			System.exit(0);
 			return null;
 		}
 	}
