@@ -47,11 +47,13 @@ public class GraphFactory {
 			return new Graph(node, strategies, start, end);
 		} catch (FileNotFoundException fe) {
 			logger.error("Configuration file not found");
-			System.exit(0);
+			throw new IllegalArgumentException("Cannot find file");
+		} catch (NumberFormatException ne) {
+			logger.error("First line must be number of nodes");
+			throw new IllegalArgumentException("First line must be number of nodes");
 		} catch (Exception e) {
 			logger.error("Configuration file has invalid format");
-			System.exit(0);
+			throw new IllegalArgumentException("File is not formatted properly");
 		}
-		return null;
 	}
 }
