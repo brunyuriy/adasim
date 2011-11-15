@@ -1,3 +1,8 @@
+/**
+ * Jonathan Ramaswamy
+ * Random Noise Strategy creates a random value for the 
+ * amount of noise experienced at a node
+ */
 package traffic.strategy;
 
 import java.util.Random;
