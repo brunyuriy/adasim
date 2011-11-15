@@ -23,6 +23,7 @@ public class CarFactory {
 	 * Reads in a file of positions and strategies for each car
 	 * @param carFile The configuration file with all information about the cars
 	 * @return The list of cars with their information set up
+	 * @throws IOException 
 	 */
 	public static List<Car> loadCar(String carFile) {
 		File positions = new File(carFile);
@@ -42,12 +43,11 @@ public class CarFactory {
 			return cars;
 		} catch (FileNotFoundException e) {
 			logger.error("Configuration file not found");
-			System.exit(0);
+			return null;
 		} catch (Exception e) {
 			logger.error("Configuration file has invalid format");
-			System.exit(0);
+			throw new IllegalArgumentException();
 		}
-		return null;
 	}
 	
 }
