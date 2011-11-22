@@ -1,4 +1,4 @@
-<cars number="5">
+<cars>
 	<car start="00" end="02" strategy="D" />
 	<car start="04" end="07" strategy="D" />
 	<car start="03" end="09" strategy="D" />

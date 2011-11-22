@@ -14,18 +14,12 @@ public class GraphFactoryTest {
 	@Test (expected=IllegalArgumentException.class)
 	public void testFileNotFound() {
 		//Tests for proper exception thrown when file is not found
-		GraphFactory.loadGraph("notfound");
-	}
-	
-	@Test (expected=IllegalArgumentException.class)
-	public void testInvalidFirstLine() {
-		//Tests for proper exception thrown when file does not have number of nodes as first line
-		GraphFactory.loadGraph("badgraph1.txt");
+		GraphFactoryXML.loadGraph("notfound");
 	}
 	
 	@Test
 	public void testStrategies() {
-		Graph g = GraphFactory.loadGraph("graph3.txt");
+		Graph g = GraphFactoryXML.loadGraph("graph.xml");
 		assertEquals(g.getDelayAtNode(6), 0);
 		g.addCarAtNode(0, 6);
 		g.addCarAtNode(1, 6);
@@ -38,7 +32,7 @@ public class GraphFactoryTest {
 	
 	@Test
 	public void testNeighbors() {
-		Graph g = GraphFactory.loadGraph("graph3.txt");
+		Graph g = GraphFactoryXML.loadGraph("graph.xml");
 		List<Integer> neighbors = g.getNodes().get(2).getNeighbors();
 		int first = neighbors.get(0);
 		assertEquals(first, 4);

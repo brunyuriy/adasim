@@ -12,6 +12,7 @@ import java.util.*;
 import traffic.factory.CarFactory;
 import traffic.factory.CarFactoryXML;
 import traffic.factory.GraphFactory;
+import traffic.factory.GraphFactoryXML;
 import traffic.graph.Graph;
 
 public class TrafficSimulator{
@@ -39,7 +40,7 @@ public class TrafficSimulator{
 	
 	//Reads in the file containing the graph edges and nodes and builds a graph
 	private void setGraph(String g) {
-		graph = GraphFactory.loadGraph(g);
+		graph = GraphFactoryXML.loadGraph(g);
 	}
 	
 	//Reads in the positions of the cars on the graph
