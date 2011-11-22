@@ -18,6 +18,11 @@ public class GraphFactoryTest {
 	}
 	
 	@Test
+	public void testJDOMException() {
+		assertEquals(GraphFactoryXML.loadGraph("badconfig.xml"), null);
+	}
+	
+	@Test
 	public void testStrategies() {
 		Graph g = GraphFactoryXML.loadGraph("config.xml");
 		assertEquals(g.getDelayAtNode(6), 0);
