@@ -90,5 +90,9 @@ public class Graph {
 	public int getNumNodes() {
 		return numNodes;
 	}
+	
+	public List<GraphNode> getNodes() {
+		return nodes;
+	}
 
 }

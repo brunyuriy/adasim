@@ -2,9 +2,12 @@ package traffic.factory;
 
 import static org.junit.Assert.*;
 
+import java.util.List;
+
 import org.junit.Test;
 
 import traffic.graph.Graph;
+import traffic.graph.GraphNode;
 
 public class GraphFactoryTest {
 	
@@ -31,6 +34,18 @@ public class GraphFactoryTest {
 		g.addCarAtNode(2, 1);
 		g.addCarAtNode(3, 1);
 		assertEquals(g.getDelayAtNode(1), 2); //Tests Linear Speed Strategy
+	}
+	
+	@Test
+	public void testNeighbors() {
+		Graph g = GraphFactory.loadGraph("graph3.txt");
+		List<Integer> neighbors = g.getNodes().get(2).getNeighbors();
+		int first = neighbors.get(0);
+		assertEquals(first, 4);
+		int second = neighbors.get(1);
+		assertEquals(second, 7);
+		int third = neighbors.get(2);
+		assertEquals(third, 9);
 	}
 
 }
