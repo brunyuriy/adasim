@@ -33,7 +33,9 @@ public class GraphFactoryXML {
 		try {
 			doc = builder.build(graphP);
 			Element root = doc.getRootElement();
-			List<Element> children = root.getChildren("node");
+			List<Element> graphChild = root.getChildren("graph");
+			Element graphList = graphChild.get(0);
+			List<Element> children = graphList.getChildren("node");
 			int nodes = children.size();
 			List<Integer> node = new ArrayList<Integer>();
 			List<String> strategies = new ArrayList<String>();

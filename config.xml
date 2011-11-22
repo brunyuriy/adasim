@@ -1,0 +1,22 @@
+<simulation>
+	<cars>
+		<car start="00" end="02" strategy="D" />
+		<car start="04" end="07" strategy="D" />
+		<car start="03" end="09" strategy="D" />
+		<car start="08" end="04" strategy="D" />
+		<car start="03" end="07" strategy="D" />
+	</cars>
+
+	<graph>
+		<node strategy="Q" neighbors="4 7" />
+		<node strategy="L" neighbors="5" />
+		<node strategy="L" neighbors="4 7 9" />
+		<node strategy="Q" neighbors="1" />
+		<node strategy="L" neighbors="6 8" />
+		<node strategy="L" neighbors="0 2 9" />
+		<node strategy="Q" neighbors="5 8" />
+		<node strategy="Q" neighbors="0 1" />
+		<node strategy="Q" neighbors="3" />
+		<node strategy="L" neighbors="2" />
+	</graph>
+</simulation>

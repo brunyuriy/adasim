@@ -14,17 +14,12 @@ public class CarFactoryTest {
 		
 	@Test (expected=IllegalArgumentException.class)
 	public void testFileNotFound() {
-		CarFactory.loadCar("badfile");
-	}
-	
-	@Test (expected=IllegalArgumentException.class)
-	public void testBadFile() {
-		CarFactory.loadCar("invalidcars.txt");
+		CarFactoryXML.loadCar("badfile");
 	}
 	
 	@Test
 	public void testStart() {
-		List<Car> cars = CarFactory.loadCar("cars2.txt");
+		List<Car> cars = CarFactoryXML.loadCar("config.xml");
 	}
 
 }

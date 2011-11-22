@@ -33,7 +33,9 @@ public class CarFactoryXML {
 		try {
 			doc = builder.build(carPositions);
 			Element root = doc.getRootElement();
-			List<Element> children = root.getChildren("car");
+			List<Element> carChild = root.getChildren("cars");
+			Element carList = carChild.get(0);
+			List<Element> children = carList.getChildren("car");
 			int size = children.size();
 			int carNum = 0;
 			List<Car> cars = new ArrayList<Car>();

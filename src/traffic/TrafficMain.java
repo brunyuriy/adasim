@@ -19,7 +19,7 @@ public class TrafficMain {
 	public static void main(String[] args) {
 		BasicConfigurator.configure();
 		logger.info("Starting Simulation");
-		tsim = TrafficSimulator.getInstance(args[0], args[1]); //args[0] = cars, args[1] = graph
+		tsim = TrafficSimulator.getInstance(args[0]); //args[0] = config
 		boolean done = false;
 		while(!done) {
 			done = tsim.takeSimulationStep();

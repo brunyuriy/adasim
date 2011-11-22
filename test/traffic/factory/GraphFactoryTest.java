@@ -19,7 +19,7 @@ public class GraphFactoryTest {
 	
 	@Test
 	public void testStrategies() {
-		Graph g = GraphFactoryXML.loadGraph("graph.xml");
+		Graph g = GraphFactoryXML.loadGraph("config.xml");
 		assertEquals(g.getDelayAtNode(6), 0);
 		g.addCarAtNode(0, 6);
 		g.addCarAtNode(1, 6);
@@ -32,7 +32,7 @@ public class GraphFactoryTest {
 	
 	@Test
 	public void testNeighbors() {
-		Graph g = GraphFactoryXML.loadGraph("graph.xml");
+		Graph g = GraphFactoryXML.loadGraph("config.xml");
 		List<Integer> neighbors = g.getNodes().get(2).getNeighbors();
 		int first = neighbors.get(0);
 		assertEquals(first, 4);

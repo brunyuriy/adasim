@@ -21,9 +21,9 @@ public class TrafficSimulator{
 	/**
 	 * Returns the single instance of the traffic simulator
 	 */
-	public static TrafficSimulator getInstance(String positions, String graph) {
+	public static TrafficSimulator getInstance(String file) {
 		if (instance == null) {
-			instance = new TrafficSimulator(positions, graph);
+			instance = new TrafficSimulator(file);
 		}
 		return instance;
 	}
@@ -31,10 +31,10 @@ public class TrafficSimulator{
 	private List<Car> cars; //List of cars in the simulation
 	private Graph graph; //The graph the cars run on
 	
-	public TrafficSimulator(String positions, String graphP) {
+	public TrafficSimulator(String file) {
 		cars = new ArrayList<Car>();
-		setGraph(graphP);
-		readPositions(positions);
+		setGraph(file);
+		readPositions(file);
 		setPaths();
 	}
 	
