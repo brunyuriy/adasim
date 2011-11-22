@@ -13,29 +13,18 @@ import traffic.model.Car;
 public class CarFactoryTest {
 		
 	@Test (expected=IllegalArgumentException.class)
-	public void FactoryTest1() {
+	public void testFileNotFound() {
+		CarFactory.loadCar("badfile");
+	}
+	
+	@Test (expected=IllegalArgumentException.class)
+	public void testBadFile() {
 		CarFactory.loadCar("invalidcars.txt");
 	}
 	
 	@Test
-	public void FactoryTest2() {
-		List<Car> cars = CarFactory.loadCar("invalidcars2.txt");
-		assertEquals(cars.size(), 5);
-	}
-	
-	@Test (expected=IllegalArgumentException.class)
-	public void FactoryTest3() {
-		CarFactory.loadCar("invalidcars3.txt");
-	}
-	
-	@Test (expected=IllegalArgumentException.class)
-	public void FactoryTest4() {
-		CarFactory.loadCar("invalidcars4.txt");
-	}
-	
-	@Test
-	public void FactoryTest5() {
-		assertEquals(CarFactory.loadCar("invalidcars5.txt"), null);
+	public void testStart() {
+		List<Car> cars = CarFactory.loadCar("cars2.txt");
 	}
 
 }

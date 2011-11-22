@@ -10,6 +10,7 @@ package traffic.model;
 import java.util.*;
 
 import traffic.factory.CarFactory;
+import traffic.factory.CarFactoryXML;
 import traffic.factory.GraphFactory;
 import traffic.graph.Graph;
 
@@ -43,7 +44,7 @@ public class TrafficSimulator{
 	
 	//Reads in the positions of the cars on the graph
 	private void readPositions(String carFile) {
-		cars = CarFactory.loadCar(carFile);
+		cars = CarFactoryXML.loadCar(carFile);
 		for(Car c: cars) {
 			graph.addCarAtNode(c.getCarNumber(), c.getCurrent());
 		}

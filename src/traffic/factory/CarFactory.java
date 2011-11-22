@@ -6,6 +6,7 @@
 package traffic.factory;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -43,10 +44,10 @@ public class CarFactory {
 			return cars;
 		} catch (FileNotFoundException e) {
 			logger.error("Configuration file not found");
-			return null;
+			throw new IllegalArgumentException("File not found");
 		} catch (Exception e) {
 			logger.error("Configuration file has invalid format");
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("Invalid file");
 		}
 	}
 	
