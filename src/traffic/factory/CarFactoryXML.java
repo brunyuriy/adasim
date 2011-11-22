@@ -52,6 +52,9 @@ public class CarFactoryXML {
 		} catch (IOException e) {
 			logger.error("JDOMException");
 			throw new IllegalArgumentException("File not found");
+		} catch (Exception e) {
+			logger.error("Bad config file");
+			return null;
 		}
 	}
 
