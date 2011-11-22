@@ -1,3 +1,8 @@
+/**
+ * Jonathan Ramaswamy
+ * CarFactoryXML
+ * Creates the cars used in the simulation from information given in an XML configuration file
+ */
 package traffic.factory;
 
 import java.io.File;
@@ -15,6 +20,12 @@ public class CarFactoryXML {
 	
 	private static Logger logger = Logger.getLogger(CarFactoryXML.class);
 	
+	/**
+	 * Reads in a file of positions and strategies for each car
+	 * @param carFile The configuration file with all information about the cars
+	 * @return The list of cars with their information set up
+	 * @throws IllegalArgumentException if file is not found
+	 */
 	public static List<Car> loadCar(String carFile) {
 		Document doc = null;
 		SAXBuilder builder = new SAXBuilder(false);
