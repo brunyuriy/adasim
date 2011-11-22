@@ -23,6 +23,13 @@ public class Car {
 	
 	private static Logger logger = Logger.getLogger(Car.class);
 	
+	/**
+	 * @param start
+	 * @param end
+	 * @param strat
+	 * @param num
+	 * @deprecated
+	 */
 	public Car(int start, int end, String strat, int num) {
 		info = new CarInfo(start, end, num);
 		if(strat.equals("D")) {
@@ -32,6 +39,11 @@ public class Car {
 		}
 	}
 	
+	public Car(int start, int end, CarStrategy strat, int num) {
+		info = new CarInfo(start, end, num);
+		cs = strat;
+	}
+
 	/**
 	 * If the car is not at its destination, tries to move the car to a new random node
 	 * Checks to see if the car has waited at the node long enough before moving it
