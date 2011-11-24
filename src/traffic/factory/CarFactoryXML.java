@@ -37,13 +37,12 @@ public class CarFactoryXML {
 			Element carList = carChild.get(0);
 			List<Element> children = carList.getChildren("car");
 			int size = children.size();
-			int carNum = 0;
 			List<Car> cars = new ArrayList<Car>();
 			for(int i = 0; i < size; i++) {
 				cars.add(new Car(Integer.parseInt(children.get(i).getAttributeValue("start")), 
 						Integer.parseInt(children.get(i).getAttributeValue("end")),
-						children.get(i).getAttributeValue("strategy"), carNum));
-				carNum++;
+						children.get(i).getAttributeValue("strategy"),
+						Integer.parseInt(children.get(i).getAttributeValue("id"))));
 			}
 			return cars;
 		} catch (JDOMException e) {
