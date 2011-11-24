@@ -42,7 +42,11 @@ public class GraphFactoryXML {
 			for(int i = 0; i < nodes; i++) {
 				String s = children.get(i).getAttributeValue("strategy");
 				node.add(Integer.parseInt(children.get(i).getAttributeValue("id")));
-				strategies.add(s);
+				if(s == null) {
+					strategies.add(graphList.getAttributeValue("default_strategy"));
+				} else {
+					strategies.add(s);
+				}
 			}
 			List<Integer> start = new ArrayList<Integer>();
 			List<Integer> end = new ArrayList<Integer>();
