@@ -5,6 +5,7 @@ package traffic.graph;
  * GraphNode represents the nodes that make up the graph
  */
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import traffic.strategy.LinearSpeedStrategy;
@@ -47,11 +48,7 @@ public class GraphNode {
 	 * Returns all nodes this node has an edge directed towards
 	 */
 	public List<Integer> getNeighbors() {
-		List<Integer> clone = new ArrayList<Integer>(outgoing.size());
-		for(int i: outgoing) {
-			clone.add(i);
-		}
-		return clone;
+		return Collections.unmodifiableList(outgoing);
 	}
 	
 	/**
