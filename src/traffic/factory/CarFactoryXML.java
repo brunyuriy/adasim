@@ -39,10 +39,17 @@ public class CarFactoryXML {
 			int size = children.size();
 			List<Car> cars = new ArrayList<Car>();
 			for(int i = 0; i < size; i++) {
-				cars.add(new Car(Integer.parseInt(children.get(i).getAttributeValue("start")), 
-						Integer.parseInt(children.get(i).getAttributeValue("end")),
-						children.get(i).getAttributeValue("strategy"),
-						Integer.parseInt(children.get(i).getAttributeValue("id"))));
+				String s = carList.getAttributeValue("default_strategy");
+				if(children.get(i).getAttributeValue("strategy") == null) {
+					cars.add(new Car(Integer.parseInt(children.get(i).getAttributeValue("start")), 
+							Integer.parseInt(children.get(i).getAttributeValue("end")),
+							s, Integer.parseInt(children.get(i).getAttributeValue("id"))));
+				} else {
+					cars.add(new Car(Integer.parseInt(children.get(i).getAttributeValue("start")), 
+							Integer.parseInt(children.get(i).getAttributeValue("end")),
+							children.get(i).getAttributeValue("strategy"),
+							Integer.parseInt(children.get(i).getAttributeValue("id"))));
+				}
 			}
 			return cars;
 		} catch (JDOMException e) {
