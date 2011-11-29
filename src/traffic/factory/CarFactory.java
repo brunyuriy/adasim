@@ -36,9 +36,9 @@ public class CarFactory {
 			List<Car> cars = new ArrayList<Car>();
 			for(int i = 0; i < numCars; i++) {
 				String carPosition = input.nextLine();
-				cars.add(new Car(Integer.parseInt(carPosition.substring(0,2)), 
+				/*cars.add(new Car(Integer.parseInt(carPosition.substring(0,2)), 
 						Integer.parseInt(carPosition.substring(3,5)),
-						carPosition.substring(6,7), carNum));
+						carPosition.substring(6,7), carNum));*/
 				carNum++;
 			}
 			return cars;

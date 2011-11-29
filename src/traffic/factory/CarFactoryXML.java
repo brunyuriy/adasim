@@ -9,12 +9,15 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.lang.reflect.*;
 
 import org.apache.log4j.Logger;
 import org.jdom.*;
 import org.jdom.input.SAXBuilder;
 
 import traffic.model.Car;
+import traffic.strategy.CarStrategy;
+import traffic.strategy.DijkstraCarStrategy;
 
 public class CarFactoryXML {
 	
@@ -39,15 +42,16 @@ public class CarFactoryXML {
 			int size = children.size();
 			List<Car> cars = new ArrayList<Car>();
 			for(int i = 0; i < size; i++) {
-				String s = carList.getAttributeValue("default_strategy");
+				Class<?> cls = Class.forName(carList.getAttributeValue("default_strategy"));
+				CarStrategy cs = (CarStrategy) cls.newInstance();
 				if(children.get(i).getAttributeValue("strategy") == null) {
 					cars.add(new Car(Integer.parseInt(children.get(i).getAttributeValue("start")), 
 							Integer.parseInt(children.get(i).getAttributeValue("end")),
-							s, Integer.parseInt(children.get(i).getAttributeValue("id"))));
+							cs, Integer.parseInt(children.get(i).getAttributeValue("id"))));
 				} else {
 					cars.add(new Car(Integer.parseInt(children.get(i).getAttributeValue("start")), 
 							Integer.parseInt(children.get(i).getAttributeValue("end")),
-							children.get(i).getAttributeValue("strategy"),
+							(CarStrategy) Class.forName(children.get(i).getAttributeValue("strategy")).newInstance() ,
 							Integer.parseInt(children.get(i).getAttributeValue("id"))));
 				}
 			}

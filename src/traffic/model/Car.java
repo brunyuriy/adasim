@@ -23,23 +23,7 @@ public class Car {
 	
 	private static Logger logger = Logger.getLogger(Car.class);
 	
-	/**
-	 * @param start
-	 * @param end
-	 * @param strat
-	 * @param num
-	 * @deprecated
-	 */
-	public Car(int start, int end, String strat, int num) {
-		info = new CarInfo(start, end, num);
-		if(strat.equals("D")) {
-			cs = new DijkstraCarStrategy();
-		} else {
-			cs = new RandomCarStrategy();
-		}
-	}
-	
-	public Car(int start, int end, CarStrategy strat, int num) {
+	public Car(int start, int end, CarStrategy strat, int num) throws InstantiationException, IllegalAccessException {
 		info = new CarInfo(start, end, num);
 		cs = strat;
 	}
