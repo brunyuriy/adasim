@@ -44,7 +44,8 @@ public class GraphFactory {
 				start.add(Integer.parseInt(edge.substring(0,1)));
 				end.add(Integer.parseInt(edge.substring(2,3)));
 			}
-			return new Graph(node, strategies, start, end);
+			//return new Graph(node, strategies, start, end);
+			return null;
 		} catch (FileNotFoundException fe) {
 			logger.error("Configuration file not found");
 			throw new IllegalArgumentException("Cannot find file");
