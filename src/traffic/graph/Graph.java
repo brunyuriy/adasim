@@ -8,12 +8,14 @@ package traffic.graph;
 import java.util.ArrayList;
 import java.util.List;
 
+import traffic.strategy.SpeedStrategy;
+
 public class Graph {
 	
 	private List<GraphNode> nodes; //The nodes within the graph
 	private int numNodes; //The number of nodes in the graph
 	
-	public Graph(List<Integer> node, List<String> strategies, 
+	public Graph(List<Integer> node, List<SpeedStrategy> strategies, 
 			     List<Integer> startNodes, List<Integer> endNodes) {
 		nodes = new ArrayList<GraphNode>();
 		numNodes = 0;
@@ -28,7 +30,7 @@ public class Graph {
 	/**
 	 * Adds a new node to the graph and increases the tracker for the number of nodes by one
 	 */
-	public void addNode(int num, String speed) {
+	public void addNode(int num, SpeedStrategy speed) {
 		nodes.add(new GraphNode(num, speed));
 		numNodes++;
 	}

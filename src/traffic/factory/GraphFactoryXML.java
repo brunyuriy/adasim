@@ -16,6 +16,7 @@ import org.jdom.input.SAXBuilder;
 
 import traffic.graph.Graph;
 import traffic.model.Car;
+import traffic.strategy.SpeedStrategy;
 
 public class GraphFactoryXML {
 	
@@ -38,14 +39,15 @@ public class GraphFactoryXML {
 			List<Element> children = graphList.getChildren("node");
 			int nodes = children.size();
 			List<Integer> node = new ArrayList<Integer>();
-			List<String> strategies = new ArrayList<String>();
+			List<SpeedStrategy> strategies = new ArrayList<SpeedStrategy>();
 			for(int i = 0; i < nodes; i++) {
-				String s = children.get(i).getAttributeValue("strategy");
+				Class<?> cls = Class.forName(graphList.getAttributeValue("default_strategy"));
+				SpeedStrategy ss = (SpeedStrategy) cls.newInstance();
 				node.add(Integer.parseInt(children.get(i).getAttributeValue("id")));
-				if(s == null) {
-					strategies.add(graphList.getAttributeValue("default_strategy"));
+				if(children.get(i).getAttributeValue("strategy") == null) {
+					strategies.add(ss);
 				} else {
-					strategies.add(s);
+					strategies.add((SpeedStrategy) Class.forName(children.get(i).getAttributeValue("strategy")).newInstance());
 				}
 			}
 			List<Integer> start = new ArrayList<Integer>();

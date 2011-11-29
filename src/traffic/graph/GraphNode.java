@@ -22,17 +22,11 @@ public class GraphNode {
 	private SpeedStrategy ss; //The strategy by which the speed changes
 	private int delay; //The time a car must wait at this node
 	
-	public GraphNode(int n, String s) {
+	public GraphNode(int n, SpeedStrategy s) {
 		nodeNum = n;
 		outgoing = new ArrayList<Integer>();
 		cars = new ArrayList<Integer>();
-		if(s.equals("R")) {
-			ss = new RandomSpeedStrategy();
-		} else if(s.equals("Q")) {
-			ss = new QuadraticSpeedStrategy();
-		} else {
-			ss = new LinearSpeedStrategy();
-		}
+		ss = s;
 		delay = ss.getDelay(cars.size());
 	}
 	
