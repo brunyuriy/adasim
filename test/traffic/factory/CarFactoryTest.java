@@ -7,6 +7,7 @@ import java.util.List;
 import org.junit.Test;
 
 import traffic.model.Car;
+import traffic.strategy.DijkstraCarStrategy;
 
 
 
@@ -41,5 +42,31 @@ public class CarFactoryTest {
 		assertEquals(cars.get(3).getCarNumber(), 3);
 		assertEquals(cars.get(4).getCarNumber(), 4);
 	}
+	
+	@Test
+	public void invalidStrategyDefaultsCorrectly() {
+		List<Car> cars = CarFactoryXML.loadCar("invalid-strategy.xml");
+		assertEquals( DijkstraCarStrategy.class, cars.get(1).getStrategy().getClass() );
+	}
+	
+	@Test
+	public void noCarThrows() {
+		CarFactoryXML.loadCar("no-car.xml");
+		fail( "This should throw a meaningful exception to be handled by main()" );
+	}
 
+	@Test
+	public void noCarsThrows() {
+		CarFactoryXML.loadCar("no-car.xml");
+		fail( "This should throw a meaningful exception to be handled by main()" );
+	}
+	
+	@Test
+	public void invalidStartEndIsIgnored() {
+		List<Car> cars = CarFactoryXML.loadCar("invalid-start.xml");
+		assertEquals( 3, cars.size() );
+		assertEquals( 0, cars.get(0).getCarNumber() );
+		assertEquals( 3, cars.get(1).getCarNumber() );
+		assertEquals( 4, cars.get(2).getCarNumber() );
+	}
 }
