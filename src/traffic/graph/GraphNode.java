@@ -77,4 +77,14 @@ public class GraphNode {
 		return cars.size();
 	}
 
+	public int getID() {
+		return nodeNum;
+	}
+
+	/**
+	 * @return the ss
+	 */
+	public SpeedStrategy getSpeedStrategy() {
+		return ss;
+	}
 }

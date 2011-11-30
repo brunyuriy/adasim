@@ -100,4 +100,11 @@ public class Car {
 	public boolean checkFinish() {
 		return info.atDestination();
 	}
+
+	/**
+	 * @return the cs
+	 */
+	public CarStrategy getStrategy() {
+		return cs;
+	}
 }

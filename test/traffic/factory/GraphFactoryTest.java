@@ -7,7 +7,9 @@ import java.util.List;
 import org.junit.Test;
 
 import traffic.graph.Graph;
-import traffic.graph.GraphNode;
+import traffic.model.Car;
+import traffic.strategy.DijkstraCarStrategy;
+import traffic.strategy.QuadraticSpeedStrategy;
 
 public class GraphFactoryTest {
 	
@@ -45,6 +47,38 @@ public class GraphFactoryTest {
 		assertEquals(second, 7);
 		int third = neighbors.get(2);
 		assertEquals(third, 9);
+	}
+	
+	@Test
+	public void emptyNeighborListDoesNotCrash() {
+		Graph g = GraphFactoryXML.loadGraph("unconnected-node.xml");
+		//this test passes if no exception is thrown
+	}
+	
+	@Test
+	public void noNodesThrows() {
+		GraphFactoryXML.loadGraph("no-nodes.xml");
+		fail( "This should throw a meaningful exception to be handled by main()" );
+	}
+
+	@Test
+	public void noGraphThrows() {
+		GraphFactoryXML.loadGraph("no-graph.xml");
+		fail( "This should throw a meaningful exception to be handled by main()" );
+	}
+	
+	@Test
+	public void invalidNeighborIsIgnored() {
+		Graph g = GraphFactoryXML.loadGraph("invalid-neighbor.xml");
+		List<Integer> neighbors = g.getNeighbors( 0 ); 
+		assertEquals(1, neighbors.size() );
+		assertEquals(4, (int)neighbors.get(0) );
+	}
+	
+	@Test
+	public void invalidStrategyDefaultsCorrectly() {
+		Graph g = GraphFactoryXML.loadGraph("invalid-strategy2.xml");
+		assertEquals( QuadraticSpeedStrategy.class, g.getNodes().get(1).getSpeedStrategy().getClass() );
 	}
 
 }
