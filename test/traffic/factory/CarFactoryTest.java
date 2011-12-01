@@ -15,17 +15,17 @@ public class CarFactoryTest {
 		
 	@Test (expected=IllegalArgumentException.class)
 	public void testFileNotFound() {
-		CarFactoryXML.loadCar("badfile");
+		CarFactory.loadCar("badfile");
 	}
 	
 	@Test
 	public void testBadConfig() {
-		assertEquals(CarFactoryXML.loadCar("badconfig.xml"), null);
+		assertEquals(CarFactory.loadCar("badconfig.xml"), null);
 	}
 	
 	@Test
 	public void testStart() {
-		List<Car> cars = CarFactoryXML.loadCar("config.xml");
+		List<Car> cars = CarFactory.loadCar("config.xml");
 		assertEquals(cars.get(0).getCurrent(), 0);
 		assertEquals(cars.get(1).getCurrent(), 4);
 		assertEquals(cars.get(2).getCurrent(), 3);
@@ -35,7 +35,7 @@ public class CarFactoryTest {
 	
 	@Test
 	public void testCarNum() {
-		List<Car> cars = CarFactoryXML.loadCar("config.xml");
+		List<Car> cars = CarFactory.loadCar("config.xml");
 		assertEquals(cars.get(0).getCarNumber(), 0);
 		assertEquals(cars.get(1).getCarNumber(), 1);
 		assertEquals(cars.get(2).getCarNumber(), 2);
@@ -45,25 +45,25 @@ public class CarFactoryTest {
 	
 	@Test
 	public void invalidStrategyDefaultsCorrectly() {
-		List<Car> cars = CarFactoryXML.loadCar("invalid-strategy.xml");
+		List<Car> cars = CarFactory.loadCar("invalid-strategy.xml");
 		assertEquals( DijkstraCarStrategy.class, cars.get(1).getStrategy().getClass() );
 	}
 	
 	@Test
 	public void noCarThrows() {
-		CarFactoryXML.loadCar("no-car.xml");
+		CarFactory.loadCar("no-car.xml");
 		fail( "This should throw a meaningful exception to be handled by main()" );
 	}
 
 	@Test
 	public void noCarsThrows() {
-		CarFactoryXML.loadCar("no-car.xml");
+		CarFactory.loadCar("no-car.xml");
 		fail( "This should throw a meaningful exception to be handled by main()" );
 	}
 	
 	@Test
 	public void invalidStartEndIsIgnored() {
-		List<Car> cars = CarFactoryXML.loadCar("invalid-start.xml");
+		List<Car> cars = CarFactory.loadCar("invalid-start.xml");
 		assertEquals( 3, cars.size() );
 		assertEquals( 0, cars.get(0).getCarNumber() );
 		assertEquals( 3, cars.get(1).getCarNumber() );
