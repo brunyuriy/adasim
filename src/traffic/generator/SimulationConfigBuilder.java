@@ -50,15 +50,24 @@ class SimulationConfigBuilder {
 		Element cars = factory.element( "cars" );
 		cars.setAttribute( "default_strategy", DEFAULT_CAR_STRATEGY);
 		for( int i = 0; i < numCars; i++ ) {
-			Element node = factory.element( "car" );
-			node.setAttribute( "id", "" + i );
-			int s = randomNode();
-			node.setAttribute( "start", "" + s );
-			node.setAttribute( "end", "" + randomNode( s ) );
-			node.setAttribute( "strategy", randomStrategy( strategies ) );
-			cars.addContent(node);
+			cars.addContent( buildCar(strategies, i) );
 		}
 		return cars;
+	}
+
+	/**
+	 * @param strategies
+	 * @param i
+	 * @return
+	 */
+	private Element buildCar(List<Class<CarStrategy>> strategies, int i) {
+		Element car = factory.element( "car" );
+		car.setAttribute( "id", "" + i );
+		int s = randomNode();
+		car.setAttribute( "start", "" + s );
+		car.setAttribute( "end", "" + randomNode( s ) );
+		car.setAttribute( "strategy", randomStrategy( strategies ) );
+		return car;
 	}
 
 	/**
@@ -100,12 +109,20 @@ class SimulationConfigBuilder {
 		Element graph = factory.element( "graph" );
 		graph.setAttribute( "default_strategy", DEFAULT_SPEED_STRATEGY);
 		for( int i = 0; i < numNodes; i++ ) {
-			Element node = factory.element( "node" );
-			node.setAttribute( "id", "" + i );
-			node.setAttribute( "neighbors", randomizeNeighbors() );
-			graph.addContent(node);
+			graph.addContent( buildNode(i) );
 		}
 		return graph;
+	}
+
+	/**
+	 * @param graph
+	 * @param i
+	 */
+	private Element buildNode( int i) {
+		Element node = factory.element( "node" );
+		node.setAttribute( "id", "" + i );
+		node.setAttribute( "neighbors", randomizeNeighbors() );
+		return node;
 	}
 
 	/**
