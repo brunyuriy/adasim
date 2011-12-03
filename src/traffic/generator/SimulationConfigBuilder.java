@@ -21,8 +21,6 @@ import org.jdom.DefaultJDOMFactory;
 import org.jdom.Document;
 import org.jdom.Element;
 
-import traffic.strategy.CarStrategy;
-
 /**
  * @author Jochen Wuttke - wuttkej@gmail.com
  *
@@ -46,7 +44,7 @@ class SimulationConfigBuilder {
 	 * @param strategies
 	 * @return
 	 */
-	Content buildCars(int numCars, List<Class<CarStrategy>> strategies) {
+	Content buildCars(int numCars, List<String> strategies) {
 		Element cars = factory.element( "cars" );
 		cars.setAttribute( "default_strategy", DEFAULT_CAR_STRATEGY);
 		for( int i = 0; i < numCars; i++ ) {
@@ -60,7 +58,7 @@ class SimulationConfigBuilder {
 	 * @param i
 	 * @return
 	 */
-	Element buildCar(List<Class<CarStrategy>> strategies, int i) {
+	Element buildCar(List<String> strategies, int i) {
 		Element car = factory.element( "car" );
 		car.setAttribute( "id", "" + i );
 		int s = randomNode();
@@ -74,7 +72,7 @@ class SimulationConfigBuilder {
 	 * @param strategies
 	 * @return
 	 */
-	private String randomStrategy(List<Class<CarStrategy>> strategies) {
+	private String randomStrategy(List<String> strategies) {
 		return "";
 	}
 
