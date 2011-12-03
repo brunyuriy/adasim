@@ -14,39 +14,20 @@
 
 package traffic.generator;
 
-import java.io.File;
-
+import org.jdom.DefaultJDOMFactory;
 import org.jdom.Document;
+import org.jdom.Element;
 
 /**
  * @author Jochen Wuttke - wuttkej@gmail.com
  *
  */
-public class Generator {
-
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		ConfigurationOptions opts = null;
-		try {
-			opts = ConfigurationOptions.parse(args);
-		} catch (Exception e) {
-			System.err.println( "Erros parsing commandline options: " + e.getMessage() );
-			System.exit( 1 );
-		}
-		
-		writeOutputFile( opts.getOutputFile(), SimulationConfigBuilder.build(opts) );
-		
-	}
-
-	/**
-	 * @param outputFile
-	 * @param build
-	 */
-	private static void writeOutputFile(File outputFile, Document build) {
-		// TODO Auto-generated method stub
-		
+class SimulationConfigBuilder {
+	
+	static Document build( ConfigurationOptions opts ) {
+		DefaultJDOMFactory factory = new DefaultJDOMFactory();
+		Document doc = factory.document( new Element( "simulation" ) );
+		return doc;
 	}
 
 }
