@@ -60,7 +60,7 @@ class SimulationConfigBuilder {
 	 * @param i
 	 * @return
 	 */
-	private Element buildCar(List<Class<CarStrategy>> strategies, int i) {
+	Element buildCar(List<Class<CarStrategy>> strategies, int i) {
 		Element car = factory.element( "car" );
 		car.setAttribute( "id", "" + i );
 		int s = randomNode();
@@ -118,7 +118,7 @@ class SimulationConfigBuilder {
 	 * @param graph
 	 * @param i
 	 */
-	private Element buildNode( int i) {
+	Element buildNode( int i) {
 		Element node = factory.element( "node" );
 		node.setAttribute( "id", "" + i );
 		node.setAttribute( "neighbors", randomizeNeighbors() );
