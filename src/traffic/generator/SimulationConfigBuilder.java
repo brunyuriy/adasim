@@ -14,9 +14,14 @@
 
 package traffic.generator;
 
+import java.util.List;
+
+import org.jdom.Content;
 import org.jdom.DefaultJDOMFactory;
 import org.jdom.Document;
 import org.jdom.Element;
+
+import traffic.strategy.CarStrategy;
 
 /**
  * @author Jochen Wuttke - wuttkej@gmail.com
@@ -24,10 +29,90 @@ import org.jdom.Element;
  */
 class SimulationConfigBuilder {
 	
-	static Document build( ConfigurationOptions opts ) {
-		DefaultJDOMFactory factory = new DefaultJDOMFactory();
-		Document doc = factory.document( new Element( "simulation" ) );
-		return doc;
+	private static final String DEFAULT_SPEED_STRATEGY = "traffic.strategy.LinearSpeedStrategy";
+	private static final String DEFAULT_CAR_STRATEGY = "traffic.strategy.DijkstraCarStrategy";
+	
+	private DefaultJDOMFactory factory = new DefaultJDOMFactory();
+	
+	Document build( ConfigurationOptions opts ) {
+		Element sim = factory.element( "simulation" );
+		factory.addContent(sim, buildGraph( opts.getNumNodes(), opts.getNodeDelay(), opts.getDegreeProb() ) );
+		factory.addContent(sim, buildCars( opts.getNumCars(), opts.getStrategies() ) );
+		return factory.document( sim );
+	}
+
+	/**
+	 * @param numCars
+	 * @param strategies
+	 * @return
+	 */
+	Content buildCars(int numCars, List<Class<CarStrategy>> strategies) {
+		Element cars = factory.element( "cars" );
+		cars.setAttribute( "default_strategy", DEFAULT_CAR_STRATEGY);
+		for( int i = 0; i < numCars; i++ ) {
+			Element node = factory.element( "car" );
+			node.setAttribute( "id", "" + i );
+			int s = randomNode();
+			node.setAttribute( "start", "" + s );
+			node.setAttribute( "end", "" + randomNode( s ) );
+			node.setAttribute( "strategy", randomStrategy( strategies ) );
+			cars.addContent(node);
+		}
+		return cars;
+	}
+
+	/**
+	 * @param strategies
+	 * @return
+	 */
+	private String randomStrategy(List<Class<CarStrategy>> strategies) {
+		return "";
+	}
+
+	/**
+	 * @param s
+	 * @return
+	 */
+	private int randomNode(int s) {
+		//TODO: this can cause an infinite loop if there is only one node in the system!!!!!
+		int n;
+		do {
+			n = randomNode();
+		} while ( n == s );
+		return n;
+	}
+
+	/**
+	 * @return
+	 */
+	private int randomNode() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	/**
+	 * @param numNodes
+	 * @param nodeDelay
+	 * @param degreeProb
+	 * @return
+	 */
+	Content buildGraph(int numNodes, int[] nodeDelay, double degreeProb) {
+		Element graph = factory.element( "graph" );
+		graph.setAttribute( "default_strategy", DEFAULT_SPEED_STRATEGY);
+		for( int i = 0; i < numNodes; i++ ) {
+			Element node = factory.element( "node" );
+			node.setAttribute( "id", "" + i );
+			node.setAttribute( "neighbors", randomizeNeighbors() );
+			graph.addContent(node);
+		}
+		return graph;
+	}
+
+	/**
+	 * @return
+	 */
+	private String randomizeNeighbors() {
+		return "";
 	}
 
 }
