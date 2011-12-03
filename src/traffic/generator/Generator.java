@@ -36,7 +36,7 @@ public class Generator {
 			System.exit( 1 );
 		}
 		
-		writeOutputFile( opts.getOutputFile(), SimulationConfigBuilder.build(opts) );
+		writeOutputFile( opts.getOutputFile(), new SimulationConfigBuilder().build(opts) );
 		
 	}
 
