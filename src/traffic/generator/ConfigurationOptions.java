@@ -34,7 +34,7 @@ final class ConfigurationOptions {
 	private int numCars = 0;
 	private double degreeProb = 0.0;
 	private int[] nodeDelay = { 0, 0 };
-	private List<Class<CarStrategy>> strategies = new ArrayList<Class<CarStrategy>>();
+	private List<String> strategies = new ArrayList<String>();
 	private File outputFile = new File( "generated-config.xml" );
 	
 	static ConfigurationOptions parse( String[] args ) throws Exception {
@@ -74,13 +74,7 @@ final class ConfigurationOptions {
 		if ( opts.has( "S") ) {
 			String[] ss = opts.valueOf("S").toString().split( ",");
 			for ( String s : ss ) {
-				try {
-					@SuppressWarnings("unchecked")
-					Class<CarStrategy> cls = (Class<CarStrategy>) Class.forName( s );
-					cfg.strategies.add( cls );
-				} catch ( ClassNotFoundException e ) {
-					throw new Exception( "Car strategy " + e.getMessage() + " not found." );
-				}
+				cfg.strategies.add( s );
 			}
 		} else throw new Exception( "Argument --car-strategies is required" );
 	}
@@ -142,7 +136,7 @@ final class ConfigurationOptions {
 	/**
 	 * @return the strategies
 	 */
-	List<Class<CarStrategy>> getStrategies() {
+	List<String> getStrategies() {
 		return strategies;
 	}
 
