@@ -24,8 +24,13 @@ public class Generator {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+		ConfigurationOptions opts = null;
+		try {
+			opts = ConfigurationOptions.parse(args);
+		} catch (Exception e) {
+			System.err.println( "Erros parsing commandline options: " + e.getMessage() );
+			System.exit( 1 );
+		}
 	}
 
 }
