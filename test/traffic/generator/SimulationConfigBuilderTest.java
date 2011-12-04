@@ -16,6 +16,7 @@ package traffic.generator;
 
 import java.util.Arrays;
 
+import org.jdom.DataConversionException;
 import org.jdom.Element;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -29,10 +30,14 @@ public class SimulationConfigBuilderTest {
 	private SimulationConfigBuilder builder = new SimulationConfigBuilder( 42 ); //we need to provide the random see to be able to reproduce tests
 	
 	@Test
-	public void buildCar() {
+	public void buildCar() throws DataConversionException {
 		Element car = builder.buildCar( Arrays.asList( "traffic.strategy.LookaheadDijkstraCarStrategy" ), 42, 56 );
 		assertEquals( "Returned wrong node type", "car", car.getName() );
 		assertEquals( "Returned wrong node id", "42", car.getAttribute( "id" ).getValue() );
 		assertEquals("Returned wrong car strategy", "traffic.strategy.LookaheadDijkstraCarStrategy" , car.getAttribute( "strategy" ).getValue() );
+		int start = car.getAttribute( "start").getIntValue();
+		assertTrue( "Start node is not in valid range", start >=0 && start < 56 );
+		int end = car.getAttribute( "end").getIntValue();
+		assertTrue( "End node is not in valid range", end >=0 && end < 56 && start != end );
 	}
 }
