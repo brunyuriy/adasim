@@ -20,7 +20,7 @@ public class CarFactoryTest {
 	
 	@Test
 	public void testBadConfig() {
-		assertEquals(CarFactory.loadCar("badconfig.xml"), null);
+		assertEquals(CarFactory.loadCar("resources/test/badconfig.xml"), null);
 	}
 	
 	@Test
@@ -45,25 +45,25 @@ public class CarFactoryTest {
 	
 	@Test
 	public void invalidStrategyDefaultsCorrectly() {
-		List<Car> cars = CarFactory.loadCar("invalid-strategy.xml");
+		List<Car> cars = CarFactory.loadCar("resources/test/invalid-strategy.xml");
 		assertEquals( DijkstraCarStrategy.class, cars.get(1).getStrategy().getClass() );
 	}
 	
 	@Test
 	public void noCarThrows() {
-		CarFactory.loadCar("no-car.xml");
+		CarFactory.loadCar("resources/test/no-car.xml");
 		fail( "This should throw a meaningful exception to be handled by main()" );
 	}
 
 	@Test
 	public void noCarsThrows() {
-		CarFactory.loadCar("no-car.xml");
+		CarFactory.loadCar("resources/test/no-car.xml");
 		fail( "This should throw a meaningful exception to be handled by main()" );
 	}
 	
 	@Test
 	public void invalidStartEndIsIgnored() {
-		List<Car> cars = CarFactory.loadCar("invalid-start.xml");
+		List<Car> cars = CarFactory.loadCar("resources/test/invalid-start.xml");
 		assertEquals( 3, cars.size() );
 		assertEquals( 0, cars.get(0).getCarNumber() );
 		assertEquals( 3, cars.get(1).getCarNumber() );
