@@ -15,8 +15,13 @@
 package traffic.generator;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 import org.jdom.Document;
+import org.jdom.output.Format;
+import org.jdom.output.XMLOutputter;
 
 /**
  * @author Jochen Wuttke - wuttkej@gmail.com
@@ -36,17 +41,27 @@ public class Generator {
 			System.exit( 1 );
 		}
 		
-		writeOutputFile( opts.getOutputFile(), new SimulationConfigBuilder().build(opts) );
+		try {
+			writeOutputFile( opts.getOutputFile(), new SimulationConfigBuilder().build(opts) );
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 
 	/**
 	 * @param outputFile
 	 * @param build
+	 * @throws IOException 
 	 */
-	private static void writeOutputFile(File outputFile, Document build) {
-		// TODO Auto-generated method stub
-		
+	private static void writeOutputFile(File outputFile, Document build) throws IOException {
+		FileOutputStream out = new FileOutputStream( outputFile );
+		XMLOutputter p = new XMLOutputter( Format.getPrettyFormat() );
+		p.output(build, out);
+		out.close();
 	}
 
 }
