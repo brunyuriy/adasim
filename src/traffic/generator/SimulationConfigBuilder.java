@@ -85,7 +85,7 @@ class SimulationConfigBuilder {
 	 * @return
 	 */
 	private String randomStrategy(List<String> strategies) {
-		return "";
+		return strategies.get( random.nextInt( strategies.size() ) );
 	}
 
 	/**
