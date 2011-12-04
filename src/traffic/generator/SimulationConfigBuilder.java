@@ -15,6 +15,7 @@
 package traffic.generator;
 
 import java.util.List;
+import java.util.Random;
 
 import org.jdom.Content;
 import org.jdom.DefaultJDOMFactory;
@@ -31,24 +32,34 @@ class SimulationConfigBuilder {
 	private static final String DEFAULT_CAR_STRATEGY = "traffic.strategy.DijkstraCarStrategy";
 	
 	private DefaultJDOMFactory factory = new DefaultJDOMFactory();
+	private Random random;
+	
+	SimulationConfigBuilder() {
+		random = new Random();
+	}
+	
+	SimulationConfigBuilder( long seed ) {
+		random = new Random( seed );
+	}
 	
 	Document build( ConfigurationOptions opts ) {
 		Element sim = factory.element( "simulation" );
 		factory.addContent(sim, buildGraph( opts.getNumNodes(), opts.getNodeDelay(), opts.getDegreeProb() ) );
-		factory.addContent(sim, buildCars( opts.getNumCars(), opts.getStrategies() ) );
+		factory.addContent(sim, buildCars( opts.getNumCars(), opts.getStrategies(), opts.getNumNodes() ) );
 		return factory.document( sim );
 	}
-
+	
 	/**
 	 * @param numCars
 	 * @param strategies
+	 * @param numNodes TODO
 	 * @return
 	 */
-	Content buildCars(int numCars, List<String> strategies) {
+	Content buildCars(int numCars, List<String> strategies, int numNodes) {
 		Element cars = factory.element( "cars" );
 		cars.setAttribute( "default_strategy", DEFAULT_CAR_STRATEGY);
 		for( int i = 0; i < numCars; i++ ) {
-			cars.addContent( buildCar(strategies, i) );
+			cars.addContent( buildCar(strategies, i, numNodes) );
 		}
 		return cars;
 	}
@@ -56,14 +67,15 @@ class SimulationConfigBuilder {
 	/**
 	 * @param strategies
 	 * @param i
+	 * @param numNodes TODO
 	 * @return
 	 */
-	Element buildCar(List<String> strategies, int i) {
+	Element buildCar(List<String> strategies, int i, int numNodes) {
 		Element car = factory.element( "car" );
 		car.setAttribute( "id", "" + i );
-		int s = randomNode();
+		int s = randomNode( numNodes );
 		car.setAttribute( "start", "" + s );
-		car.setAttribute( "end", "" + randomNode( s ) );
+		car.setAttribute( "end", "" + randomNode( s, numNodes ) );
 		car.setAttribute( "strategy", randomStrategy( strategies ) );
 		return car;
 	}
@@ -80,11 +92,11 @@ class SimulationConfigBuilder {
 	 * @param s
 	 * @return
 	 */
-	private int randomNode(int s) {
+	private int randomNode(int s, int maxValue) {
 		//TODO: this can cause an infinite loop if there is only one node in the system!!!!!
 		int n;
 		do {
-			n = randomNode();
+			n = randomNode( maxValue );
 		} while ( n == s );
 		return n;
 	}
@@ -92,9 +104,8 @@ class SimulationConfigBuilder {
 	/**
 	 * @return
 	 */
-	private int randomNode() {
-		// TODO Auto-generated method stub
-		return 0;
+	private int randomNode( int maxValue) {
+		return random.nextInt(maxValue);
 	}
 
 	/**
