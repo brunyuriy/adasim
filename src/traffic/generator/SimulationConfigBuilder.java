@@ -118,27 +118,37 @@ class SimulationConfigBuilder {
 		Element graph = factory.element( "graph" );
 		graph.setAttribute( "default_strategy", DEFAULT_SPEED_STRATEGY);
 		for( int i = 0; i < numNodes; i++ ) {
-			graph.addContent( buildNode(i) );
+			graph.addContent( buildNode(i, numNodes, degreeProb) );
 		}
 		return graph;
 	}
 
 	/**
-	 * @param graph
 	 * @param i
+	 * @param numNodes TODO
+	 * @param degreeProb TODO
+	 * @param graph
 	 */
-	Element buildNode( int i) {
+	Element buildNode( int i, int numNodes, double degreeProb) {
 		Element node = factory.element( "node" );
 		node.setAttribute( "id", "" + i );
-		node.setAttribute( "neighbors", randomizeNeighbors() );
+		node.setAttribute( "neighbors", randomizeNeighbors(i, numNodes, degreeProb ) );
 		return node;
 	}
 
 	/**
 	 * @return
 	 */
-	private String randomizeNeighbors() {
-		return "";
+	private String randomizeNeighbors( int i, int numNodes, double degreeProb ) {
+		StringBuffer n = new StringBuffer();
+		for ( int node = 0; node < numNodes; node++ ) {
+			if ( node == i ) continue;  //no self-loops
+			if ( random.nextDouble() < degreeProb ) {
+				n.append(node);
+				n.append( ' ' );
+			}
+		}
+		return n.toString();
 	}
 
 }

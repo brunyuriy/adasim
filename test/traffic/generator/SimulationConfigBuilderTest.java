@@ -40,4 +40,12 @@ public class SimulationConfigBuilderTest {
 		int end = car.getAttribute( "end").getIntValue();
 		assertTrue( "End node is not in valid range", end >=0 && end < 56 && start != end );
 	}
+	
+	@Test
+	public void buildNode() {
+		Element node = builder.buildNode( 12, 20, 0.2 );
+		assertEquals( "Returned wrong node type", "node", node.getName() );
+		assertEquals( "Returned wrong node id", "12", node.getAttribute( "id" ).getValue() );
+		//TODO: check the neighbors
+	}
 }
