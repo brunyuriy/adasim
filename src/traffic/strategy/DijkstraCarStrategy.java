@@ -19,7 +19,7 @@ public class DijkstraCarStrategy implements CarStrategy {
 	 * Uses Dijkstra's algorithm to find the shortest path from one node to the end
 	 * Returns a list corresponding to the path for the car to take
 	 */
-	public List<Integer> getPath(Graph g, int c, int d) {
+	public List<Integer> getPath(Graph g, int currentNode, int destNode ) {
 		int [] dist = new int [g.getNumNodes()];
 		int [] prev = new int [g.getNumNodes()];
 		boolean [] visited = new boolean [g.getNumNodes()];
@@ -27,11 +27,11 @@ public class DijkstraCarStrategy implements CarStrategy {
 			dist[i] = Integer.MAX_VALUE;
 			prev[i] = Integer.MAX_VALUE;
 		}
-		dist[c] = 0;
+		dist[currentNode] = 0;
 		for (int i=0; i<dist.length; i++) {
 			int next = minVertex(dist, visited);
 			visited[next] = true;
-			if(next == d) {
+			if(next == destNode) {
 				List<Integer> path = new ArrayList<Integer>();
 				while(next != Integer.MAX_VALUE) {
 					path.add(0, next);
