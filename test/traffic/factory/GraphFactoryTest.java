@@ -16,17 +16,17 @@ public class GraphFactoryTest {
 	@Test (expected=IllegalArgumentException.class)
 	public void testFileNotFound() {
 		//Tests for proper exception thrown when file is not found
-		GraphFactoryXML.loadGraph("notfound");
+		GraphFactory.loadGraph("notfound");
 	}
 	
 	@Test
 	public void testJDOMException() {
-		assertEquals(GraphFactoryXML.loadGraph("badconfig.xml"), null);
+		assertEquals(GraphFactory.loadGraph("badconfig.xml"), null);
 	}
 	
 	@Test
 	public void testStrategies() {
-		Graph g = GraphFactoryXML.loadGraph("config.xml");
+		Graph g = GraphFactory.loadGraph("config.xml");
 		assertEquals(g.getDelayAtNode(6), 0);
 		g.addCarAtNode(0, 6);
 		g.addCarAtNode(1, 6);
@@ -39,7 +39,7 @@ public class GraphFactoryTest {
 	
 	@Test
 	public void testNeighbors() {
-		Graph g = GraphFactoryXML.loadGraph("config.xml");
+		Graph g = GraphFactory.loadGraph("config.xml");
 		List<Integer> neighbors = g.getNodes().get(2).getNeighbors();
 		int first = neighbors.get(0);
 		assertEquals(first, 4);
@@ -51,25 +51,25 @@ public class GraphFactoryTest {
 	
 	@Test
 	public void emptyNeighborListDoesNotCrash() {
-		Graph g = GraphFactoryXML.loadGraph("unconnected-node.xml");
+		Graph g = GraphFactory.loadGraph("unconnected-node.xml");
 		//this test passes if no exception is thrown
 	}
 	
 	@Test
 	public void noNodesThrows() {
-		GraphFactoryXML.loadGraph("no-nodes.xml");
+		GraphFactory.loadGraph("no-nodes.xml");
 		fail( "This should throw a meaningful exception to be handled by main()" );
 	}
 
 	@Test
 	public void noGraphThrows() {
-		GraphFactoryXML.loadGraph("no-graph.xml");
+		GraphFactory.loadGraph("no-graph.xml");
 		fail( "This should throw a meaningful exception to be handled by main()" );
 	}
 	
 	@Test
 	public void invalidNeighborIsIgnored() {
-		Graph g = GraphFactoryXML.loadGraph("invalid-neighbor.xml");
+		Graph g = GraphFactory.loadGraph("invalid-neighbor.xml");
 		List<Integer> neighbors = g.getNeighbors( 0 ); 
 		assertEquals(1, neighbors.size() );
 		assertEquals(4, (int)neighbors.get(0) );
@@ -77,7 +77,7 @@ public class GraphFactoryTest {
 	
 	@Test
 	public void invalidStrategyDefaultsCorrectly() {
-		Graph g = GraphFactoryXML.loadGraph("invalid-strategy2.xml");
+		Graph g = GraphFactory.loadGraph("invalid-strategy2.xml");
 		assertEquals( QuadraticSpeedStrategy.class, g.getNodes().get(1).getSpeedStrategy().getClass() );
 	}
 
