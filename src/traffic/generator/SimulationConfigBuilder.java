@@ -148,7 +148,7 @@ class SimulationConfigBuilder {
 				n.append( ' ' );
 			}
 		}
-		return n.toString();
+		return n.toString().trim();
 	}
 
 }
