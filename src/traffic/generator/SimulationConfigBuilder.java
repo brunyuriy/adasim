@@ -132,7 +132,11 @@ class SimulationConfigBuilder {
 	Element buildNode( int i, int numNodes, double degreeProb) {
 		Element node = factory.element( "node" );
 		node.setAttribute( "id", "" + i );
-		node.setAttribute( "neighbors", randomizeNeighbors(i, numNodes, degreeProb ) );
+		String neighbors;
+		do {
+			neighbors = randomizeNeighbors(i, numNodes, degreeProb );
+		} while (neighbors.length() == 0 );
+		node.setAttribute( "neighbors", neighbors );
 		return node;
 	}
 
