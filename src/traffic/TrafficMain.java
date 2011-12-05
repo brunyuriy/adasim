@@ -18,8 +18,18 @@ public class TrafficMain {
 	
 	public static void main(String[] args) {
 		BasicConfigurator.configure();
+		ConfigurationOptions opts = null;
+		try {
+			opts = ConfigurationOptions.parse(args);
+		} catch (Exception e) {
+			logger.error( "Parsing commandline arguments: " + e.getMessage() );
+			System.exit(1);
+		}
+		
+		assert opts != null;
+		
 		logger.info("Starting Simulation");
-		tsim = TrafficSimulator.getInstance(args[0]); //args[0] = config
+		tsim = TrafficSimulator.getInstance(opts.getInputFile()); //args[0] = config
 		boolean done = false;
 		while(!done) {
 			done = tsim.takeSimulationStep();
