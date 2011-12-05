@@ -19,8 +19,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import traffic.strategy.CarStrategy;
-
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 
