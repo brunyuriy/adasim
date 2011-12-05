@@ -53,10 +53,9 @@ public class GraphFactory {
 			List<Integer> start = new ArrayList<Integer>();
 			List<Integer> end = new ArrayList<Integer>();
 			for(int i = 0; i < nodes; i++) {
-				String neighbors = children.get(i).getAttributeValue("neighbors");
-				for(int j = 0; j < neighbors.length(); j+=2) {
-					start.add(i);
-					end.add(Integer.parseInt(neighbors.substring(j, j+1)));
+				String[] neighbors = children.get(i).getAttributeValue("neighbors").split(" ");
+				for ( String n : neighbors ) {
+					end.add(Integer.parseInt(n));					
 				}
 			}
 			return new Graph(node, strategies, start, end);
