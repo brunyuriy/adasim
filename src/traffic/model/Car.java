@@ -13,8 +13,6 @@ import org.apache.log4j.Logger;
 
 import traffic.graph.Graph;
 import traffic.strategy.CarStrategy;
-import traffic.strategy.DijkstraCarStrategy;
-import traffic.strategy.RandomCarStrategy;
 
 public class Car {
 	

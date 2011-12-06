@@ -8,9 +8,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import traffic.strategy.LinearSpeedStrategy;
-import traffic.strategy.QuadraticSpeedStrategy;
-import traffic.strategy.RandomSpeedStrategy;
 import traffic.strategy.SpeedStrategy;
 
 
