@@ -58,7 +58,7 @@ final public class SimulationFactory {
 		return null;
 	}
 
-	public static TrafficSimulator buildSimulator( File config ) throws FileNotFoundException {
+	public static TrafficSimulator buildSimulator( File config ) throws FileNotFoundException, ConfigurationException {
 		try {
 			SimulationFactory factory = new SimulationFactory(config);
 			TrafficSimulator sim = new TrafficSimulator( factory.buildGraph(), factory.buildCars() );
@@ -71,6 +71,9 @@ final public class SimulationFactory {
 			buildError( e );
 		} catch ( IllegalArgumentException e ) {
 			buildError( e );
+		} catch ( ConfigurationException e ) {
+			buildError(e);
+			throw e;
 		}
 		return null;
 	}
@@ -171,17 +174,19 @@ final public class SimulationFactory {
 
 	/**
 	 * @return
+	 * @throws ConfigurationException 
 	 */
-	private List<Car> buildCars() {
+	private List<Car> buildCars() throws ConfigurationException {
 		try {
 			Element root = doc.getRootElement();
-			List<Element> carChild = root.getChildren("cars");
-			Element carList = carChild.get(0);
-			List<Element> children = carList.getChildren("car");
+			Element carChild = root.getChild("cars");
+			if ( carChild == null ) throw new ConfigurationException( "No <cars> declaration found." );
+			//Element carList = carChild.get(0);
+			List<Element> children = carChild.getChildren("car");
 			int size = children.size();
 			List<Car> cars = new ArrayList<Car>();
 			for(int i = 0; i < size; i++) {
-				Class<?> cls = Class.forName(carList.getAttributeValue("default_strategy"));
+				Class<?> cls = Class.forName(carChild.getAttributeValue("default_strategy"));
 				CarStrategy cs = (CarStrategy) cls.newInstance();
 				if(children.get(i).getAttributeValue("strategy") == null) {
 					cars.add(new Car(Integer.parseInt(children.get(i).getAttributeValue("start")), 
@@ -195,10 +200,11 @@ final public class SimulationFactory {
 				}
 			}
 			return cars;
+		} catch (ConfigurationException e ) {
+			throw e;
 		} catch (Exception e) {
 			logger.error("Bad config file");
 			return null;
 		}	
 	}
-
 }

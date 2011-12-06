@@ -36,17 +36,17 @@ import traffic.strategy.QuadraticSpeedStrategy;
  */
 public class SimulationFactoryTest {
 	@Test (expected=FileNotFoundException.class)
-	public void testFileNotFound() throws JDOMException, IOException {
+	public void testFileNotFound() throws JDOMException, IOException, ConfigurationException {
 		SimulationFactory.buildSimulator( new File("bad config") );
 	}
 	
 	@Test
-	public void testBadConfig() throws JDOMException, IOException {
+	public void testBadConfig() throws JDOMException, IOException, ConfigurationException {
 		assertEquals(SimulationFactory.buildSimulator( new File("resources/test/badconfig.xml") ), null);
 	}
 	
 	@Test
-	public void testStart() throws JDOMException, IOException {
+	public void testStart() throws JDOMException, IOException, ConfigurationException {
 		List<Car> cars = SimulationFactory.buildSimulator( new File("config.xml" )).getCars();
 		assertEquals(cars.get(0).getCurrent(), 0);
 		assertEquals(cars.get(1).getCurrent(), 4);
@@ -56,7 +56,7 @@ public class SimulationFactoryTest {
 	}
 	
 	@Test
-	public void testCarNum() throws JDOMException, IOException {
+	public void testCarNum() throws JDOMException, IOException, ConfigurationException {
 		List<Car> cars = SimulationFactory.buildSimulator( new File("config.xml" )).getCars();
 		assertEquals(cars.get(0).getCarNumber(), 0);
 		assertEquals(cars.get(1).getCarNumber(), 1);
@@ -66,25 +66,25 @@ public class SimulationFactoryTest {
 	}
 	
 	@Test
-	public void invalidCarStrategyDefaultsCorrectly() throws JDOMException, IOException {
+	public void invalidCarStrategyDefaultsCorrectly() throws JDOMException, IOException, ConfigurationException {
 		List<Car> cars = SimulationFactory.buildSimulator( new File("resources/test/invalid-strategy.xml" )).getCars();
 		assertEquals( DijkstraCarStrategy.class, cars.get(1).getStrategy().getClass() );
 	}
 	
-	@Test
-	public void noCarThrows() throws JDOMException, IOException {
+	@Test(expected=ConfigurationException.class)
+	public void noCarThrows() throws JDOMException, IOException, ConfigurationException {
 		List<Car> cars = SimulationFactory.buildSimulator( new File("resources/test/no-car.xml" )).getCars();
 		fail( "This should throw a meaningful exception to be handled by main()" );
 	}
 
-	@Test
-	public void noCarsThrows() throws JDOMException, IOException {
-		List<Car> cars = SimulationFactory.buildSimulator( new File("resources/test/no-car.xml" )).getCars();
+	@Test(expected=ConfigurationException.class)
+	public void noCarsThrows() throws JDOMException, IOException, ConfigurationException {
+		List<Car> cars = SimulationFactory.buildSimulator( new File("resources/test/no-cars.xml" )).getCars();
 		fail( "This should throw a meaningful exception to be handled by main()" );
 	}
 	
 	@Test
-	public void invalidStartEndIsIgnored() throws JDOMException, IOException {
+	public void invalidStartEndIsIgnored() throws JDOMException, IOException, ConfigurationException {
 		List<Car> cars = SimulationFactory.buildSimulator( new File("resources/test/invalid-start.xml" )).getCars();
 		assertEquals( 3, cars.size() );
 		assertEquals( 0, cars.get(0).getCarNumber() );
