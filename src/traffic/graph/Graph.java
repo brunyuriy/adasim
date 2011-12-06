@@ -62,7 +62,7 @@ public class Graph {
 	 */
 	public List<GraphNode> getNeighbors(int i) {
 		GraphNode n = get(nodes, i);
-		return n.getNeighbors();
+		return ( n == null? null:n.getNeighbors() );
 	}
 	
 	/**

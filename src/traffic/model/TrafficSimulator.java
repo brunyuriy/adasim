@@ -21,7 +21,7 @@ public class TrafficSimulator{
 		if ( c == null ) throw new IllegalArgumentException( "Cars must not be null" );
 		this.graph = g;
 		this.cars = c;
-		setPaths();
+		//setPaths();
 	}
 	
 	//Uses the previously specified algorithm to create paths for each car on the graph

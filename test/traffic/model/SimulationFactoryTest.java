@@ -141,7 +141,7 @@ public class SimulationFactoryTest {
 		assertEquals(1, neighbors.size() );
 		assertEquals(4, neighbors.get(0).getID() );
 		neighbors = g.getNeighbors( 1 ); 
-		assertEquals(3, neighbors.size() );
+		assertEquals(null, neighbors );
 	}
 	
 	@Test
