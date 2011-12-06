@@ -14,14 +14,17 @@
 
 package traffic.strategy;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
+import org.jdom.JDOMException;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import traffic.factory.GraphFactory;
 import traffic.graph.Graph;
+import traffic.model.SimulationFactory;
 
 
 /**
@@ -38,8 +41,8 @@ public class LookaheadDijkstraCarStrategyTest {
 	}
 	
 	@Test
-	public void findShortestPathFromStart() {
-		Graph g = GraphFactory.loadGraph( "lookahead-test.xml" );
+	public void findShortestPathFromStart() throws JDOMException, IOException {
+		Graph g = SimulationFactory.buildSimulator( new File("resources/test/lookahead-test.xml") ).getGraph();
 		List<Integer> path = strategy.getPath(g, 1, 5);
 		assertNotNull( "No path found", path );
 		assertEquals( "Path too short", 4, path.size() );
