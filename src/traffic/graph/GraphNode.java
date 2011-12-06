@@ -38,6 +38,16 @@ public class GraphNode {
 		outgoing.add(i);
 	}
 	
+	public void removeEdge( int i ) {
+		List<Integer> copy = new ArrayList<Integer>( );
+		for (int idx = 0; idx < outgoing.size(); idx++ ) {
+			if ( outgoing.get(idx) != i ) {
+				copy.add( outgoing.get(idx));
+			}
+		}
+		outgoing = copy;
+	}
+	
 	/**
 	 * Returns all nodes this node has an edge directed towards
 	 */
