@@ -15,7 +15,9 @@
 package traffic.model;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,8 +44,9 @@ final public class SimulationFactory {
 
 	private Document doc;
 
-	private SimulationFactory( String config ) {
-		throw new RuntimeException( "method not implemented" );
+	SimulationFactory( String config ) throws JDOMException, IOException {
+		SAXBuilder b = new SAXBuilder(false	);
+		doc = b.build( new StringReader( config ) );
 	}
 
 	private SimulationFactory( File f ) throws JDOMException, IOException {
@@ -55,9 +58,28 @@ final public class SimulationFactory {
 		return null;
 	}
 
-	public static TrafficSimulator buildSimulator( File config ) throws JDOMException, IOException {
-		SimulationFactory factory = new SimulationFactory(config);
-		return new TrafficSimulator( factory.buildGraph(), factory.buildCars() );
+	public static TrafficSimulator buildSimulator( File config ) throws FileNotFoundException {
+		try {
+			SimulationFactory factory = new SimulationFactory(config);
+			TrafficSimulator sim = new TrafficSimulator( factory.buildGraph(), factory.buildCars() );
+			return sim;
+		} catch ( JDOMException e ) {
+			buildError( e );
+		} catch ( FileNotFoundException e) {
+			throw e;
+		} catch (IOException e) {
+			buildError( e );
+		} catch ( IllegalArgumentException e ) {
+			buildError( e );
+		}
+		return null;
+	}
+
+	/**
+	 * @param e
+	 */
+	private static void buildError(Exception e) {
+		logger.error( "Problem parsing configuration file: " + e.getMessage() );
 	}
 
 	/**
