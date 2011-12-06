@@ -93,12 +93,13 @@ final public class SimulationFactory {
 	private Graph buildGraph() throws ConfigurationException {
 		try {
 			Element root = doc.getRootElement();
-			List<Element> graphChild = root.getChildren("graph");
-			Element graphList = graphChild.get(0);
-			List<Element> children = graphList.getChildren("node");		
+			Element graph = root.getChild("graph");
+			if ( graph == null ) throw new ConfigurationException( "No <graph> found.");
+			@SuppressWarnings("unchecked")
+			List<Element> children = graph.getChildren("node");		
 			if ( children.size() < 1 ) throw new ConfigurationException( "Simulation must have at least one <node>" );
 			//TODO: check for missing strategy
-			Class<?> cls = Class.forName(graphList.getAttributeValue("default_strategy"));
+			Class<?> cls = Class.forName(graph.getAttributeValue("default_strategy"));
 			SpeedStrategy ss = (SpeedStrategy) cls.newInstance();
 			return new Graph( buildNodes( children, ss ) );
 		} catch ( ConfigurationException e ) {
