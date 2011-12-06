@@ -9,7 +9,7 @@
 
 	<graph default_strategy="traffic.strategy.QuadraticSpeedStrategy">
 		<node id="0" neighbors="4 7" />
-		<node id="1" strategy="traffic.strategy.LinearSpeedStrategy" neighbors="5" />
+		<node id="1" strategy="traffic.strategy.LinearSpeedStrategy" neighbors="6" />
 		<node id="2" strategy="traffic.strategy.LinearSpeedStrategy" neighbors="4 7 9" />
 		<node id="3" neighbors="1" />
 		<node id="4" strategy="traffic.strategy.LinearSpeedStrategy" neighbors="6 8" />

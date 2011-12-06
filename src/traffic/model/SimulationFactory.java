@@ -19,7 +19,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.jdom.Document;
@@ -124,9 +126,44 @@ final public class SimulationFactory {
 				buildNeigbors(nodes, node );
 			}
 		}
+		nodes = validate(nodes);
 		return nodes;		
 	}
 	
+	/**
+	 * @param nodes
+	 * @return
+	 */
+	private List<GraphNode> validate(List<GraphNode> nodes) {
+		List<GraphNode> l = new ArrayList<GraphNode>();
+		for ( GraphNode node : nodes ) {
+			List<Integer> remaining = new ArrayList<Integer>();
+			for ( Integer i : node.getNeighbors() ) {
+				if ( contains( nodes, i ) ) {
+					remaining.add( i );
+				} else {
+					node.removeEdge(i);
+				}
+			}
+			if ( remaining.size() > 0 ) {
+				l.add( node );
+			}
+		}
+		return l;
+	}
+
+	/**
+	 * @param nodes
+	 * @param i
+	 * @return
+	 */
+	private boolean contains(List<GraphNode> nodes, Integer i) {
+		for ( GraphNode node : nodes ) {
+			if ( node.getID() == i ) return true;
+		}
+		return false;
+	}
+
 	private boolean hasValidNeighbors( Element node ) {
 		String n = node.getAttributeValue("neighbors").trim();
 		return !( n.equals("") );

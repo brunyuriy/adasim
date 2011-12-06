@@ -139,6 +139,8 @@ public class SimulationFactoryTest {
 		List<Integer> neighbors = g.getNeighbors( 0 ); 
 		assertEquals(1, neighbors.size() );
 		assertEquals(4, (int)neighbors.get(0) );
+		neighbors = g.getNeighbors( 1 ); 
+		assertEquals(3, neighbors.size() );
 	}
 	
 	@Test
