@@ -182,22 +182,15 @@ final public class SimulationFactory {
 			Element carChild = root.getChild("cars");
 			if ( carChild == null ) throw new ConfigurationException( "No <cars> declaration found." );
 			//Element carList = carChild.get(0);
-			List<Element> children = carChild.getChildren("car");
-			int size = children.size();
+			@SuppressWarnings("unchecked")
+			List<Element> carNodes = carChild.getChildren("car");
+			if ( carNodes.size() < 1 ) throw new ConfigurationException( "Simulation must have at least one <car>" );
+			Class<?> cls = Class.forName(carChild.getAttributeValue("default_strategy"));
+			CarStrategy cs = (CarStrategy) cls.newInstance();
+			//TODO: deal with invalid default strategies
 			List<Car> cars = new ArrayList<Car>();
-			for(int i = 0; i < size; i++) {
-				Class<?> cls = Class.forName(carChild.getAttributeValue("default_strategy"));
-				CarStrategy cs = (CarStrategy) cls.newInstance();
-				if(children.get(i).getAttributeValue("strategy") == null) {
-					cars.add(new Car(Integer.parseInt(children.get(i).getAttributeValue("start")), 
-							Integer.parseInt(children.get(i).getAttributeValue("end")),
-							cs, Integer.parseInt(children.get(i).getAttributeValue("id"))));
-				} else {
-					cars.add(new Car(Integer.parseInt(children.get(i).getAttributeValue("start")), 
-							Integer.parseInt(children.get(i).getAttributeValue("end")),
-							(CarStrategy) Class.forName(children.get(i).getAttributeValue("strategy")).newInstance() ,
-							Integer.parseInt(children.get(i).getAttributeValue("id"))));
-				}
+			for ( Element car : carNodes ) {
+				cars.add( buildCar( car, cs ) );
 			}
 			return cars;
 		} catch (ConfigurationException e ) {
@@ -206,5 +199,37 @@ final public class SimulationFactory {
 			logger.error("Bad config file");
 			return null;
 		}	
+	}
+
+	/**
+	 * @param car
+	 * @return
+	 */
+	private Car buildCar(Element car, CarStrategy defaultStrategy ) {
+		try {
+			if(car.getAttributeValue("strategy") == null) {
+					return new Car(Integer.parseInt(car.getAttributeValue("start")), 
+							Integer.parseInt(car.getAttributeValue("end")),
+							defaultStrategy, Integer.parseInt(car.getAttributeValue("id")));
+			} else {
+				return new Car(Integer.parseInt(car.getAttributeValue("start")), 
+						Integer.parseInt(car.getAttributeValue("end")),
+						(CarStrategy) Class.forName(car.getAttributeValue("strategy")).newInstance() ,
+						Integer.parseInt(car.getAttributeValue("id")));
+			}
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 }
