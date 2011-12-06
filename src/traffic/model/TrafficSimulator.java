@@ -16,20 +16,12 @@ public class TrafficSimulator{
 	private List<Car> cars; //List of cars in the simulation
 	private Graph graph; //The graph the cars run on
 	
-	/**
-	 * @param file
-	 * @deprecated knows how to construct itself. We move this into the factory
-	 */
-	public TrafficSimulator(String file) {
-		cars = new ArrayList<Car>();
-		setPaths();
-	}
-	
 	TrafficSimulator( Graph g, List<Car> c ) {
 		if ( g == null ) throw new IllegalArgumentException( "Graph must not be null" );
 		if ( c == null ) throw new IllegalArgumentException( "Cars must not be null" );
 		this.graph = g;
 		this.cars = c;
+		setPaths();
 	}
 	
 	//Uses the previously specified algorithm to create paths for each car on the graph
