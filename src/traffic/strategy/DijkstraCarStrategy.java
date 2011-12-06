@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import traffic.graph.Graph;
+import traffic.graph.GraphNode;
 
 public class DijkstraCarStrategy implements CarStrategy {
 
@@ -40,9 +41,10 @@ public class DijkstraCarStrategy implements CarStrategy {
 				path.remove(0);
 				return path;
 			}
-			List<Integer> n = g.getNeighbors(next);
+			List<GraphNode> n = g.getNeighbors(next);
 		    for (int j=0; j<n.size(); j++) {
-		    	int v = n.get(j);
+		    	//TODO: the indices can no longer be the IDs
+		    	int v = 0; //n.get(j);
 		        int w = dist[next] + g.getDelayAtNode(next);
 		        if (dist[v] > w) {
 		        	dist[v] = w;

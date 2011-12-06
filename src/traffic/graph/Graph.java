@@ -6,16 +6,22 @@ package traffic.graph;
  */
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import traffic.strategy.SpeedStrategy;
 
 public class Graph {
 	
-	private List<GraphNode> nodes; //The nodes within the graph
+	private Set<GraphNode> nodes; //The nodes within the graph
+	
+	public Graph( Set<GraphNode> nodes ) {
+		this.nodes = nodes;
+	}
 	
 	public Graph( List<GraphNode> nodes ) {
-		this.nodes = nodes;
+		this.nodes = new HashSet<GraphNode>( nodes );
 	}
 	
 	/**
@@ -32,15 +38,30 @@ public class Graph {
 	 * @param o The outgoing node from the edge
 	 */
 	public void addEdge(int i, int o) {
-		GraphNode n = nodes.get(i);
-		n.addEdge(o);
+		GraphNode n = get(nodes, i);
+		if ( n != null ) {
+			GraphNode n2 = get(nodes, o );
+			if ( n2 != null ) n.addEdge( n2 );
+		}
 	}
 	
 	/**
+	 * @param nodes2
+	 * @param i
+	 * @return
+	 */
+	private GraphNode get(Set<GraphNode> nodes, int i) {
+		for ( GraphNode node : nodes ) {
+			if ( node.getID() == i ) return node;
+		}
+		return null;
+	}
+
+	/**
 	 * Returns a list of nodes that the given node has outgoing edges towards
 	 */
-	public List<Integer> getNeighbors(int i) {
-		GraphNode n = nodes.get(i);
+	public List<GraphNode> getNeighbors(int i) {
+		GraphNode n = get(nodes, i);
 		return n.getNeighbors();
 	}
 	
@@ -50,7 +71,7 @@ public class Graph {
 	 * @param n The node to add the car at
 	 */
 	public void addCarAtNode(int c, int n) {
-		GraphNode gn = nodes.get(n);
+		GraphNode gn = get(nodes, n);
 		gn.addCar(c);
 	}
 	
@@ -61,8 +82,8 @@ public class Graph {
 	 * @param n The new node the car is moving to
 	 */
 	public void changeCarNode(int c, int o, int n) {
-		GraphNode gn = nodes.get(n);
-		GraphNode go = nodes.get(o);
+		GraphNode gn = get(nodes,n);
+		GraphNode go = get(nodes,o);
 		go.removeCar(c);
 		gn.addCar(c);
 	}
@@ -73,7 +94,7 @@ public class Graph {
 	 * @return The number of turns a car must stay stopped at the given node
 	 */
 	public int getDelayAtNode(int n) {
-		return nodes.get(n).getDelay();
+		return get(nodes,n).getDelay();
 	}
 	
 	/**
@@ -84,7 +105,7 @@ public class Graph {
 	}
 	
 	public List<GraphNode> getNodes() {
-		return nodes;
+		return new ArrayList<GraphNode>(nodes);
 	}
 
 }

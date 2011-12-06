@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Random;
 
 import traffic.graph.Graph;
+import traffic.graph.GraphNode;
 
 public class RandomCarStrategy implements CarStrategy {
 
@@ -24,10 +25,10 @@ public class RandomCarStrategy implements CarStrategy {
 		int next = c;
 		List<Integer> path = new ArrayList<Integer>();
 		while(next != d) {
-			List<Integer> dest = g.getNeighbors(next);
+			List<GraphNode> dest = g.getNeighbors(next);
 			Random generator = new Random();
 			int rand = generator.nextInt(dest.size());
-			next = dest.get(rand);
+			next = dest.get(rand).getID();
 			path.add(next);
 		}
 		return path;

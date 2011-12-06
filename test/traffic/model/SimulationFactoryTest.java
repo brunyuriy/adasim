@@ -26,6 +26,7 @@ import org.jdom.JDOMException;
 import org.junit.Test;
 
 import traffic.graph.Graph;
+import traffic.graph.GraphNode;
 import traffic.strategy.DijkstraCarStrategy;
 import traffic.strategy.QuadraticSpeedStrategy;
 
@@ -108,12 +109,12 @@ public class SimulationFactoryTest {
 	@Test
 	public void testNeighbors() throws FileNotFoundException, ConfigurationException {
 		Graph g = SimulationFactory.buildSimulator( new File("resources/test/config.xml")).getGraph();
-		List<Integer> neighbors = g.getNodes().get(2).getNeighbors();
-		int first = neighbors.get(0);
+		List<GraphNode> neighbors = g.getNodes().get(2).getNeighbors();
+		int first = neighbors.get(0).getID();
 		assertEquals(first, 4);
-		int second = neighbors.get(1);
+		int second = neighbors.get(1).getID();
 		assertEquals(second, 7);
-		int third = neighbors.get(2);
+		int third = neighbors.get(2).getID();
 		assertEquals(third, 9);
 	}
 	
@@ -136,9 +137,9 @@ public class SimulationFactoryTest {
 	@Test
 	public void invalidNeighborIsIgnored() throws FileNotFoundException, ConfigurationException {
 		Graph g = SimulationFactory.buildSimulator( new File("resources/test/invalid-neighbor.xml")).getGraph();
-		List<Integer> neighbors = g.getNeighbors( 0 ); 
+		List<GraphNode> neighbors = g.getNeighbors( 0 ); 
 		assertEquals(1, neighbors.size() );
-		assertEquals(4, (int)neighbors.get(0) );
+		assertEquals(4, neighbors.get(0).getID() );
 		neighbors = g.getNeighbors( 1 ); 
 		assertEquals(3, neighbors.size() );
 	}

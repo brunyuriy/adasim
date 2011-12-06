@@ -55,15 +55,15 @@ public class LookaheadDijkstraCarStrategy implements CarStrategy {
 			int next = minVertex(dist, visited);
 			if ( next == -1 ) continue;	//we have an unreachable target
 			visited[next] = true;
-			for ( int neighbor : g.getNeighbors(next) ) {
-				if ( visited[neighbor] ) continue;
+			for ( GraphNode neighbor : g.getNeighbors(next) ) {
+/*				if ( visited[neighbor] ) continue;
 				int nDist = getDelay( g, neighbor );
 				int tempDist = dist[next] + nDist;
 				if ( tempDist < dist[neighbor] ) {
 					dist[neighbor] = tempDist;
 					prev[neighbor] = next;
 					paths[neighbor] = extendPath(paths[next], neighbor );
-				}
+				}*/
 			}
 	   }
 	   return paths[destNode];
