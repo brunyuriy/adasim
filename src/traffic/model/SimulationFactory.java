@@ -110,12 +110,21 @@ final public class SimulationFactory {
 		for( Element node : nodeDeclarations ) {
 			int id = Integer.parseInt( node.getAttributeValue( "id" ) );
 			SpeedStrategy ss = buildStrategy( node, defaultStrategy );
-			nodes.add( new GraphNode( id, ss) );
+			if ( hasValidNeighbors(node) ) {
+				nodes.add( new GraphNode( id, ss) );
+			}
 		}
 		for ( Element node: nodeDeclarations ) {
-			buildNeigbors(nodes, node );
+			if ( hasValidNeighbors(node) ) {
+				buildNeigbors(nodes, node );
+			}
 		}
 		return nodes;		
+	}
+	
+	private boolean hasValidNeighbors( Element node ) {
+		String n = node.getAttributeValue("neighbors").trim();
+		return !( n.equals("") );
 	}
 
 	/**
