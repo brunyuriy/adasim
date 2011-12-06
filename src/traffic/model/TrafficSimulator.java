@@ -9,44 +9,27 @@ package traffic.model;
 
 import java.util.*;
 
-import traffic.factory.CarFactory;
-import traffic.factory.GraphFactory;
 import traffic.graph.Graph;
 
 public class TrafficSimulator{
-	private static TrafficSimulator instance = null; //The single instance of the simulator
 		
-	/**
-	 * Returns the single instance of the traffic simulator
-	 */
-	public static TrafficSimulator getInstance(String file) {
-		if (instance == null) {
-			instance = new TrafficSimulator(file);
-		}
-		return instance;
-	}
-	
 	private List<Car> cars; //List of cars in the simulation
 	private Graph graph; //The graph the cars run on
 	
+	/**
+	 * @param file
+	 * @deprecated knows how to construct itself. We move this into the factory
+	 */
 	public TrafficSimulator(String file) {
 		cars = new ArrayList<Car>();
-		setGraph(file);
-		readPositions(file);
 		setPaths();
 	}
 	
-	//Reads in the file containing the graph edges and nodes and builds a graph
-	private void setGraph(String g) {
-		graph = GraphFactory.loadGraph(g);
-	}
-	
-	//Reads in the positions of the cars on the graph
-	private void readPositions(String carFile) {
-		cars = CarFactory.loadCar(carFile);
-		for(Car c: cars) {
-			graph.addCarAtNode(c.getCarNumber(), c.getCurrent());
-		}
+	TrafficSimulator( Graph g, List<Car> c ) {
+		if ( g == null ) throw new IllegalArgumentException( "Graph must not be null" );
+		if ( c == null ) throw new IllegalArgumentException( "Cars must not be null" );
+		this.graph = g;
+		this.cars = c;
 	}
 	
 	//Uses the previously specified algorithm to create paths for each car on the graph
@@ -75,6 +58,20 @@ public class TrafficSimulator{
 			}
 		}
 		return true;
+	}
+
+	/**
+	 * @return the cars
+	 */
+	public List<Car> getCars() {
+		return cars;
+	}
+
+	/**
+	 * @return the graph
+	 */
+	public Graph getGraph() {
+		return graph;
 	}
 
 }

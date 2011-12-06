@@ -5,9 +5,12 @@ package traffic;
  * Main class for running the traffic simulator
  */
 
+import java.io.File;
+
 import org.apache.log4j.Logger;
 import org.apache.log4j.BasicConfigurator;
 
+import traffic.model.SimulationFactory;
 import traffic.model.TrafficSimulator;
  
 public class TrafficMain {
@@ -29,7 +32,8 @@ public class TrafficMain {
 		assert opts != null;
 		
 		logger.info("Starting Simulation");
-		tsim = TrafficSimulator.getInstance(opts.getInputFile()); //args[0] = config
+		//tsim = TrafficSimulator.getInstance(opts.getInputFile()); //args[0] = config
+		tsim = SimulationFactory.buildSimulator( new File(opts.getInputFile() ) );
 		boolean done = false;
 		while(!done) {
 			done = tsim.takeSimulationStep();

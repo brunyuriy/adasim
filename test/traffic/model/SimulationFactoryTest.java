@@ -1,0 +1,155 @@
+/*******************************************************************************
+ * Copyright (c) 2011 - Jochen Wuttke.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Jochen Wuttke (wuttkej@gmail.com) - initial API and implementation
+ ********************************************************************************
+ *
+ * Created: Dec 6, 2011
+ */
+
+package traffic.model;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
+import java.io.File;
+import java.util.List;
+
+import org.junit.Test;
+
+import traffic.graph.Graph;
+import traffic.strategy.DijkstraCarStrategy;
+import traffic.strategy.QuadraticSpeedStrategy;
+
+
+/**
+ * @author Jochen Wuttke - wuttkej@gmail.com
+ *
+ */
+public class SimulationFactoryTest {
+	@Test (expected=IllegalArgumentException.class)
+	public void testFileNotFound() {
+		SimulationFactory.buildSimulator( "bad config" );
+	}
+	
+	@Test
+	public void testBadConfig() {
+		assertEquals(SimulationFactory.buildSimulator( new File("resources/test/badconfig.xml") ), null);
+	}
+	
+	@Test
+	public void testStart() {
+		List<Car> cars = SimulationFactory.buildSimulator( new File("config.xml" )).getCars();
+		assertEquals(cars.get(0).getCurrent(), 0);
+		assertEquals(cars.get(1).getCurrent(), 4);
+		assertEquals(cars.get(2).getCurrent(), 3);
+		assertEquals(cars.get(3).getCurrent(), 8);
+		assertEquals(cars.get(4).getCurrent(), 3);
+	}
+	
+	@Test
+	public void testCarNum() {
+		List<Car> cars = SimulationFactory.buildSimulator( new File("config.xml" )).getCars();
+		assertEquals(cars.get(0).getCarNumber(), 0);
+		assertEquals(cars.get(1).getCarNumber(), 1);
+		assertEquals(cars.get(2).getCarNumber(), 2);
+		assertEquals(cars.get(3).getCarNumber(), 3);
+		assertEquals(cars.get(4).getCarNumber(), 4);
+	}
+	
+	@Test
+	public void invalidCarStrategyDefaultsCorrectly() {
+		List<Car> cars = SimulationFactory.buildSimulator( new File("resources/test/invalid-strategy.xml" )).getCars();
+		assertEquals( DijkstraCarStrategy.class, cars.get(1).getStrategy().getClass() );
+	}
+	
+	@Test
+	public void noCarThrows() {
+		List<Car> cars = SimulationFactory.buildSimulator( new File("resources/test/no-car.xml" )).getCars();
+		fail( "This should throw a meaningful exception to be handled by main()" );
+	}
+
+	@Test
+	public void noCarsThrows() {
+		List<Car> cars = SimulationFactory.buildSimulator( new File("resources/test/no-car.xml" )).getCars();
+		fail( "This should throw a meaningful exception to be handled by main()" );
+	}
+	
+	@Test
+	public void invalidStartEndIsIgnored() {
+		List<Car> cars = SimulationFactory.buildSimulator( new File("resources/test/invalid-start.xml" )).getCars();
+		assertEquals( 3, cars.size() );
+		assertEquals( 0, cars.get(0).getCarNumber() );
+		assertEquals( 3, cars.get(1).getCarNumber() );
+		assertEquals( 4, cars.get(2).getCarNumber() );
+	}
+	
+	@Test
+	public void testStrategies() {
+		Graph g = SimulationFactory.buildSimulator("config.xml").getGraph();
+		assertEquals(g.getDelayAtNode(6), 0);
+		g.addCarAtNode(0, 6);
+		g.addCarAtNode(1, 6);
+		assertEquals(g.getDelayAtNode(6), 4); //Tests Quadratic Speed Strategy
+		assertEquals(g.getDelayAtNode(1), 0);
+		g.addCarAtNode(2, 1);
+		g.addCarAtNode(3, 1);
+		assertEquals(g.getDelayAtNode(1), 2); //Tests Linear Speed Strategy
+	}
+	
+	@Test
+	public void testNeighbors() {
+		Graph g = SimulationFactory.buildSimulator("config.xml").getGraph();
+		List<Integer> neighbors = g.getNodes().get(2).getNeighbors();
+		int first = neighbors.get(0);
+		assertEquals(first, 4);
+		int second = neighbors.get(1);
+		assertEquals(second, 7);
+		int third = neighbors.get(2);
+		assertEquals(third, 9);
+	}
+	
+	@Test
+	public void emptyNeighborListDoesNotCrash() {
+		Graph g = SimulationFactory.buildSimulator("resources/test/unconnected-node.xml").getGraph();
+		//this test passes if no exception is thrown
+	}
+	
+	@Test
+	public void noNodesThrows() {
+		Graph g = SimulationFactory.buildSimulator("resources/test/no-nodes.xml").getGraph();
+		fail( "This should throw a meaningful exception to be handled by main()" );
+	}
+
+	@Test
+	public void noGraphThrows() {
+		Graph g = SimulationFactory.buildSimulator("resources/test/no-graph.xml").getGraph();
+		fail( "This should throw a meaningful exception to be handled by main()" );
+	}
+	
+	@Test
+	public void invalidNeighborIsIgnored() {
+		Graph g = SimulationFactory.buildSimulator("resources/test/invalid-neighbor.xml").getGraph();
+		List<Integer> neighbors = g.getNeighbors( 0 ); 
+		assertEquals(1, neighbors.size() );
+		assertEquals(4, (int)neighbors.get(0) );
+	}
+	
+	@Test
+	public void invalidSpeedStrategyDefaultsCorrectly() {
+		Graph g = SimulationFactory.buildSimulator("resources/test/invalid-strategy2.xml").getGraph();
+		assertEquals( QuadraticSpeedStrategy.class, g.getNodes().get(1).getSpeedStrategy().getClass() );
+	}
+
+	@Test
+	public void loadsAutoGeneratedConfig() {
+		Graph g = SimulationFactory.buildSimulator("resources/test/auto-generated.xml").getGraph();
+		//this passes when no unexpected exceptions are thrown
+	}
+
+}
