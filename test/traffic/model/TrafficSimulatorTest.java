@@ -26,10 +26,4 @@ import static org.junit.Assert.*;
  */
 public class TrafficSimulatorTest {
 	
-	@Test(expected=FileNotFoundException.class)
-	public void nonExistingFileThrows() {
-		new TrafficSimulator( "bla" );
-		fail( "Test should have thrown a FileNotFoundException" );
-	}
-
 }

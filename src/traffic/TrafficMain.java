@@ -35,7 +35,6 @@ public class TrafficMain {
 		assert opts != null;
 		
 		logger.info("Starting Simulation");
-		//tsim = TrafficSimulator.getInstance(opts.getInputFile()); //args[0] = config
 		tsim = SimulationFactory.buildSimulator( new File(opts.getInputFile() ) );
 		boolean done = false;
 		while(!done) {
