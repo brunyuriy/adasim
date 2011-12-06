@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.BasicConfigurator;
 import org.jdom.JDOMException;
 
+import traffic.model.ConfigurationException;
 import traffic.model.SimulationFactory;
 import traffic.model.TrafficSimulator;
  
@@ -21,7 +22,7 @@ public class TrafficMain {
 	
 	private static TrafficSimulator tsim; //The instance of the traffic simulator
 	
-	public static void main(String[] args) throws JDOMException, IOException {
+	public static void main(String[] args) throws JDOMException, IOException, ConfigurationException {
 		BasicConfigurator.configure();
 		ConfigurationOptions opts = null;
 		try {

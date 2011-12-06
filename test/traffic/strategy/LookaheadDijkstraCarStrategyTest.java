@@ -24,6 +24,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import traffic.graph.Graph;
+import traffic.model.ConfigurationException;
 import traffic.model.SimulationFactory;
 
 
@@ -41,7 +42,7 @@ public class LookaheadDijkstraCarStrategyTest {
 	}
 	
 	@Test
-	public void findShortestPathFromStart() throws JDOMException, IOException {
+	public void findShortestPathFromStart() throws JDOMException, IOException, ConfigurationException {
 		Graph g = SimulationFactory.buildSimulator( new File("resources/test/lookahead-test.xml") ).getGraph();
 		List<Integer> path = strategy.getPath(g, 1, 5);
 		assertNotNull( "No path found", path );
