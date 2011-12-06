@@ -26,6 +26,10 @@ import traffic.graph.GraphNode;
 public class LookaheadDijkstraCarStrategy implements CarStrategy {
 	
 	private final int lookahead;
+	
+	public LookaheadDijkstraCarStrategy() {
+		this(0);
+	}
 
 	public LookaheadDijkstraCarStrategy( int lookahead ){
 		this.lookahead = lookahead;

@@ -18,8 +18,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 
+import org.jdom.JDOMException;
 import org.junit.Test;
 
 import traffic.graph.Graph;
@@ -32,18 +35,18 @@ import traffic.strategy.QuadraticSpeedStrategy;
  *
  */
 public class SimulationFactoryTest {
-	@Test (expected=IllegalArgumentException.class)
-	public void testFileNotFound() {
-		SimulationFactory.buildSimulator( "bad config" );
+	@Test (expected=FileNotFoundException.class)
+	public void testFileNotFound() throws JDOMException, IOException {
+		SimulationFactory.buildSimulator( new File("bad config") );
 	}
 	
 	@Test
-	public void testBadConfig() {
+	public void testBadConfig() throws JDOMException, IOException {
 		assertEquals(SimulationFactory.buildSimulator( new File("resources/test/badconfig.xml") ), null);
 	}
 	
 	@Test
-	public void testStart() {
+	public void testStart() throws JDOMException, IOException {
 		List<Car> cars = SimulationFactory.buildSimulator( new File("config.xml" )).getCars();
 		assertEquals(cars.get(0).getCurrent(), 0);
 		assertEquals(cars.get(1).getCurrent(), 4);
@@ -53,7 +56,7 @@ public class SimulationFactoryTest {
 	}
 	
 	@Test
-	public void testCarNum() {
+	public void testCarNum() throws JDOMException, IOException {
 		List<Car> cars = SimulationFactory.buildSimulator( new File("config.xml" )).getCars();
 		assertEquals(cars.get(0).getCarNumber(), 0);
 		assertEquals(cars.get(1).getCarNumber(), 1);
@@ -63,25 +66,25 @@ public class SimulationFactoryTest {
 	}
 	
 	@Test
-	public void invalidCarStrategyDefaultsCorrectly() {
+	public void invalidCarStrategyDefaultsCorrectly() throws JDOMException, IOException {
 		List<Car> cars = SimulationFactory.buildSimulator( new File("resources/test/invalid-strategy.xml" )).getCars();
 		assertEquals( DijkstraCarStrategy.class, cars.get(1).getStrategy().getClass() );
 	}
 	
 	@Test
-	public void noCarThrows() {
+	public void noCarThrows() throws JDOMException, IOException {
 		List<Car> cars = SimulationFactory.buildSimulator( new File("resources/test/no-car.xml" )).getCars();
 		fail( "This should throw a meaningful exception to be handled by main()" );
 	}
 
 	@Test
-	public void noCarsThrows() {
+	public void noCarsThrows() throws JDOMException, IOException {
 		List<Car> cars = SimulationFactory.buildSimulator( new File("resources/test/no-car.xml" )).getCars();
 		fail( "This should throw a meaningful exception to be handled by main()" );
 	}
 	
 	@Test
-	public void invalidStartEndIsIgnored() {
+	public void invalidStartEndIsIgnored() throws JDOMException, IOException {
 		List<Car> cars = SimulationFactory.buildSimulator( new File("resources/test/invalid-start.xml" )).getCars();
 		assertEquals( 3, cars.size() );
 		assertEquals( 0, cars.get(0).getCarNumber() );

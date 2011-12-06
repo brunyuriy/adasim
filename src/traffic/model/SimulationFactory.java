@@ -46,24 +46,16 @@ final public class SimulationFactory {
 		throw new RuntimeException( "method not implemented" );
 	}
 
-	private SimulationFactory( File f ) {
+	private SimulationFactory( File f ) throws JDOMException, IOException {
 		SAXBuilder b = new SAXBuilder(false);
-		try {
-			doc = b.build( f );
-		} catch (JDOMException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		doc = b.build( f );
 	}
 	
 	public static TrafficSimulator buildSimulator( String xmlString ) {
 		return null;
 	}
 
-	public static TrafficSimulator buildSimulator( File config ) {
+	public static TrafficSimulator buildSimulator( File config ) throws JDOMException, IOException {
 		SimulationFactory factory = new SimulationFactory(config);
 		return new TrafficSimulator( factory.buildGraph(), factory.buildCars() );
 	}
