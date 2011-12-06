@@ -69,7 +69,7 @@ public class Car {
 	public void makePath(Graph g) {
 		info.setPath(cs.getPath(g, info.getStartNode(), info.getEndNode()));
 		logger.info("Car " + info.getCarNum() + " is at node " + info.getCurrentPosition());
-		logger.info("The path for car " + info.getCarNum() + " is " + info.getPath().toString());
+		logger.info("The path for car " + info.getCarNum() + " is " + info.getPath());
 	}
 	
 	/**
