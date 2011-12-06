@@ -27,6 +27,10 @@ public class Graph {
 		}
 	}
 	
+	public Graph( List<GraphNode> nodes ) {
+		this.nodes = nodes;
+	}
+	
 	/**
 	 * Adds a new node to the graph and increases the tracker for the number of nodes by one
 	 */
