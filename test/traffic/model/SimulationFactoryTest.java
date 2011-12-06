@@ -47,7 +47,7 @@ public class SimulationFactoryTest {
 	
 	@Test
 	public void testStart() throws JDOMException, IOException, ConfigurationException {
-		List<Car> cars = SimulationFactory.buildSimulator( new File("config.xml" )).getCars();
+		List<Car> cars = SimulationFactory.buildSimulator( new File("resources/test/config.xml" )).getCars();
 		assertEquals(cars.get(0).getCurrent(), 0);
 		assertEquals(cars.get(1).getCurrent(), 4);
 		assertEquals(cars.get(2).getCurrent(), 3);
@@ -57,7 +57,7 @@ public class SimulationFactoryTest {
 	
 	@Test
 	public void testCarNum() throws JDOMException, IOException, ConfigurationException {
-		List<Car> cars = SimulationFactory.buildSimulator( new File("config.xml" )).getCars();
+		List<Car> cars = SimulationFactory.buildSimulator( new File("resources/test/config.xml" )).getCars();
 		assertEquals(cars.get(0).getCarNumber(), 0);
 		assertEquals(cars.get(1).getCarNumber(), 1);
 		assertEquals(cars.get(2).getCarNumber(), 2);
@@ -94,7 +94,7 @@ public class SimulationFactoryTest {
 	
 	@Test
 	public void testStrategies() {
-		Graph g = SimulationFactory.buildSimulator("config.xml").getGraph();
+		Graph g = SimulationFactory.buildSimulator("resources/test/config.xml").getGraph();
 		assertEquals(g.getDelayAtNode(6), 0);
 		g.addCarAtNode(0, 6);
 		g.addCarAtNode(1, 6);
@@ -107,7 +107,7 @@ public class SimulationFactoryTest {
 	
 	@Test
 	public void testNeighbors() {
-		Graph g = SimulationFactory.buildSimulator("config.xml").getGraph();
+		Graph g = SimulationFactory.buildSimulator("resources/test/config.xml").getGraph();
 		List<Integer> neighbors = g.getNodes().get(2).getNeighbors();
 		int first = neighbors.get(0);
 		assertEquals(first, 4);
