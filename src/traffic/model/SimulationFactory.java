@@ -88,17 +88,21 @@ final public class SimulationFactory {
 
 	/**
 	 * @return
+	 * @throws ConfigurationException 
 	 */
-	private Graph buildGraph() {
+	private Graph buildGraph() throws ConfigurationException {
 		try {
 			Element root = doc.getRootElement();
 			List<Element> graphChild = root.getChildren("graph");
 			Element graphList = graphChild.get(0);
 			List<Element> children = graphList.getChildren("node");		
+			if ( children.size() < 1 ) throw new ConfigurationException( "Simulation must have at least one <node>" );
 			//TODO: check for missing strategy
 			Class<?> cls = Class.forName(graphList.getAttributeValue("default_strategy"));
 			SpeedStrategy ss = (SpeedStrategy) cls.newInstance();
 			return new Graph( buildNodes( children, ss ) );
+		} catch ( ConfigurationException e ) {
+			throw e;
 		} catch (Exception e) {
 			logger.error("Bad config file");
 			return null;

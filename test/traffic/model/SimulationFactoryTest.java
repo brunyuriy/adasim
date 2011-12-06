@@ -123,10 +123,9 @@ public class SimulationFactoryTest {
 		assertEquals( g.getNodes().size(), 9);
 	}
 	
-	@Test
+	@Test(expected=ConfigurationException.class)
 	public void noNodesThrows() throws FileNotFoundException, ConfigurationException {
 		Graph g = SimulationFactory.buildSimulator(new File("resources/test/no-nodes.xml")).getGraph();
-		fail( "This should throw a meaningful exception to be handled by main()" );
 	}
 
 	@Test
