@@ -128,10 +128,9 @@ public class SimulationFactoryTest {
 		Graph g = SimulationFactory.buildSimulator(new File("resources/test/no-nodes.xml")).getGraph();
 	}
 
-	@Test
+	@Test(expected=ConfigurationException.class)
 	public void noGraphThrows() throws FileNotFoundException, ConfigurationException {
 		Graph g = SimulationFactory.buildSimulator( new File("resources/test/no-graph.xml" )).getGraph();
-		fail( "This should throw a meaningful exception to be handled by main()" );
 	}
 	
 	@Test
