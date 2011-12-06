@@ -13,19 +13,6 @@ import traffic.strategy.SpeedStrategy;
 public class Graph {
 	
 	private List<GraphNode> nodes; //The nodes within the graph
-	private int numNodes; //The number of nodes in the graph
-	
-	public Graph(List<Integer> node, List<SpeedStrategy> strategies, 
-			     List<Integer> startNodes, List<Integer> endNodes) {
-		nodes = new ArrayList<GraphNode>();
-		numNodes = 0;
-		for(int i = 0; i < node.size(); i++) {
-			addNode(node.get(i), strategies.get(i)); //Creates the nodes in the graph
-		}
-		for(int j = 0; j < startNodes.size(); j++) {
-			addEdge(startNodes.get(j), endNodes.get(j)); //Adds edges to the given nodes
-		}
-	}
 	
 	public Graph( List<GraphNode> nodes ) {
 		this.nodes = nodes;
@@ -36,7 +23,6 @@ public class Graph {
 	 */
 	public void addNode(int num, SpeedStrategy speed) {
 		nodes.add(new GraphNode(num, speed));
-		numNodes++;
 	}
 	
 	/**
@@ -94,7 +80,7 @@ public class Graph {
 	 * Returns the number of nodes on the graph
 	 */
 	public int getNumNodes() {
-		return numNodes;
+		return nodes.size();
 	}
 	
 	public List<GraphNode> getNodes() {
