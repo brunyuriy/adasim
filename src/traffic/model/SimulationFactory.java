@@ -212,9 +212,17 @@ final public class SimulationFactory {
 							Integer.parseInt(car.getAttributeValue("end")),
 							defaultStrategy, Integer.parseInt(car.getAttributeValue("id")));
 			} else {
+				CarStrategy cs = null;
+				String s = null;
+				try {
+					s = car.getAttributeValue("strategy");
+					cs = (CarStrategy) Class.forName(s).newInstance();
+				} catch (Exception e) {
+					logger.warn( "CarStrategy " + s + " not found. Using default." );
+					cs = defaultStrategy;
+				}
 				return new Car(Integer.parseInt(car.getAttributeValue("start")), 
-						Integer.parseInt(car.getAttributeValue("end")),
-						(CarStrategy) Class.forName(car.getAttributeValue("strategy")).newInstance() ,
+						Integer.parseInt(car.getAttributeValue("end")), cs,
 						Integer.parseInt(car.getAttributeValue("id")));
 			}
 		} catch (NumberFormatException e) {
@@ -226,10 +234,7 @@ final public class SimulationFactory {
 		} catch (IllegalAccessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		} 
 		return null;
 	}
 }
