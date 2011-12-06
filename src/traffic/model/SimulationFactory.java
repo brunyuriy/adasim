@@ -61,7 +61,8 @@ final public class SimulationFactory {
 	public static TrafficSimulator buildSimulator( File config ) throws FileNotFoundException, ConfigurationException {
 		try {
 			SimulationFactory factory = new SimulationFactory(config);
-			TrafficSimulator sim = new TrafficSimulator( factory.buildGraph(), factory.buildCars() );
+			Graph g = factory.buildGraph();
+			TrafficSimulator sim = new TrafficSimulator( g, factory.buildCars(g) );
 			return sim;
 		} catch ( JDOMException e ) {
 			buildError( e );
@@ -176,7 +177,7 @@ final public class SimulationFactory {
 	 * @return
 	 * @throws ConfigurationException 
 	 */
-	private List<Car> buildCars() throws ConfigurationException {
+	private List<Car> buildCars( Graph g ) throws ConfigurationException {
 		try {
 			Element root = doc.getRootElement();
 			Element carChild = root.getChild("cars");
@@ -190,7 +191,8 @@ final public class SimulationFactory {
 			//TODO: deal with invalid default strategies
 			List<Car> cars = new ArrayList<Car>();
 			for ( Element car : carNodes ) {
-				cars.add( buildCar( car, cs ) );
+				Car c = buildCar( car, cs, g.getNodes() );
+				if ( c != null ) cars.add( c );
 			}
 			return cars;
 		} catch (ConfigurationException e ) {
@@ -204,15 +206,25 @@ final public class SimulationFactory {
 	/**
 	 * @param car
 	 * @return
+	 * @throws ConfigurationException 
 	 */
-	private Car buildCar(Element car, CarStrategy defaultStrategy ) {
+	private Car buildCar(Element car, CarStrategy defaultStrategy, List<GraphNode> nodes ) throws ConfigurationException {
 		try {
-			if(car.getAttributeValue("strategy") == null) {
-					return new Car(Integer.parseInt(car.getAttributeValue("start")), 
-							Integer.parseInt(car.getAttributeValue("end")),
-							defaultStrategy, Integer.parseInt(car.getAttributeValue("id")));
-			} else {
-				CarStrategy cs = null;
+			int start = Integer.parseInt(car.getAttributeValue("start"));
+			int end = Integer.parseInt(car.getAttributeValue("end"));
+			int id = Integer.parseInt(car.getAttributeValue("id"));
+			
+			if ( !isValidNode( start, nodes ) ) {
+				logger.warn( "Start node " + start + " for car " + id + " does not exist");
+				return null;
+			}
+			if ( !isValidNode( end, nodes ) ) { 
+				logger.warn( "End node " + end + " for car " + id + " does not exist");
+				return null;
+			}
+			
+			CarStrategy cs = defaultStrategy;
+			if(car.getAttributeValue("strategy") != null) {
 				String s = null;
 				try {
 					s = car.getAttributeValue("strategy");
@@ -221,10 +233,8 @@ final public class SimulationFactory {
 					logger.warn( "CarStrategy " + s + " not found. Using default." );
 					cs = defaultStrategy;
 				}
-				return new Car(Integer.parseInt(car.getAttributeValue("start")), 
-						Integer.parseInt(car.getAttributeValue("end")), cs,
-						Integer.parseInt(car.getAttributeValue("id")));
 			}
+			return new Car(start, end, cs, id );
 		} catch (NumberFormatException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -236,5 +246,15 @@ final public class SimulationFactory {
 			e.printStackTrace();
 		} 
 		return null;
+	}
+
+	/**
+	 * @param end
+	 */
+	private boolean isValidNode(int id, List<GraphNode> nodes ) {
+		for ( GraphNode node : nodes ) {
+			if ( node.getID() == id ) return true;
+		}
+		return false;
 	}
 }
