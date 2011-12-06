@@ -118,9 +118,9 @@ public class SimulationFactoryTest {
 	}
 	
 	@Test
-	public void emptyNeighborListDoesNotCrash() throws FileNotFoundException, ConfigurationException {
+	public void emptyNeighborListIsIgnored() throws FileNotFoundException, ConfigurationException {
 		Graph g = SimulationFactory.buildSimulator( new File("resources/test/unconnected-node.xml")).getGraph();
-		//this test passes if no exception is thrown
+		assertEquals( g.getNodes().size(), 9);
 	}
 	
 	@Test
