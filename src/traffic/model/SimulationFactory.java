@@ -135,9 +135,9 @@ final public class SimulationFactory {
 	private List<GraphNode> validate(List<GraphNode> nodes) {
 		List<GraphNode> l = new ArrayList<GraphNode>();
 		for ( GraphNode node : nodes ) {
-			List<Integer> remaining = new ArrayList<Integer>();
-			for ( Integer i : node.getNeighbors() ) {
-				if ( contains( nodes, i ) ) {
+			List<GraphNode> remaining = new ArrayList<GraphNode>();
+			for ( GraphNode i : node.getNeighbors() ) {
+				if ( nodes.contains( i ) ) {
 					remaining.add( i );
 				} else {
 					node.removeEdge(i);
@@ -148,18 +148,6 @@ final public class SimulationFactory {
 			}
 		}
 		return l;
-	}
-
-	/**
-	 * @param nodes
-	 * @param i
-	 * @return
-	 */
-	private boolean contains(List<GraphNode> nodes, Integer i) {
-		for ( GraphNode node : nodes ) {
-			if ( node.getID() == i ) return true;
-		}
-		return false;
 	}
 
 	private boolean hasValidNeighbors( Element node ) {
@@ -175,8 +163,8 @@ final public class SimulationFactory {
 		String[] neighbors = node.getAttributeValue("neighbors").split(" ");
 		GraphNode gn = getNode( nodes, node );
 		for ( String n : neighbors ) {
-			//TODO: deal with edges to non-existing nodes
-			gn.addEdge(Integer.parseInt(n));					
+			int nn = Integer.parseInt(n);
+			gn.addEdge( getNode( nodes, nn ));					
 		}
 	}
 
@@ -189,6 +177,13 @@ final public class SimulationFactory {
 		int id = Integer.parseInt( node.getAttributeValue( "id" ) );
 		for ( GraphNode n : nodes ) {
 			if ( n.getID() == id ) return n;
+		}
+		return null;
+	}
+
+	private GraphNode getNode(List<GraphNode> nodes, int node) {
+		for ( GraphNode n : nodes ) {
+			if ( n.getID() == node ) return n;
 		}
 		return null;
 	}

@@ -6,14 +6,16 @@ package traffic.graph;
  */
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import traffic.strategy.SpeedStrategy;
 
 
 public class GraphNode {
 	
-	private List<Integer> outgoing; //Nodes that this node has an edge directed towards
+	private Set<GraphNode> outgoing; //Nodes that this node has an edge directed towards
 	private int nodeNum; //The number of this node on the graph
 	private List<Integer> cars; //The cars at this node
 	private SpeedStrategy ss; //The strategy by which the speed changes
@@ -21,7 +23,7 @@ public class GraphNode {
 	
 	public GraphNode(int n, SpeedStrategy s) {
 		nodeNum = n;
-		outgoing = new ArrayList<Integer>();
+		outgoing = new HashSet<GraphNode>();
 		cars = new ArrayList<Integer>();
 		ss = s;
 		delay = ss.getDelay(cars.size());
@@ -31,25 +33,33 @@ public class GraphNode {
 	 * Adds an edge from this node to the given node
 	 * @param i
 	 */
-	public void addEdge(int i) {
-		outgoing.add(i);
+//	public void addEdge(int i) {
+//		outgoing.add(i);
+//	}
+	
+	public void addEdge( GraphNode to ) {
+		outgoing.add( to );
 	}
 	
-	public void removeEdge( int i ) {
-		List<Integer> copy = new ArrayList<Integer>( );
-		for (int idx = 0; idx < outgoing.size(); idx++ ) {
-			if ( outgoing.get(idx) != i ) {
-				copy.add( outgoing.get(idx));
-			}
-		}
-		outgoing = copy;
+//	public void removeEdge( int i ) {
+//		List<Integer> copy = new ArrayList<Integer>( );
+//		for (int idx = 0; idx < outgoing.size(); idx++ ) {
+//			if ( outgoing.get(idx) != i ) {
+//				copy.add( outgoing.get(idx));
+//			}
+//		}
+//		outgoing = copy;
+//	}
+	
+	public void removeEdge( GraphNode to ) {
+		outgoing.remove( to );
 	}
 	
 	/**
 	 * Returns all nodes this node has an edge directed towards
 	 */
-	public List<Integer> getNeighbors() {
-		return Collections.unmodifiableList(outgoing);
+	public List<GraphNode> getNeighbors() {
+		return new ArrayList<GraphNode>(outgoing);
 	}
 	
 	/**
