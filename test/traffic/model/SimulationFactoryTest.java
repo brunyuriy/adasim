@@ -97,11 +97,11 @@ public class SimulationFactoryTest {
 	@Test
 	public void testStrategies() throws FileNotFoundException, ConfigurationException {
 		Graph g = SimulationFactory.buildSimulator( new File("resources/test/config.xml" ) ).getGraph();
-		assertEquals(g.getDelayAtNode(6), 0);
+		assertEquals(g.getDelayAtNode(6), 1);
 		g.addCarAtNode(0, 6);
 		g.addCarAtNode(1, 6);
 		assertEquals(g.getDelayAtNode(6), 4); //Tests Quadratic Speed Strategy
-		assertEquals(g.getDelayAtNode(1), 0);
+		assertEquals(g.getDelayAtNode(1), 1);
 		g.addCarAtNode(2, 1);
 		g.addCarAtNode(3, 1);
 		assertEquals(g.getDelayAtNode(1), 2); //Tests Linear Speed Strategy
