@@ -252,12 +252,10 @@ final public class SimulationFactory {
 			int end = Integer.parseInt(car.getAttributeValue("end"));
 			int id = Integer.parseInt(car.getAttributeValue("id"));
 			
-			if ( !isValidNode( start, nodes ) ) {
-				logger.warn( "Start node " + start + " for car " + id + " does not exist");
-				return null;
-			}
-			if ( !isValidNode( end, nodes ) ) { 
-				logger.warn( "End node " + end + " for car " + id + " does not exist");
+			try {
+				checkEndPoint(nodes, start, id, "Start" );
+				checkEndPoint(nodes, end, id, "End" );
+			} catch ( ConfigurationException e ) {
 				return null;
 			}
 			
@@ -284,6 +282,19 @@ final public class SimulationFactory {
 			e.printStackTrace();
 		} 
 		return null;
+	}
+
+	/**
+	 * @param nodes
+	 * @param end
+	 * @param id
+	 * @throws ConfigurationException 
+	 */
+	private void checkEndPoint(List<GraphNode> nodes, int end, int id, String s) throws ConfigurationException {
+		if ( !isValidNode( end, nodes ) ) { 
+			logger.warn( s + " node " + end + " for car " + id + " does not exist");
+			throw new ConfigurationException("");
+		}
 	}
 
 	/**
