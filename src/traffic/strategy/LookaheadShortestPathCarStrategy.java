@@ -23,15 +23,15 @@ import traffic.graph.GraphNode;
  * @author Jochen Wuttke - wuttkej@gmail.com
  *
  */
-public class LookaheadDijkstraCarStrategy implements CarStrategy {
+public class LookaheadShortestPathCarStrategy implements CarStrategy {
 	
 	private final int lookahead;
 	
-	public LookaheadDijkstraCarStrategy() {
+	public LookaheadShortestPathCarStrategy() {
 		this(0);
 	}
 
-	public LookaheadDijkstraCarStrategy( int lookahead ){
+	public LookaheadShortestPathCarStrategy( int lookahead ){
 		this.lookahead = lookahead;
 	}
 	

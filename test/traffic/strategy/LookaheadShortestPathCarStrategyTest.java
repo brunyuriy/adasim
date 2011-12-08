@@ -32,13 +32,13 @@ import traffic.model.SimulationFactory;
  * @author Jochen Wuttke - wuttkej@gmail.com
  *
  */
-public class LookaheadDijkstraCarStrategyTest {
+public class LookaheadShortestPathCarStrategyTest {
 	
-	private LookaheadDijkstraCarStrategy strategy;
+	private LookaheadShortestPathCarStrategy strategy;
 	
 	@Before
 	public void setUp() {
-		strategy = new LookaheadDijkstraCarStrategy(3);
+		strategy = new LookaheadShortestPathCarStrategy(3);
 	}
 	
 	@Test
