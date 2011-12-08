@@ -44,7 +44,7 @@ public class DijkstraCarStrategy implements CarStrategy {
 			List<GraphNode> n = g.getNeighbors(next);
 		    for (int j=0; j<n.size(); j++) {
 		    	//TODO: the indices can no longer be the IDs
-		    	int v = 0; //n.get(j);
+		    	int v = n.get(j).getID();
 		        int w = dist[next] + g.getDelayAtNode(next);
 		        if (dist[v] > w) {
 		        	dist[v] = w;
