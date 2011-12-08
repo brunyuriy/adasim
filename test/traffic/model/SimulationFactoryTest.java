@@ -42,11 +42,6 @@ public class SimulationFactoryTest {
 	}
 	
 	@Test
-	public void testBadConfig() throws JDOMException, IOException, ConfigurationException {
-		assertEquals(SimulationFactory.buildSimulator( new File("resources/test/badconfig.xml") ), null);
-	}
-	
-	@Test
 	public void testStart() throws JDOMException, IOException, ConfigurationException {
 		List<Car> cars = SimulationFactory.buildSimulator( new File("resources/test/config.xml" )).getCars();
 		assertEquals(cars.get(0).getCurrent(), 0);
@@ -71,6 +66,12 @@ public class SimulationFactoryTest {
 		List<Car> cars = SimulationFactory.buildSimulator( new File("resources/test/invalid-strategy.xml" )).getCars();
 		assertEquals( DijkstraCarStrategy.class, cars.get(1).getStrategy().getClass() );
 	}
+	
+	@Test(expected=ConfigurationException.class)
+	public void invalidDefaultCarStrategyThrows() throws JDOMException, IOException, ConfigurationException {
+		List<Car> cars = SimulationFactory.buildSimulator( new File("resources/test/illegal-default-car-strategy.xml" )).getCars();
+	}
+
 	
 	@Test(expected=ConfigurationException.class)
 	public void noCarThrows() throws JDOMException, IOException, ConfigurationException {
