@@ -31,6 +31,9 @@ public class DijkstraCarStrategy implements CarStrategy {
 		dist[currentNode] = 0;
 		for (int i=0; i<dist.length; i++) {
 			int next = minVertex(dist, visited);
+			if(next == -1) {
+				break;
+			}
 			visited[next] = true;
 			if(next == destNode) {
 				List<Integer> path = new ArrayList<Integer>();
