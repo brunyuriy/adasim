@@ -24,7 +24,7 @@ public class TrafficMain {
 	
 	public static void main(String[] args) throws JDOMException, IOException, ConfigurationException {
 		BasicConfigurator.configure();
-		ConfigurationOptions opts = null;
+		/*ConfigurationOptions opts = null;
 		try {
 			opts = ConfigurationOptions.parse(args);
 		} catch (Exception e) {
@@ -32,10 +32,11 @@ public class TrafficMain {
 			System.exit(1);
 		}
 		
-		assert opts != null;
+		assert opts != null;*/
 		
 		logger.info("Starting Simulation");
-		tsim = SimulationFactory.buildSimulator( new File(opts.getInputFile() ) );
+		//tsim = SimulationFactory.buildSimulator( new File(opts.getInputFile() ) );
+		tsim = SimulationFactory.buildSimulator(new File(args[0]));
 		boolean done = false;
 		while(!done) {
 			done = tsim.takeSimulationStep();
