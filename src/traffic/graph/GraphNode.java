@@ -21,8 +21,13 @@ public class GraphNode {
 	private SpeedStrategy ss; //The strategy by which the speed changes
 	private int delay; //The basic delay of this node. To be modified by the speed strategy
 	
+	/**
+	 * Creates a node with delay 1.
+	 * @param n
+	 * @param s
+	 */
 	public GraphNode(int n, SpeedStrategy s) {
-		this(n, s, 0);
+		this(n, s, 1);
 	}
 	
 	public GraphNode(int n, SpeedStrategy s, int delay ) {
