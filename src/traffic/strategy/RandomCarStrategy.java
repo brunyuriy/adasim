@@ -24,14 +24,14 @@ public class RandomCarStrategy implements CarStrategy {
 	public List<Integer> getPath(Graph g, int c, int d) {
 		int next = c;
 		List<Integer> path = new ArrayList<Integer>();
-		while(next != d) {
+		while(next != d && path.size() < g.getNumNodes() ) {
 			List<GraphNode> dest = g.getNeighbors(next);
 			Random generator = new Random();
 			int rand = generator.nextInt(dest.size());
 			next = dest.get(rand).getID();
 			path.add(next);
 		}
-		return path;
+		return path.get( path.size() - 1 ) == d ? path : null ;	//The random strategy must terminate even it if can't find a path
 	}
 
 }
