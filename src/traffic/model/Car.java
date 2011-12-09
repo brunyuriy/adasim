@@ -33,15 +33,17 @@ public class Car {
 	 * it stays at the current node until a node with space is found
 	 */
 	public void tryMove(Graph g) {
-		if(!info.atDestination()) {
-			if(info.getDelay() == -1) { //Speed limit hasn't been found yet
-				info.setDelay(g.getDelayAtNode(info.getCurrentPosition()));
-			}
-			if(info.getDelay() == 0) { //Car is free to move if path is clear
-				moveCar(g);
-			} else { //Car must wait a certain number of turns to move again
-				logger.info("Car " + info.getCarNum() + " must wait at node " + info.getCurrentPosition() + " for " + info.getDelay() + " more turns");
-				info.setDelay(info.getDelay()-1);
+		if(info.getPath() != null) {
+			if(!info.atDestination()) {
+				if(info.getDelay() == -1) { //Speed limit hasn't been found yet
+					info.setDelay(g.getDelayAtNode(info.getCurrentPosition()));
+				}
+				if(info.getDelay() == 0) { //Car is free to move if path is clear
+					moveCar(g);
+				} else { //Car must wait a certain number of turns to move again
+					logger.info("Car " + info.getCarNum() + " must wait at node " + info.getCurrentPosition() + " for " + info.getDelay() + " more turns");
+					info.setDelay(info.getDelay()-1);
+				}
 			}
 		}
 	}
@@ -64,10 +66,17 @@ public class Car {
 	 * The car will attempt to follow this path to its destination
 	 * until an obstacle prevents it from doing so
 	 */
-	public void makePath(Graph g) {
-		info.setPath(cs.getPath(g, info.getStartNode(), info.getEndNode()));
-		logger.info("Car " + info.getCarNum() + " is at node " + info.getCurrentPosition());
-		logger.info("The path for car " + info.getCarNum() + " is " + info.getPath());
+	public boolean makePath(Graph g) {
+		List<Integer> path = cs.getPath(g, info.getStartNode(), info.getEndNode());
+		info.setPath(path);
+		if(path != null) {
+			logger.info("Car " + info.getCarNum() + " is at node " + info.getCurrentPosition());
+			logger.info("The path for car " + info.getCarNum() + " is " + info.getPath());
+			return true;
+		} else {
+			logger.info("Car " + info.getCarNum() + " cannot reach its destination and will stay at its starting position");
+			return false;
+		}
 	}
 	
 	/**

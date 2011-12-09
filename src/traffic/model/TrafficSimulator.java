@@ -21,13 +21,18 @@ public class TrafficSimulator{
 		if ( c == null ) throw new IllegalArgumentException( "Cars must not be null" );
 		this.graph = g;
 		this.cars = c;
-		//setPaths();
+		setPathsandLocation();
 	}
 	
 	//Uses the previously specified algorithm to create paths for each car on the graph
-	private void setPaths() {
+	private void setPathsandLocation() {
+		List<Integer> removals = new ArrayList<Integer>();
 		for(Car c: cars) {
-			c.makePath(graph);
+			if(c.makePath(graph)) {
+				graph.addCarAtNode(c.getCarNumber(), c.getCurrent());
+			} else {
+				removals.add(c.getCarNumber());
+			}
 		}
 	}
 	
