@@ -107,5 +107,12 @@ public class Graph {
 	public List<GraphNode> getNodes() {
 		return new ArrayList<GraphNode>(nodes);
 	}
+	
+	public GraphNode getNode( int id ) {
+		for ( GraphNode node : nodes ) {
+			if ( node.getID() == id ) return node;
+		}
+		return null;
+	}
 
 }

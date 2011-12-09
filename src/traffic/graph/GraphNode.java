@@ -19,15 +19,25 @@ public class GraphNode {
 	private int nodeNum; //The number of this node on the graph
 	private List<Integer> cars; //The cars at this node
 	private SpeedStrategy ss; //The strategy by which the speed changes
-	private int delay; //The time a car must wait at this node
+	private int delay; //The basic delay of this node. To be modified by the speed strategy
 	
+	/**
+	 * Creates a node with delay 1.
+	 * @param n
+	 * @param s
+	 */
 	public GraphNode(int n, SpeedStrategy s) {
+		this(n, s, 1);
+	}
+	
+	public GraphNode(int n, SpeedStrategy s, int delay ) {
 		nodeNum = n;
 		outgoing = new HashSet<GraphNode>();
 		cars = new ArrayList<Integer>();
 		ss = s;
-		delay = ss.getDelay(cars.size());
+		this.delay = delay;
 	}
+	
 	
 	/**
 	 * Adds an edge from this node to the given node
@@ -85,6 +95,10 @@ public class GraphNode {
 	 */
 	public int getDelay() {
 		return delay;
+	}
+	
+	public int getCurrentDelay() {
+		return delay + ss.getDelay( cars.size() );
 	}
 	
 	/**
