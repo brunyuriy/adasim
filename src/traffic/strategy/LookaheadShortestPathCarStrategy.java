@@ -14,7 +14,12 @@
 package traffic.strategy;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
+import java.util.Set;
+import java.util.Stack;
 
 import traffic.graph.Graph;
 import traffic.graph.GraphNode;
@@ -39,36 +44,70 @@ public class LookaheadShortestPathCarStrategy implements CarStrategy {
 	 * Uses Dijkstra's algorithm to find the shortest path from one node to the end
 	 * Returns a list corresponding to the path for the car to take
 	 */
-	public List<Integer> getPath(Graph g, int currentNode, int destNode ) {
-		int [] dist = new int [g.getNumNodes()];
-		int [] prev = new int [g.getNumNodes()];
-		List<Integer>[] paths = new List[g.getNumNodes()];
-		boolean [] visited = new boolean [g.getNumNodes()];
-		for (int i=0; i<dist.length; i++) {
-			dist[i] = Integer.MAX_VALUE;
-			paths[i] = null;
-			prev[i] = Integer.MAX_VALUE;
-		}
-		dist[currentNode] = 0;
-		paths[currentNode] = new ArrayList<Integer>();
-		for (int i=0; i<dist.length; i++) {
-			int next = minVertex(dist, visited);
-			if ( next == -1 ) continue;	//we have an unreachable target
-			visited[next] = true;
-			for ( GraphNode neighbor : g.getNeighbors(next) ) {
-/*				if ( visited[neighbor] ) continue;
-				int nDist = getDelay( g, neighbor );
-				int tempDist = dist[next] + nDist;
-				if ( tempDist < dist[neighbor] ) {
-					dist[neighbor] = tempDist;
-					prev[neighbor] = next;
-					paths[neighbor] = extendPath(paths[next], neighbor );
-				}*/
-			}
-	   }
-	   return paths[destNode];
+	/*
+	 * BFS doesn't work, because of node/edge weights. Dijkstra is pretty
+	 * much BFS with weights. 
+	 * To implement Dijkstra correctly and easily we need to map the nodes to 
+	 * indeces in an array and then we can relatively easily use the standard
+	 * algorithm with path reconstruction.
+	 * The map should be easy based on a list or something.
+	 */
+	public List<Integer> getPath(Graph g, int source, int target ) {
+
+		return dijkstra(g, source, target, lookahead );
 	}
 	
+	/**
+	 * @param g
+	 * @param source
+	 * @param target
+	 * @param l
+	 */
+	private List<Integer> dijkstra(Graph g, int source, int target, int l) {
+		int size = g.getNodes().size();
+		int[] dist = new int[size];
+		int[] previous = new int[size];
+		Set<Integer> q = new HashSet<Integer>();
+		
+		init( dist, previous, source, q );
+		while( !q.isEmpty() ) {
+			int current = getMin(q, dist);
+		}
+		
+		
+		return null;
+	}
+
+	/**
+	 * Computes the array index of the smallest element
+	 * @param q
+	 * @return
+	 */
+	private int getMin(Set<Integer> q, int[] dist) {
+		int min = 0;
+		for ( int i : q ) {
+			if ( min > dist[i] ) min = i;
+		}
+		return min;
+	}
+
+	/**
+	 * @param dist
+	 * @param previous
+	 * @param source
+	 */
+	private void init(int[] dist, int[] previous, int source, Set<Integer> q) {
+		for ( int i = 0; i < dist.length; i++ ) {
+			if ( i == source ) {
+				dist[i] = 0;
+			} else {
+				dist[i] = Integer.MAX_VALUE;
+			}
+			previous[i] = -1;
+			q.add(i);
+		}
+	}
+
 	/**
 	 * @param list
 	 * @param neighbor
