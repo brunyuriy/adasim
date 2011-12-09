@@ -44,16 +44,7 @@ public class LookaheadShortestPathCarStrategy implements CarStrategy {
 	 * Uses Dijkstra's algorithm to find the shortest path from one node to the end
 	 * Returns a list corresponding to the path for the car to take
 	 */
-	/*
-	 * BFS doesn't work, because of node/edge weights. Dijkstra is pretty
-	 * much BFS with weights. 
-	 * To implement Dijkstra correctly and easily we need to map the nodes to 
-	 * indeces in an array and then we can relatively easily use the standard
-	 * algorithm with path reconstruction.
-	 * The map should be easy based on a list or something.
-	 */
 	public List<Integer> getPath(Graph g, int source, int target ) {
-
 		return dijkstra(g, source, target, lookahead );
 	}
 	
@@ -71,11 +62,50 @@ public class LookaheadShortestPathCarStrategy implements CarStrategy {
 		
 		init( dist, previous, source, q );
 		while( !q.isEmpty() ) {
-			int current = getMin(q, dist);
+			int current = getIndexOfMin(q, dist);
+			if ( dist[current] == Integer.MAX_VALUE ) break;
+			q.remove( current );
+			
+			for ( GraphNode node : g.getNodes().get(current).getNeighbors() ) {
+				int t = dist[current] + node.getDelay();	//TODO: modify this for lookahead values
+				int thisIndex = getIndex( g.getNodes() , node );
+				if ( t < dist[ thisIndex ] ) {
+					dist[thisIndex] = t;
+					previous[thisIndex] = current;
+				}
+			}
 		}
-		
-		
-		return null;
+		return reconstructPath( previous, source, target );
+	}
+
+	/**
+	 * @param previous
+	 * @param source
+	 * @param target
+	 * @return
+	 */
+	private List<Integer> reconstructPath(int[] previous, int source, int target) {
+		if ( previous[target] == -1 ) return null; //no path
+		LinkedList<Integer> path = new LinkedList<Integer>();
+		int current = target;
+		do {
+			path.push( current );
+			current = previous[current];
+		} while ( current != source && previous[current] != -1 );
+		return path;
+	}
+
+	/**
+	 * @param nodes
+	 * @param node
+	 * @return
+	 */
+	private int getIndex(List<GraphNode> nodes, GraphNode node) {
+		for ( int i =0 ; i < nodes.size() ; i++ ) {
+			if ( nodes.get(i).equals( node ) ) return i;
+		}
+			
+		return -1;
 	}
 
 	/**
@@ -83,10 +113,10 @@ public class LookaheadShortestPathCarStrategy implements CarStrategy {
 	 * @param q
 	 * @return
 	 */
-	private int getMin(Set<Integer> q, int[] dist) {
-		int min = 0;
+	private int getIndexOfMin(Set<Integer> q, int[] dist) {
+		int min = q.iterator().next();
 		for ( int i : q ) {
-			if ( min > dist[i] ) min = i;
+			if ( dist[min] > dist[i] ) min = i;
 		}
 		return min;
 	}
@@ -107,45 +137,5 @@ public class LookaheadShortestPathCarStrategy implements CarStrategy {
 			q.add(i);
 		}
 	}
-
-	/**
-	 * @param list
-	 * @param neighbor
-	 * @return
-	 */
-	private List<Integer> extendPath(List<Integer> list, int neighbor) {
-		List<Integer> copy = new ArrayList<Integer>(list);
-		copy.add(neighbor);
-		return copy;
-	}
-
-	/**
-	 * @param g
-	 * @param neighbor
-	 * @return
-	 */
-	private int getDelay(Graph g, int neighbor) {
-		GraphNode n;
-		for ( GraphNode gn : g.getNodes() ) {
-			if ( gn.getID() == neighbor ) {
-				//return gn.getDelay();
-				return 1;
-			}
-		}
-		return Integer.MAX_VALUE;
-	}
-
-	//Finds the closest vertex on the graph from the current one
-	private int minVertex (int [] dist, boolean [] v) {
-		int x = Integer.MAX_VALUE;
-		int y = -1;
-	    for (int i=0; i<dist.length; i++) {
-	    	if (!v[i] && dist[i]<x) {
-	    		y=i;
-	        	x=dist[i];
-	        }
-	    }
-	    return y;
-	}	
 
 }

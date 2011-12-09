@@ -38,7 +38,7 @@ public class LookaheadShortestPathCarStrategyTest {
 	
 	@Before
 	public void setUp() {
-		strategy = new LookaheadShortestPathCarStrategy(3);
+		strategy = new LookaheadShortestPathCarStrategy(0);
 	}
 	
 	@Test
@@ -46,8 +46,8 @@ public class LookaheadShortestPathCarStrategyTest {
 		Graph g = SimulationFactory.buildSimulator( new File("resources/test/lookahead-test.xml") ).getGraph();
 		List<Integer> path = strategy.getPath(g, 1, 5);
 		assertNotNull( "No path found", path );
-		assertEquals( "Path too short", 4, path.size() );
-		assertEquals( 6, (int)path.get(3) );
+		assertEquals( "Path too short", 2, path.size() );
+		assertEquals( 6, (int)path.get(0) );
 	}
 
 }
