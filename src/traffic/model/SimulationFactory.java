@@ -220,13 +220,16 @@ final public class SimulationFactory {
 			Element root = doc.getRootElement();
 			Element carChild = root.getChild("cars");
 			if ( carChild == null ) throw new ConfigurationException( "No <cars> declaration found." );
-			//Element carList = carChild.get(0);
 			@SuppressWarnings("unchecked")
 			List<Element> carNodes = carChild.getChildren("car");
 			if ( carNodes.size() < 1 ) throw new ConfigurationException( "Simulation must have at least one <car>" );
-			Class<?> cls = Class.forName(carChild.getAttributeValue("default_strategy"));
-			CarStrategy cs = (CarStrategy) cls.newInstance();
-			//TODO: deal with invalid default strategies
+			CarStrategy cs = null;
+			try {
+				Class<?> cls = Class.forName(carChild.getAttributeValue("default_strategy"));
+				cs = (CarStrategy) cls.newInstance();
+			} catch (Exception e ) {
+				throw new ConfigurationException( e.getMessage() );
+			}
 			List<Car> cars = new ArrayList<Car>();
 			for ( Element car : carNodes ) {
 				Car c = buildCar( car, cs, g.getNodes() );
@@ -252,12 +255,10 @@ final public class SimulationFactory {
 			int end = Integer.parseInt(car.getAttributeValue("end"));
 			int id = Integer.parseInt(car.getAttributeValue("id"));
 			
-			if ( !isValidNode( start, nodes ) ) {
-				logger.warn( "Start node " + start + " for car " + id + " does not exist");
-				return null;
-			}
-			if ( !isValidNode( end, nodes ) ) { 
-				logger.warn( "End node " + end + " for car " + id + " does not exist");
+			try {
+				checkEndPoint(nodes, start, id, "Start" );
+				checkEndPoint(nodes, end, id, "End" );
+			} catch ( ConfigurationException e ) {
 				return null;
 			}
 			
@@ -284,6 +285,19 @@ final public class SimulationFactory {
 			e.printStackTrace();
 		} 
 		return null;
+	}
+
+	/**
+	 * @param nodes
+	 * @param end
+	 * @param id
+	 * @throws ConfigurationException 
+	 */
+	private void checkEndPoint(List<GraphNode> nodes, int end, int id, String s) throws ConfigurationException {
+		if ( !isValidNode( end, nodes ) ) { 
+			logger.warn( s + " node " + end + " for car " + id + " does not exist");
+			throw new ConfigurationException("");
+		}
 	}
 
 	/**

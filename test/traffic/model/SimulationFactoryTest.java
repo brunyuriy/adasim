@@ -42,11 +42,6 @@ public class SimulationFactoryTest {
 	}
 	
 	@Test
-	public void testBadConfig() throws JDOMException, IOException, ConfigurationException {
-		assertEquals(SimulationFactory.buildSimulator( new File("resources/test/badconfig.xml") ), null);
-	}
-	
-	@Test
 	public void testStart() throws JDOMException, IOException, ConfigurationException {
 		List<Car> cars = SimulationFactory.buildSimulator( new File("resources/test/config.xml" )).getCars();
 		assertEquals(cars.get(0).getCurrent(), 0);
@@ -73,6 +68,12 @@ public class SimulationFactoryTest {
 	}
 	
 	@Test(expected=ConfigurationException.class)
+	public void invalidDefaultCarStrategyThrows() throws JDOMException, IOException, ConfigurationException {
+		List<Car> cars = SimulationFactory.buildSimulator( new File("resources/test/illegal-default-car-strategy.xml" )).getCars();
+	}
+
+	
+	@Test(expected=ConfigurationException.class)
 	public void noCarThrows() throws JDOMException, IOException, ConfigurationException {
 		List<Car> cars = SimulationFactory.buildSimulator( new File("resources/test/no-car.xml" )).getCars();
 		fail( "This should throw a meaningful exception to be handled by main()" );
@@ -96,11 +97,11 @@ public class SimulationFactoryTest {
 	@Test
 	public void testStrategies() throws FileNotFoundException, ConfigurationException {
 		Graph g = SimulationFactory.buildSimulator( new File("resources/test/config.xml" ) ).getGraph();
-		assertEquals(g.getDelayAtNode(6), 0);
+		assertEquals(g.getDelayAtNode(6), 1);
 		g.addCarAtNode(0, 6);
 		g.addCarAtNode(1, 6);
 		assertEquals(g.getDelayAtNode(6), 4); //Tests Quadratic Speed Strategy
-		assertEquals(g.getDelayAtNode(1), 0);
+		assertEquals(g.getDelayAtNode(1), 1);
 		g.addCarAtNode(2, 1);
 		g.addCarAtNode(3, 1);
 		assertEquals(g.getDelayAtNode(1), 2); //Tests Linear Speed Strategy
