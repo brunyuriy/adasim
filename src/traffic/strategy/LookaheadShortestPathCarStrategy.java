@@ -38,7 +38,7 @@ public class LookaheadShortestPathCarStrategy implements CarStrategy {
 	}
 	
 	public List<Integer> getPath(Graph g, int source, int target ) {
-		return dijkstra(g, g.getNode(source), g.getNode(target), lookahead );
+		return dijkstra(g.getNodes(), g.getNode(source), g.getNode(target), lookahead );
 	}
 	
 	/**
@@ -47,29 +47,29 @@ public class LookaheadShortestPathCarStrategy implements CarStrategy {
 	 * @param target ID of the target node
 	 * @param l
 	 */
-	private List<Integer> dijkstra(Graph g, GraphNode source, GraphNode target, int l) {
-		int size = g.getNodes().size();
+	private List<Integer> dijkstra(List<GraphNode> nodes, GraphNode source, GraphNode target, int l) {
+		int size = nodes.size();
 		int[] dist = new int[size];
 		int[] previous = new int[size];
 		Set<Integer> q = new HashSet<Integer>();
 		
-		init( dist, previous, getIndex(g.getNodes(), source) , q );
+		init( dist, previous, getIndex(nodes, source) , q );
 		while( !q.isEmpty() ) {
 			int current = getIndexOfMin(q, dist);
 			if ( dist[current] == Integer.MAX_VALUE ) break;
 			q.remove( current );
 			
-			for ( GraphNode node : g.getNodes().get(current).getNeighbors() ) {
-				int depth = lookahead; //reconstructPath(previous, source, g.getNodes().get(current).getID() ).size();
+			for ( GraphNode node : nodes.get(current).getNeighbors() ) {
+				int depth = lookahead; //reconstructPath(previous, nodes, source, nodes.get(current) ).size();
 				int t = dist[current] + ( depth < lookahead ? node.getCurrentDelay() : node.getDelay() );
-				int thisIndex = getIndex( g.getNodes() , node );
+				int thisIndex = getIndex( nodes, node );
 				if ( t < dist[ thisIndex ] ) {
 					dist[thisIndex] = t;
 					previous[thisIndex] = current;
 				}
 			}
 		}
-		return reconstructPath( previous, g.getNodes(), source, target );
+		return reconstructPath( previous, nodes, source, target );
 	}
 
 	/**
