@@ -60,8 +60,8 @@ public class LookaheadShortestPathCarStrategy implements CarStrategy {
 			q.remove( current );
 			
 			for ( GraphNode node : nodes.get(current).getNeighbors() ) {
-				int depth = lookahead; //reconstructPath(previous, nodes, source, nodes.get(current) ).size();
-				int t = dist[current] + ( depth < lookahead ? node.getCurrentDelay() : node.getDelay() );
+				int depth = getCurrentDepth(previous, nodes, source, nodes.get(current) ); 
+				int t = dist[current] + ( depth <= lookahead ? node.getCurrentDelay() : node.getDelay() );
 				int thisIndex = getIndex( nodes, node );
 				if ( t < dist[ thisIndex ] ) {
 					dist[thisIndex] = t;
@@ -70,6 +70,20 @@ public class LookaheadShortestPathCarStrategy implements CarStrategy {
 			}
 		}
 		return reconstructPath( previous, nodes, source, target );
+	}
+
+	/**
+	 * @param previous
+	 * @param nodes
+	 * @param source
+	 * @param graphNode
+	 * @return
+	 */
+	private int getCurrentDepth(int[] previous, List<GraphNode> nodes,
+			GraphNode source, GraphNode current) {
+		List<Integer> path = reconstructPath(previous, nodes, source, current );
+		if ( path == null ) return 1;
+		else return path.size() + 1;
 	}
 
 	/**

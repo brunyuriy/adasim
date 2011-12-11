@@ -91,10 +91,20 @@ public class LookaheadShortestPathCarStrategyTest {
 		strategy = new LookaheadShortestPathCarStrategy(1);
 		List<Integer> path = strategy.getPath(g, 6, 4);
 		assertNotNull( "No path found", path );
-		assertEquals( "Path has wrong length", 2, path.size() );
-		assertEquals( 3, (int)path.get(0) );
-		assertEquals( 4, (int)path.get(1) );
+		assertEquals( "Path has wrong length", 3, path.size() );
+		assertEquals( 1, (int)path.get(0) );
+		assertEquals( 2, (int)path.get(1) );
 	}
 
+	@Test
+	public void findShortestPathFromStartWithWeightsLookahead2() throws JDOMException, IOException, ConfigurationException {
+		Graph g = SimulationFactory.buildSimulator( new File("resources/test/shortest-path-test-weights.xml") ).getGraph();
+		strategy = new LookaheadShortestPathCarStrategy(2);
+		List<Integer> path = strategy.getPath(g, 6, 4);
+		assertNotNull( "No path found", path );
+		assertEquals( "Path has wrong length", 2, path.size() );
+		assertEquals( 5, (int)path.get(0) );
+		assertEquals( 4, (int)path.get(1) );
+	}
 
 }
