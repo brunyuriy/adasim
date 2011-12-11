@@ -59,13 +59,41 @@ public class LookaheadShortestPathCarStrategyTest {
 	}
 	
 	@Test
+	public void findShortestPathFromStartNoWeightsRandom() throws JDOMException, IOException, ConfigurationException {
+		Graph g = SimulationFactory.buildSimulator( new File("resources/test/shortest-path-test-random-ids.xml") ).getGraph();
+		List<Integer> path = strategy.getPath(g, 21, 5);
+		assertNotNull( "No path found", path );
+		assertEquals( "Path too short", 2, path.size() );
+		assertEquals( 60, (int)path.get(0) );
+		path = strategy.getPath(g, 21, 8);
+		assertNotNull( "No path found", path );
+		assertEquals( "Path too short", 2, path.size() );
+		assertTrue( 3 == (int)path.get(0) || 12 == (int)path.get(0) );
+		path = strategy.getPath(g, 0, 8);
+		assertNotNull( "No path found", path );
+		assertEquals( "Path too short", 3, path.size() );
+		assertTrue( 3 == (int)path.get(1) || 5 == (int)path.get(1) );	
+	}
+	
+	@Test
 	public void findShortestPathFromStartWithWeights() throws JDOMException, IOException, ConfigurationException {
 		Graph g = SimulationFactory.buildSimulator( new File("resources/test/shortest-path-test-weights.xml") ).getGraph();
 		List<Integer> path = strategy.getPath(g, 6, 4);
 		assertNotNull( "No path found", path );
-		assertEquals( "Path too short", 3, path.size() );
+		assertEquals( "Path has wrong length", 3, path.size() );
 		assertEquals( 1, (int)path.get(0) );
 		assertEquals( 2, (int)path.get(1) );
+	}
+
+	@Test
+	public void findShortestPathFromStartWithWeightsLookahead1() throws JDOMException, IOException, ConfigurationException {
+		Graph g = SimulationFactory.buildSimulator( new File("resources/test/shortest-path-test-weights.xml") ).getGraph();
+		strategy = new LookaheadShortestPathCarStrategy(1);
+		List<Integer> path = strategy.getPath(g, 6, 4);
+		assertNotNull( "No path found", path );
+		assertEquals( "Path has wrong length", 2, path.size() );
+		assertEquals( 3, (int)path.get(0) );
+		assertEquals( 4, (int)path.get(1) );
 	}
 
 

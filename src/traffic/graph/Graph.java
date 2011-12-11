@@ -108,6 +108,10 @@ public class Graph {
 		return new ArrayList<GraphNode>(nodes);
 	}
 	
+	/**
+	 * @param id the ID value of this node
+	 * @return
+	 */
 	public GraphNode getNode( int id ) {
 		for ( GraphNode node : nodes ) {
 			if ( node.getID() == id ) return node;
