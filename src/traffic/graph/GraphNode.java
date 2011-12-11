@@ -5,7 +5,6 @@ package traffic.graph;
  * GraphNode represents the nodes that make up the graph
  */
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -78,7 +77,6 @@ public class GraphNode {
 	 */
 	public void addCar(int i) {
 		cars.add(i);
-		delay = ss.getDelay(cars.size());
 	}
 	
 	/**
@@ -87,7 +85,6 @@ public class GraphNode {
 	 */
 	public void removeCar(int i) {
 		cars.remove(cars.indexOf(i));
-		delay = ss.getDelay(cars.size());
 	}
 	
 	/**
@@ -142,5 +139,12 @@ public class GraphNode {
 		if (nodeNum != other.nodeNum)
 			return false;
 		return true;
+	}
+
+	/**
+	 * @return the cars
+	 */
+	public List<Integer> getCars() {
+		return cars;
 	}
 }
