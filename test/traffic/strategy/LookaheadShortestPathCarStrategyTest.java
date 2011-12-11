@@ -48,6 +48,14 @@ public class LookaheadShortestPathCarStrategyTest {
 		assertNotNull( "No path found", path );
 		assertEquals( "Path too short", 2, path.size() );
 		assertEquals( 6, (int)path.get(0) );
+		path = strategy.getPath(g, 1, 4);
+		assertNotNull( "No path found", path );
+		assertEquals( "Path too short", 2, path.size() );
+		assertTrue( 3 == (int)path.get(0) || 2 == (int)path.get(0) );
+		path = strategy.getPath(g, 0, 4);
+		assertNotNull( "No path found", path );
+		assertEquals( "Path too short", 3, path.size() );
+		assertTrue( 3 == (int)path.get(1) || 5 == (int)path.get(1) );	
 	}
 
 }
