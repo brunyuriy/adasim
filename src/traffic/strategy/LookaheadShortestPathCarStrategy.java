@@ -13,13 +13,10 @@
  */
 package traffic.strategy;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 import java.util.Set;
-import java.util.Stack;
 
 import traffic.graph.Graph;
 import traffic.graph.GraphNode;
@@ -40,34 +37,31 @@ public class LookaheadShortestPathCarStrategy implements CarStrategy {
 		this.lookahead = lookahead;
 	}
 	
-	/**
-	 * Uses Dijkstra's algorithm to find the shortest path from one node to the end
-	 * Returns a list corresponding to the path for the car to take
-	 */
 	public List<Integer> getPath(Graph g, int source, int target ) {
-		return dijkstra(g, source, target, lookahead );
+		return dijkstra(g, g.getNode(source), g.getNode(target), lookahead );
 	}
 	
 	/**
 	 * @param g
-	 * @param source
-	 * @param target
+	 * @param source ID of the source node
+	 * @param target ID of the target node
 	 * @param l
 	 */
-	private List<Integer> dijkstra(Graph g, int source, int target, int l) {
+	private List<Integer> dijkstra(Graph g, GraphNode source, GraphNode target, int l) {
 		int size = g.getNodes().size();
 		int[] dist = new int[size];
 		int[] previous = new int[size];
 		Set<Integer> q = new HashSet<Integer>();
 		
-		init( dist, previous, source, q );
+		init( dist, previous, getIndex(g.getNodes(), source) , q );
 		while( !q.isEmpty() ) {
 			int current = getIndexOfMin(q, dist);
 			if ( dist[current] == Integer.MAX_VALUE ) break;
 			q.remove( current );
 			
 			for ( GraphNode node : g.getNodes().get(current).getNeighbors() ) {
-				int t = dist[current] + node.getDelay();	//TODO: modify this for lookahead values
+				int depth = lookahead; //reconstructPath(previous, source, g.getNodes().get(current).getID() ).size();
+				int t = dist[current] + ( depth < lookahead ? node.getCurrentDelay() : node.getDelay() );
 				int thisIndex = getIndex( g.getNodes() , node );
 				if ( t < dist[ thisIndex ] ) {
 					dist[thisIndex] = t;
@@ -75,23 +69,24 @@ public class LookaheadShortestPathCarStrategy implements CarStrategy {
 				}
 			}
 		}
-		return reconstructPath( previous, source, target );
+		return reconstructPath( previous, g.getNodes(), source, target );
 	}
 
 	/**
 	 * @param previous
-	 * @param source
-	 * @param target
+	 * @param ID of source node
+	 * @param ID of target node
 	 * @return
 	 */
-	private List<Integer> reconstructPath(int[] previous, int source, int target) {
-		if ( previous[target] == -1 ) return null; //no path
+	private List<Integer> reconstructPath(int[] previous, List<GraphNode> nodes, GraphNode source, GraphNode target) {
+		int ti = getIndex(nodes, target);
+		if ( previous[ ti ] == -1 ) return null; //no path
 		LinkedList<Integer> path = new LinkedList<Integer>();
-		int current = target;
+		int current = ti;
 		do {
-			path.push( current );
+			path.push( nodes.get(current).getID() );
 			current = previous[current];
-		} while ( current != source && previous[current] != -1 );
+		} while ( current != getIndex(nodes, source) && previous[current] != -1 );
 		return path;
 	}
 
