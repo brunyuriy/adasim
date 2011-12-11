@@ -114,9 +114,9 @@ final public class SimulationFactory {
 		List<GraphNode> nodes = new ArrayList<GraphNode>( nodeDeclarations.size() );
 		for( Element node : nodeDeclarations ) {
 			int id = Integer.parseInt( node.getAttributeValue( "id" ) );
-			SpeedStrategy ss = buildStrategy( node, defaultStrategy );
 			if ( hasValidNeighbors(node) ) {
-				nodes.add( new GraphNode( id, ss) );
+				SpeedStrategy ss = buildStrategy( node, defaultStrategy );
+				nodes.add( new GraphNode( id, ss, getDelay(node )) );
 			}
 		}
 		for ( Element node: nodeDeclarations ) {
@@ -128,6 +128,29 @@ final public class SimulationFactory {
 		return nodes;		
 	}
 	
+	/**
+	 * @param node
+	 * @return
+	 * @throws ConfigurationException 
+	 */
+	private int getDelay(Element node) {
+		String d = node.getAttributeValue("delay");
+		if ( d == null ) return 1;
+		else {
+			try {
+				int i = Integer.parseInt(d);
+				if ( i < 1 ) {
+					logger.warn( "Delay on node " + node.getAttribute("id") + " must be > 0 " );
+					return 1;
+				}
+				return i;
+			} catch (NumberFormatException e ) {
+				logger.warn( "Delay on node " + node.getAttribute("id") + " is not an integer. Defaulting to 1." );
+				return 1;
+			}
+		}
+	}
+
 	/**
 	 * @param nodes
 	 * @return

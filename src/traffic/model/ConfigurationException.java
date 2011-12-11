@@ -22,5 +22,13 @@ public class ConfigurationException extends Exception {
 	 */
 	public ConfigurationException(String string) {
 		super(string);
+	}
+
+	/**
+	 * @param arg0
+	 */
+	public ConfigurationException(Throwable arg0) {
+		super(arg0);
+		// TODO Auto-generated constructor stub
 	}	
 }

@@ -157,4 +157,22 @@ public class SimulationFactoryTest {
 		//this passes when no unexpected exceptions are thrown
 	}
 
+	@Test
+	public void setsDelayCorrectly() throws FileNotFoundException, ConfigurationException {
+		Graph g = SimulationFactory.buildSimulator( new File("resources/test/config-weights.xml")).getGraph();
+		assertEquals( 7, g.getNodes().get(1).getDelay() );
+	}
+
+	@Test()
+	public void invalidDelayDefaults() throws FileNotFoundException, ConfigurationException {
+		Graph g = SimulationFactory.buildSimulator( new File("resources/test/config-weights-invalid.xml")).getGraph();
+		assertEquals( 1, g.getNodes().get(1).getDelay() );
+	}
+
+	@Test()
+	public void negativeDelayDefaults() throws FileNotFoundException, ConfigurationException {
+		Graph g = SimulationFactory.buildSimulator( new File("resources/test/config-weights-invalid2.xml")).getGraph();
+		assertEquals( 1, g.getNodes().get(1).getDelay() );
+	}
+
 }
