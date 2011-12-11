@@ -1,5 +1,5 @@
 <simulation>
-	<cars default_strategy="traffic.strategy.DijkstraCarStrategy">
+	<cars default_strategy="traffic.strategy.LookaheadShortestPathCarStrategy">
 		<car id="0" start="0" end="2" />
 		<!-- this car has an invalid starting point -->
 		<car id="1" start="42" end="7" />

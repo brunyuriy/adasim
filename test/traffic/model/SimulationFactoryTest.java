@@ -27,7 +27,7 @@ import org.junit.Test;
 
 import traffic.graph.Graph;
 import traffic.graph.GraphNode;
-import traffic.strategy.DijkstraCarStrategy;
+import traffic.strategy.LookaheadShortestPathCarStrategy;
 import traffic.strategy.QuadraticSpeedStrategy;
 
 
@@ -64,7 +64,7 @@ public class SimulationFactoryTest {
 	@Test
 	public void invalidCarStrategyDefaultsCorrectly() throws JDOMException, IOException, ConfigurationException {
 		List<Car> cars = SimulationFactory.buildSimulator( new File("resources/test/invalid-strategy.xml" )).getCars();
-		assertEquals( DijkstraCarStrategy.class, cars.get(1).getStrategy().getClass() );
+		assertEquals( LookaheadShortestPathCarStrategy.class, cars.get(1).getStrategy().getClass() );
 	}
 	
 	@Test(expected=ConfigurationException.class)
