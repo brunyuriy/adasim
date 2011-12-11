@@ -97,14 +97,14 @@ public class SimulationFactoryTest {
 	@Test
 	public void testStrategies() throws FileNotFoundException, ConfigurationException {
 		Graph g = SimulationFactory.buildSimulator( new File("resources/test/config.xml" ) ).getGraph();
-		assertEquals(g.getDelayAtNode(6), 1);
+		assertEquals(g.getNode(6).getCurrentDelay(), 1);
 		g.addCarAtNode(0, 6);
 		g.addCarAtNode(1, 6);
-		assertEquals(g.getDelayAtNode(6), 4); //Tests Quadratic Speed Strategy
-		assertEquals(g.getDelayAtNode(1), 1);
+		assertEquals(5, g.getNode(6).getCurrentDelay()); //Tests Quadratic Speed Strategy
+		assertEquals(1, g.getNode(1).getCurrentDelay());
 		g.addCarAtNode(2, 1);
 		g.addCarAtNode(3, 1);
-		assertEquals(g.getDelayAtNode(1), 2); //Tests Linear Speed Strategy
+		assertEquals(3, g.getNode(1).getCurrentDelay() ); //Tests Linear Speed Strategy
 	}
 	
 	@Test
@@ -163,6 +163,12 @@ public class SimulationFactoryTest {
 		assertEquals( 7, g.getNodes().get(1).getDelay() );
 	}
 
+	@Test
+	public void setsDelayCorrectly2() throws FileNotFoundException, ConfigurationException {
+		Graph g = SimulationFactory.buildSimulator( new File("resources/test/shortest-path-test-weights.xml")).getGraph();
+		assertEquals( 4, g.getNodes().get(3).getDelay() );
+	}
+
 	@Test()
 	public void invalidDelayDefaults() throws FileNotFoundException, ConfigurationException {
 		Graph g = SimulationFactory.buildSimulator( new File("resources/test/config-weights-invalid.xml")).getGraph();
@@ -175,4 +181,10 @@ public class SimulationFactoryTest {
 		assertEquals( 1, g.getNodes().get(1).getDelay() );
 	}
 
+	@Test
+	public void nodesHaveAllCars() throws FileNotFoundException, ConfigurationException {
+		Graph g = SimulationFactory.buildSimulator( new File("resources/test/shortest-path-test-weights.xml")).getGraph();
+		assertEquals( 3, g.getNode(2).getCars().size() );
+		
+	}
 }
