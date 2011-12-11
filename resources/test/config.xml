@@ -1,5 +1,5 @@
 <simulation>
-	<cars default_strategy="traffic.strategy.DijkstraCarStrategy">
+	<cars default_strategy="traffic.strategy.LookaheadShortestPathCarStrategy">
 		<car id="0" start="0" end="2" />
 		<car id="1" start="4" end="7" />
 		<car id="2" start="3" end="9" strategy="traffic.strategy.RandomCarStrategy" />
