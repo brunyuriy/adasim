@@ -250,12 +250,13 @@ final public class SimulationFactory {
 			try {
 				Class<?> cls = Class.forName(carChild.getAttributeValue("default_strategy"));
 				cs = (CarStrategy) cls.newInstance();
+				cs.setGraph(g);
 			} catch (Exception e ) {
 				throw new ConfigurationException( e.getMessage() );
 			}
 			List<Car> cars = new ArrayList<Car>();
 			for ( Element car : carNodes ) {
-				Car c = buildCar( car, cs, g.getNodes() );
+				Car c = buildCar( car, cs, g );
 				if ( c != null ) cars.add( c );
 			}
 			return cars;
@@ -272,11 +273,12 @@ final public class SimulationFactory {
 	 * @return
 	 * @throws ConfigurationException 
 	 */
-	private Car buildCar(Element car, CarStrategy defaultStrategy, List<GraphNode> nodes ) throws ConfigurationException {
+	private Car buildCar(Element car, CarStrategy defaultStrategy, Graph g ) throws ConfigurationException {
 		try {
 			int start = Integer.parseInt(car.getAttributeValue("start"));
 			int end = Integer.parseInt(car.getAttributeValue("end"));
 			int id = Integer.parseInt(car.getAttributeValue("id"));
+			List<GraphNode> nodes = g.getNodes();
 			
 			try {
 				checkEndPoint(nodes, start, id, "Start" );
@@ -291,6 +293,7 @@ final public class SimulationFactory {
 				try {
 					s = car.getAttributeValue("strategy");
 					cs = (CarStrategy) Class.forName(s).newInstance();
+					cs.setGraph(g);
 				} catch (Exception e) {
 					logger.warn( "CarStrategy " + s + " not found. Using default." );
 					cs = defaultStrategy;
