@@ -14,6 +14,7 @@
 
 package traffic.model;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 
 import org.junit.Test;
@@ -25,5 +26,11 @@ import static org.junit.Assert.*;
  *
  */
 public class TrafficSimulatorTest {
+	
+	@Test
+	public void zeroLengthPathTest() throws FileNotFoundException, ConfigurationException {
+		TrafficSimulator sim = SimulationFactory.buildSimulator( new File( "random.xml" ) );
+		while( !sim.takeSimulationStep() ) {}
+	}
 	
 }
