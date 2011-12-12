@@ -31,7 +31,7 @@ public class CarInfo {
 		carNum = num;
 		delay = -1;
 		finish = false;
-		path = new ArrayList<Integer>();
+		path = null;
 		noise = new RandomNoiseStrategy();
 	}
 	
