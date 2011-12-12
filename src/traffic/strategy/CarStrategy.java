@@ -12,12 +12,18 @@ import traffic.graph.GraphNode;
 
 public interface CarStrategy {
 	
-	public List<Integer> getPath(Graph g, int c, int d); //Creates the path for the car to follow
+	public List<Integer> getPath(int c, int d); //Creates the path for the car to follow
 	
 	/**
 	 * @return The next node according to the routing strategy. May be <code>null</code> 
 	 * if there is no next node.
 	 */
 	public GraphNode getNextNode();
+	
+	/**
+	 * Required setter to configure the strategy with the graph to work on
+	 * @param g
+	 */
+	public void setGraph( Graph g );
 
 }
