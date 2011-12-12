@@ -58,6 +58,9 @@ public class Car {
 		info.setDelay(-1);
 		List<Integer> temp = info.getPath();
 		temp.remove(0);
+		if ( temp.size() == 0 ) { 
+			temp = null;
+		}
 		info.setPath(temp);
 	}
 	
@@ -105,7 +108,7 @@ public class Car {
 	 * Returns true if the car is at the end, false if not
 	 */
 	public boolean checkFinish() {
-		return info.atDestination();
+		return info.atDestination() || info.getPath() == null ;
 	}
 
 	/**
