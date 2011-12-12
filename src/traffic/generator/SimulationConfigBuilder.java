@@ -29,7 +29,6 @@ import org.jdom.Element;
 class SimulationConfigBuilder {
 	
 	private static final String DEFAULT_SPEED_STRATEGY = "traffic.strategy.LinearSpeedStrategy";
-	private static final String DEFAULT_CAR_STRATEGY = "traffic.strategy.DijkstraCarStrategy";
 	
 	private DefaultJDOMFactory factory = new DefaultJDOMFactory();
 	private Random random;
@@ -57,7 +56,7 @@ class SimulationConfigBuilder {
 	 */
 	Content buildCars(int numCars, List<String> strategies, int numNodes) {
 		Element cars = factory.element( "cars" );
-		cars.setAttribute( "default_strategy", DEFAULT_CAR_STRATEGY);
+		cars.setAttribute( "default_strategy", randomStrategy(strategies) );
 		for( int i = 0; i < numCars; i++ ) {
 			cars.addContent( buildCar(strategies, i, numNodes) );
 		}
@@ -118,7 +117,7 @@ class SimulationConfigBuilder {
 		Element graph = factory.element( "graph" );
 		graph.setAttribute( "default_strategy", DEFAULT_SPEED_STRATEGY);
 		for( int i = 0; i < numNodes; i++ ) {
-			graph.addContent( buildNode(i, numNodes, degreeProb) );
+			graph.addContent( buildNode(i, numNodes, degreeProb, nodeDelay) );
 		}
 		return graph;
 	}
@@ -129,7 +128,7 @@ class SimulationConfigBuilder {
 	 * @param degreeProb TODO
 	 * @param graph
 	 */
-	Element buildNode( int i, int numNodes, double degreeProb) {
+	Element buildNode( int i, int numNodes, double degreeProb, int[] nodeDelay) {
 		Element node = factory.element( "node" );
 		node.setAttribute( "id", "" + i );
 		String neighbors;
@@ -137,7 +136,16 @@ class SimulationConfigBuilder {
 			neighbors = randomizeNeighbors(i, numNodes, degreeProb );
 		} while (neighbors.length() == 0 );
 		node.setAttribute( "neighbors", neighbors );
+		node.setAttribute( "delay", "" + randomizeDelay(nodeDelay) );
 		return node;
+	}
+
+	/**
+	 * @param nodeDelay
+	 * @return
+	 */
+	private int randomizeDelay(int[] nodeDelay) {
+		return random.nextInt( nodeDelay[1] - nodeDelay[0] + 1 ) + nodeDelay[0];
 	}
 
 	/**

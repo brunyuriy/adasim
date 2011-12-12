@@ -43,9 +43,10 @@ public class SimulationConfigBuilderTest {
 	
 	@Test
 	public void buildNode() {
-		Element node = builder.buildNode( 12, 20, 0.2 );
+		Element node = builder.buildNode( 12, 20, 0.2, new int[]{ 3, 5 } );
 		assertEquals( "Returned wrong node type", "node", node.getName() );
 		assertEquals( "Returned wrong node id", "12", node.getAttribute( "id" ).getValue() );
-		//TODO: check the neighbors
+		int delay = Integer.parseInt( node.getAttributeValue( "delay" ) );
+		assertTrue( delay >= 3 && delay <= 5 );
 	}
 }
