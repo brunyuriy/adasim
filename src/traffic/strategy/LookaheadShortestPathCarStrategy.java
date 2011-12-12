@@ -147,4 +147,13 @@ public class LookaheadShortestPathCarStrategy implements CarStrategy {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see traffic.strategy.CarStrategy#getNextNode()
+	 */
+	@Override
+	public GraphNode getNextNode() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
