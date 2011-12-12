@@ -25,7 +25,7 @@ import traffic.graph.GraphNode;
  * @author Jochen Wuttke - wuttkej@gmail.com
  *
  */
-public class LookaheadShortestPathCarStrategy implements CarStrategy {
+public class LookaheadShortestPathCarStrategy extends AbstractCarStrategy {
 	
 	private final int lookahead;
 	
@@ -37,8 +37,8 @@ public class LookaheadShortestPathCarStrategy implements CarStrategy {
 		this.lookahead = lookahead;
 	}
 	
-	public List<Integer> getPath(Graph g, int source, int target ) {
-		return dijkstra(g.getNodes(), g.getNode(source), g.getNode(target), lookahead );
+	public List<Integer> getPath(int source, int target ) {
+		return dijkstra(graph.getNodes(), graph.getNode(source), graph.getNode(target), lookahead );
 	}
 	
 	/**
