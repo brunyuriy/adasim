@@ -34,4 +34,13 @@ public class RandomCarStrategy implements CarStrategy {
 		return path.get( path.size() - 1 ) == d ? path : null ;	//The random strategy must terminate even it if can't find a path
 	}
 
+	/* (non-Javadoc)
+	 * @see traffic.strategy.CarStrategy#getNextNode()
+	 */
+	@Override
+	public GraphNode getNextNode() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
