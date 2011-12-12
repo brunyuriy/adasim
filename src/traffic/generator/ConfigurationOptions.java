@@ -34,6 +34,7 @@ final class ConfigurationOptions {
 	private int[] nodeDelay = { 0, 0 };
 	private List<String> strategies = new ArrayList<String>();
 	private File outputFile = new File( "generated-config.xml" );
+	private double oneWay = 0.01;
 	
 	static ConfigurationOptions parse( String[] args ) throws Exception {
 		ConfigurationOptions cfg = new ConfigurationOptions();
@@ -75,6 +76,9 @@ final class ConfigurationOptions {
 				cfg.strategies.add( s );
 			}
 		} else throw new Exception( "Argument --car-strategies is required" );
+		if ( opts.has( "one-way-prob" ) ) {
+			cfg.oneWay = Double.parseDouble( opts.valueOf( "one-way-prob").toString() );
+		} 
 	}
 
 	/**
@@ -87,7 +91,7 @@ final class ConfigurationOptions {
 			.describedAs( "nodes");
 		parser.acceptsAll( Arrays.asList( "D", "node-degree" ), "The desired average node degree" )
 			.withRequiredArg()
-			.describedAs( "prob" );
+			.describedAs( "deg" );
 		parser.acceptsAll(Arrays.asList( "d", "node-delay"), "Range of possible node delays" )
 			.withRequiredArg()
 			.describedAs( "min:max" );
@@ -100,6 +104,9 @@ final class ConfigurationOptions {
 		parser.acceptsAll( Arrays.asList( "o", "output-file" ) )
 			.withRequiredArg()
 			.describedAs( "file" );
+		parser.acceptsAll( Arrays.asList( "one-way-prob"), "Probability for a road to be a one-way street" )
+			.withRequiredArg()
+			.describedAs( "prob");
 		return parser;
 	}
 
@@ -143,6 +150,13 @@ final class ConfigurationOptions {
 	 */
 	File getOutputFile() {
 		return outputFile;
+	}
+
+	/**
+	 * @return the oneWay
+	 */
+	double getOneWayProbability() {
+		return oneWay;
 	}
 	
 }
