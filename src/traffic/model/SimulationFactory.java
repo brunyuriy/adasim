@@ -53,7 +53,7 @@ final public class SimulationFactory {
 		SAXBuilder b = new SAXBuilder(false);
 		doc = b.build( f );
 	}
-	
+
 	public static TrafficSimulator buildSimulator( String xmlString ) {
 		return null;
 	}
@@ -109,7 +109,7 @@ final public class SimulationFactory {
 			return null;
 		}
 	}
-	
+
 	private List<GraphNode> buildNodes( List<Element> nodeDeclarations, SpeedStrategy defaultStrategy ) {
 		List<GraphNode> nodes = new ArrayList<GraphNode>( nodeDeclarations.size() );
 		for( Element node : nodeDeclarations ) {
@@ -127,7 +127,7 @@ final public class SimulationFactory {
 		nodes = validate(nodes);
 		return nodes;		
 	}
-	
+
 	/**
 	 * @param node
 	 * @return
@@ -156,17 +156,32 @@ final public class SimulationFactory {
 	 * @return
 	 */
 	private List<GraphNode> validate(List<GraphNode> nodes) {
-		List<GraphNode> l = new ArrayList<GraphNode>();
+		List<GraphNode> l = new ArrayList<GraphNode>( nodes );
+		List<GraphNode> last;
+		do {
+			last = l;
+			l = reduce( last );
+		} while ( ! last.equals(l) );
+		return l;
+	}
+
+	/**
+	 * Removes nodes that have no neighbors, and removes links that point to invalid neighbors.
+	 * @param nodes
+	 * @return
+	 */
+	private List<GraphNode> reduce(List<GraphNode> nodes) {
+		 List<GraphNode> l = new ArrayList<GraphNode>();
 		for ( GraphNode node : nodes ) {
-			List<GraphNode> remaining = new ArrayList<GraphNode>();
+			boolean hasNeighbor = false;
 			for ( GraphNode i : node.getNeighbors() ) {
 				if ( nodes.contains( i ) ) {
-					remaining.add( i );
+					hasNeighbor = true;
 				} else {
 					node.removeEdge(i);
 				}
 			}
-			if ( remaining.size() > 0 ) {
+			if ( hasNeighbor ) {
 				l.add( node );
 			}
 		}
@@ -229,7 +244,7 @@ final public class SimulationFactory {
 			} catch (InstantiationException e) {
 			} catch (IllegalAccessException e) {
 			}
-			
+
 		}
 		return ( ss == null? defaultStrategy : ss );
 	}
@@ -279,14 +294,14 @@ final public class SimulationFactory {
 			int end = Integer.parseInt(car.getAttributeValue("end"));
 			int id = Integer.parseInt(car.getAttributeValue("id"));
 			List<GraphNode> nodes = g.getNodes();
-			
+
 			try {
 				checkEndPoint(nodes, start, id, "Start" );
 				checkEndPoint(nodes, end, id, "End" );
 			} catch ( ConfigurationException e ) {
 				return null;
 			}
-			
+
 			CarStrategy cs = defaultStrategy;
 			if(car.getAttributeValue("strategy") != null) {
 				String s = null;
