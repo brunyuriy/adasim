@@ -20,6 +20,7 @@ public class GraphNode {
 	private List<Car> cars; //The cars at this node
 	private SpeedStrategy ss; //The strategy by which the speed changes
 	private int delay; //The basic delay of this node. To be modified by the speed strategy
+	private NodeVehicleQueue queue;
 	
 	/**
 	 * Creates a node with delay 1.
@@ -36,6 +37,7 @@ public class GraphNode {
 		cars = new ArrayList<Car>();
 		ss = s;
 		this.delay = delay;
+		queue = new NodeVehicleQueue();
 	}
 	
 	/* ***************************************************
@@ -84,15 +86,16 @@ public class GraphNode {
 	 * Changes the speed limit at the node
 	 */
 	public void enterNode(Car c) {
-		cars.add(c);
+		queue.enqueue(c, getCurrentDelay() );
 	}
 	
 	/**
 	 * Removes the given car from the list of cars at this node
 	 * Changes the speed limit at the node
+	 * @deprecated This method should not be necessary
 	 */
 	public void exitNode(Car c) {
-		cars.remove(cars.indexOf(c));
+		//cars.remove(cars.indexOf(c));
 	}
 	
 	/**
@@ -105,6 +108,7 @@ public class GraphNode {
 	 */
 	public void park( Car c ) {
 		//TODO:
+		queue.park(c);
 	}
 	
 	/**
@@ -155,10 +159,10 @@ public class GraphNode {
 	 *************************************************** */
 	
 	public void takeSimulationStep() {
-		//TODO:
-		/*
-		 * 1. Move all cars one step
-		 * 2. Cars that are at the end need to be notified.
-		 */
+		Set<Car> finishedCars = queue.moveCars();
+		if ( finishedCars == null ) return;
+		for ( Car c : finishedCars ) {
+			c.move();
+		}
 	}
 }
