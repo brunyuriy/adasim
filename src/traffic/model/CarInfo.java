@@ -7,19 +7,12 @@
  */
 package traffic.model;
 
-import java.util.List;
-
-import org.apache.log4j.Logger;
-
 import traffic.graph.GraphNode;
 import traffic.strategy.CarStrategy;
 import traffic.strategy.NoiseStrategy;
 import traffic.strategy.RandomNoiseStrategy;
 
 public class CarInfo {
-	
-	private final static Logger logger = Logger.getLogger(CarInfo.class);
-
 	
 	private GraphNode start; //Starting position
 	private GraphNode end; //Destination position
@@ -40,6 +33,8 @@ public class CarInfo {
 		finish = false;
 		noise = new RandomNoiseStrategy();
 		cs = strat;
+		cs.setStartNode(start);
+		cs.setEndNode(end);
 	}
 	
 	/**
@@ -110,35 +105,6 @@ public class CarInfo {
 		return finish;
 	}
 	
-//	/**
-//	 * @return The path the car will take from start to finish
-//	 */
-//	public List<Integer> getPath() {
-//		return path;
-//	}
-//	
-//	/**
-//	 * Sets the path for the car to the given list p
-//	 */
-//	public void setPath(List<Integer> p) {
-//		path = p;
-//	}
-	
-	/**
-	 * Uses the given strategy for the node to create a path
-	 * The car will attempt to follow this path to its destination
-	 * until an obstacle prevents it from doing so
-	 */
-//	private void makePath() {
-//		path = cs.getPath( start, end );
-//		if(path != null) {
-//			logger.info("Car " + getCarNum() + " is at node " + getCurrentPosition());
-//			logger.info("The path for car " + getCarNum() + " is " + getPath());
-//		} else {
-//			logger.info("Car " + getCarNum() + " cannot reach its destination and will stay at its starting position");
-//		}
-//	}
-
 	/**
 	 * @return the cs
 	 */

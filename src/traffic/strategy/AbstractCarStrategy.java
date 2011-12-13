@@ -15,6 +15,7 @@
 package traffic.strategy;
 
 import traffic.graph.Graph;
+import traffic.graph.GraphNode;
 
 /**
  * @author Jochen Wuttke - wuttkej@gmail.com
@@ -23,6 +24,7 @@ import traffic.graph.Graph;
 public abstract class AbstractCarStrategy implements CarStrategy {
 	
 	protected Graph graph;
+	protected GraphNode source, target;
 
 	/* (non-Javadoc)
 	 * @see traffic.strategy.CarStrategy#setGraph(traffic.graph.Graph)
@@ -30,6 +32,16 @@ public abstract class AbstractCarStrategy implements CarStrategy {
 	@Override
 	public void setGraph(Graph g) {
 		this.graph = g;
+	}
+
+	@Override
+	public void setStartNode( GraphNode start ) {
+		source = start;
+	}	
+	
+	@Override
+	public void setEndNode( GraphNode end ) {
+		target = end;
 	}
 
 }

@@ -18,6 +18,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
+
 import traffic.graph.GraphNode;
 
 /**
@@ -26,7 +28,10 @@ import traffic.graph.GraphNode;
  */
 public class LookaheadShortestPathCarStrategy extends AbstractCarStrategy {
 	
+	private final static Logger logger = Logger.getLogger(LookaheadShortestPathCarStrategy.class);
+	
 	private final int lookahead;
+	private List<GraphNode> path;
 	
 	public LookaheadShortestPathCarStrategy() {
 		this(0);
@@ -37,7 +42,8 @@ public class LookaheadShortestPathCarStrategy extends AbstractCarStrategy {
 	}
 
 	public List<Integer> getPath(GraphNode source, GraphNode target ) {
-		return dijkstra(graph.getNodes(), source, target, lookahead );
+		//return dijkstra(graph.getNodes(), source, target, lookahead );
+		return null;
 	}
 	
 	/**
@@ -46,7 +52,7 @@ public class LookaheadShortestPathCarStrategy extends AbstractCarStrategy {
 	 * @param target ID of the target node
 	 * @param l
 	 */
-	private List<Integer> dijkstra(List<GraphNode> nodes, GraphNode source, GraphNode target, int l) {
+	private List<GraphNode> dijkstra(List<GraphNode> nodes, GraphNode source, GraphNode target, int l) {
 		int size = nodes.size();
 		int[] dist = new int[size];
 		int[] previous = new int[size];
@@ -80,7 +86,7 @@ public class LookaheadShortestPathCarStrategy extends AbstractCarStrategy {
 	 */
 	private int getCurrentDepth(int[] previous, List<GraphNode> nodes,
 			GraphNode source, GraphNode current) {
-		List<Integer> path = reconstructPath(previous, nodes, source, current );
+		List<GraphNode> path = reconstructPath(previous, nodes, source, current );
 		if ( path == null ) return 1;
 		else return path.size() + 1;
 	}
@@ -91,13 +97,13 @@ public class LookaheadShortestPathCarStrategy extends AbstractCarStrategy {
 	 * @param ID of target node
 	 * @return
 	 */
-	private List<Integer> reconstructPath(int[] previous, List<GraphNode> nodes, GraphNode source, GraphNode target) {
+	private List<GraphNode> reconstructPath(int[] previous, List<GraphNode> nodes, GraphNode source, GraphNode target) {
 		int ti = getIndex(nodes, target);
 		if ( previous[ ti ] == -1 ) return null; //no path
-		LinkedList<Integer> path = new LinkedList<Integer>();
+		LinkedList<GraphNode> path = new LinkedList<GraphNode>();
 		int current = ti;
 		do {
-			path.push( nodes.get(current).getID() );
+			path.push( nodes.get(current) );
 			current = previous[current];
 		} while ( current != getIndex(nodes, source) && previous[current] != -1 );
 		return path;
@@ -151,8 +157,13 @@ public class LookaheadShortestPathCarStrategy extends AbstractCarStrategy {
 	 */
 	@Override
 	public GraphNode getNextNode() {
-		// TODO Auto-generated method stub
-		return null;
+		if ( path == null ) {
+			path = dijkstra(graph.getNodes(), source, target, lookahead );
+			logger.info( "Path from " + source.getID() + " to " + target.getID() + " is:\n" + path );
+		}
+		if ( path == null ) return null;
+		if ( path.size() == 0 ) return null;
+		return path.remove(0);
 	}
-
+	
 }
