@@ -103,8 +103,11 @@ public class CarInfo {
 	 * is the same as its ending position
 	 */
 	public void setFinish() {
-		//TODO: fix this
-		//finish = currentNode == end;
+		finish = true;
+	}
+	
+	public boolean isFinished() {
+		return finish;
 	}
 	
 //	/**
@@ -141,6 +144,13 @@ public class CarInfo {
 	 */
 	public CarStrategy getStrategy() {
 		return cs;
+	}
+
+	/**
+	 * @return
+	 */
+	public GraphNode getNextNode() {
+		return cs.getNextNode();
 	}
 
 }

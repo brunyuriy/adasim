@@ -51,19 +51,15 @@ public class Car {
 	 * Signals to the car that it should move to the next node or park.
 	 */
 	public void move() {
-//		if(info.getPath() != null) {
-//			if(!info.atDestination()) {
-//				if(info.getDelay() == -1) { //Speed limit hasn't been found yet
-//					//info.setDelay(g.getDelayAtNode(info.getCurrentPosition()));
-//				}
-//				if(info.getDelay() == 0) { //Car is free to move if path is clear
-//					//moveCar(g);
-//				} else { //Car must wait a certain number of turns to move again
-//					logger.info("Car " + info.getCarNum() + " must wait at node " + info.getCurrentPosition() + " for " + info.getDelay() + " more turns");
-//					info.setDelay(info.getDelay()-1);
-//				}
-//			}
-//		}
+		GraphNode nextNode = info.getNextNode();
+		if ( nextNode == null ) {
+			//this happens if there is no path, or the car is at its goal
+			info.getCurrentPosition().park(this);
+			info.setFinish();
+		} else {
+			info.setCurrentPosition(nextNode);
+			nextNode.enterNode(this);
+		}
 	}
 	
 	//Moves the car to the next node on its path
@@ -109,9 +105,7 @@ public class Car {
 	 * Returns true if the car is at the end, false if not
 	 */
 	public boolean checkFinish() {
-//		return info.atDestination() || info.getPath() == null ;
-		//TODO: fix this
-		return true;
+		return info.isFinished();
 	}
 
 	/**
