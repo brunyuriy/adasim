@@ -32,55 +32,55 @@ public class Car {
 	 * it stays at the current node until a node with space is found
 	 */
 	public void tryMove(Graph g) {
-		if(info.getPath() != null) {
-			if(!info.atDestination()) {
-				if(info.getDelay() == -1) { //Speed limit hasn't been found yet
-					info.setDelay(g.getDelayAtNode(info.getCurrentPosition().getID()));
-				}
-				if(info.getDelay() == 0) { //Car is free to move if path is clear
-					moveCar(g);
-				} else { //Car must wait a certain number of turns to move again
-					logger.info("Car " + info.getCarNum() + " must wait at node " + info.getCurrentPosition() + " for " + info.getDelay() + " more turns");
-					info.setDelay(info.getDelay()-1);
-				}
-			}
-		}
+//		if(info.getPath() != null) {
+//			if(!info.atDestination()) {
+//				if(info.getDelay() == -1) { //Speed limit hasn't been found yet
+//					info.setDelay(g.getDelayAtNode(info.getCurrentPosition().getID()));
+//				}
+//				if(info.getDelay() == 0) { //Car is free to move if path is clear
+//					moveCar(g);
+//				} else { //Car must wait a certain number of turns to move again
+//					logger.info("Car " + info.getCarNum() + " must wait at node " + info.getCurrentPosition() + " for " + info.getDelay() + " more turns");
+//					info.setDelay(info.getDelay()-1);
+//				}
+//			}
+//		}
 	}
 	
 	/**
 	 * Signals to the car that it should move to the next node or park.
 	 */
 	public void move() {
-		if(info.getPath() != null) {
-			if(!info.atDestination()) {
-				if(info.getDelay() == -1) { //Speed limit hasn't been found yet
-					//info.setDelay(g.getDelayAtNode(info.getCurrentPosition()));
-				}
-				if(info.getDelay() == 0) { //Car is free to move if path is clear
-					//moveCar(g);
-				} else { //Car must wait a certain number of turns to move again
-					logger.info("Car " + info.getCarNum() + " must wait at node " + info.getCurrentPosition() + " for " + info.getDelay() + " more turns");
-					info.setDelay(info.getDelay()-1);
-				}
-			}
-		}
+//		if(info.getPath() != null) {
+//			if(!info.atDestination()) {
+//				if(info.getDelay() == -1) { //Speed limit hasn't been found yet
+//					//info.setDelay(g.getDelayAtNode(info.getCurrentPosition()));
+//				}
+//				if(info.getDelay() == 0) { //Car is free to move if path is clear
+//					//moveCar(g);
+//				} else { //Car must wait a certain number of turns to move again
+//					logger.info("Car " + info.getCarNum() + " must wait at node " + info.getCurrentPosition() + " for " + info.getDelay() + " more turns");
+//					info.setDelay(info.getDelay()-1);
+//				}
+//			}
+//		}
 	}
 	
 	//Moves the car to the next node on its path
 	private void moveCar(Graph g) {
-		int o = info.getCurrentPosition().getID();
-		//TODO: change this to nodes
-		//info.setCurrentPosition(info.getPath().get(0));
-		g.changeCarNode(this, o, info.getCurrentPosition().getID());
-		setFinish();
-		logger.info("Car " + info.getCarNum() + " moved to node " + info.getCurrentPosition() + " from node " + o);
-		info.setDelay(-1);
-		List<Integer> temp = info.getPath();
-		temp.remove(0);
-		if ( temp.size() == 0 ) { 
-			temp = null;
-		}
-		info.setPath(temp);
+//		int o = info.getCurrentPosition().getID();
+//		//TODO: change this to nodes
+//		//info.setCurrentPosition(info.getPath().get(0));
+//		g.changeCarNode(this, o, info.getCurrentPosition().getID());
+//		setFinish();
+//		logger.info("Car " + info.getCarNum() + " moved to node " + info.getCurrentPosition() + " from node " + o);
+//		info.setDelay(-1);
+//		List<Integer> temp = info.getPath();
+//		temp.remove(0);
+//		if ( temp.size() == 0 ) { 
+//			temp = null;
+//		}
+//		info.setPath(temp);
 	}
 		
 	/**
@@ -109,7 +109,9 @@ public class Car {
 	 * Returns true if the car is at the end, false if not
 	 */
 	public boolean checkFinish() {
-		return info.atDestination() || info.getPath() == null ;
+//		return info.atDestination() || info.getPath() == null ;
+		//TODO: fix this
+		return true;
 	}
 
 	/**
