@@ -10,18 +10,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import traffic.graph.Graph;
 import traffic.graph.GraphNode;
 
 public class RandomCarStrategy extends AbstractCarStrategy {
 
 	public RandomCarStrategy(){}
 	
+	public List<Integer> getPath(GraphNode c, GraphNode d) { 
+		return getPath( c.getID(), d.getID() );
+	}
+
+	
 	/**
 	 * Picks random neighbors to move towards until the destination is reached
 	 * Returns the path represented as a list of integers
 	 */
-	public List<Integer> getPath(int c, int d) {
+	private List<Integer> getPath(int c, int d) {
 		int next = c;
 		List<Integer> path = new ArrayList<Integer>();
 		while(next != d && path.size() < graph.getNumNodes() ) {
