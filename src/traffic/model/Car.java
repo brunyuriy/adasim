@@ -17,13 +17,11 @@ import traffic.strategy.CarStrategy;
 public class Car {
 	
 	private CarInfo info; //Info for the car
-	private CarStrategy cs; //Strategy the car uses to traverse the graph
 	
 	private static Logger logger = Logger.getLogger(Car.class);
 	
 	public Car(int start, int end, CarStrategy strat, int num) throws InstantiationException, IllegalAccessException {
-		info = new CarInfo(start, end, num);
-		cs = strat;
+		info = new CarInfo(start, end, num, strat );
 	}
 
 	/**
@@ -63,25 +61,7 @@ public class Car {
 		}
 		info.setPath(temp);
 	}
-	
-	/**
-	 * Uses the given strategy for the node to create a path
-	 * The car will attempt to follow this path to its destination
-	 * until an obstacle prevents it from doing so
-	 */
-	public boolean makePath(Graph g) {
-		List<Integer> path = cs.getPath(g, info.getStartNode(), info.getEndNode());
-		info.setPath(path);
-		if(path != null) {
-			logger.info("Car " + info.getCarNum() + " is at node " + info.getCurrentPosition());
-			logger.info("The path for car " + info.getCarNum() + " is " + info.getPath());
-			return true;
-		} else {
-			logger.info("Car " + info.getCarNum() + " cannot reach its destination and will stay at its starting position");
-			return false;
-		}
-	}
-	
+		
 	/**
 	 * Returns the car's current position
 	 */
@@ -112,9 +92,10 @@ public class Car {
 	}
 
 	/**
-	 * @return the cs
+	 * @return the info
 	 */
-	public CarStrategy getStrategy() {
-		return cs;
+	public CarInfo getInfo() {
+		return info;
 	}
+
 }

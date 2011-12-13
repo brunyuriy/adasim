@@ -1,3 +1,5 @@
 
 syntax: regexp
 ^docs/metrics$
+syntax: regexp
+^create-random\.sh$

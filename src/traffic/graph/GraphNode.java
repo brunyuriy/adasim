@@ -47,6 +47,7 @@ public class GraphNode {
 //	}
 	
 	public void addEdge( GraphNode to ) {
+		if ( to == null ) return;
 		outgoing.add( to );
 	}
 	

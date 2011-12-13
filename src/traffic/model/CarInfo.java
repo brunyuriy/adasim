@@ -10,10 +10,17 @@ package traffic.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
+import traffic.graph.Graph;
+import traffic.strategy.CarStrategy;
 import traffic.strategy.NoiseStrategy;
 import traffic.strategy.RandomNoiseStrategy;
 
 public class CarInfo {
+	
+	private final static Logger logger = Logger.getLogger(CarInfo.class);
+
 	
 	private int start; //Starting position
 	private int end; //Destination position
@@ -23,8 +30,10 @@ public class CarInfo {
 	private boolean finish; //True if the car has reached its destination
 	private List<Integer> path; //Path the car travels
 	private NoiseStrategy noise; //The noise strategy
+	private CarStrategy cs; //Strategy the car uses to traverse the graph
+
 	
-	public CarInfo(int start, int end, int num) {
+	public CarInfo(int start, int end, int num, CarStrategy strat) {
 		this.start = start;
 		this.end = end;
 		current = start;
@@ -33,6 +42,8 @@ public class CarInfo {
 		finish = false;
 		path = null;
 		noise = new RandomNoiseStrategy();
+		cs = strat;
+		makePath();
 	}
 	
 	/**
@@ -112,5 +123,28 @@ public class CarInfo {
 	public void setPath(List<Integer> p) {
 		path = p;
 	}
+	
+	/**
+	 * Uses the given strategy for the node to create a path
+	 * The car will attempt to follow this path to its destination
+	 * until an obstacle prevents it from doing so
+	 */
+	private void makePath() {
+		path = cs.getPath( start, end );
+		if(path != null) {
+			logger.info("Car " + getCarNum() + " is at node " + getCurrentPosition());
+			logger.info("The path for car " + getCarNum() + " is " + getPath());
+		} else {
+			logger.info("Car " + getCarNum() + " cannot reach its destination and will stay at its starting position");
+		}
+	}
+
+	/**
+	 * @return the cs
+	 */
+	public CarStrategy getStrategy() {
+		return cs;
+	}
+
 
 }
