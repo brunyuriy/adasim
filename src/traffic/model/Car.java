@@ -12,6 +12,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import traffic.graph.Graph;
+import traffic.graph.GraphNode;
 import traffic.strategy.CarStrategy;
 
 public class Car {
@@ -20,7 +21,7 @@ public class Car {
 	
 	private static Logger logger = Logger.getLogger(Car.class);
 	
-	public Car(int start, int end, CarStrategy strat, int num) {
+	public Car(GraphNode start, GraphNode end, CarStrategy strat, int num) {
 		info = new CarInfo(start, end, num, strat );
 	}
 
@@ -34,7 +35,7 @@ public class Car {
 		if(info.getPath() != null) {
 			if(!info.atDestination()) {
 				if(info.getDelay() == -1) { //Speed limit hasn't been found yet
-					info.setDelay(g.getDelayAtNode(info.getCurrentPosition()));
+					info.setDelay(g.getDelayAtNode(info.getCurrentPosition().getID()));
 				}
 				if(info.getDelay() == 0) { //Car is free to move if path is clear
 					moveCar(g);
@@ -67,9 +68,10 @@ public class Car {
 	
 	//Moves the car to the next node on its path
 	private void moveCar(Graph g) {
-		int o = info.getCurrentPosition();
-		info.setCurrentPosition(info.getPath().get(0));
-		g.changeCarNode(this, o, info.getCurrentPosition());
+		int o = info.getCurrentPosition().getID();
+		//TODO: change this to nodes
+		//info.setCurrentPosition(info.getPath().get(0));
+		g.changeCarNode(this, o, info.getCurrentPosition().getID());
 		setFinish();
 		logger.info("Car " + info.getCarNum() + " moved to node " + info.getCurrentPosition() + " from node " + o);
 		info.setDelay(-1);
@@ -85,7 +87,7 @@ public class Car {
 	 * Returns the car's current position
 	 */
 	public int getCurrent() {
-		return info.getCurrentPosition();
+		return info.getCurrentPosition().getID();
 	}
 	
 	/**
