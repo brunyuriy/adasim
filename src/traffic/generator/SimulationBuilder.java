@@ -14,6 +14,7 @@
 
 package traffic.generator;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
@@ -23,6 +24,8 @@ import traffic.graph.GraphNode;
 import traffic.model.Car;
 import traffic.model.ConfigurationException;
 import traffic.model.TrafficSimulator;
+import traffic.strategy.CarStrategy;
+import traffic.strategy.LinearSpeedStrategy;
 import traffic.strategy.SpeedStrategy;
 
 /**
@@ -49,11 +52,55 @@ public class SimulationBuilder {
 	/**
 	 * @param opts
 	 * @return
+	 * @throws ConfigurationException 
 	 */
-	private List<Car> buildCars(ConfigurationOptions opts, Graph g) {
-		// TODO Auto-generated method stub
-		return null;
+	private List<Car> buildCars(ConfigurationOptions opts, Graph g) throws ConfigurationException {
+		List<Car> cars = new ArrayList<Car>();
+		for ( int i = 0; i < opts.getNumCars(); i++ ) {
+			cars.add( buildCar( i, opts, g.getNodes() ) );
+		}
+		return cars;
 	}
+
+	/**
+	 * @param i
+	 * @param opts
+	 * @return
+	 * @throws ConfigurationException 
+	 */
+	private Car buildCar(int i, ConfigurationOptions opts, List<GraphNode> nodes) throws ConfigurationException {
+		CarStrategy cs = randomCarStrategy( opts.getStrategies() );
+		int start = randomNode( nodes );
+		int end;
+		do {
+			end = randomNode(nodes);
+		} while ( start == end );
+		
+		return new Car( start, end, cs, i);
+	}
+
+	/**
+	 * @param nodes
+	 * @return the ID of the randomly chose node
+	 */
+	private int randomNode(List<GraphNode> nodes) {
+		return nodes.get( random.nextInt( nodes.size() ) ).getID();
+	}
+
+	/**
+	 * @param strategies
+	 * @return
+	 * @throws ConfigurationException 
+	 */
+	private CarStrategy randomCarStrategy(List<String> strategies) throws ConfigurationException {
+		String s = strategies.get( random.nextInt( strategies.size() ) );
+		try {
+			@SuppressWarnings("rawtypes")
+			Class c = Class.forName( s );
+			return (CarStrategy) c.newInstance();
+		} catch (Exception e) {
+			throw new ConfigurationException(e);
+		} 	}
 
 	/**
 	 * @param opts
@@ -97,15 +144,9 @@ public class SimulationBuilder {
 	 * @return
 	 * @throws ConfigurationException 
 	 */
+	static SpeedStrategy ss = new LinearSpeedStrategy();
 	private SpeedStrategy randomSpeedStrategy(ConfigurationOptions opts) throws ConfigurationException {
-		String s = opts.getStrategies().get( random.nextInt( opts.getStrategies().size() ) );
-		try {
-			@SuppressWarnings("rawtypes")
-			Class c = Class.forName( s );
-			return (SpeedStrategy) c.newInstance();
-		} catch (Exception e) {
-			throw new ConfigurationException(e);
-		} 
+		return ss;
 	}
 
 	/**
