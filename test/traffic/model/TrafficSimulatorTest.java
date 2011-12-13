@@ -29,7 +29,7 @@ public class TrafficSimulatorTest {
 	
 	@Test
 	public void zeroLengthPathTest() throws FileNotFoundException, ConfigurationException {
-		TrafficSimulator sim = SimulationFactory.buildSimulator( new File( "random.xml" ) );
+		TrafficSimulator sim = SimulationXMLReader.buildSimulator( new File( "random.xml" ) );
 		while( !sim.takeSimulationStep() ) {}
 	}
 	

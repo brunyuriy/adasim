@@ -25,7 +25,7 @@ import static org.junit.Assert.*;
 
 import traffic.graph.Graph;
 import traffic.model.ConfigurationException;
-import traffic.model.SimulationFactory;
+import traffic.model.SimulationXMLReader;
 
 
 /**
@@ -43,7 +43,7 @@ public class LookaheadShortestPathCarStrategyTest {
 	
 	@Test
 	public void findShortestPathFromStartNoWeights() throws JDOMException, IOException, ConfigurationException {
-		Graph g = SimulationFactory.buildSimulator( new File("resources/test/shortest-path-test.xml") ).getGraph();
+		Graph g = SimulationXMLReader.buildSimulator( new File("resources/test/shortest-path-test.xml") ).getGraph();
 		strategy.setGraph(g);
 		List<Integer> path = strategy.getPath( 1, 5);
 		assertNotNull( "No path found", path );
@@ -61,7 +61,7 @@ public class LookaheadShortestPathCarStrategyTest {
 	
 	@Test
 	public void findShortestPathFromStartNoWeightsRandom() throws JDOMException, IOException, ConfigurationException {
-		Graph g = SimulationFactory.buildSimulator( new File("resources/test/shortest-path-test-random-ids.xml") ).getGraph();
+		Graph g = SimulationXMLReader.buildSimulator( new File("resources/test/shortest-path-test-random-ids.xml") ).getGraph();
 		strategy.setGraph(g);
 		List<Integer> path = strategy.getPath( 21, 5);
 		assertNotNull( "No path found", path );
@@ -79,7 +79,7 @@ public class LookaheadShortestPathCarStrategyTest {
 	
 	@Test
 	public void findShortestPathFromStartWithWeights() throws JDOMException, IOException, ConfigurationException {
-		Graph g = SimulationFactory.buildSimulator( new File("resources/test/shortest-path-test-weights.xml") ).getGraph();
+		Graph g = SimulationXMLReader.buildSimulator( new File("resources/test/shortest-path-test-weights.xml") ).getGraph();
 		strategy.setGraph(g);
 		List<Integer> path = strategy.getPath(6, 4);
 		assertNotNull( "No path found", path );
@@ -90,7 +90,7 @@ public class LookaheadShortestPathCarStrategyTest {
 
 	@Test
 	public void findShortestPathFromStartWithWeightsLookahead1() throws JDOMException, IOException, ConfigurationException {
-		Graph g = SimulationFactory.buildSimulator( new File("resources/test/shortest-path-test-weights.xml") ).getGraph();
+		Graph g = SimulationXMLReader.buildSimulator( new File("resources/test/shortest-path-test-weights.xml") ).getGraph();
 		strategy = new LookaheadShortestPathCarStrategy(1);
 		strategy.setGraph(g);
 		List<Integer> path = strategy.getPath(6, 4);
@@ -102,7 +102,7 @@ public class LookaheadShortestPathCarStrategyTest {
 
 	@Test
 	public void findShortestPathFromStartWithWeightsLookahead2() throws JDOMException, IOException, ConfigurationException {
-		Graph g = SimulationFactory.buildSimulator( new File("resources/test/shortest-path-test-weights.xml") ).getGraph();
+		Graph g = SimulationXMLReader.buildSimulator( new File("resources/test/shortest-path-test-weights.xml") ).getGraph();
 		strategy = new LookaheadShortestPathCarStrategy(2);
 		strategy.setGraph(g);
 		List<Integer> path = strategy.getPath(6, 4);

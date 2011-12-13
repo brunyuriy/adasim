@@ -37,19 +37,19 @@ import traffic.strategy.SpeedStrategy;
  * @author Jochen Wuttke - wuttkej@gmail.com
  *
  */
-final public class SimulationFactory {
+final public class SimulationXMLReader {
 
-	private static final Logger logger = Logger.getLogger(SimulationFactory.class);
+	private static final Logger logger = Logger.getLogger(SimulationXMLReader.class);
 
 
 	private Document doc;
 
-	SimulationFactory( String config ) throws JDOMException, IOException {
+	SimulationXMLReader( String config ) throws JDOMException, IOException {
 		SAXBuilder b = new SAXBuilder(false	);
 		doc = b.build( new StringReader( config ) );
 	}
 
-	private SimulationFactory( File f ) throws JDOMException, IOException {
+	private SimulationXMLReader( File f ) throws JDOMException, IOException {
 		SAXBuilder b = new SAXBuilder(false);
 		doc = b.build( f );
 	}
@@ -60,7 +60,7 @@ final public class SimulationFactory {
 
 	public static TrafficSimulator buildSimulator( File config ) throws FileNotFoundException, ConfigurationException {
 		try {
-			SimulationFactory factory = new SimulationFactory(config);
+			SimulationXMLReader factory = new SimulationXMLReader(config);
 			Graph g = factory.buildGraph();
 			TrafficSimulator sim = new TrafficSimulator( g, factory.buildCars(g) );
 			return sim;
