@@ -24,7 +24,7 @@ public class CarInfo {
 	
 	private int start; //Starting position
 	private int end; //Destination position
-	private int current; //Current position
+	private int currentNode; //Current position
 	private int carNum; //This car's number in the list of cars
 	private int delay; //The time the car must wait at its current node
 	private boolean finish; //True if the car has reached its destination
@@ -36,7 +36,7 @@ public class CarInfo {
 	public CarInfo(int start, int end, int num, CarStrategy strat) {
 		this.start = start;
 		this.end = end;
-		current = start;
+		currentNode = start;
 		carNum = num;
 		delay = -1;
 		finish = false;
@@ -64,14 +64,14 @@ public class CarInfo {
 	 * @return The current node of the car
 	 */
 	public int getCurrentPosition() {
-		return current;
+		return currentNode;
 	}
 	
 	/**
 	 * Sets the current position to the given variable c
 	 */
 	public void setCurrentPosition(int c) {
-		current = c;
+		currentNode = c;
 	}
 	
 	/**
@@ -107,7 +107,7 @@ public class CarInfo {
 	 * is the same as its ending position
 	 */
 	public void setFinish() {
-		finish = current == end;
+		finish = currentNode == end;
 	}
 	
 	/**
