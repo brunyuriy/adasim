@@ -50,7 +50,7 @@ public class Car {
 	private void moveCar(Graph g) {
 		int o = info.getCurrentPosition();
 		info.setCurrentPosition(info.getPath().get(0));
-		g.changeCarNode(info.getCarNum(), o, info.getCurrentPosition());
+		g.changeCarNode(this, o, info.getCurrentPosition());
 		setFinish();
 		logger.info("Car " + info.getCarNum() + " moved to node " + info.getCurrentPosition() + " from node " + o);
 		info.setDelay(-1);
@@ -72,7 +72,7 @@ public class Car {
 	/**
 	 * Returns the car's number
 	 */
-	public int getCarNumber() {
+	public int getID() {
 		return info.getCarNum();
 	}
 	
