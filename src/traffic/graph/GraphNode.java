@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import traffic.model.Car;
 import traffic.strategy.SpeedStrategy;
 
 
@@ -82,7 +83,7 @@ public class GraphNode {
 	 * Adds the given car number to the list of cars currently at the node
 	 * Changes the speed limit at the node
 	 */
-	public void addCar(int i) {
+	public void enterNode(int i) {
 		cars.add(i);
 	}
 	
@@ -90,8 +91,20 @@ public class GraphNode {
 	 * Removes the given car from the list of cars at this node
 	 * Changes the speed limit at the node
 	 */
-	public void removeCar(int i) {
+	public void exitNode(int i) {
 		cars.remove(cars.indexOf(i));
+	}
+	
+	/**
+	 * Signals to the node that the car will stop at this
+	 * node and no longer move. This should normally only
+	 * happen when the car is at it's destination or when
+	 * it cannot find a path to follow.
+	 * 
+	 * @param c
+	 */
+	public void park( Car c ) {
+		//TODO:
 	}
 	
 	/**
