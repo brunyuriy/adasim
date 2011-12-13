@@ -86,10 +86,10 @@ public class Graph {
 	 * @param o The old node the car was on
 	 * @param n The new node the car is moving to
 	 */
-	public void changeCarNode(Car c, int o, int n) {
-		GraphNode gn = get(nodes,n);
-		GraphNode go = get(nodes,o);
-		go.exitNode(c);
+	public void changeCarNode(Car c, int oldNode, int targetNode) {
+		GraphNode gn = get(nodes,targetNode);
+		//GraphNode go = get(nodes,o);
+		//go.exitNode(c);
 		gn.enterNode(c);
 	}
 	
