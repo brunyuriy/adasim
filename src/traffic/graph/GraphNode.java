@@ -36,6 +36,10 @@ public class GraphNode {
 		ss = s;
 		this.delay = delay;
 	}
+	
+	/* ***************************************************
+	 * GRAPH MANAGEMENT METHODS
+	 *************************************************** */
 		
 	public void addEdge( GraphNode to ) {
 		if ( to == null ) return;
@@ -53,6 +57,27 @@ public class GraphNode {
 		return new ArrayList<GraphNode>(outgoing);
 	}
 	
+	public int getID() {
+		return nodeNum;
+	}
+
+	/**
+	 * @return the ss
+	 */
+	public SpeedStrategy getSpeedStrategy() {
+		return ss;
+	}
+
+	/**
+	 * @return the cars
+	 */
+	public List<Integer> getCars() {
+		return cars;
+	}
+
+	/* ***************************************************
+	 * TRAFFIC MANAGEMENT METHODS
+	 *************************************************** */
 	/**
 	 * Adds the given car number to the list of cars currently at the node
 	 * Changes the speed limit at the node
@@ -86,18 +111,7 @@ public class GraphNode {
 	public int numCarsAtNode() {
 		return cars.size();
 	}
-
-	public int getID() {
-		return nodeNum;
-	}
-
-	/**
-	 * @return the ss
-	 */
-	public SpeedStrategy getSpeedStrategy() {
-		return ss;
-	}
-
+	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */
@@ -121,12 +135,5 @@ public class GraphNode {
 		if (nodeNum != other.nodeNum)
 			return false;
 		return true;
-	}
-
-	/**
-	 * @return the cars
-	 */
-	public List<Integer> getCars() {
-		return cars;
 	}
 }
