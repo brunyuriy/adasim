@@ -18,7 +18,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import traffic.graph.Graph;
 import traffic.graph.GraphNode;
 
 /**
@@ -36,9 +35,9 @@ public class LookaheadShortestPathCarStrategy extends AbstractCarStrategy {
 	public LookaheadShortestPathCarStrategy( int lookahead ){
 		this.lookahead = lookahead;
 	}
-	
-	public List<Integer> getPath(int source, int target ) {
-		return dijkstra(graph.getNodes(), graph.getNode(source), graph.getNode(target), lookahead );
+
+	public List<Integer> getPath(GraphNode source, GraphNode target ) {
+		return dijkstra(graph.getNodes(), source, target, lookahead );
 	}
 	
 	/**

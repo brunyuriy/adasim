@@ -130,7 +130,7 @@ public class CarInfo {
 	 * until an obstacle prevents it from doing so
 	 */
 	private void makePath() {
-		path = cs.getPath( start.getID(), end.getID() );
+		path = cs.getPath( start, end );
 		if(path != null) {
 			logger.info("Car " + getCarNum() + " is at node " + getCurrentPosition());
 			logger.info("The path for car " + getCarNum() + " is " + getPath());
