@@ -31,6 +31,10 @@ public class Graph {
 		nodes.add(new GraphNode(num, speed));
 	}
 	
+	public void addNode( GraphNode node ) {
+		nodes.add(node);
+	}
+	
 	/**
 	 * Adds an edge between two nodes
 	 * Each node keeps track of the other nodes it has an edge to
