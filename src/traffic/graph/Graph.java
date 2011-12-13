@@ -76,7 +76,7 @@ public class Graph {
 	 */
 	public void addCarAtNode(int c, int n) {
 		GraphNode gn = get(nodes, n);
-		gn.addCar(c);
+		gn.enterNode(c);
 	}
 	
 	/**
@@ -88,8 +88,8 @@ public class Graph {
 	public void changeCarNode(int c, int o, int n) {
 		GraphNode gn = get(nodes,n);
 		GraphNode go = get(nodes,o);
-		go.removeCar(c);
-		gn.addCar(c);
+		go.exitNode(c);
+		gn.enterNode(c);
 	}
 	
 	/**
