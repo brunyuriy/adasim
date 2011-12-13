@@ -25,5 +25,9 @@ public interface CarStrategy {
 	 * @param g
 	 */
 	public void setGraph( Graph g );
+	
+	public void setStartNode( GraphNode start );
+	
+	public void setEndNode( GraphNode end );
 
 }

@@ -33,4 +33,10 @@ public class TrafficSimulatorTest {
 		while( !sim.takeSimulationStep() ) {}
 	}
 	
+	@Test
+	public void basicConfigTest() throws FileNotFoundException, ConfigurationException {
+		TrafficSimulator sim = SimulationXMLReader.buildSimulator( new File( "resources/test/shortest-path-test-weights.xml" ) );
+		while( !sim.takeSimulationStep() ) {}
+	}
+	
 }
