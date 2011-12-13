@@ -57,7 +57,7 @@ public class SimulationBuilder {
 	private List<Car> buildCars(ConfigurationOptions opts, Graph g) throws ConfigurationException {
 		List<Car> cars = new ArrayList<Car>();
 		for ( int i = 0; i < opts.getNumCars(); i++ ) {
-			cars.add( buildCar( i, opts, g.getNodes() ) );
+			cars.add( buildCar( i, opts, g ) );
 		}
 		return cars;
 	}
@@ -68,8 +68,10 @@ public class SimulationBuilder {
 	 * @return
 	 * @throws ConfigurationException 
 	 */
-	private Car buildCar(int i, ConfigurationOptions opts, List<GraphNode> nodes) throws ConfigurationException {
+	private Car buildCar(int i, ConfigurationOptions opts, Graph g) throws ConfigurationException {
 		CarStrategy cs = randomCarStrategy( opts.getStrategies() );
+		cs.setGraph(g);
+		List<GraphNode> nodes = g.getNodes();
 		int start = randomNode( nodes );
 		int end;
 		do {

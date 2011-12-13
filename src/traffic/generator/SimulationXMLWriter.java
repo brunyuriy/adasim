@@ -15,7 +15,6 @@
 package traffic.generator;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
@@ -55,9 +54,10 @@ public class SimulationXMLWriter {
 	 * @throws IOException 
 	 */
 	private void writeSim(File f, TrafficSimulator sim) throws IOException {
-		Document doc = factory.document( factory.element( "simulation" ) );
-		doc = writeGraph( doc, sim.getGraph() );
-		doc = writeCars( doc, sim.getCars() );
+		Element s = factory.element( "simulation" );
+		Document doc = factory.document( s );
+		writeGraph( s, sim.getGraph() );
+		writeCars( s, sim.getCars() );
 		FileOutputStream out = new FileOutputStream( f );
 		XMLOutputter p = new XMLOutputter( Format.getPrettyFormat() );
 		p.output(doc, out);
@@ -69,14 +69,13 @@ public class SimulationXMLWriter {
 	 * @param cars
 	 * @return
 	 */
-	private Document writeCars(Document doc, List<Car> cars) {
+	private void writeCars(Element doc, List<Car> cars) {
 		Element c = factory.element( "cars" );
 		c.setAttribute( factory.attribute( "default_strategy", DEFAULT_CAR_STRATEGY ) );
 		for ( Car car : cars ) {
 			writeCar( c, car );
 		}
 		doc.addContent(c);
-		return doc;
 	}
 /**
 	 * @param c
@@ -88,6 +87,7 @@ public class SimulationXMLWriter {
 		c.setAttribute( factory.attribute( "end", "" + car.getInfo().getEndNode() ) );
 		c.setAttribute( factory.attribute( "id", "" + car.getInfo().getCarNum() ) );
 		c.setAttribute( factory.attribute( "strategy", "" + car.getInfo().getStrategy().getClass().getCanonicalName() ) );
+		cars.addContent(c);
 	}
 
 
@@ -96,14 +96,13 @@ public class SimulationXMLWriter {
 	 * @param graph
 	 * @return
 	 */
-	private Document writeGraph(Document doc, Graph graph) {
+	private void writeGraph(Element doc, Graph graph) {
 		Element g = factory.element( "graph" );
 		g.setAttribute( factory.attribute( "default_strategy", DEFAULT_SPEED_STRATEGY) );
 		for ( GraphNode node : graph.getNodes() ) {
 			writeNode(g, node );
 		}
 		doc.addContent(g);
-		return doc;
 	}
 
 	/**
@@ -115,6 +114,7 @@ public class SimulationXMLWriter {
 		n.setAttribute( factory.attribute( "id", "" + node.getID() ) );
 		n.setAttribute( factory.attribute( "delay", "" + node.getDelay() ) );
 		n.setAttribute( factory.attribute( "neighbors", writeNeighbors(node.getNeighbors() ) ) );
+		g.addContent(n);
 	}
 
 	/**

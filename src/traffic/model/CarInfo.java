@@ -43,7 +43,7 @@ public class CarInfo {
 		path = null;
 		noise = new RandomNoiseStrategy();
 		cs = strat;
-		makePath();
+		//makePath();
 	}
 	
 	/**
