@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import traffic.model.Car;
 import traffic.strategy.SpeedStrategy;
 
 public class Graph {
@@ -74,7 +75,7 @@ public class Graph {
 	 * @param c The number of the car to be added
 	 * @param n The node to add the car at
 	 */
-	public void addCarAtNode(int c, int n) {
+	public void addCarAtNode(Car c, int n) {
 		GraphNode gn = get(nodes, n);
 		gn.enterNode(c);
 	}
@@ -85,7 +86,7 @@ public class Graph {
 	 * @param o The old node the car was on
 	 * @param n The new node the car is moving to
 	 */
-	public void changeCarNode(int c, int o, int n) {
+	public void changeCarNode(Car c, int o, int n) {
 		GraphNode gn = get(nodes,n);
 		GraphNode go = get(nodes,o);
 		go.exitNode(c);

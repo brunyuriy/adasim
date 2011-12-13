@@ -54,11 +54,11 @@ public class SimulationXMLReaderTest {
 	@Test
 	public void testCarNum() throws JDOMException, IOException, ConfigurationException {
 		List<Car> cars = SimulationXMLReader.buildSimulator( new File("resources/test/config.xml" )).getCars();
-		assertEquals(cars.get(0).getCarNumber(), 0);
-		assertEquals(cars.get(1).getCarNumber(), 1);
-		assertEquals(cars.get(2).getCarNumber(), 2);
-		assertEquals(cars.get(3).getCarNumber(), 3);
-		assertEquals(cars.get(4).getCarNumber(), 4);
+		assertEquals(cars.get(0).getID(), 0);
+		assertEquals(cars.get(1).getID(), 1);
+		assertEquals(cars.get(2).getID(), 2);
+		assertEquals(cars.get(3).getID(), 3);
+		assertEquals(cars.get(4).getID(), 4);
 	}
 	
 	@Test
@@ -89,21 +89,22 @@ public class SimulationXMLReaderTest {
 	public void invalidStartEndIsIgnored() throws JDOMException, IOException, ConfigurationException {
 		List<Car> cars = SimulationXMLReader.buildSimulator( new File("resources/test/invalid-start.xml" )).getCars();
 		assertEquals( 3, cars.size() );
-		assertEquals( 0, cars.get(0).getCarNumber() );
-		assertEquals( 3, cars.get(1).getCarNumber() );
-		assertEquals( 4, cars.get(2).getCarNumber() );
+		assertEquals( 0, cars.get(0).getID() );
+		assertEquals( 3, cars.get(1).getID() );
+		assertEquals( 4, cars.get(2).getID() );
 	}
 	
 	@Test
 	public void testStrategies() throws FileNotFoundException, ConfigurationException {
-		Graph g = SimulationXMLReader.buildSimulator( new File("resources/test/config.xml" ) ).getGraph();
+		TrafficSimulator sim = SimulationXMLReader.buildSimulator( new File("resources/test/config.xml" ) );
+		Graph g = sim.getGraph();
 		assertEquals(g.getNode(6).getCurrentDelay(), 1);
-		g.addCarAtNode(0, 6);
-		g.addCarAtNode(1, 6);
+		g.addCarAtNode(sim.getCar(0), 6);
+		g.addCarAtNode(sim.getCar(1), 6);
 		assertEquals(5, g.getNode(6).getCurrentDelay()); //Tests Quadratic Speed Strategy
 		assertEquals(1, g.getNode(1).getCurrentDelay());
-		g.addCarAtNode(2, 1);
-		g.addCarAtNode(3, 1);
+		g.addCarAtNode(sim.getCar(2), 1);
+		g.addCarAtNode(sim.getCar(3), 1);
 		assertEquals(3, g.getNode(1).getCurrentDelay() ); //Tests Linear Speed Strategy
 	}
 	
