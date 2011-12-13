@@ -27,7 +27,6 @@ public class CarInfo {
 	private int carNum; //This car's number in the list of cars
 	private int delay; //The time the car must wait at its current node
 	private boolean finish; //True if the car has reached its destination
-	private List<Integer> path; //Path the car travels
 	private NoiseStrategy noise; //The noise strategy
 	private CarStrategy cs; //Strategy the car uses to traverse the graph
 
@@ -39,10 +38,8 @@ public class CarInfo {
 		carNum = num;
 		delay = -1;
 		finish = false;
-		path = null;
 		noise = new RandomNoiseStrategy();
 		cs = strat;
-		//makePath();
 	}
 	
 	/**
@@ -110,34 +107,34 @@ public class CarInfo {
 		//finish = currentNode == end;
 	}
 	
-	/**
-	 * @return The path the car will take from start to finish
-	 */
-	public List<Integer> getPath() {
-		return path;
-	}
-	
-	/**
-	 * Sets the path for the car to the given list p
-	 */
-	public void setPath(List<Integer> p) {
-		path = p;
-	}
+//	/**
+//	 * @return The path the car will take from start to finish
+//	 */
+//	public List<Integer> getPath() {
+//		return path;
+//	}
+//	
+//	/**
+//	 * Sets the path for the car to the given list p
+//	 */
+//	public void setPath(List<Integer> p) {
+//		path = p;
+//	}
 	
 	/**
 	 * Uses the given strategy for the node to create a path
 	 * The car will attempt to follow this path to its destination
 	 * until an obstacle prevents it from doing so
 	 */
-	private void makePath() {
-		path = cs.getPath( start, end );
-		if(path != null) {
-			logger.info("Car " + getCarNum() + " is at node " + getCurrentPosition());
-			logger.info("The path for car " + getCarNum() + " is " + getPath());
-		} else {
-			logger.info("Car " + getCarNum() + " cannot reach its destination and will stay at its starting position");
-		}
-	}
+//	private void makePath() {
+//		path = cs.getPath( start, end );
+//		if(path != null) {
+//			logger.info("Car " + getCarNum() + " is at node " + getCurrentPosition());
+//			logger.info("The path for car " + getCarNum() + " is " + getPath());
+//		} else {
+//			logger.info("Car " + getCarNum() + " cannot reach its destination and will stay at its starting position");
+//		}
+//	}
 
 	/**
 	 * @return the cs
@@ -145,6 +142,5 @@ public class CarInfo {
 	public CarStrategy getStrategy() {
 		return cs;
 	}
-
 
 }
