@@ -36,30 +36,11 @@ public class GraphNode {
 		ss = s;
 		this.delay = delay;
 	}
-	
-	
-	/**
-	 * Adds an edge from this node to the given node
-	 * @param i
-	 */
-//	public void addEdge(int i) {
-//		outgoing.add(i);
-//	}
-	
+		
 	public void addEdge( GraphNode to ) {
 		if ( to == null ) return;
 		outgoing.add( to );
 	}
-	
-//	public void removeEdge( int i ) {
-//		List<Integer> copy = new ArrayList<Integer>( );
-//		for (int idx = 0; idx < outgoing.size(); idx++ ) {
-//			if ( outgoing.get(idx) != i ) {
-//				copy.add( outgoing.get(idx));
-//			}
-//		}
-//		outgoing = copy;
-//	}
 	
 	public void removeEdge( GraphNode to ) {
 		outgoing.remove( to );
