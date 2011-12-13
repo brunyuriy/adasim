@@ -20,7 +20,7 @@ public class Car {
 	
 	private static Logger logger = Logger.getLogger(Car.class);
 	
-	public Car(int start, int end, CarStrategy strat, int num) throws InstantiationException, IllegalAccessException {
+	public Car(int start, int end, CarStrategy strat, int num) {
 		info = new CarInfo(start, end, num, strat );
 	}
 
