@@ -17,7 +17,6 @@ public class GraphNode {
 	
 	private Set<GraphNode> outgoing; //Nodes that this node has an edge directed towards
 	private int nodeNum; //The number of this node on the graph
-	private List<Car> cars; //The cars at this node
 	private SpeedStrategy ss; //The strategy by which the speed changes
 	private int delay; //The basic delay of this node. To be modified by the speed strategy
 	private NodeVehicleQueue queue;
@@ -34,7 +33,6 @@ public class GraphNode {
 	public GraphNode(int n, SpeedStrategy s, int delay ) {
 		nodeNum = n;
 		outgoing = new HashSet<GraphNode>();
-		cars = new ArrayList<Car>();
 		ss = s;
 		this.delay = delay;
 		queue = new NodeVehicleQueue();
@@ -71,13 +69,6 @@ public class GraphNode {
 		return ss;
 	}
 
-	/**
-	 * @return the cars
-	 */
-	public List<Car> getCars() {
-		return cars;
-	}
-
 	/* ***************************************************
 	 * TRAFFIC MANAGEMENT METHODS
 	 *************************************************** */
@@ -107,7 +98,6 @@ public class GraphNode {
 	 * @param c
 	 */
 	public void park( Car c ) {
-		//TODO:
 		queue.park(c);
 	}
 	
@@ -119,14 +109,14 @@ public class GraphNode {
 	}
 	
 	public int getCurrentDelay() {
-		return delay + ss.getDelay( cars.size() );
+		return delay + ss.getDelay( queue.size() );
 	}
 	
 	/**
 	 * Returns the number of cars currently at this node
 	 */
 	public int numCarsAtNode() {
-		return cars.size();
+		return queue.size();
 	}
 	
 	/* (non-Javadoc)
