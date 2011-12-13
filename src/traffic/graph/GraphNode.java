@@ -17,7 +17,7 @@ public class GraphNode {
 	
 	private Set<GraphNode> outgoing; //Nodes that this node has an edge directed towards
 	private int nodeNum; //The number of this node on the graph
-	private List<Integer> cars; //The cars at this node
+	private List<Car> cars; //The cars at this node
 	private SpeedStrategy ss; //The strategy by which the speed changes
 	private int delay; //The basic delay of this node. To be modified by the speed strategy
 	
@@ -33,7 +33,7 @@ public class GraphNode {
 	public GraphNode(int n, SpeedStrategy s, int delay ) {
 		nodeNum = n;
 		outgoing = new HashSet<GraphNode>();
-		cars = new ArrayList<Integer>();
+		cars = new ArrayList<Car>();
 		ss = s;
 		this.delay = delay;
 	}
@@ -72,7 +72,7 @@ public class GraphNode {
 	/**
 	 * @return the cars
 	 */
-	public List<Integer> getCars() {
+	public List<Car> getCars() {
 		return cars;
 	}
 
@@ -83,16 +83,16 @@ public class GraphNode {
 	 * Adds the given car number to the list of cars currently at the node
 	 * Changes the speed limit at the node
 	 */
-	public void enterNode(int i) {
-		cars.add(i);
+	public void enterNode(Car c) {
+		cars.add(c);
 	}
 	
 	/**
 	 * Removes the given car from the list of cars at this node
 	 * Changes the speed limit at the node
 	 */
-	public void exitNode(int i) {
-		cars.remove(cars.indexOf(i));
+	public void exitNode(Car c) {
+		cars.remove(cars.indexOf(c));
 	}
 	
 	/**
