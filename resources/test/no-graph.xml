@@ -1,0 +1,8 @@
+<simulation>
+	<cars default_strategy="traffic.strategy.DijkstraCarStrategy">
+	</cars>
+
+	<graph default_strategy="traffic.strategy.QuadraticSpeedStrategy">
+		<node id="0" neighbors="0" />
+	</graph>
+</simulation>
