@@ -7,12 +7,11 @@
  */
 package traffic.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import traffic.graph.Graph;
+import traffic.graph.GraphNode;
 import traffic.strategy.CarStrategy;
 import traffic.strategy.NoiseStrategy;
 import traffic.strategy.RandomNoiseStrategy;
@@ -22,9 +21,9 @@ public class CarInfo {
 	private final static Logger logger = Logger.getLogger(CarInfo.class);
 
 	
-	private int start; //Starting position
-	private int end; //Destination position
-	private int currentNode; //Current position
+	private GraphNode start; //Starting position
+	private GraphNode end; //Destination position
+	private GraphNode currentNode; //Current position
 	private int carNum; //This car's number in the list of cars
 	private int delay; //The time the car must wait at its current node
 	private boolean finish; //True if the car has reached its destination
@@ -33,7 +32,7 @@ public class CarInfo {
 	private CarStrategy cs; //Strategy the car uses to traverse the graph
 
 	
-	public CarInfo(int start, int end, int num, CarStrategy strat) {
+	public CarInfo(GraphNode start, GraphNode end, int num, CarStrategy strat) {
 		this.start = start;
 		this.end = end;
 		currentNode = start;
@@ -49,28 +48,28 @@ public class CarInfo {
 	/**
 	 * @return The starting node for the car
 	 */
-	public int getStartNode() {
+	public GraphNode getStartNode() {
 		return start;
 	}
 	
 	/**
 	 * @return The ending node for the car
 	 */
-	public int getEndNode() {
+	public GraphNode getEndNode() {
 		return end;
 	}
 	
 	/**
 	 * @return The current node of the car
 	 */
-	public int getCurrentPosition() {
+	public GraphNode getCurrentPosition() {
 		return currentNode;
 	}
 	
 	/**
 	 * Sets the current position to the given variable c
 	 */
-	public void setCurrentPosition(int c) {
+	public void setCurrentPosition(GraphNode c) {
 		currentNode = c;
 	}
 	
@@ -107,7 +106,8 @@ public class CarInfo {
 	 * is the same as its ending position
 	 */
 	public void setFinish() {
-		finish = currentNode == end;
+		//TODO: fix this
+		//finish = currentNode == end;
 	}
 	
 	/**
@@ -130,7 +130,7 @@ public class CarInfo {
 	 * until an obstacle prevents it from doing so
 	 */
 	private void makePath() {
-		path = cs.getPath( start, end );
+		path = cs.getPath( start.getID(), end.getID() );
 		if(path != null) {
 			logger.info("Car " + getCarNum() + " is at node " + getCurrentPosition());
 			logger.info("The path for car " + getCarNum() + " is " + getPath());

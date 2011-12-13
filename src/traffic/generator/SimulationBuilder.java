@@ -72,11 +72,11 @@ public class SimulationBuilder {
 		CarStrategy cs = randomCarStrategy( opts.getStrategies() );
 		cs.setGraph(g);
 		List<GraphNode> nodes = g.getNodes();
-		int start = randomNode( nodes );
-		int end;
+		GraphNode start = randomNode( nodes );
+		GraphNode end;
 		do {
 			end = randomNode(nodes);
-		} while ( start == end );
+		} while ( start.equals(end) );
 		
 		return new Car( start, end, cs, i);
 	}
@@ -85,9 +85,10 @@ public class SimulationBuilder {
 	 * @param nodes
 	 * @return the ID of the randomly chose node
 	 */
-	private int randomNode(List<GraphNode> nodes) {
-		return nodes.get( random.nextInt( nodes.size() ) ).getID();
+	private GraphNode randomNode(List<GraphNode> nodes) {
+		return nodes.get( random.nextInt( nodes.size() ) );
 	}
+
 
 	/**
 	 * @param strategies

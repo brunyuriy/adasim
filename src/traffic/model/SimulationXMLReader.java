@@ -314,7 +314,7 @@ final public class SimulationXMLReader {
 					cs = defaultStrategy;
 				}
 			}
-			return new Car(start, end, cs, id );
+			return new Car( g.getNode(start), g.getNode(end), cs, id );
 		} catch (NumberFormatException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
