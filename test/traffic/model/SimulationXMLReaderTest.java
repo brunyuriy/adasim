@@ -182,10 +182,10 @@ public class SimulationXMLReaderTest {
 		assertEquals( 1, g.getNodes().get(1).getDelay() );
 	}
 
-//	@Test
-//	public void nodesHaveAllCars() throws FileNotFoundException, ConfigurationException {
-//		Graph g = SimulationXMLReader.buildSimulator( new File("resources/test/shortest-path-test-weights.xml")).getGraph();
-//		assertEquals( 3, g.getNode(2).getCars().size() );
-//		
-//	}
+	@Test
+	public void nodesHaveAllCars() throws FileNotFoundException, ConfigurationException {
+		Graph g = SimulationXMLReader.buildSimulator( new File("resources/test/shortest-path-test-weights.xml")).getGraph();
+		assertEquals( 3, g.getNode(2).numCarsAtNode() );
+		
+	}
 }
