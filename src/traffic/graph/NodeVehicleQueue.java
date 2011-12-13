@@ -92,4 +92,15 @@ final class NodeVehicleQueue {
 		}
 		return true;
 	}
+
+	/**
+	 * @return
+	 */
+	public int size() {
+		int s = 0;
+		for ( Set<Car> cars: queue.values() ) {
+			s += cars.size();
+		}
+		return s;
+	}
 }
