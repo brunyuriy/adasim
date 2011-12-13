@@ -10,6 +10,7 @@ package traffic.model;
 import java.util.*;
 
 import traffic.graph.Graph;
+import traffic.graph.GraphNode;
 
 public class TrafficSimulator{
 		
@@ -36,9 +37,9 @@ public class TrafficSimulator{
 	 * @return True if the simulation is over
 	 */
 	public boolean takeSimulationStep() {
-		for(Car c: cars) {
-			c.tryMove(graph);
-		}
+		for ( GraphNode node: graph.getNodes() ) {
+			node.takeSimulationStep();
+		}		
 		return checkAllFinish();
 	}
 	
