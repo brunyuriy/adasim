@@ -156,7 +156,7 @@ public class SimulationBuilder {
 	 */
 	private void randomizeNeighbors(GraphNode node, List<GraphNode> nodes, double degreeProb, double oneWayProb ) {
 		for ( int i = 0; i < nodes.size(); i++) {
-			if ( random.nextDouble() < degreeProb/2+oneWayProb && !nodes.get(i).equals(node)) {
+			if ( random.nextDouble() < degreeProb/2/(1+oneWayProb) && !nodes.get(i).equals(node)) {
 				GraphNode target = nodes.get(i);
 				node.addEdge(target);
 				if ( random.nextDouble() > oneWayProb ) {
