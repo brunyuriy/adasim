@@ -13,7 +13,7 @@ import org.apache.log4j.BasicConfigurator;
 import org.jdom.JDOMException;
 
 import traffic.model.ConfigurationException;
-import traffic.model.SimulationFactory;
+import traffic.model.SimulationXMLReader;
 import traffic.model.TrafficSimulator;
  
 public class TrafficMain {
@@ -35,7 +35,7 @@ public class TrafficMain {
 		assert opts != null;
 		
 		logger.info("Starting Simulation");
-		tsim = SimulationFactory.buildSimulator( new File(opts.getInputFile() ) );
+		tsim = SimulationXMLReader.buildSimulator( new File(opts.getInputFile() ) );
 		//tsim = SimulationFactory.buildSimulator(new File(args[0]));
 		boolean done = false;
 		while(!done) {

@@ -35,15 +35,15 @@ import traffic.strategy.QuadraticSpeedStrategy;
  * @author Jochen Wuttke - wuttkej@gmail.com
  *
  */
-public class SimulationFactoryTest {
+public class SimulationXMLReaderTest {
 	@Test (expected=FileNotFoundException.class)
 	public void testFileNotFound() throws JDOMException, IOException, ConfigurationException {
-		SimulationFactory.buildSimulator( new File("bad config") );
+		SimulationXMLReader.buildSimulator( new File("bad config") );
 	}
 	
 	@Test
 	public void testStart() throws JDOMException, IOException, ConfigurationException {
-		List<Car> cars = SimulationFactory.buildSimulator( new File("resources/test/config.xml" )).getCars();
+		List<Car> cars = SimulationXMLReader.buildSimulator( new File("resources/test/config.xml" )).getCars();
 		assertEquals(cars.get(0).getCurrent(), 0);
 		assertEquals(cars.get(1).getCurrent(), 4);
 		assertEquals(cars.get(2).getCurrent(), 3);
@@ -53,7 +53,7 @@ public class SimulationFactoryTest {
 	
 	@Test
 	public void testCarNum() throws JDOMException, IOException, ConfigurationException {
-		List<Car> cars = SimulationFactory.buildSimulator( new File("resources/test/config.xml" )).getCars();
+		List<Car> cars = SimulationXMLReader.buildSimulator( new File("resources/test/config.xml" )).getCars();
 		assertEquals(cars.get(0).getCarNumber(), 0);
 		assertEquals(cars.get(1).getCarNumber(), 1);
 		assertEquals(cars.get(2).getCarNumber(), 2);
@@ -63,31 +63,31 @@ public class SimulationFactoryTest {
 	
 	@Test
 	public void invalidCarStrategyDefaultsCorrectly() throws JDOMException, IOException, ConfigurationException {
-		List<Car> cars = SimulationFactory.buildSimulator( new File("resources/test/invalid-strategy.xml" )).getCars();
+		List<Car> cars = SimulationXMLReader.buildSimulator( new File("resources/test/invalid-strategy.xml" )).getCars();
 		assertEquals( LookaheadShortestPathCarStrategy.class, cars.get(1).getInfo().getStrategy().getClass() );
 	}
 	
 	@Test(expected=ConfigurationException.class)
 	public void invalidDefaultCarStrategyThrows() throws JDOMException, IOException, ConfigurationException {
-		List<Car> cars = SimulationFactory.buildSimulator( new File("resources/test/illegal-default-car-strategy.xml" )).getCars();
+		List<Car> cars = SimulationXMLReader.buildSimulator( new File("resources/test/illegal-default-car-strategy.xml" )).getCars();
 	}
 
 	
 	@Test(expected=ConfigurationException.class)
 	public void noCarThrows() throws JDOMException, IOException, ConfigurationException {
-		List<Car> cars = SimulationFactory.buildSimulator( new File("resources/test/no-car.xml" )).getCars();
+		List<Car> cars = SimulationXMLReader.buildSimulator( new File("resources/test/no-car.xml" )).getCars();
 		fail( "This should throw a meaningful exception to be handled by main()" );
 	}
 
 	@Test(expected=ConfigurationException.class)
 	public void noCarsThrows() throws JDOMException, IOException, ConfigurationException {
-		List<Car> cars = SimulationFactory.buildSimulator( new File("resources/test/no-cars.xml" )).getCars();
+		List<Car> cars = SimulationXMLReader.buildSimulator( new File("resources/test/no-cars.xml" )).getCars();
 		fail( "This should throw a meaningful exception to be handled by main()" );
 	}
 	
 	@Test
 	public void invalidStartEndIsIgnored() throws JDOMException, IOException, ConfigurationException {
-		List<Car> cars = SimulationFactory.buildSimulator( new File("resources/test/invalid-start.xml" )).getCars();
+		List<Car> cars = SimulationXMLReader.buildSimulator( new File("resources/test/invalid-start.xml" )).getCars();
 		assertEquals( 3, cars.size() );
 		assertEquals( 0, cars.get(0).getCarNumber() );
 		assertEquals( 3, cars.get(1).getCarNumber() );
@@ -96,7 +96,7 @@ public class SimulationFactoryTest {
 	
 	@Test
 	public void testStrategies() throws FileNotFoundException, ConfigurationException {
-		Graph g = SimulationFactory.buildSimulator( new File("resources/test/config.xml" ) ).getGraph();
+		Graph g = SimulationXMLReader.buildSimulator( new File("resources/test/config.xml" ) ).getGraph();
 		assertEquals(g.getNode(6).getCurrentDelay(), 1);
 		g.addCarAtNode(0, 6);
 		g.addCarAtNode(1, 6);
@@ -109,7 +109,7 @@ public class SimulationFactoryTest {
 	
 	@Test
 	public void testNeighbors() throws FileNotFoundException, ConfigurationException {
-		Graph g = SimulationFactory.buildSimulator( new File("resources/test/config.xml")).getGraph();
+		Graph g = SimulationXMLReader.buildSimulator( new File("resources/test/config.xml")).getGraph();
 		List<GraphNode> neighbors = g.getNodes().get(2).getNeighbors();
 		int first = neighbors.get(0).getID();
 		assertEquals(first, 4);
@@ -121,23 +121,23 @@ public class SimulationFactoryTest {
 	
 	@Test
 	public void emptyNeighborListIsIgnored() throws FileNotFoundException, ConfigurationException {
-		Graph g = SimulationFactory.buildSimulator( new File("resources/test/unconnected-node.xml")).getGraph();
+		Graph g = SimulationXMLReader.buildSimulator( new File("resources/test/unconnected-node.xml")).getGraph();
 		assertEquals( g.getNodes().size(), 9);
 	}
 	
 	@Test(expected=ConfigurationException.class)
 	public void noNodesThrows() throws FileNotFoundException, ConfigurationException {
-		Graph g = SimulationFactory.buildSimulator(new File("resources/test/no-nodes.xml")).getGraph();
+		Graph g = SimulationXMLReader.buildSimulator(new File("resources/test/no-nodes.xml")).getGraph();
 	}
 
 	@Test(expected=ConfigurationException.class)
 	public void noGraphThrows() throws FileNotFoundException, ConfigurationException {
-		Graph g = SimulationFactory.buildSimulator( new File("resources/test/no-graph.xml" )).getGraph();
+		Graph g = SimulationXMLReader.buildSimulator( new File("resources/test/no-graph.xml" )).getGraph();
 	}
 	
 	@Test
 	public void invalidNeighborIsIgnored() throws FileNotFoundException, ConfigurationException {
-		Graph g = SimulationFactory.buildSimulator( new File("resources/test/invalid-neighbor.xml")).getGraph();
+		Graph g = SimulationXMLReader.buildSimulator( new File("resources/test/invalid-neighbor.xml")).getGraph();
 		List<GraphNode> neighbors = g.getNeighbors( 0 ); 
 		assertEquals(1, neighbors.size() );
 		assertEquals(4, neighbors.get(0).getID() );
@@ -147,43 +147,43 @@ public class SimulationFactoryTest {
 	
 	@Test
 	public void invalidSpeedStrategyDefaultsCorrectly() throws FileNotFoundException, ConfigurationException {
-		Graph g = SimulationFactory.buildSimulator( new File("resources/test/invalid-strategy2.xml")).getGraph();
+		Graph g = SimulationXMLReader.buildSimulator( new File("resources/test/invalid-strategy2.xml")).getGraph();
 		assertEquals( QuadraticSpeedStrategy.class, g.getNodes().get(1).getSpeedStrategy().getClass() );
 	}
 
 	@Test
 	public void loadsAutoGeneratedConfig() throws FileNotFoundException, ConfigurationException {
-		Graph g = SimulationFactory.buildSimulator( new File("resources/test/auto-generated.xml")).getGraph();
+		Graph g = SimulationXMLReader.buildSimulator( new File("resources/test/auto-generated.xml")).getGraph();
 		//this passes when no unexpected exceptions are thrown
 	}
 
 	@Test
 	public void setsDelayCorrectly() throws FileNotFoundException, ConfigurationException {
-		Graph g = SimulationFactory.buildSimulator( new File("resources/test/config-weights.xml")).getGraph();
+		Graph g = SimulationXMLReader.buildSimulator( new File("resources/test/config-weights.xml")).getGraph();
 		assertEquals( 7, g.getNodes().get(1).getDelay() );
 	}
 
 	@Test
 	public void setsDelayCorrectly2() throws FileNotFoundException, ConfigurationException {
-		Graph g = SimulationFactory.buildSimulator( new File("resources/test/shortest-path-test-weights.xml")).getGraph();
+		Graph g = SimulationXMLReader.buildSimulator( new File("resources/test/shortest-path-test-weights.xml")).getGraph();
 		assertEquals( 4, g.getNodes().get(3).getDelay() );
 	}
 
 	@Test()
 	public void invalidDelayDefaults() throws FileNotFoundException, ConfigurationException {
-		Graph g = SimulationFactory.buildSimulator( new File("resources/test/config-weights-invalid.xml")).getGraph();
+		Graph g = SimulationXMLReader.buildSimulator( new File("resources/test/config-weights-invalid.xml")).getGraph();
 		assertEquals( 1, g.getNodes().get(1).getDelay() );
 	}
 
 	@Test()
 	public void negativeDelayDefaults() throws FileNotFoundException, ConfigurationException {
-		Graph g = SimulationFactory.buildSimulator( new File("resources/test/config-weights-invalid2.xml")).getGraph();
+		Graph g = SimulationXMLReader.buildSimulator( new File("resources/test/config-weights-invalid2.xml")).getGraph();
 		assertEquals( 1, g.getNodes().get(1).getDelay() );
 	}
 
 	@Test
 	public void nodesHaveAllCars() throws FileNotFoundException, ConfigurationException {
-		Graph g = SimulationFactory.buildSimulator( new File("resources/test/shortest-path-test-weights.xml")).getGraph();
+		Graph g = SimulationXMLReader.buildSimulator( new File("resources/test/shortest-path-test-weights.xml")).getGraph();
 		assertEquals( 3, g.getNode(2).getCars().size() );
 		
 	}

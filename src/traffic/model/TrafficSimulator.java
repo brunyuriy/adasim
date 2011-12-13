@@ -16,7 +16,7 @@ public class TrafficSimulator{
 	private List<Car> cars; //List of cars in the simulation
 	private Graph graph; //The graph the cars run on
 	
-	TrafficSimulator( Graph g, List<Car> c ) {
+	public TrafficSimulator( Graph g, List<Car> c ) {
 		if ( g == null ) throw new IllegalArgumentException( "Graph must not be null" );
 		if ( c == null ) throw new IllegalArgumentException( "Cars must not be null" );
 		this.graph = g;
