@@ -149,4 +149,16 @@ public class GraphNode {
 			return false;
 		return true;
 	}
+	
+	/* ***************************************************
+	 * SIMULATION MANAGEMENT METHODS
+	 *************************************************** */
+	
+	public void takeSimulationStep() {
+		//TODO:
+		/*
+		 * 1. Move all cars one step
+		 * 2. Cars that are at the end need to be notified.
+		 */
+	}
 }
