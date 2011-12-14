@@ -12,6 +12,13 @@ import traffic.graph.GraphNode;
 
 public interface CarStrategy {
 	
+	/**
+	 * This is intended for testing only, as it circumvents the control
+	 * that can be implemented in getNextNode()
+	 * @param from
+	 * @param to
+	 * @return
+	 */
 	public List<GraphNode> getPath(GraphNode from, GraphNode to); //Creates the path for the car to follow
 
 	/**

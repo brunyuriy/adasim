@@ -38,6 +38,17 @@ public class LookaheadShortestPathCarStrategy extends AbstractCarStrategy {
 		this(0);
 	}
 
+	/**
+	 * Creates a new strategy object. 
+	 * The lookahead parameter defines how far ahead the strategy considers traffic in addition to node
+	 * delays. This parameter also defines how often the strategy recomputes the path
+	 * it follows. 
+	 * <p>
+	 * For a lookahead of <em>n</em> it will consider traffic for <em>n</em> nodes from the
+	 * current node, and will recompute the path every <em>n</em> moves. 
+	 * 
+	 * @param lookahead
+	 */
 	public LookaheadShortestPathCarStrategy( int lookahead ){
 		this.lookahead = lookahead;
 		this.steps = 0;
