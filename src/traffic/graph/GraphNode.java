@@ -144,10 +144,18 @@ public class GraphNode {
 		return true;
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "" + nodeNum;
+	}
+
 	/* ***************************************************
 	 * SIMULATION MANAGEMENT METHODS
 	 *************************************************** */
-	
+
 	public void takeSimulationStep() {
 		Set<Car> finishedCars = queue.moveCars();
 		if ( finishedCars == null ) return;
