@@ -32,6 +32,7 @@ public class LookaheadShortestPathCarStrategy extends AbstractCarStrategy {
 	
 	private final int lookahead;
 	private List<GraphNode> path;
+	private int steps;
 	
 	public LookaheadShortestPathCarStrategy() {
 		this(0);
@@ -39,11 +40,11 @@ public class LookaheadShortestPathCarStrategy extends AbstractCarStrategy {
 
 	public LookaheadShortestPathCarStrategy( int lookahead ){
 		this.lookahead = lookahead;
+		this.steps = 0;
 	}
 
-	public List<Integer> getPath(GraphNode source, GraphNode target ) {
-		//return dijkstra(graph.getNodes(), source, target, lookahead );
-		return null;
+	public List<GraphNode> getPath(GraphNode source, GraphNode target ) {
+		return dijkstra(graph.getNodes(), source, target, lookahead );
 	}
 	
 	/**
@@ -163,7 +164,15 @@ public class LookaheadShortestPathCarStrategy extends AbstractCarStrategy {
 		}
 		if ( path == null ) return null;
 		if ( path.size() == 0 ) return null;
-		return path.remove(0);
+		if ( ++steps == lookahead ) {
+			GraphNode next = path.remove(0);
+			path = dijkstra(graph.getNodes(), next, target, lookahead );
+			logger.info( "Updated path from " + next.getID() + " to " + target.getID() + " is:\n" + path );
+			steps = 0;
+			return next;
+		} else {
+			return path.remove(0);
+		}
 	}
 	
 }
