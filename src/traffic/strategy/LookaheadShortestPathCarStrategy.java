@@ -178,14 +178,14 @@ public class LookaheadShortestPathCarStrategy extends AbstractCarStrategy {
 	public GraphNode getNextNode() {
 		if ( path == null ) {
 			path = dijkstra(graph.getNodes(), source, target, lookahead );
-			logger.info( "Path from " + source.getID() + " to " + target.getID() + " is:\n" + path );
+			logger.info( pathLogMessage() );
 		}
 		if ( path == null ) return null;
 		if ( path.size() == 0 ) return null;
 		if ( ++steps == lookahead ) {
 			GraphNode next = path.remove(0);
 			path = dijkstra(graph.getNodes(), next, target, lookahead );
-			logger.info( "Updated path from " + next.getID() + " to " + target.getID() + " is:\n" + path );
+			logger.info( "UPDATE: " + pathLogMessage() );
 			steps = 0;
 			return next;
 		} else {
@@ -193,4 +193,15 @@ public class LookaheadShortestPathCarStrategy extends AbstractCarStrategy {
 		}
 	}
 
+	private String pathLogMessage() {
+		StringBuffer buf = new StringBuffer( "Car: " );
+		buf.append( carID );
+		buf.append( " From: " );
+		buf.append( source.getID() );
+		buf.append( " To: " );
+		buf.append( target.getID() );
+		buf.append( " Path: " );
+		buf.append( path );
+		return buf.toString();
+	}
 }
