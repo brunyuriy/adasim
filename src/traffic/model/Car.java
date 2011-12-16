@@ -32,13 +32,20 @@ public class Car {
 			//this happens if there is no path, or the car is at its goal
 			info.getCurrentPosition().park(this);
 			info.setFinish();
-			logger.info( "Car " + this.getID() + " stops at node " + info.getCurrentPosition().getID() );
+			logger.info( "STOP: " + carPosition() );
 		} else {
-			logger.info("Car " + this.getID() + " moves from node " + info.getCurrentPosition().getID() 
-					+ " to node " + nextNode.getID() );
+			logger.info( "MOVE: " + carPosition() + " To:" + nextNode.getID() );
 			info.setCurrentPosition(nextNode);
 			nextNode.enterNode(this);
 		}
+	}
+	
+	private String carPosition() {
+		StringBuffer buf = new StringBuffer( "Car: ");
+		buf.append( this.getID() );
+		buf.append(" At: " );
+		buf.append( info.getCurrentPosition().getID() );
+		return buf.toString();
 	}
 	
 	/**
