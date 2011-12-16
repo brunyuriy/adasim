@@ -192,5 +192,5 @@ public class LookaheadShortestPathCarStrategy extends AbstractCarStrategy {
 			return path.remove(0);
 		}
 	}
-	
+
 }

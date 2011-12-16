@@ -36,5 +36,7 @@ public interface CarStrategy {
 	public void setStartNode( GraphNode start );
 	
 	public void setEndNode( GraphNode end );
+	
+	public void setCarId( int id );
 
 }
