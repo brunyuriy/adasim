@@ -33,6 +33,7 @@ public class LookaheadShortestPathCarStrategy extends AbstractCarStrategy {
 	private final int lookahead;
 	private List<GraphNode> path;
 	private int steps;
+	private boolean finished = false;
 	
 	/**
 	 * The default constructor builds this strategy with a lookahead of 0.
@@ -176,15 +177,21 @@ public class LookaheadShortestPathCarStrategy extends AbstractCarStrategy {
 	 */
 	@Override
 	public GraphNode getNextNode() {
+		if ( finished ) return null;
 		if ( path == null ) {
 			path = dijkstra(graph.getNodes(), source, target, lookahead );
 			logger.info( pathLogMessage() );
 		}
-		if ( path == null ) return null;
-		if ( path.size() == 0 ) return null;
+		if ( path == null || path.size() == 0 ) {
+			finished = true;
+			return null;
+		}
 		if ( ++steps == lookahead ) {
 			GraphNode next = path.remove(0);
 			path = dijkstra(graph.getNodes(), next, target, lookahead );
+			if ( path == null ) {
+				finished = true;
+			}
 			logger.info( "UPDATE: " + pathLogMessage() );
 			steps = 0;
 			return next;
@@ -194,14 +201,14 @@ public class LookaheadShortestPathCarStrategy extends AbstractCarStrategy {
 	}
 
 	private String pathLogMessage() {
-		StringBuffer buf = new StringBuffer( "Car: " );
+		StringBuffer buf = new StringBuffer( "PATH: Car: " );
 		buf.append( carID );
 		buf.append( " From: " );
 		buf.append( source.getID() );
 		buf.append( " To: " );
 		buf.append( target.getID() );
 		buf.append( " Path: " );
-		buf.append( path );
+		buf.append( path == null ? "[]" : path );
 		return buf.toString();
 	}
 }
