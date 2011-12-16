@@ -25,6 +25,7 @@ public abstract class AbstractCarStrategy implements CarStrategy {
 	
 	protected Graph graph;
 	protected GraphNode source, target;
+	protected int carID;
 
 	/* (non-Javadoc)
 	 * @see traffic.strategy.CarStrategy#setGraph(traffic.graph.Graph)
@@ -43,5 +44,14 @@ public abstract class AbstractCarStrategy implements CarStrategy {
 	public void setEndNode( GraphNode end ) {
 		target = end;
 	}
+	
+	/* (non-Javadoc)
+	 * @see traffic.strategy.CarStrategy#setCarId(int)
+	 */
+	@Override
+	public void setCarId(int id) {
+		this.carID = id;
+	}
+	
 
 }
