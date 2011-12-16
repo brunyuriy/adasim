@@ -9,13 +9,20 @@ package traffic.model;
 
 import java.util.*;
 
+import org.apache.log4j.Logger;
+
+import traffic.TrafficMain;
 import traffic.graph.Graph;
 import traffic.graph.GraphNode;
 
 public class TrafficSimulator{
+	
+	private static Logger logger = Logger.getLogger(TrafficSimulator.class);
+
 		
 	private List<Car> cars; //List of cars in the simulation
 	private Graph graph; //The graph the cars run on
+	private long cycle = 1;
 	
 	public TrafficSimulator( Graph g, List<Car> c ) {
 		if ( g == null ) throw new IllegalArgumentException( "Graph must not be null" );
@@ -37,6 +44,7 @@ public class TrafficSimulator{
 	 * @return True if the simulation is over
 	 */
 	public boolean takeSimulationStep() {
+		logger.info( "SIMULATION: Cycle: " + cycle++ );
 		for ( GraphNode node: graph.getNodes() ) {
 			node.takeSimulationStep();
 		}		
