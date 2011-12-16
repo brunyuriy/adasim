@@ -33,10 +33,10 @@ public class TrafficMain {
 		}
 		
 		assert opts != null;
-		
-		logger.info("Starting Simulation");
+
+		logger.info("Loading Simulation");
 		tsim = SimulationXMLReader.buildSimulator( new File(opts.getInputFile() ) );
-		//tsim = SimulationFactory.buildSimulator(new File(args[0]));
+		logger.info("Starting Simulation");
 		boolean done = false;
 		while(!done) {
 			done = tsim.takeSimulationStep();
