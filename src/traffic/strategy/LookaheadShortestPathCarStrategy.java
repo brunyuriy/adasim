@@ -179,25 +179,34 @@ public class LookaheadShortestPathCarStrategy extends AbstractCarStrategy {
 	public GraphNode getNextNode() {
 		if ( finished ) return null;
 		if ( path == null ) {
-			path = dijkstra(graph.getNodes(), source, target, lookahead );
+			path = getPath(source);
 			logger.info( pathLogMessage() );
 		}
+		assert path != null || finished;
 		if ( path == null || path.size() == 0 ) {
 			finished = true;
 			return null;
 		}
 		if ( ++steps == lookahead ) {
 			GraphNode next = path.remove(0);
-			path = dijkstra(graph.getNodes(), next, target, lookahead );
-			if ( path == null ) {
-				finished = true;
-			}
+			path = getPath(next);
 			logger.info( "UPDATE: " + pathLogMessage() );
 			steps = 0;
 			return next;
 		} else {
 			return path.remove(0);
 		}
+	}
+
+	/**
+	 * @param next
+	 */
+	private List<GraphNode> getPath(GraphNode start) {
+		List<GraphNode> p = dijkstra(graph.getNodes(), start, target, lookahead );
+		if ( p == null ) {
+			finished = true;
+		}
+		return p;
 	}
 
 	private String pathLogMessage() {
