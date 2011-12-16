@@ -34,6 +34,13 @@ public class LookaheadShortestPathCarStrategy extends AbstractCarStrategy {
 	private List<GraphNode> path;
 	private int steps;
 	
+	/**
+	 * The default constructor builds this strategy with a lookahead of 0.
+	 * <p>
+	 * A lookahead of 0 means that the strategy will only consider the 
+	 * unmodified weight of each node, and for this reason will never recompute 
+	 * the path.
+	 */
 	public LookaheadShortestPathCarStrategy() {
 		this(0);
 	}
