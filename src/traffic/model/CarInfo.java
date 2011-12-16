@@ -35,6 +35,7 @@ public class CarInfo {
 		cs = strat;
 		cs.setStartNode(start);
 		cs.setEndNode(end);
+		cs.setCarId(carNum);
 	}
 	
 	/**
