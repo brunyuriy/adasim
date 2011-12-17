@@ -68,11 +68,9 @@ def process_move(line):
 	split_re = re.compile(".+Car: (\d+).+")
 	return split_re.match(line).group(1)
 
-def process_log(file, prefix):
-	cars = {}
+def process_log(file, prefix, cars):
 	time = 0
 	path_re = re.compile(".+- PATH: .+")
-	update_re = re.compile( ".+UPDATE: .+")
 	move_re = re.compile(".+MOVE: .+")
 	stop_re = re.compile(".+STOP: .+")
 	time_re = re.compile(".+SIMULATION: .+" )
@@ -82,8 +80,6 @@ def process_log(file, prefix):
 			car = process_path(line)
 			car.id = car.id + prefix
 			cars[ car.id ] = car
-		#elif update_re.match(line):
-		#	print "Matched UPDATE"
 		elif move_re.match(line):
 			moved_car_id = process_move(line) + prefix
 			cars[moved_car_id].hops = cars[moved_car_id].hops + 1
@@ -94,8 +90,6 @@ def process_log(file, prefix):
 			
 		elif time_re.match(line):
 			time += 1
-		#else:
-		#	print line
 	return cars
 
 def process_xml(file, prefix, cars):
@@ -108,12 +102,24 @@ def process_xml(file, prefix, cars):
 			cars[car_id].strategy = car.getAttribute("strategy")
 	return cars
 
-def process_files(dir, prefix):
-	log_file = open( dir + "/" + prefix + ".log" )
-	xml_file = open( dir + "/" + prefix + ".xml" )
-	cars = process_log(log_file, prefix)
-	cars = process_xml(xml_file, prefix, cars)
+def filename_filter(files, regex):
+	r = re.compile(regex)
+	filtered = []
+	for file in files:
+		result = r.match(file)
+		if result:
+			filtered.append(result.group(1))
+	return filtered
+
+def process_files(dir, files, prefix):
+	cars = {}
 	print "Checking " + dir + "/" + prefix
+	for file in filename_filter( files, "(" + prefix + ".+)\.xml"):
+		print "\t Processing " + file
+		log_file = open( dir + "/" + file + ".log" )
+		xml_file = open( dir + "/" + file + ".xml" )
+		cars = process_log(log_file, file, cars)
+		cars = process_xml(xml_file, file, cars)
 	return cars
 
 def write_line( file, nums, car):
@@ -130,16 +136,24 @@ def write_cars(file, prefix, cars):
 	for car in cars.values():
 		write_line(file, nums, car)
 
+def get_prefixes(files):
+	r = re.compile("(\d+-\d+)-\d+.xml")
+	prefixes = set()
+	for file in files:
+		result = r.match(file)
+		if result:
+			prefixes.add(result.group(1))
+	return list(prefixes)
+
 def main(args):
 	'''Main cycle'''
-	output_file = open( args.OUTPUT_FILE, "w")
-	write_line2(output_file, "Nodes", "Cars", "Car", "Hops", "Time", "Strategy" )
-	for file in os.listdir( args.DATA_DIR ) :
-		if file.endswith(".xml"):
-			prefix = file.split('.')[0]
-			cars = process_files(args.DATA_DIR, prefix )
-			write_cars(output_file, prefix, cars)
-	output_file.close()
+	files = os.listdir( args.DATA_DIR )
+	for prefix in get_prefixes(files):
+		output_file = open( prefix + ".csv", "w")
+		write_line2(output_file, "Nodes", "Cars", "Car", "Hops", "Time", "Strategy" )
+		cars = process_files(args.DATA_DIR, files, prefix )
+		write_cars(output_file, prefix, cars)
+		output_file.close()
 
 if __name__ == "__main__":
 	args = parse_arguments()
