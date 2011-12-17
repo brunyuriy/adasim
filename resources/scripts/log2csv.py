@@ -26,7 +26,6 @@ def parse_arguments():
 	Parse and return the command line arguments.
 	'''
 	parser = argparse.ArgumentParser(description='Data directory and output file')
-	parser.add_argument('-f', dest='OUTPUT_FILE', required=True, help='Output file name.')
 	parser.add_argument('-d', dest='DATA_DIR', required=True, help='Directory containing simulation config and output.')
 	return parser.parse_args()
 
