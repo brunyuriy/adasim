@@ -114,7 +114,7 @@ def filename_filter(files, regex):
 def process_files(dir, files, prefix):
 	cars = {}
 	print "Checking " + dir + "/" + prefix
-	for file in filename_filter( files, "(" + prefix + ".+)\.xml"):
+	for file in filename_filter( files, "(" + prefix + "-.+)\.xml"):
 		print "\t Processing " + file
 		log_file = open( dir + "/" + file + ".log" )
 		xml_file = open( dir + "/" + file + ".xml" )
