@@ -23,3 +23,12 @@ plot_all_data <- function() {
 		plot_data(s)
 	}
 }
+
+plot_time_data <- function(file) {
+	data <- read.table( paste(file, "csv", sep="."), header=T, sep=',')
+	p <- tapply( data$Time, list(data$Cars, data$Strategy) , mean)
+	l <- levels(data$Strategy)
+	pdf( paste(file, "pdf", sep=".") )
+	barplot(t(p), beside=T, legend= c( map_s(l[1]) , map_s(l[2]) ))
+	dev.off()
+}
