@@ -56,8 +56,15 @@ public class CongestedSimulationBuilder {
 	 */
 	private List<Car> buildCars(ConfigurationOptions opts, Graph g) throws ConfigurationException {
 		List<Car> cars = new ArrayList<Car>();
+		List<GraphNode> nodes = g.getNodes();
+		GraphNode start = randomNode( nodes );
+		GraphNode end;
+		do {
+			end = randomNode(nodes);
+		} while ( start.equals(end) );
+
 		for ( int i = 0; i < opts.getNumCars(); i++ ) {
-			cars.add( buildCar( i, opts, g ) );
+			cars.add( buildCar( i, opts, g, start, end ) );
 		}
 		return cars;
 	}
@@ -68,16 +75,9 @@ public class CongestedSimulationBuilder {
 	 * @return
 	 * @throws ConfigurationException 
 	 */
-	private Car buildCar(int i, ConfigurationOptions opts, Graph g) throws ConfigurationException {
+	private Car buildCar(int i, ConfigurationOptions opts, Graph g, GraphNode start, GraphNode end ) throws ConfigurationException {
 		CarStrategy cs = randomCarStrategy( opts.getStrategies() );
-		cs.setGraph(g);
-		List<GraphNode> nodes = g.getNodes();
-		GraphNode start = randomNode( nodes );
-		GraphNode end;
-		do {
-			end = randomNode(nodes);
-		} while ( start.equals(end) );
-		
+		cs.setGraph(g);		
 		return new Car( start, end, cs, i);
 	}
 
