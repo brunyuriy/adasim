@@ -38,7 +38,11 @@ public class Generator {
 		}
 		
 		try {
-			SimulationXMLWriter.write( new SimulationBuilder().build(opts), opts.getOutputFile() );
+			if ( opts.isBottleneck() ) {
+				SimulationXMLWriter.write( new CongestedSimulationBuilder().build(opts), opts.getOutputFile() );
+			} else {
+				SimulationXMLWriter.write( new SimulationBuilder().build(opts), opts.getOutputFile() );
+			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
