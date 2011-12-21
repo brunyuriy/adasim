@@ -35,6 +35,7 @@ final class ConfigurationOptions {
 	private List<String> strategies = new ArrayList<String>();
 	private File outputFile = new File( "generated-config.xml" );
 	private double oneWay = 0.01;
+	private boolean bottleneck = false;
 	
 	static ConfigurationOptions parse( String[] args ) throws Exception {
 		ConfigurationOptions cfg = new ConfigurationOptions();
@@ -79,6 +80,7 @@ final class ConfigurationOptions {
 		if ( opts.has( "one-way-prob" ) ) {
 			cfg.oneWay = Double.parseDouble( opts.valueOf( "one-way-prob").toString() );
 		} 
+		cfg.bottleneck = opts.has( "congested" );
 	}
 
 	/**
@@ -107,6 +109,7 @@ final class ConfigurationOptions {
 		parser.acceptsAll( Arrays.asList( "one-way-prob"), "Probability for a road to be a one-way street" )
 			.withRequiredArg()
 			.describedAs( "prob");
+		parser.accepts( "congested", "Build a simulation that likely contains a bottleneck.");	//TODO: This is a hack for SEAMS 2012
 		return parser;
 	}
 
@@ -157,6 +160,13 @@ final class ConfigurationOptions {
 	 */
 	double getOneWayProbability() {
 		return oneWay;
+	}
+
+	/**
+	 * @return the bottleneck
+	 */
+	boolean isBottleneck() {
+		return bottleneck;
 	}
 	
 }
