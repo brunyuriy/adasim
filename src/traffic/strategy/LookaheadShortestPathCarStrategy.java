@@ -31,6 +31,7 @@ public class LookaheadShortestPathCarStrategy extends AbstractCarStrategy {
 	private final static Logger logger = Logger.getLogger(LookaheadShortestPathCarStrategy.class);
 	
 	private final int lookahead;
+	private final int recompute;
 	private List<GraphNode> path;
 	private int steps;
 	private boolean finished = false;
@@ -58,10 +59,28 @@ public class LookaheadShortestPathCarStrategy extends AbstractCarStrategy {
 	 * @param lookahead
 	 */
 	public LookaheadShortestPathCarStrategy( int lookahead ){
+		this(lookahead, lookahead );
+	}
+
+	/**
+	 * Creates a new strategy object. 
+	 * The lookahead parameter defines how far ahead the strategy considers traffic in addition to node
+	 * delays. This parameter also defines how often the strategy recomputes the path
+	 * it follows. 
+	 * <p>
+	 * For a lookahead of <em>n</em> it will consider traffic for <em>n</em> nodes from the
+	 * current node, and will recompute the path every <em>recomp</em> moves. 
+	 * 
+	 * @param lookahead
+	 */
+
+	public LookaheadShortestPathCarStrategy( int lookahead, int recomp ){
 		this.lookahead = lookahead;
+		this.recompute = recomp;
 		this.steps = 0;
 	}
 
+	
 	public List<GraphNode> getPath(GraphNode source, GraphNode target ) {
 		return dijkstra(graph.getNodes(), source, target, lookahead );
 	}
@@ -187,7 +206,7 @@ public class LookaheadShortestPathCarStrategy extends AbstractCarStrategy {
 			finished = true;
 			return null;
 		}
-		if ( ++steps == lookahead ) {
+		if ( ++steps == recompute ) {
 			GraphNode next = path.remove(0);
 			path = getPath(next);
 			logger.info( "UPDATE: " + pathLogMessage() );
