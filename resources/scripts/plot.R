@@ -28,7 +28,7 @@ plot_time_data <- function(file) {
 	data <- read.table( paste(file, "csv", sep="."), header=T, sep=',')
 	p <- tapply( data$Time, list(data$Cars, data$Strategy) , mean)
 	l <- levels(data$Strategy)
-#	pdf( paste(file, "pdf", sep=".") )
+	pdf( paste(file, "pdf", sep=".") )
 	barplot(t(p), beside=T, legend= c( map_s(l[1]) , map_s(l[2]) ), xlab ="# of Cars", ylab = "Mean Travel Time", main = "Mean Travel Time by Strategy", args.legend = list( title = "Strategy", x = "topleft" ) )
-#	dev.off()
+	dev.off()
 }
