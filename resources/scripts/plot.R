@@ -1,9 +1,9 @@
 
 map_s <- function(str) {
-	if ( str == "traffic.strategy.AdaptiveCarStrategy" ) {
-		"adaptive"
-	} else {
+	if ( str == "traffic.strategy.LookaheadShortestPathCarStrategy" ) {
 		"naive"
+	} else {
+		"adaptive"
 	}
 }
 
