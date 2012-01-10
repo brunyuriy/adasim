@@ -35,6 +35,7 @@
         <xsd:attribute name="id" type="xsd:nonNegativeInteger" use="required" />
         <xsd:attribute name="strategy" type="xsd:string" />
         <xsd:attribute name="neighbors" type="xsd:string" use="required" />
+        <xsd:attribute name="delay" type="xsd:nonNegativeInteger" />
     </xsd:complexType>
 
 
