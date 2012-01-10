@@ -1,6 +1,4 @@
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-            elementFormDefault="qualified">
-
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
 
     <xsd:element name="simulation" type="Simulation" />
     <xsd:complexType name="Simulation">
@@ -11,24 +9,25 @@
     </xsd:complexType>
 
     <xsd:complexType name="Cars">
-        <xsd:attribute name="default_strategy" type="xsd:string" />
         <xsd:sequence>
             <xsd:element name="car" type="Car" minOccurs="1" maxOccurs="unbounded" />
         </xsd:sequence>
+        <xsd:attribute name="default_strategy" type="xsd:string" />
     </xsd:complexType>
 
 
     <xsd:complexType name="Car">
+        <xsd:attribute name="id" type="xsd:nonNegativeInteger" use="required" />
         <xsd:attribute name="start" type="xsd:nonNegativeInteger" use="required" />
         <xsd:attribute name="end" type="xsd:nonNegativeInteger" use="required" />
         <xsd:attribute name="strategy" type="xsd:string" />
     </xsd:complexType>
     
     <xsd:complexType name="Graph">
-        <xsd:attribute name="default_strategy" type="xsd:string" />
         <xsd:sequence>
             <xsd:element name="node" type="Node" minOccurs="1" maxOccurs="unbounded" />
         </xsd:sequence>
+        <xsd:attribute name="default_strategy" type="xsd:string" />
     </xsd:complexType>
 
 

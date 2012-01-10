@@ -1,6 +1,4 @@
-<simulation xmlns="urn:nonstandard:test"
-     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-     xsi:schemaLocation="sim.xsd">
+<simulation>
 	<cars default_strategy="traffic.strategy.LookaheadShortestPathCarStrategy">
 		<car id="0" start="0" end="2" />
 		<car id="1" start="4" end="7" />
@@ -11,7 +9,7 @@
 
 	<graph default_strategy="traffic.strategy.QuadraticSpeedStrategy">
 		<node id="0" neighbors="4 7" />
-		<node id="1" strategy="traffic.strategy.LinearSpeedStrategy" neighbors="5" delay="7"/>
+		<node id="1" strategy="traffic.strategy.LinearSpeedStrategy" neighbors="5" />
 		<node id="2" strategy="traffic.strategy.LinearSpeedStrategy" neighbors="4 7 9" />
 		<node id="3" neighbors="1" />
 		<node id="4" strategy="traffic.strategy.LinearSpeedStrategy" neighbors="6 8" />
