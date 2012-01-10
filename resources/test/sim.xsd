@@ -28,6 +28,7 @@
             <xsd:element name="node" type="Node" minOccurs="1" maxOccurs="unbounded" />
         </xsd:sequence>
         <xsd:attribute name="default_strategy" type="xsd:string" />
+        <xsd:attribute name="default_capacity" type="xsd:nonNegativeInteger" />
     </xsd:complexType>
 
 
@@ -36,6 +37,7 @@
         <xsd:attribute name="strategy" type="xsd:string" />
         <xsd:attribute name="neighbors" type="xsd:string" use="required" />
         <xsd:attribute name="delay" type="xsd:nonNegativeInteger" />
+        <xsd:attribute name="capacity" type="xsd:nonNegativeInteger" />
     </xsd:complexType>
 
 
