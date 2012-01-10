@@ -28,8 +28,8 @@ public class Graph {
 	/**
 	 * Adds a new node to the graph and increases the tracker for the number of nodes by one
 	 */
-	public void addNode(int num, SpeedStrategy speed) {
-		nodes.add(new GraphNode(num, speed));
+	public void addNode(int num, SpeedStrategy speed, int capacity) {
+		nodes.add(new GraphNode(num, speed, capacity));
 	}
 	
 	public void addNode( GraphNode node ) {

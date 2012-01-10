@@ -116,19 +116,20 @@ final public class SimulationXMLReader {
 			List<Element> children = graph.getChildren("node");		
 			Class<?> cls = Class.forName(graph.getAttributeValue("default_strategy"));
 			SpeedStrategy ss = (SpeedStrategy) cls.newInstance();
-			return new Graph( buildNodes( children, ss ) );
+			int capacity = Integer.parseInt(graph.getAttributeValue("default_capacity"));
+			return new Graph( buildNodes( children, ss, capacity) );
 		} catch (Exception e) {
 			throw new ConfigurationException("Invalid default graph strategy");
 		}
 	}
 
-	private List<GraphNode> buildNodes( List<Element> nodeDeclarations, SpeedStrategy defaultStrategy ) {
+	private List<GraphNode> buildNodes( List<Element> nodeDeclarations, SpeedStrategy defaultStrategy, int capacity) {
 		List<GraphNode> nodes = new ArrayList<GraphNode>( nodeDeclarations.size() );
 		for( Element node : nodeDeclarations ) {
 			int id = Integer.parseInt( node.getAttributeValue( "id" ) );
 			if ( hasValidNeighbors(node) ) {
 				SpeedStrategy ss = buildStrategy( node, defaultStrategy );
-				nodes.add( new GraphNode( id, ss, getDelay(node )) );
+				nodes.add( new GraphNode( id, ss, getDelay(node ), getCapacity(node, capacity)) );
 			}
 		}
 		for ( Element node: nodeDeclarations ) {
@@ -150,6 +151,15 @@ final public class SimulationXMLReader {
 		if ( d == null ) return 1;
 		else {
 			return Integer.parseInt(d); //Delay must be a valid integer due to schema
+		}
+	}
+	
+	private int getCapacity(Element node, int d_capacity) {
+		String cap = node.getAttributeValue("capacity");
+		if (cap == null) {
+			return d_capacity;
+		} else {
+			return Integer.parseInt(cap);
 		}
 	}
 
