@@ -21,6 +21,8 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.apache.log4j.Logger;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -44,14 +46,30 @@ final public class SimulationXMLReader {
 
 	private Document doc;
 
-	SimulationXMLReader( String config ) throws JDOMException, IOException {
-		SAXBuilder b = new SAXBuilder(false	);
-		doc = b.build( new StringReader( config ) );
+	SimulationXMLReader( String config ) throws JDOMException, IOException, ConfigurationException {
+		SAXBuilder sbuilder = new SAXBuilder(true);
+        sbuilder.setProperty("http://java.sun.com/xml/jaxp/properties/schemaLanguage", "http://www.w3.org/2001/XMLSchema");
+        sbuilder.setProperty("http://java.sun.com/xml/jaxp/properties/schemaSource", "sim.xsd");
+        sbuilder.setErrorHandler(new SimpleErrorHandler());
+        
+		try {
+			doc = sbuilder.build(config);
+		} catch (Exception e) {
+			throw new ConfigurationException("invalid XML file");
+		}
 	}
 
-	private SimulationXMLReader( File f ) throws JDOMException, IOException {
-		SAXBuilder b = new SAXBuilder(false);
-		doc = b.build( f );
+	private SimulationXMLReader( File f ) throws JDOMException, IOException, ConfigurationException {
+		SAXBuilder sbuilder = new SAXBuilder(true);
+        sbuilder.setProperty("http://java.sun.com/xml/jaxp/properties/schemaLanguage", "http://www.w3.org/2001/XMLSchema");
+        sbuilder.setProperty("http://java.sun.com/xml/jaxp/properties/schemaSource", "sim.xsd");
+        sbuilder.setErrorHandler(new SimpleErrorHandler());
+        
+		try {
+			doc = sbuilder.build(f);
+		} catch (Exception e) {
+			throw new ConfigurationException("invalid XML file");
+		}
 	}
 
 	public static TrafficSimulator buildSimulator( String xmlString ) {
@@ -94,19 +112,13 @@ final public class SimulationXMLReader {
 		try {
 			Element root = doc.getRootElement();
 			Element graph = root.getChild("graph");
-			if ( graph == null ) throw new ConfigurationException( "No <graph> found.");
 			@SuppressWarnings("unchecked")
 			List<Element> children = graph.getChildren("node");		
-			if ( children.size() < 1 ) throw new ConfigurationException( "Simulation must have at least one <node>" );
-			//TODO: check for missing strategy
 			Class<?> cls = Class.forName(graph.getAttributeValue("default_strategy"));
 			SpeedStrategy ss = (SpeedStrategy) cls.newInstance();
 			return new Graph( buildNodes( children, ss ) );
-		} catch ( ConfigurationException e ) {
-			throw e;
 		} catch (Exception e) {
-			logger.error("Bad config file");
-			return null;
+			throw new ConfigurationException("Invalid default graph strategy");
 		}
 	}
 
@@ -137,17 +149,7 @@ final public class SimulationXMLReader {
 		String d = node.getAttributeValue("delay");
 		if ( d == null ) return 1;
 		else {
-			try {
-				int i = Integer.parseInt(d);
-				if ( i < 1 ) {
-					logger.warn( "Delay on node " + node.getAttribute("id") + " must be > 0 " );
-					return 1;
-				}
-				return i;
-			} catch (NumberFormatException e ) {
-				logger.warn( "Delay on node " + node.getAttribute("id") + " is not an integer. Defaulting to 1." );
-				return 1;
-			}
+			return Integer.parseInt(d); //Delay must be a valid integer due to schema
 		}
 	}
 
@@ -240,11 +242,8 @@ final public class SimulationXMLReader {
 				@SuppressWarnings("rawtypes")
 				Class ssc = Class.forName( ssn );
 				ss = (SpeedStrategy) ssc.newInstance();
-			} catch (ClassNotFoundException e) {
-			} catch (InstantiationException e) {
-			} catch (IllegalAccessException e) {
+			} catch (Exception e) {
 			}
-
 		}
 		return ( ss == null? defaultStrategy : ss );
 	}
@@ -254,33 +253,24 @@ final public class SimulationXMLReader {
 	 * @throws ConfigurationException 
 	 */
 	private List<Car> buildCars( Graph g ) throws ConfigurationException {
+		Element root = doc.getRootElement();
+		Element carChild = root.getChild("cars");
+		@SuppressWarnings("unchecked")
+		List<Element> carNodes = carChild.getChildren("car");
+		CarStrategy cs = null;
 		try {
-			Element root = doc.getRootElement();
-			Element carChild = root.getChild("cars");
-			if ( carChild == null ) throw new ConfigurationException( "No <cars> declaration found." );
-			@SuppressWarnings("unchecked")
-			List<Element> carNodes = carChild.getChildren("car");
-			if ( carNodes.size() < 1 ) throw new ConfigurationException( "Simulation must have at least one <car>" );
-			CarStrategy cs = null;
-			try {
-				Class<?> cls = Class.forName(carChild.getAttributeValue("default_strategy"));
-				cs = (CarStrategy) cls.newInstance();
-				cs.setGraph(g);
-			} catch (Exception e ) {
-				throw new ConfigurationException( e.getMessage() );
-			}
-			List<Car> cars = new ArrayList<Car>();
-			for ( Element car : carNodes ) {
-				Car c = buildCar( car, cs, g );
-				if ( c != null ) cars.add( c );
-			}
-			return cars;
-		} catch (ConfigurationException e ) {
-			throw e;
-		} catch (Exception e) {
-			logger.error("Bad config file");
-			return null;
-		}	
+			Class<?> cls = Class.forName(carChild.getAttributeValue("default_strategy"));
+			cs = (CarStrategy) cls.newInstance();
+			cs.setGraph(g);
+		} catch (Exception e ) {
+			throw new ConfigurationException("Invalid default car strategy");
+		}
+		List<Car> cars = new ArrayList<Car>();
+		for ( Element car : carNodes ) {
+			Car c = buildCar( car, cs, g );
+			if ( c != null ) cars.add( c );
+		}
+		return cars;	
 	}
 
 	/**
@@ -289,37 +279,29 @@ final public class SimulationXMLReader {
 	 * @throws ConfigurationException 
 	 */
 	private Car buildCar(Element car, CarStrategy defaultStrategy, Graph g ) throws ConfigurationException {
+        int start = Integer.parseInt(car.getAttributeValue("start"));
+		int end = Integer.parseInt(car.getAttributeValue("end"));
+		int id = Integer.parseInt(car.getAttributeValue("id"));
+		List<GraphNode> nodes = g.getNodes();
 		try {
-			int start = Integer.parseInt(car.getAttributeValue("start"));
-			int end = Integer.parseInt(car.getAttributeValue("end"));
-			int id = Integer.parseInt(car.getAttributeValue("id"));
-			List<GraphNode> nodes = g.getNodes();
-
+			checkEndPoint(nodes, start, id, "Start" );
+			checkEndPoint(nodes, end, id, "End" );
+		} catch ( ConfigurationException e ) {
+			return null;
+		}
+		CarStrategy cs = defaultStrategy;
+		if(car.getAttributeValue("strategy") != null) {
+			String s = null;
 			try {
-				checkEndPoint(nodes, start, id, "Start" );
-				checkEndPoint(nodes, end, id, "End" );
-			} catch ( ConfigurationException e ) {
-				return null;
+				s = car.getAttributeValue("strategy");
+				cs = (CarStrategy) Class.forName(s).newInstance();
+				cs.setGraph(g);
+			} catch (Exception e) {
+				logger.warn( "CarStrategy " + s + " not found. Using default." );
+				cs = defaultStrategy;
 			}
-
-			CarStrategy cs = defaultStrategy;
-			if(car.getAttributeValue("strategy") != null) {
-				String s = null;
-				try {
-					s = car.getAttributeValue("strategy");
-					cs = (CarStrategy) Class.forName(s).newInstance();
-					cs.setGraph(g);
-				} catch (Exception e) {
-					logger.warn( "CarStrategy " + s + " not found. Using default." );
-					cs = defaultStrategy;
-				}
-			}
-			return new Car( g.getNode(start), g.getNode(end), cs, id );
-		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
-		return null;
+		}
+		return new Car( g.getNode(start), g.getNode(end), cs, id );
 	}
 
 	/**
@@ -344,4 +326,5 @@ final public class SimulationXMLReader {
 		}
 		return false;
 	}
+	
 }
