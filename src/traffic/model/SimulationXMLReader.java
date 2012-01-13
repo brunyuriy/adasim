@@ -67,6 +67,8 @@ final public class SimulationXMLReader {
         
 		try {
 			doc = sbuilder.build(f);
+		} catch (FileNotFoundException e) {
+			throw e;
 		} catch (Exception e) {
 			throw new ConfigurationException("invalid XML file");
 		}
