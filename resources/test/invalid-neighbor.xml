@@ -7,7 +7,7 @@
 		<car id="4" start="3" end="7" />
 	</cars>
 
-	<graph default_strategy="traffic.strategy.QuadraticSpeedStrategy">
+	<graph default_strategy="traffic.strategy.QuadraticSpeedStrategy" default_capacity="5">
 		<!-- node 27 doesn't exist and should be ignored as a neighbor-->
 		<node id="0" neighbors="4 27" />
 		<!-- node 55 does not exist, and since this node has no other neighbors it should be dropped -->
