@@ -7,9 +7,9 @@
 		<car id="4" start="3" end="7" />
 	</cars>
 
-	<graph default_strategy="traffic.strategy.QuadraticSpeedStrategy" default_capacity="5">
+	<graph default_strategy="traffic.strategy.QuadraticSpeedStrategy" default_capacity="0">
 		<node id="0" neighbors="4 7" capacity="7" />
-		<node id="1" strategy="traffic.strategy.LinearSpeedStrategy" neighbors="5" />
+		<node id="1" strategy="traffic.strategy.LinearSpeedStrategy" neighbors="5" delay ="7"/>
 		<node id="2" strategy="traffic.strategy.LinearSpeedStrategy" neighbors="4 7 9" />
 		<node id="3" neighbors="1" />
 		<node id="4" strategy="traffic.strategy.LinearSpeedStrategy" neighbors="6 8" capacity="10" />
