@@ -170,16 +170,14 @@ public class SimulationXMLReaderTest {
 		assertEquals( 4, g.getNodes().get(3).getDelay() );
 	}
 
-	@Test()
+	@Test (expected=ConfigurationException.class)
 	public void invalidDelayDefaults() throws FileNotFoundException, ConfigurationException {
 		Graph g = SimulationXMLReader.buildSimulator( new File("resources/test/config-weights-invalid.xml")).getGraph();
-		assertEquals( 1, g.getNodes().get(1).getDelay() );
 	}
 
-	@Test()
+	@Test (expected=ConfigurationException.class)
 	public void negativeDelayDefaults() throws FileNotFoundException, ConfigurationException {
 		Graph g = SimulationXMLReader.buildSimulator( new File("resources/test/config-weights-invalid2.xml")).getGraph();
-		assertEquals( 1, g.getNodes().get(1).getDelay() );
 	}
 
 	@Test
