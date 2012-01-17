@@ -101,7 +101,7 @@ public class SimulationXMLReaderTest {
 		assertEquals(g.getNode(6).getCurrentDelay(), 1);
 		g.addCarAtNode(sim.getCar(0), 6);
 		g.addCarAtNode(sim.getCar(1), 6);
-		assertEquals(5, g.getNode(6).getCurrentDelay()); //Tests Quadratic Speed Strategy
+		assertEquals(3, g.getNode(6).getCurrentDelay()); //Tests Quadratic Speed Strategy
 		assertEquals(1, g.getNode(1).getCurrentDelay());
 		g.addCarAtNode(sim.getCar(2), 1);
 		g.addCarAtNode(sim.getCar(3), 1);
