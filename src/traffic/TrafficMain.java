@@ -35,7 +35,12 @@ public class TrafficMain {
 		assert opts != null;
 
 		logger.info("Loading Simulation");
-		tsim = SimulationXMLReader.buildSimulator( new File(opts.getInputFile() ) );
+		try{
+			tsim = SimulationXMLReader.buildSimulator( new File(opts.getInputFile() ) );
+		} catch (ConfigurationException e) {
+			logger.info("Exiting due to configuration error");
+			System.exit(0);
+		}
 		logger.info("Starting Simulation");
 		boolean done = false;
 		while(!done) {
