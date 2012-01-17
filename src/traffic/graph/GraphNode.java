@@ -111,11 +111,7 @@ public class GraphNode {
 	}
 	
 	public int getCurrentDelay() {
-		if(capacity > queue.size()) {
-			return delay;
-		} else {
-			return delay + ss.getDelay( queue.size() );
-		}
+		return ss.getDelay(delay, capacity, queue.size());
 	}
 	
 	public int getCapacity() {
