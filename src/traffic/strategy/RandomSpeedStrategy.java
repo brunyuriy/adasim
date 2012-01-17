@@ -12,7 +12,7 @@ public class RandomSpeedStrategy implements SpeedStrategy{
 	/**
 	 * Picks a random number between 0 and 9 to be the speed limit
 	 */
-	public int getDelay(int n) {
+	public int getDelay(int weight, int capacity, int number) {
 		Random generator = new Random();
 		return generator.nextInt(10);
 	}
