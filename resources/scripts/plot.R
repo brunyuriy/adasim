@@ -1,9 +1,9 @@
 
 map_s <- function(str) {
 	if ( str == "traffic.strategy.LookaheadShortestPathCarStrategy" ) {
-		"naive"
+		"ShortestPath"
 	} else {
-		"adaptive"
+		"TrafficLookahead"
 	}
 }
 
@@ -29,6 +29,6 @@ plot_time_data <- function(file) {
 	p <- tapply( data$Time, list(data$Cars, data$Strategy) , mean)
 	l <- levels(data$Strategy)
 	pdf( paste(file, "pdf", sep=".") )
-	barplot(t(p), beside=T, legend= c( map_s(l[1]) , map_s(l[2]) ), xlab ="# of Cars", ylab = "Mean Travel Time", main = "Mean Travel Time by Strategy", args.legend = list( title = "Strategy", x = "topleft" ) )
+	barplot(t(p), beside=T, legend= c( map_s(l[1]) , map_s(l[2]) ), xlab ="# of vehicles", ylab = "mean travel time", args.legend = list( x = "topleft" ) )
 	dev.off()
 }
