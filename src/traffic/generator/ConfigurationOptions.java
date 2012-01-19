@@ -37,6 +37,7 @@ final class ConfigurationOptions {
 	private double oneWay = 0.01;
 	private boolean bottleneck = false;
 	private File graphFile = null;
+	private int capacity = 0;
 	
 	static ConfigurationOptions parse( String[] args ) throws Exception {
 		ConfigurationOptions cfg = new ConfigurationOptions();
@@ -62,6 +63,9 @@ final class ConfigurationOptions {
 		if ( opts.has( "D" ) ) {
 			cfg.degreeProb = Integer.parseInt( opts.valueOf( "D").toString() ) / (double)cfg.numNodes;
 		} else throw new Exception( "Argument --node-degree is required" );
+		if ( opts.has( "node-capacity" ) ) {
+			cfg.capacity = Integer.parseInt( opts.valueOf( "node-capacity").toString() ) ;
+		} else throw new Exception( "Argument --node-capacity is required" );
 		if ( opts.has( "o" ) ) {
 			cfg.outputFile = new File( opts.valueOf( "o").toString() );
 		} else throw new Exception( "Argument --output-file is required" );
@@ -98,6 +102,9 @@ final class ConfigurationOptions {
 		parser.acceptsAll( Arrays.asList( "D", "node-degree" ), "The desired average node degree" )
 			.withRequiredArg()
 			.describedAs( "deg" );
+		parser.acceptsAll( Arrays.asList( "node-capacity" ), "The default node capacity" )
+		.withRequiredArg()
+		.describedAs( "capacity" );
 		parser.acceptsAll(Arrays.asList( "d", "node-delay"), "Range of possible node delays" )
 			.withRequiredArg()
 			.describedAs( "min:max" );
@@ -181,6 +188,13 @@ final class ConfigurationOptions {
 	 */
 	File getGraphFile() {
 		return graphFile;
+	}
+
+	/**
+	 * @return the capacity
+	 */
+	int getCapacity() {
+		return capacity;
 	}
 	
 }
