@@ -17,6 +17,8 @@ package traffic.generator;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import org.jdom.JDOMException;
+
 import traffic.model.ConfigurationException;
 
 /**
@@ -27,6 +29,7 @@ public class Generator {
 
 	/**
 	 * @param args
+	 * @throws JDOMException 
 	 */
 	public static void main(String[] args) {
 		ConfigurationOptions opts = null;
@@ -49,6 +52,10 @@ public class Generator {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

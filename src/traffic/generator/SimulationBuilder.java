@@ -14,15 +14,23 @@
 
 package traffic.generator;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.JDOMException;
+import org.jdom.input.SAXBuilder;
+
 import traffic.graph.Graph;
 import traffic.graph.GraphNode;
 import traffic.model.Car;
 import traffic.model.ConfigurationException;
+import traffic.model.SimulationXMLReader;
 import traffic.model.TrafficSimulator;
 import traffic.strategy.CarStrategy;
 import traffic.strategy.LinearSpeedStrategy;
@@ -33,18 +41,18 @@ import traffic.strategy.SpeedStrategy;
  *
  */
 public class SimulationBuilder {
-	
+
 	private Random random;
-	
+
 	SimulationBuilder() {
 		random = new Random();
 	}
-	
+
 	SimulationBuilder( long seed ) {
 		random = new Random( seed );
 	}
-	
-	TrafficSimulator build( ConfigurationOptions opts ) throws ConfigurationException {
+
+	TrafficSimulator build( ConfigurationOptions opts ) throws ConfigurationException, JDOMException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
 		Graph g = buildGraph(opts);
 		return new TrafficSimulator( g, buildCars(opts, g) );
 	}
@@ -77,7 +85,7 @@ public class SimulationBuilder {
 		do {
 			end = randomNode(nodes);
 		} while ( start.equals(end) );
-		
+
 		return new Car( start, end, cs, i);
 	}
 
@@ -109,16 +117,145 @@ public class SimulationBuilder {
 	 * @param opts
 	 * @return
 	 * @throws ConfigurationException 
+	 * @throws IOException 
+	 * @throws JDOMException 
+	 * @throws IllegalAccessException 
+	 * @throws InstantiationException 
+	 * @throws ClassNotFoundException 
 	 */
-	private Graph buildGraph(ConfigurationOptions opts) throws ConfigurationException {
+	private Graph buildGraph(ConfigurationOptions opts) throws ConfigurationException, JDOMException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
 		Graph g = new Graph( new HashSet<GraphNode>() );
-		for ( int i = 0; i < opts.getNumNodes(); i++ ) {
-			g.addNode( buildNode( opts, i ) );
-		}
-		for ( GraphNode node : g.getNodes() ) {
-			randomizeNeighbors(node, g.getNodes(), opts.getDegreeProb(), opts.getOneWayProbability() );
+		if ( opts.getGraphFile() == null ) {
+			//we have to generate a graph
+			for ( int i = 0; i < opts.getNumNodes(); i++ ) {
+				g.addNode( buildNode( opts, i ) );
+			}
+			for ( GraphNode node : g.getNodes() ) {
+				randomizeNeighbors(node, g.getNodes(), opts.getDegreeProb(), opts.getOneWayProbability() );
+			}
+		} else {
+			//we have to read the graph from a file
+			//TODO: this is a very bad HACK
+			g = readGraphFromFile( opts.getGraphFile() );
 		}
 		return g;
+	}
+
+	/**
+	 * TODO: Move this into a more generic XML reader
+	 * @param graphFile
+	 * @throws IOException 
+	 * @throws JDOMException 
+	 * @throws ClassNotFoundException 
+	 * @throws IllegalAccessException 
+	 * @throws InstantiationException 
+	 */
+	private Graph readGraphFromFile(File graphFile) throws JDOMException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+		SAXBuilder sbuilder = new SAXBuilder(false);
+		Document doc = sbuilder.build(graphFile);
+		Element graph = doc.getRootElement();
+		@SuppressWarnings("unchecked")
+		List<Element> children = graph.getChildren("node");		
+		Class<?> cls = Class.forName(graph.getAttributeValue("default_strategy"));
+		SpeedStrategy ss = (SpeedStrategy) cls.newInstance();
+		int capacity = Integer.parseInt(graph.getAttributeValue("default_capacity"));
+		return new Graph( buildNodes( children, ss, capacity) );
+	}
+
+	/**
+	 * TODO: cloned from {@link SimulationXMLReader}
+	 * @param nodeDeclarations
+	 * @param defaultStrategy
+	 * @param capacity
+	 * @return
+	 */
+	private List<GraphNode> buildNodes( List<Element> nodeDeclarations, SpeedStrategy defaultStrategy, int capacity) {
+		List<GraphNode> nodes = new ArrayList<GraphNode>( nodeDeclarations.size() );
+		for( Element node : nodeDeclarations ) {
+			int id = Integer.parseInt( node.getAttributeValue( "id" ) );
+			SpeedStrategy ss = buildStrategy( node, defaultStrategy );
+			nodes.add( new GraphNode( id, ss, getDelay(node ), getCapacity(node, capacity)) );
+		}
+		for ( Element node: nodeDeclarations ) {
+			buildNeigbors(nodes, node );
+		}
+		return nodes;		
+	}
+	
+	/**
+	 * @param node
+	 * @param defaultStrategy
+	 * @return
+	 */
+	private SpeedStrategy buildStrategy(Element node,
+			SpeedStrategy defaultStrategy) {
+		SpeedStrategy ss = null;
+		String ssn = node.getAttributeValue( "strategy" );
+		if ( ssn != null ) {
+			try {
+				@SuppressWarnings("rawtypes")
+				Class ssc = Class.forName( ssn );
+				ss = (SpeedStrategy) ssc.newInstance();
+			} catch (Exception e) {
+			}
+		}
+		return ( ss == null? defaultStrategy : ss );
+	}
+	
+	private int getCapacity(Element node, int d_capacity) {
+		String cap = node.getAttributeValue("capacity");
+		if (cap == null) {
+			return d_capacity;
+		} else {
+			return Integer.parseInt(cap);
+		}
+	}
+	
+	/**
+	 * @param nodes
+	 * @param node
+	 */
+	private void buildNeigbors(List<GraphNode> nodes, Element node) {
+		String[] neighbors = node.getAttributeValue("neighbors").trim().split(" ");
+		GraphNode gn = getNode( nodes, node );
+		for ( String n : neighbors ) {
+			int nn = Integer.parseInt(n);
+			gn.addEdge( getNode( nodes, nn ));					
+		}
+	}
+	
+	/**
+	 * @param nodes
+	 * @param node
+	 * @return
+	 */
+	private GraphNode getNode(List<GraphNode> nodes, Element node) {
+		int id = Integer.parseInt( node.getAttributeValue( "id" ) );
+		for ( GraphNode n : nodes ) {
+			if ( n.getID() == id ) return n;
+		}
+		return null;
+	}
+
+	private GraphNode getNode(List<GraphNode> nodes, int node) {
+		for ( GraphNode n : nodes ) {
+			if ( n.getID() == node ) return n;
+		}
+		return null;
+	}
+
+	
+	/**
+	 * @param node
+	 * @return
+	 * @throws ConfigurationException 
+	 */
+	private int getDelay(Element node) {
+		String d = node.getAttributeValue("delay");
+		if ( d == null ) return 1;
+		else {
+			return Integer.parseInt(d); //Delay must be a valid integer due to schema
+		}
 	}
 
 	/**
