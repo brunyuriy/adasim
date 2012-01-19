@@ -12,11 +12,7 @@ public class LinearSpeedStrategy implements SpeedStrategy {
 	 * the number of cars currently at the node
 	 */
 	public int getDelay(int weight, int capacity, int number) {
-		if (number > capacity) {
-			return number - capacity + weight;
-		} else {
-			return weight;
-		}
+		return Math.max(weight, number - capacity + weight);
 	}
 
 }
