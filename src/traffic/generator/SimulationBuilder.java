@@ -129,7 +129,7 @@ public class SimulationBuilder {
 	private GraphNode buildNode(ConfigurationOptions opts, int id ) throws ConfigurationException {
 		SpeedStrategy ss = randomSpeedStrategy( opts );
 		int delay = randomDelay( opts );
-		GraphNode node = new GraphNode(id, ss, delay );
+		GraphNode node = new GraphNode(id, ss, delay, opts.getCapacity() );
 		return node;
 	}
 
