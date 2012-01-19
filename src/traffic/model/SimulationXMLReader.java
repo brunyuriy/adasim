@@ -17,11 +17,8 @@ package traffic.model;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.log4j.Logger;
 import org.jdom.Document;
@@ -46,23 +43,10 @@ final public class SimulationXMLReader {
 
 	private Document doc;
 
-	SimulationXMLReader( String config ) throws JDOMException, IOException, ConfigurationException {
-		SAXBuilder sbuilder = new SAXBuilder(true);
-        sbuilder.setProperty("http://java.sun.com/xml/jaxp/properties/schemaLanguage", "http://www.w3.org/2001/XMLSchema");
-        sbuilder.setProperty("http://java.sun.com/xml/jaxp/properties/schemaSource", "sim.xsd");
-        sbuilder.setErrorHandler(new SimpleErrorHandler());
-        
-		try {
-			doc = sbuilder.build(config);
-		} catch (Exception e) {
-			throw new ConfigurationException("invalid XML file");
-		}
-	}
-
 	private SimulationXMLReader( File f ) throws JDOMException, IOException, ConfigurationException {
 		SAXBuilder sbuilder = new SAXBuilder(true);
         sbuilder.setProperty("http://java.sun.com/xml/jaxp/properties/schemaLanguage", "http://www.w3.org/2001/XMLSchema");
-        sbuilder.setProperty("http://java.sun.com/xml/jaxp/properties/schemaSource", "sim.xsd");
+        sbuilder.setProperty("http://java.sun.com/xml/jaxp/properties/schemaSource", "resources/xml/sim.xsd");
         sbuilder.setErrorHandler(new SimpleErrorHandler());
         
 		try {
@@ -70,7 +54,7 @@ final public class SimulationXMLReader {
 		} catch (FileNotFoundException e) {
 			throw e;
 		} catch (Exception e) {
-			throw new ConfigurationException("invalid XML file");
+			throw new ConfigurationException(e);
 		}
 	}
 
