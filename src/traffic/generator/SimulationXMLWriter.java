@@ -38,6 +38,7 @@ public class SimulationXMLWriter {
 	
 	private static final String DEFAULT_SPEED_STRATEGY = "traffic.strategy.LinearSpeedStrategy";
 	private static final String DEFAULT_CAR_STRATEGY = "traffic.strategy.LookaheadShortestPathCarStrategy";
+	private static final String DEFAULT_NODE_CAPACITY = "0";
 	
 	private DefaultJDOMFactory factory = new DefaultJDOMFactory();
 
@@ -99,6 +100,7 @@ public class SimulationXMLWriter {
 	private void writeGraph(Element doc, Graph graph) {
 		Element g = factory.element( "graph" );
 		g.setAttribute( factory.attribute( "default_strategy", DEFAULT_SPEED_STRATEGY) );
+		g.setAttribute( factory.attribute( "default_capacity", DEFAULT_NODE_CAPACITY ) );
 		for ( GraphNode node : graph.getNodes() ) {
 			writeNode(g, node );
 		}
@@ -114,6 +116,7 @@ public class SimulationXMLWriter {
 		n.setAttribute( factory.attribute( "id", "" + node.getID() ) );
 		n.setAttribute( factory.attribute( "delay", "" + node.getDelay() ) );
 		n.setAttribute( factory.attribute( "neighbors", writeNeighbors(node.getNeighbors() ) ) );
+		n.setAttribute( factory.attribute( "capacity", "" + node.getCapacity() ) );
 		g.addContent(n);
 	}
 
