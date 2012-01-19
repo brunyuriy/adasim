@@ -36,6 +36,7 @@ final class ConfigurationOptions {
 	private File outputFile = new File( "generated-config.xml" );
 	private double oneWay = 0.01;
 	private boolean bottleneck = false;
+	private File graphFile = null;
 	
 	static ConfigurationOptions parse( String[] args ) throws Exception {
 		ConfigurationOptions cfg = new ConfigurationOptions();
@@ -81,6 +82,9 @@ final class ConfigurationOptions {
 			cfg.oneWay = Double.parseDouble( opts.valueOf( "one-way-prob").toString() );
 		} 
 		cfg.bottleneck = opts.has( "congested" );
+		if ( opts.has( "graph" ) ) {
+			cfg.graphFile = new File( opts.valueOf( "graph").toString() );
+		}
 	}
 
 	/**
@@ -109,6 +113,9 @@ final class ConfigurationOptions {
 		parser.acceptsAll( Arrays.asList( "one-way-prob"), "Probability for a road to be a one-way street" )
 			.withRequiredArg()
 			.describedAs( "prob");
+		parser.acceptsAll( Arrays.asList( "graph"), "A file containing a user-define graph to be used in the simulation" )
+		.withRequiredArg()
+		.describedAs( "graph-file");
 		parser.accepts( "congested", "Build a simulation that likely contains a bottleneck.");	//TODO: This is a hack for SEAMS 2012
 		return parser;
 	}
@@ -167,6 +174,13 @@ final class ConfigurationOptions {
 	 */
 	boolean isBottleneck() {
 		return bottleneck;
+	}
+
+	/**
+	 * @return the graphFile
+	 */
+	File getGraphFile() {
+		return graphFile;
 	}
 	
 }
