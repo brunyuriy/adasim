@@ -14,10 +14,16 @@
 
 package traffic.generator;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+
+import org.jdom.Document;
+import org.jdom.input.SAXBuilder;
 
 import traffic.graph.Graph;
 import traffic.graph.GraphNode;
@@ -44,9 +50,31 @@ public class SimulationBuilder {
 		random = new Random( seed );
 	}
 	
-	TrafficSimulator build( ConfigurationOptions opts ) throws ConfigurationException {
-		Graph g = buildGraph(opts);
+	TrafficSimulator build( ConfigurationOptions opts ) throws ConfigurationException, IOException {
+		Graph g;
+		if ( opts.getGraphFile() == null ) {
+			g = buildGraph(opts);
+		} else {
+			g = readGraph( opts.getGraphFile() );
+		}
 		return new TrafficSimulator( g, buildCars(opts, g) );
+	}
+
+	/**
+	 * @param graphFile
+	 * @throws IOException 
+	 * @throws ConfigurationException 
+	 */
+	private Graph readGraph(File graphFile) throws IOException, ConfigurationException {
+		SAXBuilder sbuilder = new SAXBuilder(true);
+		try {
+			Document doc = sbuilder.build(graphFile);
+		} catch (FileNotFoundException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new ConfigurationException("invalid XML file");
+		}
+		return null;
 	}
 
 	/**

@@ -42,9 +42,9 @@ import traffic.strategy.SpeedStrategy;
 final public class SimulationXMLReader {
 
 	private static final Logger logger = Logger.getLogger(SimulationXMLReader.class);
-
-
+	
 	private Document doc;
+	private static SimulationBuilder builder;
 
 	SimulationXMLReader( String config ) throws JDOMException, IOException, ConfigurationException {
 		SAXBuilder sbuilder = new SAXBuilder(true);
@@ -60,6 +60,7 @@ final public class SimulationXMLReader {
 	}
 
 	private SimulationXMLReader( File f ) throws JDOMException, IOException, ConfigurationException {
+		builder = new SimulationBuilder();
 		SAXBuilder sbuilder = new SAXBuilder(true);
         sbuilder.setProperty("http://java.sun.com/xml/jaxp/properties/schemaLanguage", "http://www.w3.org/2001/XMLSchema");
         sbuilder.setProperty("http://java.sun.com/xml/jaxp/properties/schemaSource", "sim.xsd");
@@ -81,8 +82,8 @@ final public class SimulationXMLReader {
 	public static TrafficSimulator buildSimulator( File config ) throws FileNotFoundException, ConfigurationException {
 		try {
 			SimulationXMLReader factory = new SimulationXMLReader(config);
-			Graph g = factory.buildGraph();
-			TrafficSimulator sim = new TrafficSimulator( g, factory.buildCars(g) );
+			Graph g = builder.buildGraph( factory.doc.getRootElement().getChild("graph" ) );
+			TrafficSimulator sim = new TrafficSimulator( g, factory.buildCars( factory.doc.getRootElement().getChild("cars" ), g ) );
 			return sim;
 		} catch ( JDOMException e ) {
 			buildError( e );
@@ -107,214 +108,204 @@ final public class SimulationXMLReader {
 	}
 
 	/**
+	 *Hacked this method. <code>public</code> is not proper, but allows
+	 *the Generator access to this.
 	 * @return
 	 * @throws ConfigurationException 
 	 */
-	private Graph buildGraph() throws ConfigurationException {
-		try {
-			Element root = doc.getRootElement();
-			Element graph = root.getChild("graph");
-			@SuppressWarnings("unchecked")
-			List<Element> children = graph.getChildren("node");		
-			Class<?> cls = Class.forName(graph.getAttributeValue("default_strategy"));
-			SpeedStrategy ss = (SpeedStrategy) cls.newInstance();
-			int capacity = Integer.parseInt(graph.getAttributeValue("default_capacity"));
-			return new Graph( buildNodes( children, ss, capacity) );
-		} catch (Exception e) {
-			throw new ConfigurationException("Invalid default graph strategy");
-		}
-	}
+//	public Graph buildGraph( Element graphNode ) throws ConfigurationException {
+//		try {
+//			@SuppressWarnings("unchecked")
+//			List<Element> children = graphNode.getChildren("node");		
+//			Class<?> cls = Class.forName(graphNode.getAttributeValue("default_strategy"));
+//			SpeedStrategy ss = (SpeedStrategy) cls.newInstance();
+//			int capacity = Integer.parseInt(graphNode.getAttributeValue("default_capacity"));
+//			return new Graph( buildNodes( children, ss, capacity) );
+//		} catch (Exception e) {
+//			throw new ConfigurationException("Invalid default graph strategy");
+//		}
+//	}
 
-	private List<GraphNode> buildNodes( List<Element> nodeDeclarations, SpeedStrategy defaultStrategy, int capacity) {
-		List<GraphNode> nodes = new ArrayList<GraphNode>( nodeDeclarations.size() );
-		for( Element node : nodeDeclarations ) {
-			int id = Integer.parseInt( node.getAttributeValue( "id" ) );
-			if ( hasValidNeighbors(node) ) {
-				SpeedStrategy ss = buildStrategy( node, defaultStrategy );
-				nodes.add( new GraphNode( id, ss, getDelay(node ), getCapacity(node, capacity)) );
-			}
-		}
-		for ( Element node: nodeDeclarations ) {
-			if ( hasValidNeighbors(node) ) {
-				buildNeigbors(nodes, node );
-			}
-		}
-		nodes = validate(nodes);
-		return nodes;		
-	}
+//	private List<GraphNode> buildNodes( List<Element> nodeDeclarations, SpeedStrategy defaultStrategy, int capacity) {
+//		List<GraphNode> nodes = new ArrayList<GraphNode>( nodeDeclarations.size() );
+//		for( Element node : nodeDeclarations ) {
+//			int id = Integer.parseInt( node.getAttributeValue( "id" ) );
+//			if ( hasValidNeighbors(node) ) {
+//				SpeedStrategy ss = buildStrategy( node, defaultStrategy );
+//				nodes.add( new GraphNode( id, ss, getDelay(node ), getCapacity(node, capacity)) );
+//			}
+//		}
+//		for ( Element node: nodeDeclarations ) {
+//			if ( hasValidNeighbors(node) ) {
+//				buildNeigbors(nodes, node );
+//			}
+//		}
+//		nodes = validate(nodes);
+//		return nodes;		
+//	}
 
-	/**
-	 * @param node
-	 * @return
-	 * @throws ConfigurationException 
-	 */
-	private int getDelay(Element node) {
-		String d = node.getAttributeValue("delay");
-		if ( d == null ) return 1;
-		else {
-			return Integer.parseInt(d); //Delay must be a valid integer due to schema
-		}
-	}
+//	/**
+//	 * @param node
+//	 * @return
+//	 * @throws ConfigurationException 
+//	 */
+//	private int getDelay(Element node) {
+//		String d = node.getAttributeValue("delay");
+//		if ( d == null ) return 1;
+//		else {
+//			return Integer.parseInt(d); //Delay must be a valid integer due to schema
+//		}
+//	}
 	
-	private int getCapacity(Element node, int d_capacity) {
-		String cap = node.getAttributeValue("capacity");
-		if (cap == null) {
-			return d_capacity;
-		} else {
-			return Integer.parseInt(cap);
-		}
-	}
+//	private int getCapacity(Element node, int d_capacity) {
+//		String cap = node.getAttributeValue("capacity");
+//		if (cap == null) {
+//			return d_capacity;
+//		} else {
+//			return Integer.parseInt(cap);
+//		}
+//	}
 
-	/**
-	 * @param nodes
-	 * @return
-	 */
-	private List<GraphNode> validate(List<GraphNode> nodes) {
-		List<GraphNode> l = new ArrayList<GraphNode>( nodes );
-		List<GraphNode> last;
-		do {
-			last = l;
-			l = reduce( last );
-		} while ( ! last.equals(l) );
-		return l;
-	}
+//	/**
+//	 * @param nodes
+//	 * @return
+//	 */
+//	private List<GraphNode> validate(List<GraphNode> nodes) {
+//		List<GraphNode> l = new ArrayList<GraphNode>( nodes );
+//		List<GraphNode> last;
+//		do {
+//			last = l;
+//			l = reduce( last );
+//		} while ( ! last.equals(l) );
+//		return l;
+//	}
 
-	/**
-	 * Removes nodes that have no neighbors, and removes links that point to invalid neighbors.
-	 * @param nodes
-	 * @return
-	 */
-	private List<GraphNode> reduce(List<GraphNode> nodes) {
-		 List<GraphNode> l = new ArrayList<GraphNode>();
-		for ( GraphNode node : nodes ) {
-			boolean hasNeighbor = false;
-			for ( GraphNode i : node.getNeighbors() ) {
-				if ( nodes.contains( i ) ) {
-					hasNeighbor = true;
-				} else {
-					node.removeEdge(i);
-				}
-			}
-			if ( hasNeighbor ) {
-				l.add( node );
-			}
-		}
-		return l;
-	}
+//	/**
+//	 * Removes nodes that have no neighbors, and removes links that point to invalid neighbors.
+//	 * @param nodes
+//	 * @return
+//	 */
+//	private List<GraphNode> reduce(List<GraphNode> nodes) {
+//		 List<GraphNode> l = new ArrayList<GraphNode>();
+//		for ( GraphNode node : nodes ) {
+//			boolean hasNeighbor = false;
+//			for ( GraphNode i : node.getNeighbors() ) {
+//				if ( nodes.contains( i ) ) {
+//					hasNeighbor = true;
+//				} else {
+//					node.removeEdge(i);
+//				}
+//			}
+//			if ( hasNeighbor ) {
+//				l.add( node );
+//			}
+//		}
+//		return l;
+//	}
 
-	private boolean hasValidNeighbors( Element node ) {
-		String n = node.getAttributeValue("neighbors").trim();
-		return !( n.equals("") );
-	}
+//	private boolean hasValidNeighbors( Element node ) {
+//		String n = node.getAttributeValue("neighbors").trim();
+//		return !( n.equals("") );
+//	}
 
-	/**
-	 * @param nodes
-	 * @param node
-	 */
-	private void buildNeigbors(List<GraphNode> nodes, Element node) {
-		String[] neighbors = node.getAttributeValue("neighbors").split(" ");
-		GraphNode gn = getNode( nodes, node );
-		for ( String n : neighbors ) {
-			int nn = Integer.parseInt(n);
-			gn.addEdge( getNode( nodes, nn ));					
-		}
-	}
+//	/**
+//	 * @param nodes
+//	 * @param node
+//	 */
+//	private void buildNeigbors(List<GraphNode> nodes, Element node) {
+//		String[] neighbors = node.getAttributeValue("neighbors").split(" ");
+//		GraphNode gn = getNode( nodes, node );
+//		for ( String n : neighbors ) {
+//			int nn = Integer.parseInt(n);
+//			gn.addEdge( getNode( nodes, nn ));					
+//		}
+//	}
 
-	/**
-	 * @param nodes
-	 * @param node
-	 * @return
-	 */
-	private GraphNode getNode(List<GraphNode> nodes, Element node) {
-		int id = Integer.parseInt( node.getAttributeValue( "id" ) );
-		for ( GraphNode n : nodes ) {
-			if ( n.getID() == id ) return n;
-		}
-		return null;
-	}
+//	/**
+//	 * @param nodes
+//	 * @param node
+//	 * @return
+//	 */
+//	private GraphNode getNode(List<GraphNode> nodes, Element node) {
+//		int id = Integer.parseInt( node.getAttributeValue( "id" ) );
+//		for ( GraphNode n : nodes ) {
+//			if ( n.getID() == id ) return n;
+//		}
+//		return null;
+//	}
 
-	private GraphNode getNode(List<GraphNode> nodes, int node) {
-		for ( GraphNode n : nodes ) {
-			if ( n.getID() == node ) return n;
-		}
-		return null;
-	}
+//	private GraphNode getNode(List<GraphNode> nodes, int node) {
+//		for ( GraphNode n : nodes ) {
+//			if ( n.getID() == node ) return n;
+//		}
+//		return null;
+//	}
 
-	/**
-	 * @param node
-	 * @param defaultStrategy
-	 * @return
-	 */
-	private SpeedStrategy buildStrategy(Element node,
-			SpeedStrategy defaultStrategy) {
-		SpeedStrategy ss = null;
-		String ssn = node.getAttributeValue( "strategy" );
-		if ( ssn != null ) {
-			try {
-				@SuppressWarnings("rawtypes")
-				Class ssc = Class.forName( ssn );
-				ss = (SpeedStrategy) ssc.newInstance();
-			} catch (Exception e) {
-			}
-		}
-		return ( ss == null? defaultStrategy : ss );
-	}
+//	/**
+//	 * @param node
+//	 * @param defaultStrategy
+//	 * @return
+//	 */
+//	private SpeedStrategy buildStrategy(Element node,
+//			SpeedStrategy defaultStrategy) {
+//		SpeedStrategy ss = null;
+//		String ssn = node.getAttributeValue( "strategy" );
+//		if ( ssn != null ) {
+//			try {
+//				@SuppressWarnings("rawtypes")
+//				Class ssc = Class.forName( ssn );
+//				ss = (SpeedStrategy) ssc.newInstance();
+//			} catch (Exception e) {
+//			}
+//		}
+//		return ( ss == null? defaultStrategy : ss );
+//	}
 
 	/**
 	 * @return
 	 * @throws ConfigurationException 
 	 */
-	private List<Car> buildCars( Graph g ) throws ConfigurationException {
-		Element root = doc.getRootElement();
-		Element carChild = root.getChild("cars");
-		@SuppressWarnings("unchecked")
-		List<Element> carNodes = carChild.getChildren("car");
-		CarStrategy cs = null;
-		try {
-			Class<?> cls = Class.forName(carChild.getAttributeValue("default_strategy"));
-			cs = (CarStrategy) cls.newInstance();
-			cs.setGraph(g);
-		} catch (Exception e ) {
-			throw new ConfigurationException("Invalid default car strategy");
-		}
-		List<Car> cars = new ArrayList<Car>();
-		for ( Element car : carNodes ) {
-			Car c = buildCar( car, cs, g );
-			if ( c != null ) cars.add( c );
-		}
+	private List<Car> buildCars( Element carsNode, Graph g ) throws ConfigurationException {
+		List<Car> cars = builder.buildCars(carsNode);
+		//TODO: validate cars against graph and translate back to regular cars
+		
+//		for ( Element car : carNodes ) {
+//			Car c = buildCar( car, cs, g );
+//			if ( c != null ) cars.add( c );
+//		}
 		return cars;	
 	}
 
-	/**
-	 * @param car
-	 * @return
-	 * @throws ConfigurationException 
-	 */
-	private Car buildCar(Element car, CarStrategy defaultStrategy, Graph g ) throws ConfigurationException {
-        int start = Integer.parseInt(car.getAttributeValue("start"));
-		int end = Integer.parseInt(car.getAttributeValue("end"));
-		int id = Integer.parseInt(car.getAttributeValue("id"));
-		List<GraphNode> nodes = g.getNodes();
-		try {
-			checkEndPoint(nodes, start, id, "Start" );
-			checkEndPoint(nodes, end, id, "End" );
-		} catch ( ConfigurationException e ) {
-			return null;
-		}
-		CarStrategy cs = defaultStrategy;
-		if(car.getAttributeValue("strategy") != null) {
-			String s = null;
-			try {
-				s = car.getAttributeValue("strategy");
-				cs = (CarStrategy) Class.forName(s).newInstance();
-				cs.setGraph(g);
-			} catch (Exception e) {
-				logger.warn( "CarStrategy " + s + " not found. Using default." );
-				cs = defaultStrategy;
-			}
-		}
-		return new Car( g.getNode(start), g.getNode(end), cs, id );
-	}
+//	/**
+//	 * @param car
+//	 * @return
+//	 * @throws ConfigurationException 
+//	 */
+//	private Car buildCar(Element car, CarStrategy defaultStrategy, Graph g ) throws ConfigurationException {
+//        int start = Integer.parseInt(car.getAttributeValue("start"));
+//		int end = Integer.parseInt(car.getAttributeValue("end"));
+//		int id = Integer.parseInt(car.getAttributeValue("id"));
+//		List<GraphNode> nodes = g.getNodes();
+//		try {
+//			checkEndPoint(nodes, start, id, "Start" );
+//			checkEndPoint(nodes, end, id, "End" );
+//		} catch ( ConfigurationException e ) {
+//			return null;
+//		}
+//		CarStrategy cs = defaultStrategy;
+//		if(car.getAttributeValue("strategy") != null) {
+//			String s = null;
+//			try {
+//				s = car.getAttributeValue("strategy");
+//				cs = (CarStrategy) Class.forName(s).newInstance();
+//				cs.setGraph(g);
+//			} catch (Exception e) {
+//				logger.warn( "CarStrategy " + s + " not found. Using default." );
+//				cs = defaultStrategy;
+//			}
+//		}
+//		return new Car( g.getNode(start), g.getNode(end), cs, id );
+//	}
 
 	/**
 	 * @param nodes

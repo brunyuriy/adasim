@@ -15,9 +15,13 @@ import traffic.strategy.CarStrategy;
 
 public class Car {
 	
-	private CarInfo info; //Info for the car
+	protected CarInfo info; //Info for the car
 	
 	private static Logger logger = Logger.getLogger(Car.class);
+	
+	protected Car( int id ) {
+		info = new CarInfo(null, null, id, null );
+	}
 	
 	public Car(GraphNode start, GraphNode end, CarStrategy strat, int num) {
 		info = new CarInfo(start, end, num, strat );
