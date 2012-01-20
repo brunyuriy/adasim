@@ -98,9 +98,10 @@ final class NodeVehicleQueue {
 	 */
 	public int size() {
 		int s = 0;
-		for ( Set<Car> cars: queue.values() ) {
-			s += cars.size();
-		}
+		for ( int key : queue.keySet() ) {
+			if ( key == PARKED ) continue;
+			s+= queue.get(key).size();
+		}	
 		return s;
 	}
 }
