@@ -46,7 +46,7 @@ final public class SimulationXMLReader {
 	private SimulationXMLReader( File f ) throws JDOMException, IOException, ConfigurationException {
 		SAXBuilder sbuilder = new SAXBuilder(true);
         sbuilder.setProperty("http://java.sun.com/xml/jaxp/properties/schemaLanguage", "http://www.w3.org/2001/XMLSchema");
-        sbuilder.setProperty("http://java.sun.com/xml/jaxp/properties/schemaSource", "resources/xml/sim.xsd");
+        sbuilder.setProperty("http://java.sun.com/xml/jaxp/properties/schemaSource", "resources/xml/adasim.xsd");
         sbuilder.setErrorHandler(new SimpleErrorHandler());
         
 		try {
