@@ -159,7 +159,7 @@
     <node id="157" delay="5" neighbors="150 111 26 73" capacity="1000"/>
     <node id="158" delay="5" neighbors="151 112 27 74" />
     <node id="159" delay="5" neighbors="152 113 28 75" />
-    <node id="160" delay="5" neighbors="153 29 75" />
+    <node id="160" delay="5" neighbors="153 29 76" />
     <node id="161" delay="5" neighbors="154 114 77" />
     <node id="162" delay="5" neighbors="155 115 30 78" />
     <node id="163" delay="5" neighbors="156 116 31 79" />
