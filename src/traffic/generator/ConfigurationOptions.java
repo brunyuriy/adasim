@@ -65,7 +65,7 @@ final class ConfigurationOptions {
 		} else throw new Exception( "Argument --node-degree is required" );
 		if ( opts.has( "node-capacity" ) ) {
 			cfg.capacity = Integer.parseInt( opts.valueOf( "node-capacity").toString() ) ;
-		} else throw new Exception( "Argument --node-capacity is required" );
+		} //this argument is optional
 		if ( opts.has( "o" ) ) {
 			cfg.outputFile = new File( opts.valueOf( "o").toString() );
 		} else throw new Exception( "Argument --output-file is required" );
