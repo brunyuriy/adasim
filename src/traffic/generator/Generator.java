@@ -36,7 +36,7 @@ public class Generator {
 		try {
 			opts = ConfigurationOptions.parse(args);
 		} catch (Exception e) {
-			System.err.println( "Erros parsing commandline options: " + e.getMessage() );
+			System.err.println( "Error parsing command line options: " + e.getMessage() );
 			System.exit( 1 );
 		}
 		
