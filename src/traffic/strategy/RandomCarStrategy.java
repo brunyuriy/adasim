@@ -1,9 +1,17 @@
-/**
- * Jonathan Ramaswamy
- * Random Car Strategy
- * Picks a random path for the car to follow towards its destination
- * Makes no optimizations
+/*******************************************************************************
+ * Copyright (c) 2011 - Jonathan Ramaswamy.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Jonathan Ramaswamy (ramaswamyj12@gmail.com) - initial API and implementation
+ ********************************************************************************
+ *
+ * Created: Oct 11, 2011
  */
+
 package traffic.strategy;
 
 import java.util.ArrayList;
@@ -11,6 +19,11 @@ import java.util.List;
 import java.util.Random;
 
 import traffic.graph.GraphNode;
+
+/**
+ * @author Jonathan Ramaswamy - ramaswamyj12@gmail.com
+ *
+ */
 
 public class RandomCarStrategy extends AbstractCarStrategy {
 

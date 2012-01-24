@@ -1,11 +1,18 @@
-package traffic.model;
-/**
- * Jonathan Ramaswamy
- * TrafficSimulator
- * TrafficSimulator is the main program for running the simulator. It keeps track
- * of the graph and where all the cars are located on it, and outputs information to
- * the logger object with every step taken.
+/*******************************************************************************
+ * Copyright (c) 2011 - Jonathan Ramaswamy.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Jonathan Ramaswamy (ramaswamyj12@gmail.com) - initial API and implementation
+ ********************************************************************************
+ *
+ * Created: Jul 29, 2011
  */
+
+package traffic.model;
 
 import java.util.*;
 
@@ -14,6 +21,11 @@ import org.apache.log4j.Logger;
 import traffic.TrafficMain;
 import traffic.graph.Graph;
 import traffic.graph.GraphNode;
+
+/**
+ * @author Jonathan Ramaswamy - ramaswamyj12@gmail.com
+ *
+ */
 
 public class TrafficSimulator{
 	
