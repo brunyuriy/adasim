@@ -29,8 +29,14 @@ import traffic.graph.Graph;
 import traffic.graph.GraphNode;
 import traffic.model.Car;
 import traffic.model.TrafficSimulator;
+import traffic.strategy.CarStrategy;
 
 /**
+ * This class takes a {@link TrafficSimulator} and some additional options
+ * and produces an XML file that contains the descirption of the
+ * {@link TrafficSimulator}. If optional fields like {@link CarStrategy} are not
+ * assigned for some objects, this write will create an explicit field for them.
+ * 
  * @author Jochen Wuttke - wuttkej@gmail.com
  *
  */
@@ -45,6 +51,14 @@ public class SimulationXMLWriter {
 	
 	private SimulationXMLWriter( ) {}
 	
+	/**
+	 * This is the main interface to the {@link SimulationXMLWriter}. Passing in
+	 * a {@link TrafficSimulator} and a {@link File} will generate the XML
+	 * describing <code>sim</code> in <code>f</code>.
+	 * @param sim
+	 * @param f
+	 * @throws IOException
+	 */
 	static void write( TrafficSimulator sim, File f ) throws IOException {
 		new SimulationXMLWriter().writeSim( f, sim );
 	}

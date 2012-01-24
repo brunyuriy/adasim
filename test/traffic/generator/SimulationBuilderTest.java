@@ -27,7 +27,7 @@ public class SimulationBuilderTest {
 	public void testBuildTerminates() throws Exception {
 		ConfigurationOptions opts = ConfigurationOptions.parse( new String[] { "-N", "1000", "-C", "500", 
 				"-D", "4", "-o", "random.xml", "-d", "3:6", "-S", 
-				"traffic.strategy.LookaheadShortestPathCarStrategy", "--one-way-prob", "0.05"});
+				"traffic.strategy.LookaheadShortestPathCarStrategy", "--one-way-prob", "0.05", "--node-capacity", "0"});
 		new SimulationBuilder().build(opts);
 		//passes when it doesn't crash
 	}

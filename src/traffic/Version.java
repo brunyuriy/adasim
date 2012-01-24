@@ -15,6 +15,8 @@
 package traffic;
 
 /**
+ * This class simply stores version information and has no active component.
+ * 
  * @author Jochen Wuttke - wuttkej@gmail.com
  *
  */

@@ -23,6 +23,9 @@ import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 
 /**
+ * This class stores all configuration options for {@link Generator}.
+ * The values are assigned through the command line parse called with
+ * {@link ConfigurationOptions#parse}
  * @author Jochen Wuttke - wuttkej@gmail.com
  *
  */
@@ -39,6 +42,14 @@ final class ConfigurationOptions {
 	private File graphFile = null;
 	private int capacity = 0;
 	
+	/**
+	 * This is the main interface to ConfigurationOptions. Passing in
+	 * the arguments array will return an object containing all
+	 * parsed arguments and default values for arguments not specified
+	 * @param args the arguments array from <code>main(String[] args)</code>.
+	 * @return A set of configuration options.
+	 * @throws Exception
+	 */
 	static ConfigurationOptions parse( String[] args ) throws Exception {
 		ConfigurationOptions cfg = new ConfigurationOptions();
 		
@@ -49,6 +60,8 @@ final class ConfigurationOptions {
 	}
 
 	/**
+	 * Process the options found in the commandline arguments
+	 * and checks that all required options are present.
 	 * @param parse
 	 * @param cfg
 	 * @throws Exception 
@@ -92,7 +105,7 @@ final class ConfigurationOptions {
 	}
 
 	/**
-	 * 
+	 * Initializes the command line parser with all supported options.
 	 */
 	private static OptionParser setupParser() {
 		OptionParser parser = new OptionParser();
@@ -128,49 +141,50 @@ final class ConfigurationOptions {
 	}
 
 	/**
-	 * @return the numNodes
+	 * @return the number of nodes to be generated for the graph
 	 */
 	int getNumNodes() {
 		return numNodes;
 	}
 
 	/**
-	 * @return the numCars
+	 * @return the number of cars to placed on the graph (this is approximated only)
 	 */
 	int getNumCars() {
 		return numCars;
 	}
 
 	/**
-	 * @return the degreeProb
+	 * @return the probability with which two nodes should be connected by 
+	 * an edge
 	 */
 	double getDegreeProb() {
 		return degreeProb;
 	}
 
 	/**
-	 * @return the nodeDelay
+	 * @return the the array of consecutive, valid node delays
 	 */
 	int[] getNodeDelay() {
 		return nodeDelay;
 	}
 
 	/**
-	 * @return the strategies
+	 * @return the list of permitted car strategies
 	 */
 	List<String> getStrategies() {
 		return strategies;
 	}
 
 	/**
-	 * @return the outputFile
+	 * @return the {@link File} object linking to the file for the output XML
 	 */
 	File getOutputFile() {
 		return outputFile;
 	}
 
 	/**
-	 * @return the oneWay
+	 * @return the probability with which roads are one-way streets
 	 */
 	double getOneWayProbability() {
 		return oneWay;
@@ -178,20 +192,24 @@ final class ConfigurationOptions {
 
 	/**
 	 * @return the bottleneck
+	 * @deprecated
 	 */
 	boolean isBottleneck() {
 		return bottleneck;
 	}
 
 	/**
-	 * @return the graphFile
+	 * If this returns a non-null value, no new graph will be generated and all options 
+	 * specifying graph properties are ignored.
+	 * 
+	 * @return the {@link File} linking to a file containing the XML for a full graph
 	 */
 	File getGraphFile() {
 		return graphFile;
 	}
 
 	/**
-	 * @return the capacity
+	 * @return the default traffic capacity for all nodes
 	 */
 	int getCapacity() {
 		return capacity;

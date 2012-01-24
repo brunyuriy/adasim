@@ -29,5 +29,10 @@ package traffic.model;
  *
  */
 public interface AdasimAgent {
+	/**
+	 * This is the main method through which the {@link TrafficSimulator} 
+	 * communicates with agents. The {@link TrafficSimulator} call this
+	 * method once per simulation cylce on each agent. 
+	 */
 	public void takeSimulationStep();
 }

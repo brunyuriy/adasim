@@ -22,6 +22,12 @@ import org.jdom.JDOMException;
 import traffic.model.ConfigurationException;
 
 /**
+ * A simple generator for random simulation setups.
+ * <p>
+ * It supports full randomization of graphs of defined 
+ * sizes with a defined number of cars, and it supports
+ * loading graph and randomizing only cars for that graph.
+ * 
  * @author Jochen Wuttke - wuttkej@gmail.com
  *
  */
