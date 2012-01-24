@@ -1,17 +1,28 @@
-package traffic.model;
-/**
- * Jonathan Ramaswamy
- * Car
- * The car object represents a single car on the graph, and holds an info object
- * with important information about itself. The car is given a graph traversal strategy
- * that it will use to select its path from start to end
- * 
+/*******************************************************************************
+ * Copyright (c) 2011 - Jonathan Ramaswamy.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Jonathan Ramaswamy (ramaswamyj12@gmail.com) - initial API and implementation
+ ********************************************************************************
+ *
+ * Created: Jul 29, 2011
  */
+
+package traffic.model;
 
 import org.apache.log4j.Logger;
 
 import traffic.graph.GraphNode;
 import traffic.strategy.CarStrategy;
+
+/**
+ * @author Jonathan Ramaswamy - ramaswamyj12@gmail.com
+ *
+ */
 
 public class Car {
 	

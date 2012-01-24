@@ -1,9 +1,18 @@
-package traffic.graph;
-/**
- * Jonathan Ramaswamy
- * Graph
- * Graph is a simple object representing an weighted, directed graph using nodes
+/*******************************************************************************
+ * Copyright (c) 2011 - Jonathan Ramaswamy.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Jonathan Ramaswamy (ramaswamyj12@gmail.com) - initial API and implementation
+ ********************************************************************************
+ *
+ * Created: Dec 3, 2011
  */
+
+package traffic.graph;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -12,6 +21,11 @@ import java.util.Set;
 
 import traffic.model.Car;
 import traffic.strategy.SpeedStrategy;
+
+/**
+ * @author Jonathan Ramaswamy - ramaswamyj12@gmail.com
+ *
+ */
 
 public class Graph {
 	
