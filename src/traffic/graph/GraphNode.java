@@ -83,15 +83,6 @@ public class GraphNode {
 	}
 	
 	/**
-	 * Removes the given car from the list of cars at this node
-	 * Changes the speed limit at the node
-	 * @deprecated This method should not be necessary
-	 */
-	public void exitNode(Car c) {
-		//cars.remove(cars.indexOf(c));
-	}
-	
-	/**
 	 * Signals to the node that the car will stop at this
 	 * node and no longer move. This should normally only
 	 * happen when the car is at it's destination or when
