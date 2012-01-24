@@ -37,6 +37,10 @@ import traffic.strategy.LinearSpeedStrategy;
 import traffic.strategy.SpeedStrategy;
 
 /**
+ * This class constructs (randomizes) a TrafficSimulation based
+ * on the values passed as arguments through a set of 
+ * {@link ConfigurationOptions}
+ * 
  * @author Jochen Wuttke - wuttkej@gmail.com
  *
  */
@@ -44,14 +48,34 @@ public class SimulationBuilder {
 
 	private Random random;
 
+	/**
+	 * Sets up the {@link SimulationBuilder}
+	 */
 	SimulationBuilder() {
 		random = new Random();
 	}
 
+	/**
+	 * Constructs a {@link SimulationBuilder} with the given random seed.
+	 * This is intended for reproducing the exact same results despite
+	 * randomization. Either for repeating experiments or testing.
+	 * @param seed
+	 */
 	SimulationBuilder( long seed ) {
 		random = new Random( seed );
 	}
 
+	/**
+	 * Build an complete {@link TrafficSimulator}
+	 * @param opts the options parsed from the commandline arguments
+	 * @return a complete {@link TrafficSimulator}
+	 * @throws ConfigurationException
+	 * @throws JDOMException
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 */
 	TrafficSimulator build( ConfigurationOptions opts ) throws ConfigurationException, JDOMException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
 		Graph g = buildGraph(opts);
 		return new TrafficSimulator( g, buildCars(opts, g) );
@@ -284,7 +308,7 @@ public class SimulationBuilder {
 	 * @return
 	 * @throws ConfigurationException 
 	 */
-	static SpeedStrategy ss = new LinearSpeedStrategy();
+	private static SpeedStrategy ss = new LinearSpeedStrategy();
 	private SpeedStrategy randomSpeedStrategy(ConfigurationOptions opts) throws ConfigurationException {
 		return ss;
 	}

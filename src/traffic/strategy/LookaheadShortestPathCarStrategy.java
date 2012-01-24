@@ -23,6 +23,10 @@ import org.apache.log4j.Logger;
 import traffic.graph.GraphNode;
 
 /**
+ * This car strategy is the base implementation for all strategies 
+ * using Dijkstras shortest path algorithm on node weights and 
+ * traffic delays. 
+ * 
  * @author Jochen Wuttke - wuttkej@gmail.com
  *
  */
@@ -73,7 +77,6 @@ public class LookaheadShortestPathCarStrategy extends AbstractCarStrategy {
 	 * 
 	 * @param lookahead
 	 */
-
 	public LookaheadShortestPathCarStrategy( int lookahead, int recomp ){
 		this.lookahead = lookahead;
 		this.recompute = recomp;
