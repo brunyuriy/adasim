@@ -33,6 +33,9 @@ import traffic.strategy.SpeedStrategy;
 
 
 /**
+ * Reads in an XML configuration file, validates it agains the Adasim schema
+ * and constructs a simulation.
+ * 
  * @author Jochen Wuttke - wuttkej@gmail.com
  *
  */
@@ -41,10 +44,10 @@ final public class SimulationXMLReader {
 	private static final Logger logger = Logger.getLogger(SimulationXMLReader.class);
 	
 	private Document doc;
-	private static SimulationBuilder builder;
+	private static SimulationXMLBuilder builder;
 
 	private SimulationXMLReader( File f ) throws JDOMException, IOException, ConfigurationException {
-		builder = new SimulationBuilder();
+		builder = new SimulationXMLBuilder();
 		SAXBuilder sbuilder = new SAXBuilder(true);
         sbuilder.setProperty("http://java.sun.com/xml/jaxp/properties/schemaLanguage", "http://www.w3.org/2001/XMLSchema");
         sbuilder.setProperty("http://java.sun.com/xml/jaxp/properties/schemaSource", "resources/xml/adasim.xsd");
@@ -59,10 +62,16 @@ final public class SimulationXMLReader {
 		}
 	}
 
-	public static TrafficSimulator buildSimulator( String xmlString ) {
-		return null;
-	}
-
+	/**
+	 * The main interface to {@link SimulationXMLReader}. It will load all necessary files
+	 * and either return a complete and valid {@link TrafficSimulator}, or it will throw
+	 * and exception detailing the cause of failure.
+	 * 
+	 * @param config
+	 * @return
+	 * @throws FileNotFoundException
+	 * @throws ConfigurationException
+	 */
 	public static TrafficSimulator buildSimulator( File config ) throws FileNotFoundException, ConfigurationException {
 		try {
 			SimulationXMLReader factory = new SimulationXMLReader(config);
