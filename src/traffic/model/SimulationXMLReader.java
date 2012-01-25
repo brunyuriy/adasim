@@ -17,11 +17,8 @@ package traffic.model;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.log4j.Logger;
 import org.jdom.Document;
@@ -46,24 +43,11 @@ final public class SimulationXMLReader {
 	private Document doc;
 	private static SimulationBuilder builder;
 
-	SimulationXMLReader( String config ) throws JDOMException, IOException, ConfigurationException {
-		SAXBuilder sbuilder = new SAXBuilder(true);
-        sbuilder.setProperty("http://java.sun.com/xml/jaxp/properties/schemaLanguage", "http://www.w3.org/2001/XMLSchema");
-        sbuilder.setProperty("http://java.sun.com/xml/jaxp/properties/schemaSource", "sim.xsd");
-        sbuilder.setErrorHandler(new SimpleErrorHandler());
-        
-		try {
-			doc = sbuilder.build(config);
-		} catch (Exception e) {
-			throw new ConfigurationException("invalid XML file");
-		}
-	}
-
 	private SimulationXMLReader( File f ) throws JDOMException, IOException, ConfigurationException {
 		builder = new SimulationBuilder();
 		SAXBuilder sbuilder = new SAXBuilder(true);
         sbuilder.setProperty("http://java.sun.com/xml/jaxp/properties/schemaLanguage", "http://www.w3.org/2001/XMLSchema");
-        sbuilder.setProperty("http://java.sun.com/xml/jaxp/properties/schemaSource", "sim.xsd");
+        sbuilder.setProperty("http://java.sun.com/xml/jaxp/properties/schemaSource", "resources/xml/adasim.xsd");
         sbuilder.setErrorHandler(new SimpleErrorHandler());
         
 		try {
@@ -71,7 +55,7 @@ final public class SimulationXMLReader {
 		} catch (FileNotFoundException e) {
 			throw e;
 		} catch (Exception e) {
-			throw new ConfigurationException("invalid XML file");
+			throw new ConfigurationException(e);
 		}
 	}
 
@@ -260,6 +244,110 @@ final public class SimulationXMLReader {
 //		}
 //		return ( ss == null? defaultStrategy : ss );
 //	}
+
+	private int getCapacity(Element node, int d_capacity) {
+		String cap = node.getAttributeValue("capacity");
+		if (cap == null) {
+			return d_capacity;
+		} else {
+			return Integer.parseInt(cap);
+		}
+	}
+
+	/**
+	 * @param nodes
+	 * @return
+	 */
+	private List<GraphNode> validate(List<GraphNode> nodes) {
+		List<GraphNode> l = new ArrayList<GraphNode>( nodes );
+		List<GraphNode> last;
+		do {
+			last = l;
+			l = reduce( last );
+		} while ( ! last.equals(l) );
+		return l;
+	}
+
+	/**
+	 * Removes nodes that have no neighbors, and removes links that point to invalid neighbors.
+	 * @param nodes
+	 * @return
+	 */
+	private List<GraphNode> reduce(List<GraphNode> nodes) {
+		 List<GraphNode> l = new ArrayList<GraphNode>();
+		for ( GraphNode node : nodes ) {
+			boolean hasNeighbor = false;
+			for ( GraphNode i : node.getNeighbors() ) {
+				if ( nodes.contains( i ) ) {
+					hasNeighbor = true;
+				} else {
+					node.removeEdge(i);
+				}
+			}
+			if ( hasNeighbor ) {
+				l.add( node );
+			}
+		}
+		return l;
+	}
+
+	private boolean hasValidNeighbors( Element node ) {
+		String n = node.getAttributeValue("neighbors").trim();
+		return !( n.equals("") );
+	}
+
+	/**
+	 * @param nodes
+	 * @param node
+	 */
+	private void buildNeigbors(List<GraphNode> nodes, Element node) {
+		String[] neighbors = node.getAttributeValue("neighbors").trim().split(" ");
+		GraphNode gn = getNode( nodes, node );
+		for ( String n : neighbors ) {
+			int nn = Integer.parseInt(n);
+			gn.addEdge( getNode( nodes, nn ));					
+		}
+	}
+
+	/**
+	 * @param nodes
+	 * @param node
+	 * @return
+	 */
+	private GraphNode getNode(List<GraphNode> nodes, Element node) {
+		int id = Integer.parseInt( node.getAttributeValue( "id" ) );
+		for ( GraphNode n : nodes ) {
+			if ( n.getID() == id ) return n;
+		}
+		return null;
+	}
+
+	private GraphNode getNode(List<GraphNode> nodes, int node) {
+		for ( GraphNode n : nodes ) {
+			if ( n.getID() == node ) return n;
+		}
+		return null;
+	}
+
+	/**
+	 * @param node
+	 * @param defaultStrategy
+	 * @return
+	 */
+	private SpeedStrategy buildStrategy(Element node,
+			SpeedStrategy defaultStrategy) {
+		SpeedStrategy ss = null;
+		String ssn = node.getAttributeValue( "strategy" );
+		if ( ssn != null ) {
+			try {
+				@SuppressWarnings("rawtypes")
+				Class ssc = Class.forName( ssn );
+				ss = (SpeedStrategy) ssc.newInstance();
+			} catch (Exception e) {
+			}
+		}
+		return ( ss == null? defaultStrategy : ss );
+	}
 
 	/**
 	 * @return

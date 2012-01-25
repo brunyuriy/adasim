@@ -10,6 +10,15 @@ import java.util.List;
 import traffic.graph.Graph;
 import traffic.graph.GraphNode;
 
+/**
+ * This interface defines routing strategies. Given a graph, start and end node,
+ * a routing strategy should compute a path from start to end and upon request
+ * (via <code>getNextNode()</code>) should return the next node the car
+ * has to move to to follow that path.
+ * 
+ * @author Jochen Wuttke - wuttkej@gmail.com
+ *
+ */
 public interface CarStrategy {
 	
 	/**

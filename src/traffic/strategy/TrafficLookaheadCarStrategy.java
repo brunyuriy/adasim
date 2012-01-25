@@ -9,27 +9,20 @@
  *    Jochen Wuttke (wuttkej@gmail.com) - initial API and implementation
  ********************************************************************************
  *
- * Created: Dec 12, 2011
+ * Created: Jan 24, 2012
  */
 
-package traffic.generator;
-
-import org.junit.Test;
-
+package traffic.strategy;
 
 /**
+ * This is the TrafficLookahead strategy we use in the paper.
+ * 
  * @author Jochen Wuttke - wuttkej@gmail.com
  *
  */
-public class SimulationBuilderTest {
-	
-	@Test//(timeout=10000)
-	public void testBuildTerminates() throws Exception {
-		ConfigurationOptions opts = ConfigurationOptions.parse( new String[] { "-N", "1000", "-C", "500", 
-				"-D", "4", "-o", "random.xml", "-d", "3:6", "-S", 
-				"traffic.strategy.LookaheadShortestPathCarStrategy", "--one-way-prob", "0.05", "--node-capacity", "0"});
-		new SimulationBuilder().build(opts);
-		//passes when it doesn't crash
-	}
+public class TrafficLookaheadCarStrategy extends LookaheadShortestPathCarStrategy {
 
+	public TrafficLookaheadCarStrategy() {
+		super(5,1);
+	}
 }
