@@ -17,9 +17,17 @@ package traffic.generator;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import org.jdom.JDOMException;
+
 import traffic.model.ConfigurationException;
 
 /**
+ * A simple generator for random simulation setups.
+ * <p>
+ * It supports full randomization of graphs of defined 
+ * sizes with a defined number of cars, and it supports
+ * loading graph and randomizing only cars for that graph.
+ * 
  * @author Jochen Wuttke - wuttkej@gmail.com
  *
  */
@@ -27,13 +35,14 @@ public class Generator {
 
 	/**
 	 * @param args
+	 * @throws JDOMException 
 	 */
 	public static void main(String[] args) {
 		ConfigurationOptions opts = null;
 		try {
 			opts = ConfigurationOptions.parse(args);
 		} catch (Exception e) {
-			System.err.println( "Erros parsing commandline options: " + e.getMessage() );
+			System.err.println( "Error parsing command line options: " + e.getMessage() );
 			System.exit( 1 );
 		}
 		
@@ -49,6 +58,10 @@ public class Generator {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

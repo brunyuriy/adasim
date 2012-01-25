@@ -16,10 +16,15 @@ package traffic;
 
 import java.util.Arrays;
 
+import traffic.model.TrafficSimulator;
+
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 
 /**
+ * This class stores all configuration options for {@link TrafficSimulator}.
+ * The values are assigned through the command line parse called with
+ * {@link ConfigurationOptions#parse}
  * @author Jochen Wuttke - wuttkej@gmail.com
  *
  */
@@ -27,6 +32,14 @@ final class ConfigurationOptions {
 	
 	private String inputFile;
 	
+	/**
+	 * This is the main interface to ConfigurationOptions. Passing in
+	 * the arguments array will return an object containing all
+	 * parsed arguments and default values for arguments not specified
+	 * @param args the arguments array from <code>main(String[] args)</code>.
+	 * @return A set of configuration options.
+	 * @throws Exception
+	 */
 	static ConfigurationOptions parse( String[] args ) throws Exception {
 		ConfigurationOptions cfg = new ConfigurationOptions();
 		
@@ -60,7 +73,8 @@ final class ConfigurationOptions {
 
 
 	/**
-	 * @return the outputFile
+	 * @return the name of the file containing the configuration for
+	 * this {@link TrafficSimulator}
 	 */
 	String getInputFile() {
 		return inputFile;

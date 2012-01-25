@@ -29,8 +29,14 @@ import traffic.graph.Graph;
 import traffic.graph.GraphNode;
 import traffic.model.Car;
 import traffic.model.TrafficSimulator;
+import traffic.strategy.CarStrategy;
 
 /**
+ * This class takes a {@link TrafficSimulator} and some additional options
+ * and produces an XML file that contains the descirption of the
+ * {@link TrafficSimulator}. If optional fields like {@link CarStrategy} are not
+ * assigned for some objects, this write will create an explicit field for them.
+ * 
  * @author Jochen Wuttke - wuttkej@gmail.com
  *
  */
@@ -38,12 +44,21 @@ public class SimulationXMLWriter {
 	
 	private static final String DEFAULT_SPEED_STRATEGY = "traffic.strategy.LinearSpeedStrategy";
 	private static final String DEFAULT_CAR_STRATEGY = "traffic.strategy.LookaheadShortestPathCarStrategy";
+	private static final String DEFAULT_NODE_CAPACITY = "0";
 	
 	private DefaultJDOMFactory factory = new DefaultJDOMFactory();
 
 	
 	private SimulationXMLWriter( ) {}
 	
+	/**
+	 * This is the main interface to the {@link SimulationXMLWriter}. Passing in
+	 * a {@link TrafficSimulator} and a {@link File} will generate the XML
+	 * describing <code>sim</code> in <code>f</code>.
+	 * @param sim
+	 * @param f
+	 * @throws IOException
+	 */
 	static void write( TrafficSimulator sim, File f ) throws IOException {
 		new SimulationXMLWriter().writeSim( f, sim );
 	}
@@ -99,6 +114,7 @@ public class SimulationXMLWriter {
 	private void writeGraph(Element doc, Graph graph) {
 		Element g = factory.element( "graph" );
 		g.setAttribute( factory.attribute( "default_strategy", DEFAULT_SPEED_STRATEGY) );
+		g.setAttribute( factory.attribute( "default_capacity", DEFAULT_NODE_CAPACITY ) );
 		for ( GraphNode node : graph.getNodes() ) {
 			writeNode(g, node );
 		}
@@ -114,6 +130,7 @@ public class SimulationXMLWriter {
 		n.setAttribute( factory.attribute( "id", "" + node.getID() ) );
 		n.setAttribute( factory.attribute( "delay", "" + node.getDelay() ) );
 		n.setAttribute( factory.attribute( "neighbors", writeNeighbors(node.getNeighbors() ) ) );
+		n.setAttribute( factory.attribute( "capacity", "" + node.getCapacity() ) );
 		g.addContent(n);
 	}
 

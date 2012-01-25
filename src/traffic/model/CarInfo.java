@@ -18,7 +18,6 @@ public class CarInfo {
 	private GraphNode end; //Destination position
 	private GraphNode currentNode; //Current position
 	private int carNum; //This car's number in the list of cars
-	private int delay; //The time the car must wait at its current node
 	private boolean finish; //True if the car has reached its destination
 	private NoiseStrategy noise; //The noise strategy
 	private CarStrategy cs; //Strategy the car uses to traverse the graph
@@ -29,7 +28,6 @@ public class CarInfo {
 		this.end = end;
 		currentNode = start;
 		carNum = num;
-		delay = -1;
 		finish = false;
 		noise = new RandomNoiseStrategy();
 		cs = strat;
@@ -71,20 +69,6 @@ public class CarInfo {
 	 */
 	public int getCarNum() {
 		return carNum;
-	}
-	
-	/**
-	 * @return The turn delay at this node
-	 */
-	public int getDelay() {
-		return delay;
-	}
-	
-	/**
-	 * Sets the turn delay to the given variable d
-	 */
-	public void setDelay(int d) {
-		delay = d;
 	}
 	
 	/**

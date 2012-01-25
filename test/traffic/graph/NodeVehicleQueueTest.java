@@ -49,8 +49,10 @@ public class NodeVehicleQueueTest {
 		Car c = new Car(null, null, new LookaheadShortestPathCarStrategy(0), 99);
 		queue.enqueue(c, 4);
 		assertFalse(queue.isEmpty());
+		assertEquals(1, queue.size() );
 		queue.park(c);
 		assertTrue(queue.isEmpty());
+		assertEquals(0, queue.size());
 	}
 	
 	@Test
