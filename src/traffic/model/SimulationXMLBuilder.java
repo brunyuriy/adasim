@@ -67,21 +67,21 @@ public class SimulationXMLBuilder {
 	/**
 	 * Builds a {@link GraphNode} from the given <code>&lt;node&gt;</code> element.
 	 * <p>
-	 * It will not assign default values, as these are unknown without knowledge 
-	 * of the enclosing graph.
-	 * It also does not fill the list of neighbors, as no list of already existing
-	 * nodes is available at this stage.
+	 * It will assign only values declared in the XML Other values will be:
+	 * <ul>
+	 * <li> delay = -1
+	 * <li> capacity = -1
+	 * <li> strategy = null
+	 * <li> neighbors = null (we have a list of numbers, but no nodes corresponding)
+	 * </ul>
 	 * 
 	 * @param nodeElement
 	 * @return
 	 */
 	public GraphNode buildNode( Element nodeElement ) {
 		int id = Integer.parseInt( nodeElement.getAttributeValue( "id" ) );
-		if ( hasValidNeighbors(nodeElement) ) {
-			SpeedStrategy ss = buildStrategy( nodeElement );
-			return new GraphNode( id, ss, getDelay(nodeElement ), getCapacity(nodeElement)) ;
-		}
-		return null;
+		SpeedStrategy ss = buildStrategy( nodeElement );
+		return new GraphNode( id, ss, getDelay(nodeElement ), getCapacity(nodeElement)) ;
 	}
 
 	/**
@@ -204,8 +204,7 @@ public class SimulationXMLBuilder {
 				@SuppressWarnings("rawtypes")
 				Class ssc = Class.forName( ssn );
 				ss = (SpeedStrategy) ssc.newInstance();
-			} catch (Exception e) {
-			}
+			} catch (Exception e) {}
 		}
 		return ss;
 	}
@@ -217,7 +216,7 @@ public class SimulationXMLBuilder {
 	 */
 	private int getDelay(Element node) {
 		String d = node.getAttributeValue("delay");
-		if ( d == null ) return 1;
+		if ( d == null ) return -1;
 		else {
 			return Integer.parseInt(d); //Delay must be a valid integer due to schema
 		}
