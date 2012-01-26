@@ -71,6 +71,13 @@ public class GraphNode {
 		return ss;
 	}
 
+	/**
+	 * @param ss the ss to set
+	 */
+	public void setSpeedStrategy(SpeedStrategy ss) {
+		this.ss = ss;
+	}
+
 	/* ***************************************************
 	 * TRAFFIC MANAGEMENT METHODS
 	 *************************************************** */
@@ -109,6 +116,13 @@ public class GraphNode {
 		return capacity;
 	}
 	
+	/**
+	 * @param capacity the capacity to set
+	 */
+	public void setCapacity(int capacity) {
+		this.capacity = capacity;
+	}
+
 	/**
 	 * Returns the number of cars currently at this node
 	 */
