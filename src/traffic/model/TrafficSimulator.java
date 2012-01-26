@@ -18,7 +18,6 @@ import java.util.*;
 
 import org.apache.log4j.Logger;
 
-import traffic.TrafficMain;
 import traffic.graph.Graph;
 import traffic.graph.GraphNode;
 
