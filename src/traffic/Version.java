@@ -22,7 +22,7 @@ package traffic;
  */
 public class Version {
 	
-	private final static String VERSION = "0.5.0";
+	private final static String VERSION = "0.5.1";
 
 	static public String versionString() {
 		return "Adasim - Version " + VERSION ;
