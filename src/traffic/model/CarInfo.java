@@ -30,12 +30,7 @@ public class CarInfo {
 		carNum = num;
 		finish = false;
 		noise = new RandomNoiseStrategy();
-		cs = strat;
-		if ( cs != null ) {
-			cs.setStartNode(start);
-			cs.setEndNode(end);
-			cs.setCarId(carNum);
-		}
+		setStrategy(strat);
 	}
 
 	/**
@@ -100,10 +95,23 @@ public class CarInfo {
 	}
 
 	/**
+	 * @param cs the cs to set
+	 */
+	public void setStrategy(CarStrategy cs) {
+		this.cs = cs;
+		if ( cs != null ) {
+			cs.setStartNode(start);
+			cs.setEndNode(end);
+			cs.setCarId(carNum);
+		}
+	}
+
+	/**
 	 * @return
 	 */
 	public GraphNode getNextNode() {
 		return cs.getNextNode();
+		
 	}
 
 }

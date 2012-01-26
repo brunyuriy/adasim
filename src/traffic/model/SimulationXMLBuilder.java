@@ -100,17 +100,30 @@ public class SimulationXMLBuilder {
 		try {
 			Class<?> cls = Class.forName(carsNode.getAttributeValue("default_strategy"));
 			cs = (CarStrategy) cls.newInstance();
+			//TODO: assign this somewhere
 			//cs.setGraph(g);
 		} catch (Exception e ) {
-			throw new ConfigurationException("Invalid default car strategy");
+			throw new ConfigurationException("Invalid default car strategy: " + carsNode.getAttributeValue("default_strategy"));
 		}
 		List<Car> cars = new ArrayList<Car>();
 		for ( Element car : carNodes ) {
 			//Car c = buildCar( car, cs, g );
 			Car c = buildCar( car );
-			if ( c != null ) cars.add( c );
+			if ( c != null ) cars.add( assignDefaultCarValues( c, cs ) );
 		}
 		return cars;	
+	}
+
+	/**
+	 * @param c
+	 * @param cs
+	 * @return
+	 */
+	private Car assignDefaultCarValues(Car c, CarStrategy cs) {
+		if ( c.getInfo().getStrategy() == null ) {
+			c.getInfo().setStrategy(cs);
+		}
+		return c;
 	}
 
 	/**
@@ -123,8 +136,8 @@ public class SimulationXMLBuilder {
 	 * @return
 	 */
 	public Car buildCar( Element carNode ) {
-		int start = Integer.parseInt(carNode.getAttributeValue("start"));
-		int end = Integer.parseInt(carNode.getAttributeValue("end"));
+//		int start = Integer.parseInt(carNode.getAttributeValue("start"));
+//		int end = Integer.parseInt(carNode.getAttributeValue("end"));
 		int id = Integer.parseInt(carNode.getAttributeValue("id"));
 		//TODO: move validation somewhere else!!!!
 
