@@ -16,8 +16,6 @@ package traffic.model;
 
 import traffic.graph.GraphNode;
 import traffic.strategy.CarStrategy;
-import traffic.strategy.NoiseStrategy;
-import traffic.strategy.RandomNoiseStrategy;
 
 /**
  * CarInfo holds all the information for a car object, including its starting, ending,
@@ -34,7 +32,6 @@ public class CarInfo {
 	private GraphNode currentNode; //Current position
 	private int carNum; //This car's number in the list of cars
 	private boolean finish; //True if the car has reached its destination
-	private NoiseStrategy noise; //The noise strategy
 	private CarStrategy cs; //Strategy the car uses to traverse the graph
 
 	/**
@@ -50,7 +47,6 @@ public class CarInfo {
 		currentNode = start;
 		carNum = num;
 		finish = false;
-		noise = new RandomNoiseStrategy();
 		cs = strat;
 		cs.setStartNode(start);
 		cs.setEndNode(end);
