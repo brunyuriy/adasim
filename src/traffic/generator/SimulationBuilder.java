@@ -15,7 +15,6 @@
 package traffic.generator;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -23,7 +22,6 @@ import java.util.List;
 import java.util.Random;
 
 import org.jdom.Document;
-import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
@@ -32,7 +30,6 @@ import traffic.graph.GraphNode;
 import traffic.model.Car;
 import traffic.model.ConfigurationException;
 import traffic.model.SimulationXMLBuilder;
-import traffic.model.SimulationXMLReader;
 import traffic.model.TrafficSimulator;
 import traffic.strategy.CarStrategy;
 import traffic.strategy.LinearSpeedStrategy;
@@ -80,30 +77,8 @@ public class SimulationBuilder {
 	 * @throws IllegalAccessException
 	 */
 	TrafficSimulator build( ConfigurationOptions opts ) throws ConfigurationException, IOException, JDOMException, ClassNotFoundException, InstantiationException, IllegalAccessException {
-		Graph g;
-		if ( opts.getGraphFile() == null ) {
-			g = buildGraph(opts);
-		} else {
-			g = readGraph( opts.getGraphFile() );
-		}
-		return new TrafficSimulator( g, buildCars(opts, g) );
-	}
-
-	/**
-	 * @param graphFile
-	 * @throws IOException 
-	 * @throws ConfigurationException 
-	 */
-	private Graph readGraph(File graphFile) throws IOException, ConfigurationException {
-		SAXBuilder sbuilder = new SAXBuilder(true);
-		try {
-			Document doc = sbuilder.build(graphFile);
-			return new SimulationXMLBuilder().buildGraph( doc.getRootElement() );
-		} catch (FileNotFoundException e) {
-			throw e;
-		} catch (Exception e) {
-			throw new ConfigurationException("invalid XML file");
-		}
+		Graph g = buildGraph(opts);
+		return new TrafficSimulator( buildGraph(opts), buildCars(opts, g) );
 	}
 
 	/**
@@ -146,7 +121,6 @@ public class SimulationBuilder {
 		return nodes.get( random.nextInt( nodes.size() ) );
 	}
 
-
 	/**
 	 * @param strategies
 	 * @return
@@ -160,7 +134,8 @@ public class SimulationBuilder {
 			return (CarStrategy) c.newInstance();
 		} catch (Exception e) {
 			throw new ConfigurationException(e);
-		} 	}
+		} 	
+	}
 
 	/**
 	 * @param opts
@@ -184,7 +159,6 @@ public class SimulationBuilder {
 			}
 		} else {
 			//we have to read the graph from a file
-			//TODO: this is a very bad HACK
 			g = readGraphFromFile( opts.getGraphFile() );
 		}
 		return g;
@@ -198,113 +172,12 @@ public class SimulationBuilder {
 	 * @throws ClassNotFoundException 
 	 * @throws IllegalAccessException 
 	 * @throws InstantiationException 
-	 */
-	private Graph readGraphFromFile(File graphFile) throws JDOMException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
-		SAXBuilder sbuilder = new SAXBuilder(false);
-		Document doc = sbuilder.build(graphFile);
-		Element graph = doc.getRootElement();
-		@SuppressWarnings("unchecked")
-		List<Element> children = graph.getChildren("node");		
-		Class<?> cls = Class.forName(graph.getAttributeValue("default_strategy"));
-		SpeedStrategy ss = (SpeedStrategy) cls.newInstance();
-		int capacity = Integer.parseInt(graph.getAttributeValue("default_capacity"));
-		return new Graph( buildNodes( children, ss, capacity) );
-	}
-
-	/**
-	 * TODO: cloned from {@link SimulationXMLReader}
-	 * @param nodeDeclarations
-	 * @param defaultStrategy
-	 * @param capacity
-	 * @return
-	 */
-	private List<GraphNode> buildNodes( List<Element> nodeDeclarations, SpeedStrategy defaultStrategy, int capacity) {
-		List<GraphNode> nodes = new ArrayList<GraphNode>( nodeDeclarations.size() );
-		for( Element node : nodeDeclarations ) {
-			int id = Integer.parseInt( node.getAttributeValue( "id" ) );
-			SpeedStrategy ss = buildStrategy( node, defaultStrategy );
-			nodes.add( new GraphNode( id, ss, getDelay(node ), getCapacity(node, capacity)) );
-		}
-		for ( Element node: nodeDeclarations ) {
-			buildNeigbors(nodes, node );
-		}
-		return nodes;		
-	}
-	
-	/**
-	 * @param node
-	 * @param defaultStrategy
-	 * @return
-	 */
-	private SpeedStrategy buildStrategy(Element node,
-			SpeedStrategy defaultStrategy) {
-		SpeedStrategy ss = null;
-		String ssn = node.getAttributeValue( "strategy" );
-		if ( ssn != null ) {
-			try {
-				@SuppressWarnings("rawtypes")
-				Class ssc = Class.forName( ssn );
-				ss = (SpeedStrategy) ssc.newInstance();
-			} catch (Exception e) {
-			}
-		}
-		return ( ss == null? defaultStrategy : ss );
-	}
-	
-	private int getCapacity(Element node, int d_capacity) {
-		String cap = node.getAttributeValue("capacity");
-		if (cap == null) {
-			return d_capacity;
-		} else {
-			return Integer.parseInt(cap);
-		}
-	}
-	
-	/**
-	 * @param nodes
-	 * @param node
-	 */
-	private void buildNeigbors(List<GraphNode> nodes, Element node) {
-		String[] neighbors = node.getAttributeValue("neighbors").trim().split(" ");
-		GraphNode gn = getNode( nodes, node );
-		for ( String n : neighbors ) {
-			int nn = Integer.parseInt(n);
-			gn.addEdge( getNode( nodes, nn ));					
-		}
-	}
-	
-	/**
-	 * @param nodes
-	 * @param node
-	 * @return
-	 */
-	private GraphNode getNode(List<GraphNode> nodes, Element node) {
-		int id = Integer.parseInt( node.getAttributeValue( "id" ) );
-		for ( GraphNode n : nodes ) {
-			if ( n.getID() == id ) return n;
-		}
-		return null;
-	}
-
-	private GraphNode getNode(List<GraphNode> nodes, int node) {
-		for ( GraphNode n : nodes ) {
-			if ( n.getID() == node ) return n;
-		}
-		return null;
-	}
-
-	
-	/**
-	 * @param node
-	 * @return
 	 * @throws ConfigurationException 
 	 */
-	private int getDelay(Element node) {
-		String d = node.getAttributeValue("delay");
-		if ( d == null ) return 1;
-		else {
-			return Integer.parseInt(d); //Delay must be a valid integer due to schema
-		}
+	private Graph readGraphFromFile(File graphFile) throws JDOMException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, ConfigurationException {
+		SAXBuilder sbuilder = new SAXBuilder(false);
+		Document doc = sbuilder.build(graphFile);
+		return new SimulationXMLBuilder().buildGraph( doc.getRootElement() );
 	}
 
 	/**
