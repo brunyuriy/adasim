@@ -84,5 +84,26 @@ public class SimulationXMLBuilderTest {
 		assertEquals(0, node.getCapacity() );
 		assertTrue( node.getSpeedStrategy() instanceof QuadraticSpeedStrategy );
 	}
+	
+	@Test
+	public void carNoOptionals() throws JDOMException, IOException {
+		Document doc = parser.build( new StringReader( "<car id=\"27\" start=\"1\" end=\"1\"/>" ) );
+		Car car = builder.buildCar( doc.getRootElement() );
+		assertEquals( 27, car.getID() );
+		assertNull( car.info.getStartNode() );
+		assertNull( car.info.getEndNode() );
+		assertNull( car.getInfo().getStrategy() );
+	}
+
+	@Test
+	public void carAllOptionals() throws JDOMException, IOException {
+		Document doc = parser.build( new StringReader( "<car id=\"27\" start=\"1\" end=\"1\" strategy=\"traffic.strategy.ShortestPathCarStrategy\" />" ) );
+		Car car = builder.buildCar( doc.getRootElement() );
+		assertEquals( 27, car.getID() );
+		assertNull( car.info.getStartNode() );
+		assertNull( car.info.getEndNode() );
+		assertTrue( car.getInfo().getStrategy() instanceof ShortestPathCarStrategy );
+	}
+
 
 }
