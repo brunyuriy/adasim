@@ -236,7 +236,7 @@ public class SimulationXMLBuilder {
 	 */
 	private int getDelay(Element node) {
 		String d = node.getAttributeValue("delay");
-		if ( d == null ) return -1;
+		if ( d == null ) return 1;
 		else {
 			return Integer.parseInt(d); //Delay must be a valid integer due to schema
 		}
