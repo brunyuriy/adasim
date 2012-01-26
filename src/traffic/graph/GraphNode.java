@@ -39,7 +39,7 @@ public class GraphNode {
 	private int capacity; //The number of cars the road can hold before the speed strategy takes effect
 	
 	/**
-	 * Creates a new node with a default delay
+	 * Creates a node with delay 1.
 	 * @param n
 	 * @param s
 	 * @param capacity
@@ -68,7 +68,7 @@ public class GraphNode {
 	/* ***************************************************
 	 * GRAPH MANAGEMENT METHODS
 	 *************************************************** */
-	
+		
 	/**
 	 * Adds an outgoing edge to the given node
 	 * @param to
@@ -109,6 +109,13 @@ public class GraphNode {
 		return ss;
 	}
 
+	/**
+	 * @param ss the ss to set
+	 */
+	public void setSpeedStrategy(SpeedStrategy ss) {
+		this.ss = ss;
+	}
+
 	/* ***************************************************
 	 * TRAFFIC MANAGEMENT METHODS
 	 *************************************************** */
@@ -147,6 +154,13 @@ public class GraphNode {
 		return capacity;
 	}
 	
+	/**
+	 * @param capacity the capacity to set
+	 */
+	public void setCapacity(int capacity) {
+		this.capacity = capacity;
+	}
+
 	/**
 	 * Returns the number of cars currently at this node
 	 */

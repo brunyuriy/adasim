@@ -7,6 +7,7 @@
  *
  * Contributors:
  *    Jonathan Ramaswamy (ramaswamyj12@gmail.com) - initial API and implementation
+ *    Jochen Wuttke (wuttkej@gmail.com) - extended API 
  ********************************************************************************
  *
  * Created: Sep 5, 2011
