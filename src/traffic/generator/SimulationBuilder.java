@@ -31,6 +31,7 @@ import traffic.graph.Graph;
 import traffic.graph.GraphNode;
 import traffic.model.Car;
 import traffic.model.ConfigurationException;
+import traffic.model.SimulationXMLBuilder;
 import traffic.model.SimulationXMLReader;
 import traffic.model.TrafficSimulator;
 import traffic.strategy.CarStrategy;
@@ -97,12 +98,12 @@ public class SimulationBuilder {
 		SAXBuilder sbuilder = new SAXBuilder(true);
 		try {
 			Document doc = sbuilder.build(graphFile);
+			return new SimulationXMLBuilder().buildGraph( doc.getRootElement() );
 		} catch (FileNotFoundException e) {
 			throw e;
 		} catch (Exception e) {
 			throw new ConfigurationException("invalid XML file");
 		}
-		return null;
 	}
 
 	/**
