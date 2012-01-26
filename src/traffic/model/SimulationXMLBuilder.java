@@ -256,7 +256,7 @@ public class SimulationXMLBuilder {
 	 * @param node
 	 */
 	private void buildNeigbors(List<GraphNode> nodes, Element node) {
-		String[] neighbors = node.getAttributeValue("neighbors").split(" ");
+		String[] neighbors = node.getAttributeValue("neighbors").trim().split(" ");
 		GraphNode gn = getNode( nodes, node );
 		for ( String n : neighbors ) {
 			int nn = Integer.parseInt(n);
