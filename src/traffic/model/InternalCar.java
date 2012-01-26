@@ -9,24 +9,39 @@
  *    Jochen Wuttke (wuttkej@gmail.com) - initial API and implementation
  ********************************************************************************
  *
- * Created: Nov 3, 2011
+ * Created: Jan 18, 2012
  */
 
-package traffic;
+package traffic.model;
 
 /**
- * This class simply stores version information and has no active component.
- * 
  * @author Jochen Wuttke - wuttkej@gmail.com
  *
  */
-public class Version {
+class InternalCar extends Car {
 	
-	private final static String VERSION = "0.5.1";
-
-	static public String versionString() {
-		return "Adasim - Version " + VERSION ;
+	private int start, end;
+	
+	InternalCar( int id, int start, int end ) {
+		super( id );
+		this.start = start;
+		this.end = end;
 	}
 
+	/**
+	 * @return the start
+	 */
+	int getStart() {
+		return start;
+	}
+
+	/**
+	 * @return the end
+	 */
+	int getEnd() {
+		return end;
+	}
 	
+	
+
 }

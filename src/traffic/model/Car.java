@@ -13,12 +13,6 @@
  */
 
 package traffic.model;
-
-import org.apache.log4j.Logger;
-
-import traffic.graph.GraphNode;
-import traffic.strategy.CarStrategy;
-
 /**
  * 
  * The car object represents a single car on the graph, and holds an info object
@@ -28,19 +22,21 @@ import traffic.strategy.CarStrategy;
  * @author Jonathan Ramaswamy - ramaswamyj12@gmail.com
  */
 
+import org.apache.log4j.Logger;
+
+import traffic.graph.GraphNode;
+import traffic.strategy.CarStrategy;
+
 public class Car {
 	
-	private CarInfo info; //Info for the car
+	protected CarInfo info; //Info for the car
 	
 	private static Logger logger = Logger.getLogger(Car.class);
 	
-	/**
-	 * Creates a new Car object with the given parameters
-	 * @param start
-	 * @param end
-	 * @param strat
-	 * @param num
-	 */
+	protected Car( int id ) {
+		info = new CarInfo(null, null, id, null );
+	}
+	
 	public Car(GraphNode start, GraphNode end, CarStrategy strat, int num) {
 		info = new CarInfo(start, end, num, strat );
 	}
