@@ -56,7 +56,7 @@ public class SimulationXMLBuilderTest {
 		assertTrue( node.getNeighbors().isEmpty() );
 		assertNull( node.getSpeedStrategy() );
 		assertEquals(-1, node.getCapacity() );
-		assertEquals(-1, node.getDelay() );
+		assertEquals(1, node.getDelay() ); //1 is the default delay
 	}
 	
 	@Test
