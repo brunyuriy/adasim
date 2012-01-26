@@ -1,9 +1,19 @@
-package traffic.graph;
-/**
- * Jonathan Ramaswamy
- * GraphNode
- * GraphNode represents the nodes that make up the graph
+/*******************************************************************************
+ * Copyright (c) 2011 - Jonathan Ramaswamy.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Jonathan Ramaswamy (ramaswamyj12@gmail.com) - initial API and implementation
+ ********************************************************************************
+ *
+ * Created: Sep 5, 2011
  */
+
+package traffic.graph;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -12,6 +22,12 @@ import java.util.Set;
 import traffic.model.Car;
 import traffic.strategy.SpeedStrategy;
 
+/**
+ * A GraphNode is a single node on the graph. It has a queue of cars
+ * and uses a given speed strategy and delay to determine their movements
+ * 
+ * @author Jonathan Ramaswamy - ramaswamyj12@gmail.com
+ */
 
 public class GraphNode {
 	
@@ -19,18 +35,27 @@ public class GraphNode {
 	private int nodeNum; //The number of this node on the graph
 	private SpeedStrategy ss; //The strategy by which the speed changes
 	private int delay; //The basic delay of this node. To be modified by the speed strategy
-	private NodeVehicleQueue queue;
+	private NodeVehicleQueue queue; //Holds the cars on this node and deals with the traffic
 	private int capacity; //The number of cars the road can hold before the speed strategy takes effect
 	
 	/**
-	 * Creates a node with delay 1.
+	 * Creates a new node with a default delay
 	 * @param n
 	 * @param s
+	 * @param capacity
 	 */
 	public GraphNode(int n, SpeedStrategy s, int capacity) {
 		this(n, s, 1, capacity);
 	}
 	
+	/**
+	 * Creates a new node with the given node number, speed strategy,
+	 * delay and capacity arguments
+	 * @param n
+	 * @param s
+	 * @param delay
+	 * @param capacity
+	 */
 	public GraphNode(int n, SpeedStrategy s, int delay, int capacity ) {
 		nodeNum = n;
 		outgoing = new HashSet<GraphNode>();
@@ -43,29 +68,42 @@ public class GraphNode {
 	/* ***************************************************
 	 * GRAPH MANAGEMENT METHODS
 	 *************************************************** */
-		
+	
+	/**
+	 * Adds an outgoing edge to the given node
+	 * @param to
+	 */
 	public void addEdge( GraphNode to ) {
 		if ( to == null ) return;
 		outgoing.add( to );
 	}
 	
+	/**
+	 * Removes the given edge from this node's list of outgoing edges
+	 * @param to
+	 */
 	public void removeEdge( GraphNode to ) {
 		outgoing.remove( to );
 	}
 	
 	/**
-	 * Returns all nodes this node has an edge directed towards
+	 * Returns all nodes this node has an outgoing edge towards
+	 * @return
 	 */
 	public List<GraphNode> getNeighbors() {
 		return new ArrayList<GraphNode>(outgoing);
 	}
-	
+	/**
+	 * Returns this node's ID number
+	 * @return
+	 */
 	public int getID() {
 		return nodeNum;
 	}
 
 	/**
-	 * @return the ss
+	 * Returns this node's speed strategy
+	 * @return
 	 */
 	public SpeedStrategy getSpeedStrategy() {
 		return ss;
