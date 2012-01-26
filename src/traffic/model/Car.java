@@ -1,11 +1,25 @@
+/*******************************************************************************
+ * Copyright (c) 2011 - Jonathan Ramaswamy.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Jonathan Ramaswamy (ramaswamyj12@gmail.com) - initial API and implementation
+ ********************************************************************************
+ *
+ * Created: Sep 15, 2011
+ */
+
 package traffic.model;
 /**
- * Jonathan Ramaswamy
- * Car
+ * 
  * The car object represents a single car on the graph, and holds an info object
  * with important information about itself. The car is given a graph traversal strategy
  * that it will use to select its path from start to end
  * 
+ * @author Jonathan Ramaswamy - ramaswamyj12@gmail.com
  */
 
 import org.apache.log4j.Logger;
@@ -44,6 +58,9 @@ public class Car {
 		}
 	}
 	
+	/**
+	 * @return the position of the car as a string
+	 */
 	private String carPosition() {
 		StringBuffer buf = new StringBuffer( "Car: ");
 		buf.append( this.getID() );
@@ -53,21 +70,21 @@ public class Car {
 	}
 	
 	/**
-	 * Returns the car's current position
+	 * @return the car's current position
 	 */
 	public int getCurrent() {
 		return info.getCurrentPosition().getID();
 	}
 	
 	/**
-	 * Returns the car's number
+	 * @return the car's number
 	 */
 	public int getID() {
 		return info.getCarNum();
 	}
 	
 	/**
-	 * Returns true if the car is at the end, false if not
+	 * @return true if the car is at the end, false if not
 	 */
 	public boolean checkFinish() {
 		return info.isFinished();
