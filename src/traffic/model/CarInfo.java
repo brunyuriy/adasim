@@ -45,6 +45,8 @@ public class CarInfo {
 	public void setStartNode(GraphNode start) {
 		this.start = start;
 		this.currentNode = start;
+		//reset the strategy
+		setStrategy(cs);
 	}
 
 	/**
@@ -59,6 +61,8 @@ public class CarInfo {
 	 */
 	public void setEndNode(GraphNode end) {
 		this.end = end;
+		//reset the strategy
+		setStrategy(cs);
 	}
 
 	/**
