@@ -168,14 +168,8 @@ public class SimulationXMLBuilder {
 		for( Element node : nodeElements ) {
 			GraphNode gn = buildNode( node );
 			if ( gn != null ) {
-				//TODO: check for defaults
-				nodes.add(gn);
+				nodes.add( assignDefaultNodeValues(gn, defaultStrategy, capacity) );
 			}
-			//			int id = Integer.parseInt( node.getAttributeValue( "id" ) );
-			//			if ( hasValidNeighbors(node) ) {
-			//				SpeedStrategy ss = buildStrategy( node, defaultStrategy );
-			//				nodes.add( new GraphNode( id, ss, getDelay(node ), getCapacity(node, capacity)) );
-			//			}
 		}
 		for ( Element node: nodeElements ) {
 			if ( hasValidNeighbors(node) ) {
@@ -184,6 +178,20 @@ public class SimulationXMLBuilder {
 		}
 		nodes = validate(nodes);
 		return nodes;		
+	}
+
+	/**
+	 * @param gn
+	 * @return
+	 */
+	private GraphNode assignDefaultNodeValues(GraphNode gn, SpeedStrategy ss, int capacity ) {
+		if ( gn.getSpeedStrategy() == null ) {
+			gn.setSpeedStrategy(ss);
+		}
+		if ( gn.getCapacity() == -1 ) {
+			gn.setCapacity(capacity);
+		}
+		return gn;
 	}
 
 	private boolean hasValidNeighbors( Element node ) {
