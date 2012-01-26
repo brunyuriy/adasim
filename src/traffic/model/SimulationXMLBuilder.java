@@ -136,21 +136,20 @@ public class SimulationXMLBuilder {
 		//			return null;
 		//		}
 		//CarStrategy cs = defaultStrategy;
+		CarStrategy cs = null;
 		if(carNode.getAttributeValue("strategy") != null) {
 			String s = null;
 			try {
 				s = carNode.getAttributeValue("strategy");
-				CarStrategy cs = (CarStrategy) Class.forName(s).newInstance();
+				cs = (CarStrategy) Class.forName(s).newInstance();
 
 				//TODO: link the graph somewhere else
 				//cs.setGraph(g);
 			} catch (Exception e) {
 				logger.warn( "CarStrategy " + s + " not found. Using default." );
-				//cs = defaultStrategy;
 			}
 		}
-		//return new Car( g.getNode(start), g.getNode(end), cs, id );
-		return new InternalCar( id, start, end );
+		return new Car(null, null, cs, id );
 	}
 
 	/**
