@@ -1,9 +1,20 @@
-package traffic.graph;
-/**
- * Jonathan Ramaswamy
- * Graph
- * Graph is a simple object representing an weighted, directed graph using nodes
+/*******************************************************************************
+ * Copyright (c) 2011 - Jonathan Ramaswamy.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Jonathan Ramaswamy (ramaswamyj12@gmail.com) - initial API and implementation
+ ********************************************************************************
+ *
+ * Created: Sep 5, 2011
  */
+
+package traffic.graph;
+
+
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -13,34 +24,57 @@ import java.util.Set;
 import traffic.model.Car;
 import traffic.strategy.SpeedStrategy;
 
+/**
+ * The graph class represents a collection of GraphNodes
+ * Edges are contained as neighbors within the nodes
+ * 
+ * @author Jonathan Ramaswamy - ramaswamyj12@gmail.com
+ */
+
 public class Graph {
 	
 	private Set<GraphNode> nodes; //The nodes within the graph
 	
+	/**
+	 * Creates a graph comprised of the given set of nodes
+	 * @param nodes
+	 */
 	public Graph( Set<GraphNode> nodes ) {
 		this.nodes = nodes;
 	}
 	
+	/**
+	 * Creates a graph comprised of the given set of nodes
+	 * @param nodes
+	 */
 	public Graph( List<GraphNode> nodes ) {
 		this.nodes = new HashSet<GraphNode>( nodes );
 	}
 	
 	/**
-	 * Adds a new node to the graph and increases the tracker for the number of nodes by one
+	 * Creates a new node given a number, speed strategy, and capacity
+	 * Inserts the new node into the graph
+	 * @param num
+	 * @param speed
+	 * @param capacity
 	 */
 	public void addNode(int num, SpeedStrategy speed, int capacity) {
 		nodes.add(new GraphNode(num, speed, capacity));
 	}
 	
+	/**
+	 * Inserts the given node into the graph
+	 * @param node
+	 */
 	public void addNode( GraphNode node ) {
 		nodes.add(node);
 	}
 	
 	/**
 	 * Adds an edge between two nodes
-	 * Each node keeps track of the other nodes it has an edge to
-	 * @param i The incoming node to the edge
-	 * @param o The outgoing node from the edge
+	 * Nodes themselves hold their edges
+	 * @param i
+	 * @param o
 	 */
 	public void addEdge(int i, int o) {
 		GraphNode n = get(nodes, i);
@@ -51,7 +85,9 @@ public class Graph {
 	}
 	
 	/**
-	 * @param nodes2
+	 * Gets node i from the given list of nodes
+	 * Returns null if the node is not in the set
+	 * @param nodes
 	 * @param i
 	 * @return
 	 */
@@ -63,7 +99,9 @@ public class Graph {
 	}
 
 	/**
-	 * Returns a list of nodes that the given node has outgoing edges towards
+	 * Returns the nodes that can be accessed directly from the given node
+	 * @param i
+	 * @return
 	 */
 	public List<GraphNode> getNeighbors(int i) {
 		GraphNode n = get(nodes, i);
@@ -71,9 +109,9 @@ public class Graph {
 	}
 	
 	/**
-	 * Adds the given car number to the given node
-	 * @param c The number of the car to be added
-	 * @param n The node to add the car at
+	 * Adds the car to the given node
+	 * @param c
+	 * @param n
 	 */
 	public void addCarAtNode(Car c, int n) {
 		GraphNode gn = get(nodes, n);
@@ -82,9 +120,9 @@ public class Graph {
 	
 	/**
 	 * Shifts the given car from the old node to the new one
-	 * @param c The car that's changing nodes
-	 * @param o The old node the car was on
-	 * @param n The new node the car is moving to
+	 * @param c
+	 * @param o
+	 * @param n
 	 */
 	public void changeCarNode(Car c, int oldNode, int targetNode) {
 		GraphNode gn = get(nodes,targetNode);
@@ -94,27 +132,33 @@ public class Graph {
 	}
 	
 	/**
-	 * Gets the speed limit at the given node
-	 * @param n The node to get the speed limit from
-	 * @return The number of turns a car must stay stopped at the given node
+	 * Returns the delay at the given node
+	 * @param n
+	 * @return
 	 */
 	public int getDelayAtNode(int n) {
 		return get(nodes,n).getDelay();
 	}
 	
 	/**
-	 * Returns the number of nodes on the graph
+	 * Returns the number of nodes in the graph
+	 * @return
 	 */
 	public int getNumNodes() {
 		return nodes.size();
 	}
 	
+	/**
+	 * Returns the list of nodes in the graph
+	 * @return
+	 */
 	public List<GraphNode> getNodes() {
 		return new ArrayList<GraphNode>(nodes);
 	}
 	
 	/**
-	 * @param id the ID value of this node
+	 * Returns the graph node with the given ID
+	 * @param id
 	 * @return
 	 */
 	public GraphNode getNode( int id ) {
