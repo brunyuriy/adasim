@@ -18,6 +18,7 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.List;
 
 import org.jdom.Document;
 import org.jdom.JDOMException;
@@ -27,6 +28,7 @@ import org.junit.Test;
 
 import traffic.graph.Graph;
 import traffic.graph.GraphNode;
+import traffic.strategy.AlwaysRecomputeCarStrategy;
 import traffic.strategy.LinearSpeedStrategy;
 import traffic.strategy.QuadraticSpeedStrategy;
 import traffic.strategy.ShortestPathCarStrategy;
@@ -105,5 +107,21 @@ public class SimulationXMLBuilderTest {
 		assertTrue( car.getInfo().getStrategy() instanceof ShortestPathCarStrategy );
 	}
 
+	@Test
+	public void carListWithDefaults() throws JDOMException, IOException, ConfigurationException {
+		Document doc = parser.build( new StringReader( "<cars default_strategy=\"traffic.strategy.AlwaysRecomputeCarStrategy\">" +
+				"<car id=\"1\" start=\"1\" end=\"1\" />" +
+				"<car id=\"2\" start=\"1\" end=\"1\" strategy=\"traffic.strategy.ShortestPathCarStrategy\" />" +
+				"<car id=\"3\" start=\"1\" end=\"1\" />" +
+				"</cars>" ) );
+		List<Car> cars = builder.buildCars( doc.getRootElement() );
+		assertEquals( 3, cars.size() );
+		Car car = cars.get(0);	//this should be the car with id 1
+		assertEquals( 1, car.getID() );
+		assertTrue( car.getInfo().getStrategy() instanceof AlwaysRecomputeCarStrategy );
+		car = cars.get(1);
+		assertEquals( 2, car.getID() );
+		assertTrue( car.getInfo().getStrategy() instanceof ShortestPathCarStrategy );
+	}
 
 }
