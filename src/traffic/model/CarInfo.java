@@ -24,9 +24,8 @@ public class CarInfo {
 
 
 	public CarInfo(GraphNode start, GraphNode end, int num, CarStrategy strat) {
-		this.start = start;
-		this.end = end;
-		currentNode = start;
+		setStartNode(start);
+		setEndNode(end);
 		carNum = num;
 		finish = false;
 		noise = new RandomNoiseStrategy();
@@ -41,10 +40,25 @@ public class CarInfo {
 	}
 
 	/**
+	 * @param start the start to set
+	 */
+	public void setStartNode(GraphNode start) {
+		this.start = start;
+		this.currentNode = start;
+	}
+
+	/**
 	 * @return The ending node for the car
 	 */
 	public GraphNode getEndNode() {
 		return end;
+	}
+
+	/**
+	 * @param end the end to set
+	 */
+	public void setEndNode(GraphNode end) {
+		this.end = end;
 	}
 
 	/**

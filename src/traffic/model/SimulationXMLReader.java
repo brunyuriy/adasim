@@ -335,9 +335,12 @@ final public class SimulationXMLReader {
 
 		List<GraphNode> nodes = g.getNodes();
 		try {
-			checkEndPoint(nodes, start, id, "Start" );
-			checkEndPoint(nodes, end, id, "End" );
-			return getCar( id, cars );
+			Car c = getCar( id, cars );
+			GraphNode node = checkEndPoint(nodes, start, id, "Start" );
+			c.getInfo().setStartNode(node);
+			node = checkEndPoint(nodes, end, id, "End" );
+			c.getInfo().setEndNode(node);
+			return c;
 		} catch ( ConfigurationException e ) {
 			return null;
 		}
@@ -361,21 +364,23 @@ final public class SimulationXMLReader {
 	 * @param id
 	 * @throws ConfigurationException 
 	 */
-	private void checkEndPoint(List<GraphNode> nodes, int end, int id, String s) throws ConfigurationException {
-		if ( !isValidNode( end, nodes ) ) { 
+	private GraphNode checkEndPoint(List<GraphNode> nodes, int end, int id, String s) throws ConfigurationException {
+		GraphNode n = isValidNode( end, nodes );
+		if ( n == null ) { 
 			logger.warn( s + " node " + end + " for car " + id + " does not exist");
 			throw new ConfigurationException("");
 		}
+		return n;
 	}
 
 	/**
 	 * @param end
 	 */
-	private boolean isValidNode(int id, List<GraphNode> nodes ) {
+	private GraphNode isValidNode(int id, List<GraphNode> nodes ) {
 		for ( GraphNode node : nodes ) {
-			if ( node.getID() == id ) return true;
+			if ( node.getID() == id ) return node;
 		}
-		return false;
+		return null;
 	}
 
 }
