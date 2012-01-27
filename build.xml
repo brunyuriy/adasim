@@ -54,4 +54,18 @@
 			</fileset>
 		</jar>
 	</target>
+
+	<target name="jar-libs" depends="compile">
+		<jar destfile="adasim.jar" manifest="resources/MANIFEST.MF">
+			<fileset dir="${class.dir}"/>
+			<fileset dir=".">
+				<include name="resources/xml/adasim.xsd"/>
+			</fileset>
+			<archives>
+				<zips>
+					<fileset dir="${lib.dir}" includes="**/*.jar" excludes="**/junit*.jar"/>
+				</zips>
+			</archives>
+		</jar>
+	</target>
 </project>
