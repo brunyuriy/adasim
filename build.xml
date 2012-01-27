@@ -1,0 +1,47 @@
+<project>
+
+	<property name="build.dir" value="build"/>
+	<property name="class.dir" value="${build.dir}/classes"/>
+	<property name="test.class.dir" value="${build.dir}/test-classes"/>
+	<property name="src.dir" value="src"/>
+	<property name="test.dir" value="test"/>
+	<property name="lib.dir" value="lib"/>
+
+	<path id="classpath">
+		<fileset dir="${lib.dir}" includes="**/*.jar"/>
+		<pathelement location="${class.dir}"/>
+		<pathelement location="${test.class.dir}"/>
+	</path>
+
+	<target name="clean">
+		<delete dir="${build.dir}"/>
+	</target>
+
+	<target name="out_dirs">
+		<!-- check if dirs exist and if not, make them -->
+		<mkdir dir="${build.dir}"/>
+		<mkdir dir="${class.dir}"/>
+		<mkdir dir="${test.class.dir}"/>
+	</target>
+
+	<target name="compile" depends="out_dirs">
+		<javac srcdir="${src.dir}" destdir="${class.dir}" classpathref="classpath"/>
+	</target>
+
+	<target name="test-compile" depends="out_dirs,compile">
+		<javac srcdir="${test.dir}" destdir="${test.class.dir}" classpathref="classpath"/>
+	</target>
+
+	<target name="test" depends="compile,test-compile">
+		<junit printsummary="yes">
+			<classpath>
+				<path refid="classpath"/>
+			</classpath>
+			<batchtest >
+				<fileset dir="${test.dir}">
+			    		<include name="**/*.java"/>
+			        </fileset>
+			</batchtest>
+		</junit>
+	</target>
+</project>
