@@ -6,6 +6,7 @@
 	<property name="src.dir" value="src"/>
 	<property name="test.dir" value="test"/>
 	<property name="lib.dir" value="lib"/>
+	<property name="xml.resources" value="resources/xml"/>
 
 	<path id="classpath">
 		<fileset dir="${lib.dir}" includes="**/*.jar"/>
@@ -43,5 +44,14 @@
 			        </fileset>
 			</batchtest>
 		</junit>
+	</target>
+
+	<target name="jar" depends="compile">
+		<jar destfile="adasim.jar" manifest="resources/MANIFEST.MF"> 
+			<fileset dir="${class.dir}"/>
+			<fileset dir=".">
+				<include name="resources/xml/adasim.xsd"/>
+			</fileset>
+		</jar>
 	</target>
 </project>
