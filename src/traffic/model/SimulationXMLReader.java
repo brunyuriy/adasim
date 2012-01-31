@@ -122,10 +122,10 @@ final public class SimulationXMLReader {
 		try {
 			Car c = getCar( id, cars );
 			GraphNode node = checkEndPoint(nodes, start, id, "Start" );
-			c.getInfo().setStartNode(node);
+			c.setStartNode(node);
 			node = checkEndPoint(nodes, end, id, "End" );
-			c.getInfo().setEndNode(node);
-			c.getInfo().getStrategy().setGraph(g);
+			c.setEndNode(node);
+			c.getStrategy().setGraph(g);
 			return c;
 		} catch ( ConfigurationException e ) {
 			return null;

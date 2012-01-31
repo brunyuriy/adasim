@@ -122,8 +122,8 @@ public class SimulationXMLBuilder {
 	 * @return
 	 */
 	private Car assignDefaultCarValues(Car c, CarStrategy cs) {
-		if ( c.getInfo().getStrategy() == null ) {
-			c.getInfo().setStrategy(cs);
+		if ( c.getStrategy() == null ) {
+			c.setStrategy(cs);
 		}
 		return c;
 	}

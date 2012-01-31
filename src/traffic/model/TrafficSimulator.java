@@ -47,7 +47,7 @@ public class TrafficSimulator{
 	//Uses the previously specified algorithm to create paths for each car on the graph
 	private void addCarsToGraph() {
 		for(Car c: cars) {
-			graph.addCarAtNode(c, c.getCurrent());
+			graph.addCarAtNode(c, c.getCurrentNode());
 		}
 	}
 	
