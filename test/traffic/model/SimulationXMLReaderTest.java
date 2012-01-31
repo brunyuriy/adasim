@@ -44,11 +44,11 @@ public class SimulationXMLReaderTest {
 	@Test
 	public void testStart() throws JDOMException, IOException, ConfigurationException {
 		List<Car> cars = SimulationXMLReader.buildSimulator( new File("resources/test/config.xml" )).getCars();
-		assertEquals(cars.get(0).getCurrent(), 0);
-		assertEquals(cars.get(1).getCurrent(), 4);
-		assertEquals(cars.get(2).getCurrent(), 3);
-		assertEquals(cars.get(3).getCurrent(), 8);
-		assertEquals(cars.get(4).getCurrent(), 3);
+		assertEquals(cars.get(0).getCurrentNode(), 0);
+		assertEquals(cars.get(1).getCurrentNode(), 4);
+		assertEquals(cars.get(2).getCurrentNode(), 3);
+		assertEquals(cars.get(3).getCurrentNode(), 8);
+		assertEquals(cars.get(4).getCurrentNode(), 3);
 	}
 	
 	@Test
@@ -64,7 +64,7 @@ public class SimulationXMLReaderTest {
 	@Test
 	public void invalidCarStrategyDefaultsCorrectly() throws JDOMException, IOException, ConfigurationException {
 		List<Car> cars = SimulationXMLReader.buildSimulator( new File("resources/test/invalid-strategy.xml" )).getCars();
-		assertEquals( LookaheadShortestPathCarStrategy.class, cars.get(1).getInfo().getStrategy().getClass() );
+		assertEquals( LookaheadShortestPathCarStrategy.class, cars.get(1).getStrategy().getClass() );
 	}
 	
 	@Test(expected=ConfigurationException.class)
