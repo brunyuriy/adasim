@@ -78,13 +78,10 @@ final public class SimulationXMLReader {
 			Graph g = builder.buildGraph( factory.doc.getRootElement().getChild("graph" ) );
 			TrafficSimulator sim = new TrafficSimulator( g, factory.buildCars( factory.doc.getRootElement().getChild("cars" ), g ) );
 			return sim;
-		} catch ( IllegalArgumentException e ) {
-			buildError(e);
 		} catch ( ConfigurationException e ) {
 			buildError(e);
 			throw e;
 		}
-		return null;
 	}
 
 	/**
