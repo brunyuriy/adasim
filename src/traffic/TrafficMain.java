@@ -15,6 +15,7 @@
 package traffic;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.apache.log4j.Logger;
@@ -62,7 +63,10 @@ public class TrafficMain {
 		try{
 			tsim = SimulationXMLReader.buildSimulator( new File(opts.getInputFile() ) );
 		} catch (ConfigurationException e) { //Catches configuration error in XML file
-			logger.info("Exiting due to configuration error" + e.getMessage());
+			logger.info("Exiting due to configuration error " + e.getMessage());
+			System.exit(0);
+		} catch (FileNotFoundException e) {
+			logger.info("Exiting because file cannot be found " + e.getMessage());
 			System.exit(0);
 		}
 		logger.info("Starting Simulation");
