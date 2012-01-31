@@ -44,18 +44,20 @@ final public class SimulationXMLReader {
 	private Document doc;
 	private static SimulationXMLBuilder builder;
 
-	private SimulationXMLReader( File f ) throws JDOMException, IOException, ConfigurationException {
+	private SimulationXMLReader( File f ) throws FileNotFoundException, ConfigurationException {
 		builder = new SimulationXMLBuilder();
 		SAXBuilder sbuilder = new SAXBuilder(true);
 		sbuilder.setProperty("http://java.sun.com/xml/jaxp/properties/schemaLanguage", "http://www.w3.org/2001/XMLSchema");
-		sbuilder.setProperty("http://java.sun.com/xml/jaxp/properties/schemaSource", "/Users/wuttke/Documents/uni/research/UW-SNF/workspace/TrafficSim/resources/xml/adasim.xsd");
+		sbuilder.setProperty("http://java.sun.com/xml/jaxp/properties/schemaSource", "/Users/Jonathan/workspace/TrafficSim/resources/xml/adasim.xsd");
 		sbuilder.setErrorHandler(new SimpleErrorHandler());
 
 		try {
 			doc = sbuilder.build(f);
-		} catch (FileNotFoundException e) {
+		} catch ( FileNotFoundException e) {
 			throw e;
-		} catch (Exception e) {
+		} catch (JDOMException e) {
+			throw new ConfigurationException(e);
+		} catch (IOException e) {
 			throw new ConfigurationException(e);
 		}
 	}
@@ -76,14 +78,8 @@ final public class SimulationXMLReader {
 			Graph g = builder.buildGraph( factory.doc.getRootElement().getChild("graph" ) );
 			TrafficSimulator sim = new TrafficSimulator( g, factory.buildCars( factory.doc.getRootElement().getChild("cars" ), g ) );
 			return sim;
-		} catch ( JDOMException e ) {
-			buildError( e );
-		} catch ( FileNotFoundException e) {
-			throw e;
-		} catch (IOException e) {
-			buildError( e );
 		} catch ( IllegalArgumentException e ) {
-			buildError( e );
+			buildError(e);
 		} catch ( ConfigurationException e ) {
 			buildError(e);
 			throw e;
