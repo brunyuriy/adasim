@@ -50,6 +50,8 @@ public class SimulationXMLBuilder {
 	 * @param graphNode
 	 * @return
 	 * @throws ConfigurationException
+	 * @throws IllegalAccessException 
+	 * @throws InstantiationException 
 	 */
 	public Graph buildGraph( Element graphNode ) throws ConfigurationException {
 		try {
@@ -60,7 +62,7 @@ public class SimulationXMLBuilder {
 			int capacity = Integer.parseInt(graphNode.getAttributeValue("default_capacity"));
 			return new Graph( buildNodes( children, ss, capacity) );
 		} catch (Exception e) {
-			throw new ConfigurationException("Invalid default graph strategy");
+			throw new ConfigurationException("Invalid default graph strategy: " + graphNode.getAttributeValue("default_strategy"));
 		}
 	}
 
