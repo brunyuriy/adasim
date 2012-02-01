@@ -16,7 +16,7 @@ test-compile   compile the adasim test suite
 test           run the adasim test suite
 jar            build an executable JAR file containing only the 
                adasim core
-jar-libs       build an executable JAR file that includes
+jar-deps       build an executable JAR file that includes
                all dependencies and should run without having 
                to set the classpath
                
