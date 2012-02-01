@@ -7,6 +7,8 @@
 	<property name="test.dir" value="test"/>
 	<property name="lib.dir" value="lib"/>
 	<property name="xml.resources" value="resources/xml"/>
+	<loadproperties srcFile="resources/VERSION"/>
+	<property name="version" value="${version.major}.${version.minor}.${version.build}"/>
 
 	<path id="classpath">
 		<fileset dir="${lib.dir}" includes="**/*.jar"/>
@@ -47,7 +49,7 @@
 	</target>
 
 	<target name="jar" depends="compile">
-		<jar destfile="adasim.jar" manifest="resources/MANIFEST.MF"> 
+		<jar destfile="adasim-${version}.jar" manifest="resources/MANIFEST.MF"> 
 			<fileset dir="${class.dir}"/>
 			<fileset dir=".">
 				<include name="resources/xml/adasim.xsd"/>
@@ -55,8 +57,8 @@
 		</jar>
 	</target>
 
-	<target name="jar-libs" depends="compile">
-		<jar destfile="adasim.jar" manifest="resources/MANIFEST.MF">
+	<target name="jar-deps" depends="compile">
+		<jar destfile="adasim-${version}-deps.jar" manifest="resources/MANIFEST.MF">
 			<fileset dir="${class.dir}"/>
 			<fileset dir=".">
 				<include name="resources/xml/adasim.xsd"/>
