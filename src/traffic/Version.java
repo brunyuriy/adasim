@@ -14,11 +14,10 @@
 
 package traffic;
 
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.Properties;
 
 /**
@@ -33,7 +32,8 @@ class Version {
 	static{
 		Properties props = new Properties();
 		try {
-			props.load( new BufferedReader( new FileReader( new File("resources/VERSION" ) ) ) );
+			URL res = Version.class.getClassLoader().getResource( "resources/VERSION" );
+			props.load( new InputStreamReader( res.openStream() ) );
 			VERSION = props.getProperty("version.major") + "." + props.getProperty("version.minor") 
 					+ "." + props.getProperty( "version.build" );
 		} catch (FileNotFoundException e) {
