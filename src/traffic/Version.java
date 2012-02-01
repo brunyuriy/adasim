@@ -14,15 +14,34 @@
 
 package traffic;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Properties;
+
 /**
  * This class simply stores version information and has no active component.
  * 
  * @author Jochen Wuttke - wuttkej@gmail.com
  *
  */
-public class Version {
+class Version {
+	private static String VERSION = "";
 	
-	private final static String VERSION = "0.5.1";
+	static{
+		Properties props = new Properties();
+		try {
+			props.load( new BufferedReader( new FileReader( new File("resources/VERSION" ) ) ) );
+			VERSION = props.getProperty("version.major") + "." + props.getProperty("version.minor") 
+					+ "." + props.getProperty( "version.build" );
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	static public String versionString() {
 		return "Adasim - Version " + VERSION ;
