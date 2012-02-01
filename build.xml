@@ -53,6 +53,7 @@
 			<fileset dir="${class.dir}"/>
 			<fileset dir=".">
 				<include name="resources/xml/adasim.xsd"/>
+				<include name="resources/VERSION"/>
 			</fileset>
 		</jar>
 	</target>
@@ -62,6 +63,7 @@
 			<fileset dir="${class.dir}"/>
 			<fileset dir=".">
 				<include name="resources/xml/adasim.xsd"/>
+				<include name="resources/VERSION"/>
 			</fileset>
 			<archives>
 				<zips>
