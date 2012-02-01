@@ -26,7 +26,7 @@
 	</target>
 
 	<target name="compile" depends="out_dirs">
-		<javac srcdir="${src.dir}" destdir="${class.dir}" classpathref="classpath"/>
+		<javac srcdir="${src.dir}" destdir="${class.dir}" classpathref="classpath" includeantruntime="false"/>
 	</target>
 
 	<target name="test-compile" depends="out_dirs,compile">
