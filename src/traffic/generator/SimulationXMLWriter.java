@@ -98,7 +98,7 @@ public class SimulationXMLWriter {
 	 * @param vehicles
 	 * @return
 	 */
-	private void writeCars(Element doc, List<Vehicle> cars) {
+	private void writeVehicles(Element doc, List<Vehicle> cars) {
 		Element c = factory.element( "cars" );
 		c.setAttribute( factory.attribute( "default_strategy", DEFAULT_CAR_STRATEGY ) );
 		for ( Vehicle car : cars ) {
