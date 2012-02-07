@@ -1,0 +1,44 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+    <xsd:element name="simulation" type="Simulation" />
+    <xsd:complexType name="Simulation">
+        <xsd:all>
+            <xsd:element name="cars" type="Cars" minOccurs="1" maxOccurs="1" />
+            <xsd:element name="graph" type="Graph" minOccurs="1" maxOccurs="1" />
+        </xsd:all>
+    </xsd:complexType>
+
+    <xsd:complexType name="Cars">
+        <xsd:sequence>
+            <xsd:element name="car" type="Car" minOccurs="1" maxOccurs="unbounded" />
+        </xsd:sequence>
+        <xsd:attribute name="default_strategy" type="xsd:string" />
+    </xsd:complexType>
+
+
+    <xsd:complexType name="Car">
+        <xsd:attribute name="id" type="xsd:nonNegativeInteger" use="required" />
+        <xsd:attribute name="start" type="xsd:nonNegativeInteger" use="required" />
+        <xsd:attribute name="end" type="xsd:nonNegativeInteger" use="required" />
+        <xsd:attribute name="strategy" type="xsd:string" />
+    </xsd:complexType>
+    
+    <xsd:complexType name="Graph">
+        <xsd:sequence>
+            <xsd:element name="node" type="Node" minOccurs="1" maxOccurs="unbounded" />
+        </xsd:sequence>
+        <xsd:attribute name="default_strategy" type="xsd:string" />
+        <xsd:attribute name="default_capacity" type="xsd:nonNegativeInteger" />
+    </xsd:complexType>
+
+
+    <xsd:complexType name="Node">
+        <xsd:attribute name="id" type="xsd:nonNegativeInteger" use="required" />
+        <xsd:attribute name="strategy" type="xsd:string" />
+        <xsd:attribute name="neighbors" type="xsd:string" use="required" />
+        <xsd:attribute name="delay" type="xsd:nonNegativeInteger" />
+        <xsd:attribute name="capacity" type="xsd:nonNegativeInteger" />
+    </xsd:complexType>
+
+
+</xsd:schema>
