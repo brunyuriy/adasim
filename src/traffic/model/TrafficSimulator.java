@@ -39,6 +39,9 @@ public class TrafficSimulator{
 	private long cycle = 1;
 	
 	public TrafficSimulator( Graph g, List<Car> c ) {
+		if(g == null || c == null) {
+			throw new IllegalArgumentException();
+		}
 		this.graph = g;
 		this.cars = c;
 		addCarsToGraph();
