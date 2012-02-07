@@ -98,10 +98,10 @@ public class SimulationXMLWriter {
 	 */
 	private void writeCar(Element cars, Car car) {
 		Element c = factory.element( "car" );
-		c.setAttribute( factory.attribute( "start", "" + car.getInfo().getStartNode().getID() ) );
-		c.setAttribute( factory.attribute( "end", "" + car.getInfo().getEndNode().getID() ) );
-		c.setAttribute( factory.attribute( "id", "" + car.getInfo().getCarNum() ) );
-		c.setAttribute( factory.attribute( "strategy", "" + car.getInfo().getStrategy().getClass().getCanonicalName() ) );
+		c.setAttribute( factory.attribute( "start", "" + car.getStartNode().getID() ) );
+		c.setAttribute( factory.attribute( "end", "" + car.getEndNode().getID() ) );
+		c.setAttribute( factory.attribute( "id", "" + car.getID() ) );
+		c.setAttribute( factory.attribute( "strategy", "" + car.getStrategy().getClass().getCanonicalName() ) );
 		cars.addContent(c);
 	}
 
