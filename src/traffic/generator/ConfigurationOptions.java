@@ -32,7 +32,7 @@ import joptsimple.OptionSet;
 final class ConfigurationOptions {
 	
 	private int numNodes = 0;
-	private int numCars = 0;
+	private int numVehicles = 0;
 	private double degreeProb = 0.0;
 	private int[] nodeDelay = { 0, 0 };
 	private List<String> strategies = new ArrayList<String>();
@@ -71,8 +71,8 @@ final class ConfigurationOptions {
 			cfg.numNodes = Integer.parseInt( opts.valueOf( "N").toString() );
 		} else throw new Exception( "Argument --num-nodes is required" );
 		if ( opts.has( "C" ) ) {
-			cfg.numCars = Integer.parseInt( opts.valueOf( "C").toString() );
-		} else throw new Exception( "Argument --num-cars is required" );
+			cfg.numVehicles = Integer.parseInt( opts.valueOf( "C").toString() );
+		} else throw new Exception( "Argument --num-vehicles is required" );
 		if ( opts.has( "D" ) ) {
 			cfg.degreeProb = Integer.parseInt( opts.valueOf( "D").toString() ) / (double)cfg.numNodes;
 		} else throw new Exception( "Argument --node-degree is required" );
@@ -94,7 +94,7 @@ final class ConfigurationOptions {
 			for ( String s : ss ) {
 				cfg.strategies.add( s );
 			}
-		} else throw new Exception( "Argument --car-strategies is required" );
+		} else throw new Exception( "Argument --vehicle-strategies is required" );
 		if ( opts.has( "one-way-prob" ) ) {
 			cfg.oneWay = Double.parseDouble( opts.valueOf( "one-way-prob").toString() );
 		} 
@@ -121,10 +121,10 @@ final class ConfigurationOptions {
 		parser.acceptsAll(Arrays.asList( "d", "node-delay"), "Range of possible node delays" )
 			.withRequiredArg()
 			.describedAs( "min:max" );
-		parser.acceptsAll( Arrays.asList( "C", "num-cars" ), "Number of cars in the simulation" )
+		parser.acceptsAll( Arrays.asList( "C", "num-vehicles" ), "Number of vehicles in the simulation" )
 			.withRequiredArg()
-			.describedAs( "cars" );
-		parser.acceptsAll( Arrays.asList( "S", "car-strategies" ), "Comma separated list of possible routing strategies" )
+			.describedAs( "vehicles" );
+		parser.acceptsAll( Arrays.asList( "S", "vehicle-strategies" ), "Comma separated list of possible routing strategies" )
 			.withRequiredArg()
 			.describedAs( "strategies" );
 		parser.acceptsAll( Arrays.asList( "o", "output-file" ) )
@@ -148,10 +148,10 @@ final class ConfigurationOptions {
 	}
 
 	/**
-	 * @return the number of cars to placed on the graph (this is approximated only)
+	 * @return the number of vehicles to placed on the graph (this is approximated only)
 	 */
-	int getNumCars() {
-		return numCars;
+	int getNumVehicles() {
+		return numVehicles;
 	}
 
 	/**
@@ -170,7 +170,7 @@ final class ConfigurationOptions {
 	}
 
 	/**
-	 * @return the list of permitted car strategies
+	 * @return the list of permitted vehicle strategies
 	 */
 	List<String> getStrategies() {
 		return strategies;

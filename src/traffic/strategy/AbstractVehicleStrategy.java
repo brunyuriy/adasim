@@ -21,14 +21,14 @@ import traffic.graph.GraphNode;
  * @author Jochen Wuttke - wuttkej@gmail.com
  *
  */
-public abstract class AbstractCarStrategy implements CarStrategy {
+public abstract class AbstractVehicleStrategy implements VehicleStrategy {
 	
 	protected Graph graph;
 	protected GraphNode source, target;
-	protected int carID;
+	protected int vehicleID;
 
 	/* (non-Javadoc)
-	 * @see traffic.strategy.CarStrategy#setGraph(traffic.graph.Graph)
+	 * @see traffic.strategy.VehicleStrategy#setGraph(traffic.graph.Graph)
 	 */
 	@Override
 	public void setGraph(Graph g) {
@@ -46,11 +46,11 @@ public abstract class AbstractCarStrategy implements CarStrategy {
 	}
 	
 	/* (non-Javadoc)
-	 * @see traffic.strategy.CarStrategy#setCarId(int)
+	 * @see traffic.strategy.VehicleStrategy#setVehicleId(int)
 	 */
 	@Override
-	public void setCarId(int id) {
-		this.carID = id;
+	public void setVehicleId(int id) {
+		this.vehicleID = id;
 	}
 	
 

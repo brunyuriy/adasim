@@ -23,7 +23,7 @@ import traffic.graph.GraphNode;
 
 /**
  * TrafficSimulator is the main program for running the simulator. It keeps track
- * of the graph and where all the cars are located on it, and outputs information to
+ * of the graph and where all the vehicles are located on it, and outputs information to
  * the logger object with every step taken.
  * 
  * @author Jonathan Ramaswamy - ramaswamyj12@gmail.com
@@ -34,28 +34,28 @@ public class TrafficSimulator{
 	private static Logger logger = Logger.getLogger(TrafficSimulator.class);
 
 		
-	private List<Car> cars; //List of cars in the simulation
-	private Graph graph; //The graph the cars run on
+	private List<Vehicle> vehicles; //List of vehicles in the simulation
+	private Graph graph; //The graph the vehicles run on
 	private long cycle = 1;
 	
-	public TrafficSimulator( Graph g, List<Car> c ) {
+	public TrafficSimulator( Graph g, List<Vehicle> c ) {
 		if(g == null || c == null) {
 			throw new IllegalArgumentException();
 		}
 		this.graph = g;
-		this.cars = c;
-		addCarsToGraph();
+		this.vehicles = c;
+		addVehiclesToGraph();
 	}
 	
-	//Uses the previously specified algorithm to create paths for each car on the graph
-	private void addCarsToGraph() {
-		for(Car c: cars) {
-			graph.addCarAtNode(c, c.getCurrentNode());
+	//Uses the previously specified algorithm to create paths for each vehicle on the graph
+	private void addVehiclesToGraph() {
+		for(Vehicle c: vehicles) {
+			graph.addVehicleAtNode(c, c.getCurrentNode());
 		}
 	}
 	
 	/**
-	 * Runs the simulation by trying to move each car one at a time
+	 * Runs the simulation by trying to move each vehicle one at a time
 	 * @return True if the simulation is over
 	 */
 	public boolean takeSimulationStep() {
@@ -66,9 +66,9 @@ public class TrafficSimulator{
 		return checkAllFinish();
 	}
 	
-	//Checks to see if all cars have finished moving, returns true if so
+	//Checks to see if all vehicles have finished moving, returns true if so
 	private boolean checkAllFinish() {
-		for(Car c: cars) {
+		for(Vehicle c: vehicles) {
 			if(!c.checkFinish()) {
 				return false;
 			}
@@ -77,19 +77,19 @@ public class TrafficSimulator{
 	}
 
 	/**
-	 * @return the cars
+	 * @return the vehicles
 	 */
-	public List<Car> getCars() {
-		return cars;
+	public List<Vehicle> getVehicles() {
+		return vehicles;
 	}
 	
 	/**
-	 * Returns the car with the given ID
+	 * Returns the vehicle with the given ID
 	 * @param id
 	 * @return
 	 */
-	public Car getCar( int id ) {
-		for ( Car c : cars ) {
+	public Vehicle getVehicle( int id ) {
+		for ( Vehicle c : vehicles ) {
 			if ( c.getID() == id ) 
 				return c;
 		}

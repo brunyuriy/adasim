@@ -27,7 +27,7 @@ import org.junit.Test;
 
 import traffic.graph.Graph;
 import traffic.graph.GraphNode;
-import traffic.strategy.LookaheadShortestPathCarStrategy;
+import traffic.strategy.LookaheadShortestPathVehicleStrategy;
 import traffic.strategy.QuadraticSpeedStrategy;
 
 
@@ -43,7 +43,7 @@ public class SimulationXMLReaderTest {
 	
 	@Test
 	public void testStart() throws JDOMException, IOException, ConfigurationException {
-		List<Car> cars = SimulationXMLReader.buildSimulator( new File("resources/test/config.xml" )).getCars();
+		List<Vehicle> cars = SimulationXMLReader.buildSimulator( new File("resources/test/config.xml" )).getVehicles();
 		assertEquals(cars.get(0).getCurrentNode(), 0);
 		assertEquals(cars.get(1).getCurrentNode(), 4);
 		assertEquals(cars.get(2).getCurrentNode(), 3);
@@ -52,8 +52,8 @@ public class SimulationXMLReaderTest {
 	}
 	
 	@Test
-	public void testCarNum() throws JDOMException, IOException, ConfigurationException {
-		List<Car> cars = SimulationXMLReader.buildSimulator( new File("resources/test/config.xml" )).getCars();
+	public void testVehicleNum() throws JDOMException, IOException, ConfigurationException {
+		List<Vehicle> cars = SimulationXMLReader.buildSimulator( new File("resources/test/config.xml" )).getVehicles();
 		assertEquals(cars.get(0).getID(), 0);
 		assertEquals(cars.get(1).getID(), 1);
 		assertEquals(cars.get(2).getID(), 2);
@@ -62,32 +62,32 @@ public class SimulationXMLReaderTest {
 	}
 	
 	@Test
-	public void invalidCarStrategyDefaultsCorrectly() throws JDOMException, IOException, ConfigurationException {
-		List<Car> cars = SimulationXMLReader.buildSimulator( new File("resources/test/invalid-strategy.xml" )).getCars();
-		assertEquals( LookaheadShortestPathCarStrategy.class, cars.get(1).getStrategy().getClass() );
+	public void invalidVehicleStrategyDefaultsCorrectly() throws JDOMException, IOException, ConfigurationException {
+		List<Vehicle> cars = SimulationXMLReader.buildSimulator( new File("resources/test/invalid-strategy.xml" )).getVehicles();
+		assertEquals( LookaheadShortestPathVehicleStrategy.class, cars.get(1).getStrategy().getClass() );
 	}
 	
 	@Test(expected=ConfigurationException.class)
-	public void invalidDefaultCarStrategyThrows() throws JDOMException, IOException, ConfigurationException {
-		List<Car> cars = SimulationXMLReader.buildSimulator( new File("resources/test/illegal-default-car-strategy.xml" )).getCars();
+	public void invalidDefaultVehicleStrategyThrows() throws JDOMException, IOException, ConfigurationException {
+		List<Vehicle> cars = SimulationXMLReader.buildSimulator( new File("resources/test/illegal-default-car-strategy.xml" )).getVehicles();
 	}
 
 	
 	@Test(expected=ConfigurationException.class)
-	public void noCarThrows() throws JDOMException, IOException, ConfigurationException {
-		List<Car> cars = SimulationXMLReader.buildSimulator( new File("resources/test/no-car.xml" )).getCars();
+	public void noVehicleThrows() throws JDOMException, IOException, ConfigurationException {
+		List<Vehicle> cars = SimulationXMLReader.buildSimulator( new File("resources/test/no-car.xml" )).getVehicles();
 		fail( "This should throw a meaningful exception to be handled by main()" );
 	}
 
 	@Test(expected=ConfigurationException.class)
-	public void noCarsThrows() throws JDOMException, IOException, ConfigurationException {
-		List<Car> cars = SimulationXMLReader.buildSimulator( new File("resources/test/no-cars.xml" )).getCars();
+	public void noVehiclesThrows() throws JDOMException, IOException, ConfigurationException {
+		List<Vehicle> cars = SimulationXMLReader.buildSimulator( new File("resources/test/no-cars.xml" )).getVehicles();
 		fail( "This should throw a meaningful exception to be handled by main()" );
 	}
 	
 	@Test
 	public void invalidStartEndIsIgnored() throws JDOMException, IOException, ConfigurationException {
-		List<Car> cars = SimulationXMLReader.buildSimulator( new File("resources/test/invalid-start.xml" )).getCars();
+		List<Vehicle> cars = SimulationXMLReader.buildSimulator( new File("resources/test/invalid-start.xml" )).getVehicles();
 		assertEquals( 3, cars.size() );
 		assertEquals( 0, cars.get(0).getID() );
 		assertEquals( 3, cars.get(1).getID() );
@@ -99,12 +99,12 @@ public class SimulationXMLReaderTest {
 		TrafficSimulator sim = SimulationXMLReader.buildSimulator( new File("resources/test/config.xml" ) );
 		Graph g = sim.getGraph();
 		assertEquals(g.getNode(6).getCurrentDelay(), 1);
-		g.addCarAtNode(sim.getCar(0), 6);
-		g.addCarAtNode(sim.getCar(1), 6);
+		g.addVehicleAtNode(sim.getVehicle(0), 6);
+		g.addVehicleAtNode(sim.getVehicle(1), 6);
 		assertEquals(3, g.getNode(6).getCurrentDelay()); //Tests Quadratic Speed Strategy
 		assertEquals(1, g.getNode(1).getCurrentDelay());
-		g.addCarAtNode(sim.getCar(2), 1);
-		g.addCarAtNode(sim.getCar(3), 1);
+		g.addVehicleAtNode(sim.getVehicle(2), 1);
+		g.addVehicleAtNode(sim.getVehicle(3), 1);
 		assertEquals(3, g.getNode(1).getCurrentDelay() ); //Tests Linear Speed Strategy
 	}
 	
@@ -181,9 +181,9 @@ public class SimulationXMLReaderTest {
 	}
 
 	@Test
-	public void nodesHaveAllCars() throws FileNotFoundException, ConfigurationException {
+	public void nodesHaveAllVehicles() throws FileNotFoundException, ConfigurationException {
 		Graph g = SimulationXMLReader.buildSimulator( new File("resources/test/shortest-path-test-weights.xml")).getGraph();
-		assertEquals( 3, g.getNode(2).numCarsAtNode() );
+		assertEquals( 3, g.getNode(2).numVehiclesAtNode() );
 		
 	}
 }

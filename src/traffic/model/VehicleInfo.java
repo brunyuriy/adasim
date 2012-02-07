@@ -17,21 +17,21 @@ import traffic.strategy.NoiseStrategy;
 import traffic.strategy.RandomNoiseStrategy;
 
 /**
- * CarInfo holds all the information for a car object, including its starting, ending,
- * and current positions. This info object can be read by other cars and used in conjunction
+ * VehicleInfo holds all the information for a vehicle object, including its starting, ending,
+ * and current positions. This info object can be read by other vehicles and used in conjunction
  * with a strategy algorithm to make decisions
  * 
  * @author Jonathan Ramaswamy - ramaswamyj12@gmail.com
  */
 
-public class CarInfo {
+public class VehicleInfo {
 
 	private NoiseStrategy noise; //The noise strategy
 
 	/**
-	 * Creates a new CarInfo object with the given parameters
+	 * Creates a new VehicleInfo object with the given parameters
 	 */
-	public CarInfo() {
+	public VehicleInfo() {
 		noise = new RandomNoiseStrategy();
 	}
 

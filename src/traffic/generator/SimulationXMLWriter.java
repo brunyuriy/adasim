@@ -27,14 +27,14 @@ import org.jdom.output.XMLOutputter;
 
 import traffic.graph.Graph;
 import traffic.graph.GraphNode;
-import traffic.model.Car;
+import traffic.model.Vehicle;
 import traffic.model.TrafficSimulator;
-import traffic.strategy.CarStrategy;
+import traffic.strategy.VehicleStrategy;
 
 /**
  * This class takes a {@link TrafficSimulator} and some additional options
  * and produces an XML file that contains the descirption of the
- * {@link TrafficSimulator}. If optional fields like {@link CarStrategy} are not
+ * {@link TrafficSimulator}. If optional fields like {@link VehicleStrategy} are not
  * assigned for some objects, this write will create an explicit field for them.
  * 
  * @author Jochen Wuttke - wuttkej@gmail.com
@@ -43,7 +43,7 @@ import traffic.strategy.CarStrategy;
 public class SimulationXMLWriter {
 	
 	private static final String DEFAULT_SPEED_STRATEGY = "traffic.strategy.LinearSpeedStrategy";
-	private static final String DEFAULT_CAR_STRATEGY = "traffic.strategy.LookaheadShortestPathCarStrategy";
+	private static final String DEFAULT_CAR_STRATEGY = "traffic.strategy.LookaheadShortestPathVehicleStrategy";
 	private static final String DEFAULT_NODE_CAPACITY = "0";
 	
 	private DefaultJDOMFactory factory = new DefaultJDOMFactory();
@@ -72,7 +72,7 @@ public class SimulationXMLWriter {
 		Element s = factory.element( "simulation" );
 		Document doc = factory.document( s );
 		writeGraph( s, sim.getGraph() );
-		writeCars( s, sim.getCars() );
+		writeVehicles( s, sim.getVehicles() );
 		FileOutputStream out = new FileOutputStream( f );
 		XMLOutputter p = new XMLOutputter( Format.getPrettyFormat() );
 		p.output(doc, out);
@@ -81,28 +81,28 @@ public class SimulationXMLWriter {
 
 	/**
 	 * @param doc
-	 * @param cars
+	 * @param vehicles
 	 * @return
 	 */
-	private void writeCars(Element doc, List<Car> cars) {
-		Element c = factory.element( "cars" );
+	private void writeVehicles(Element doc, List<Vehicle> vehicles) {
+		Element c = factory.element( "vehicles" );
 		c.setAttribute( factory.attribute( "default_strategy", DEFAULT_CAR_STRATEGY ) );
-		for ( Car car : cars ) {
-			writeCar( c, car );
+		for ( Vehicle vehicle : vehicles ) {
+			writeVehicle( c, vehicle );
 		}
 		doc.addContent(c);
 	}
 /**
 	 * @param c
-	 * @param car
+	 * @param vehicle
 	 */
-	private void writeCar(Element cars, Car car) {
-		Element c = factory.element( "car" );
-		c.setAttribute( factory.attribute( "start", "" + car.getStartNode().getID() ) );
-		c.setAttribute( factory.attribute( "end", "" + car.getEndNode().getID() ) );
-		c.setAttribute( factory.attribute( "id", "" + car.getID() ) );
-		c.setAttribute( factory.attribute( "strategy", "" + car.getStrategy().getClass().getCanonicalName() ) );
-		cars.addContent(c);
+	private void writeVehicle(Element vehicles, Vehicle vehicle) {
+		Element c = factory.element( "vehicle" );
+		c.setAttribute( factory.attribute( "start", "" + vehicle.getStartNode().getID() ) );
+		c.setAttribute( factory.attribute( "end", "" + vehicle.getEndNode().getID() ) );
+		c.setAttribute( factory.attribute( "id", "" + vehicle.getID() ) );
+		c.setAttribute( factory.attribute( "strategy", "" + vehicle.getStrategy().getClass().getCanonicalName() ) );
+		vehicles.addContent(c);
 	}
 
 
