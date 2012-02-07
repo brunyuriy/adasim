@@ -28,10 +28,10 @@ import org.junit.Test;
 
 import traffic.graph.Graph;
 import traffic.graph.GraphNode;
-import traffic.strategy.AlwaysRecomputeCarStrategy;
+import traffic.strategy.AlwaysRecomputeVehicleStrategy;
 import traffic.strategy.LinearSpeedStrategy;
 import traffic.strategy.QuadraticSpeedStrategy;
-import traffic.strategy.ShortestPathCarStrategy;
+import traffic.strategy.ShortestPathVehicleStrategy;
 
 /**
  * @author Jochen Wuttke - wuttkej@gmail.com
@@ -90,7 +90,7 @@ public class SimulationXMLBuilderTest {
 	@Test
 	public void carNoOptionals() throws JDOMException, IOException {
 		Document doc = parser.build( new StringReader( "<car id=\"27\" start=\"1\" end=\"1\"/>" ) );
-		Car car = builder.buildCar( doc.getRootElement() );
+		Vehicle car = builder.buildVehicle( doc.getRootElement() );
 		assertEquals( 27, car.getID() );
 		assertNull( car.getStartNode() );
 		assertNull( car.getEndNode() );
@@ -99,29 +99,29 @@ public class SimulationXMLBuilderTest {
 
 	@Test
 	public void carAllOptionals() throws JDOMException, IOException {
-		Document doc = parser.build( new StringReader( "<car id=\"27\" start=\"1\" end=\"1\" strategy=\"traffic.strategy.ShortestPathCarStrategy\" />" ) );
-		Car car = builder.buildCar( doc.getRootElement() );
+		Document doc = parser.build( new StringReader( "<car id=\"27\" start=\"1\" end=\"1\" strategy=\"traffic.strategy.ShortestPathVehicleStrategy\" />" ) );
+		Vehicle car = builder.buildVehicle( doc.getRootElement() );
 		assertEquals( 27, car.getID() );
 		assertNull( car.getStartNode() );
 		assertNull( car.getEndNode() );
-		assertTrue( car.getStrategy() instanceof ShortestPathCarStrategy );
+		assertTrue( car.getStrategy() instanceof ShortestPathVehicleStrategy );
 	}
 
 	@Test
 	public void carListWithDefaults() throws JDOMException, IOException, ConfigurationException {
-		Document doc = parser.build( new StringReader( "<cars default_strategy=\"traffic.strategy.AlwaysRecomputeCarStrategy\">" +
+		Document doc = parser.build( new StringReader( "<cars default_strategy=\"traffic.strategy.AlwaysRecomputeVehicleStrategy\">" +
 				"<car id=\"1\" start=\"1\" end=\"1\" />" +
-				"<car id=\"2\" start=\"1\" end=\"1\" strategy=\"traffic.strategy.ShortestPathCarStrategy\" />" +
+				"<car id=\"2\" start=\"1\" end=\"1\" strategy=\"traffic.strategy.ShortestPathVehicleStrategy\" />" +
 				"<car id=\"3\" start=\"1\" end=\"1\" />" +
 				"</cars>" ) );
-		List<Car> cars = builder.buildCars( doc.getRootElement() );
+		List<Vehicle> cars = builder.buildVehicles( doc.getRootElement() );
 		assertEquals( 3, cars.size() );
-		Car car = cars.get(0);	//this should be the car with id 1
+		Vehicle car = cars.get(0);	//this should be the car with id 1
 		assertEquals( 1, car.getID() );
-		assertTrue( car.getStrategy() instanceof AlwaysRecomputeCarStrategy );
+		assertTrue( car.getStrategy() instanceof AlwaysRecomputeVehicleStrategy );
 		car = cars.get(1);
 		assertEquals( 2, car.getID() );
-		assertTrue( car.getStrategy() instanceof ShortestPathCarStrategy );
+		assertTrue( car.getStrategy() instanceof ShortestPathVehicleStrategy );
 	}
 
 }

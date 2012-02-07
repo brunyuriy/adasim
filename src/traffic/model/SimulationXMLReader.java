@@ -76,7 +76,7 @@ final public class SimulationXMLReader {
 		try {
 			SimulationXMLReader factory = new SimulationXMLReader(config);
 			Graph g = builder.buildGraph( factory.doc.getRootElement().getChild("graph" ) );
-			TrafficSimulator sim = new TrafficSimulator( g, factory.buildCars( factory.doc.getRootElement().getChild("cars" ), g ) );
+			TrafficSimulator sim = new TrafficSimulator( g, factory.buildVehicles( factory.doc.getRootElement().getChild("vehicles" ), g ) );
 			return sim;
 		} catch ( ConfigurationException e ) {
 			buildError(e);
@@ -95,13 +95,13 @@ final public class SimulationXMLReader {
 	 * @return
 	 * @throws ConfigurationException 
 	 */
-	private List<Car> buildCars( Element carsNode, Graph g ) throws ConfigurationException {
-		List<Car> cars = builder.buildCars(carsNode);
-		List<Car> l = new ArrayList<Car>();
+	private List<Vehicle> buildVehicles( Element vehiclesNode, Graph g ) throws ConfigurationException {
+		List<Vehicle> vehicles = builder.buildVehicles(vehiclesNode);
+		List<Vehicle> l = new ArrayList<Vehicle>();
 		@SuppressWarnings("unchecked")
-		List<Element> carNodes = carsNode.getChildren( "car" );
-		for ( Element car : carNodes ) {
-			Car c = validateCar(car, cars, g );
+		List<Element> vehicleNodes = vehiclesNode.getChildren( "vehicle" );
+		for ( Element vehicle : vehicleNodes ) {
+			Vehicle c = validateVehicle(vehicle, vehicles, g );
 			if ( c != null ) {
 				l.add(c);
 			}
@@ -110,17 +110,17 @@ final public class SimulationXMLReader {
 	}
 
 	/**
-	 * @param car
+	 * @param vehicle
 	 * @param g
 	 */
-	private Car validateCar(Element car, List<Car> cars, Graph g) {
-		int start = Integer.parseInt(car.getAttributeValue("start"));
-		int end = Integer.parseInt(car.getAttributeValue("end"));
-		int id = Integer.parseInt(car.getAttributeValue("id"));
+	private Vehicle validateVehicle(Element vehicle, List<Vehicle> vehicles, Graph g) {
+		int start = Integer.parseInt(vehicle.getAttributeValue("start"));
+		int end = Integer.parseInt(vehicle.getAttributeValue("end"));
+		int id = Integer.parseInt(vehicle.getAttributeValue("id"));
 
 		List<GraphNode> nodes = g.getNodes();
 		try {
-			Car c = getCar( id, cars );
+			Vehicle c = getVehicle( id, vehicles );
 			GraphNode node = checkEndPoint(nodes, start, id, "Start" );
 			c.setStartNode(node);
 			node = checkEndPoint(nodes, end, id, "End" );
@@ -134,11 +134,11 @@ final public class SimulationXMLReader {
 
 	/**
 	 * @param id
-	 * @param cars
+	 * @param vehicles
 	 * @return
 	 */
-	private Car getCar(int id, List<Car> cars) {
-		for ( Car c : cars ) {
+	private Vehicle getVehicle(int id, List<Vehicle> vehicles) {
+		for ( Vehicle c : vehicles ) {
 			if ( c.getID() == id ) return c;
 		}
 		return null;
@@ -153,7 +153,7 @@ final public class SimulationXMLReader {
 	private GraphNode checkEndPoint(List<GraphNode> nodes, int end, int id, String s) throws ConfigurationException {
 		GraphNode n = isValidNode( end, nodes );
 		if ( n == null ) { 
-			logger.warn( s + " node " + end + " for car " + id + " does not exist");
+			logger.warn( s + " node " + end + " for vehicle " + id + " does not exist");
 			throw new ConfigurationException("");
 		}
 		return n;

@@ -19,11 +19,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import traffic.model.Car;
+import traffic.model.Vehicle;
 import traffic.strategy.SpeedStrategy;
 
 /**
- * A GraphNode is a single node on the graph. It has a queue of cars
+ * A GraphNode is a single node on the graph. It has a queue of vehicles
  * and uses a given speed strategy and delay to determine their movements
  * 
  * @author Jonathan Ramaswamy - ramaswamyj12@gmail.com
@@ -35,8 +35,8 @@ public class GraphNode {
 	private int nodeNum; //The number of this node on the graph
 	private SpeedStrategy ss; //The strategy by which the speed changes
 	private int delay; //The basic delay of this node. To be modified by the speed strategy
-	private NodeVehicleQueue queue; //Holds the cars on this node and deals with the traffic
-	private int capacity; //The number of cars the road can hold before the speed strategy takes effect
+	private NodeVehicleQueue queue; //Holds the vehicles on this node and deals with the traffic
+	private int capacity; //The number of vehicles the road can hold before the speed strategy takes effect
 	
 	/**
 	 * Creates a node with delay 1.
@@ -120,27 +120,27 @@ public class GraphNode {
 	 * TRAFFIC MANAGEMENT METHODS
 	 *************************************************** */
 	/**
-	 * Adds the given car number to the list of cars currently at the node
+	 * Adds the given vehicle number to the list of vehicles currently at the node
 	 * Changes the speed limit at the node
 	 */
-	public void enterNode(Car c) {
+	public void enterNode(Vehicle c) {
 		queue.enqueue(c, getCurrentDelay() );
 	}
 	
 	/**
-	 * Signals to the node that the car will stop at this
+	 * Signals to the node that the vehicle will stop at this
 	 * node and no longer move. This should normally only
-	 * happen when the car is at it's destination or when
+	 * happen when the vehicle is at it's destination or when
 	 * it cannot find a path to follow.
 	 * 
 	 * @param c
 	 */
-	public void park( Car c ) {
+	public void park( Vehicle c ) {
 		queue.park(c);
 	}
 	
 	/**
-	 * Returns the number of turns a car must stay limited at this node
+	 * Returns the number of turns a vehicle must stay limited at this node
 	 */
 	public int getDelay() {
 		return delay;
@@ -162,9 +162,9 @@ public class GraphNode {
 	}
 
 	/**
-	 * Returns the number of cars currently at this node
+	 * Returns the number of vehicles currently at this node
 	 */
-	public int numCarsAtNode() {
+	public int numVehiclesAtNode() {
 		return queue.size();
 	}
 	
@@ -206,9 +206,9 @@ public class GraphNode {
 	 *************************************************** */
 
 	public void takeSimulationStep() {
-		Set<Car> finishedCars = queue.moveCars();
-		if ( finishedCars == null ) return;
-		for ( Car c : finishedCars ) {
+		Set<Vehicle> finishedVehicles = queue.moveVehicles();
+		if ( finishedVehicles == null ) return;
+		for ( Vehicle c : finishedVehicles ) {
 			c.move();
 		}
 	}

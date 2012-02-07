@@ -22,7 +22,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import traffic.model.Car;
+import traffic.model.Vehicle;
 import traffic.strategy.SpeedStrategy;
 
 /**
@@ -110,22 +110,22 @@ public class Graph {
 	}
 	
 	/**
-	 * Adds the car to the given node
+	 * Adds the vehicle to the given node
 	 * @param c
 	 * @param n
 	 */
-	public void addCarAtNode(Car c, int n) {
+	public void addVehicleAtNode(Vehicle c, int n) {
 		GraphNode gn = get(nodes, n);
 		gn.enterNode(c);
 	}
 	
 	/**
-	 * Shifts the given car from the old node to the new one
+	 * Shifts the given vehicle from the old node to the new one
 	 * @param c
 	 * @param o
 	 * @param n
 	 */
-	public void changeCarNode(Car c, int oldNode, int targetNode) {
+	public void changeVehicleNode(Vehicle c, int oldNode, int targetNode) {
 		GraphNode gn = get(nodes,targetNode);
 		//GraphNode go = get(nodes,o);
 		//go.exitNode(c);

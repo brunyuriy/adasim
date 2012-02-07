@@ -15,12 +15,14 @@
 package traffic.strategy;
 
 /**
- * This is the class implementing the ShortestPath
- * strategy we use for the paper.
+ * This is the TrafficLookahead strategy we use in the paper.
  * 
  * @author Jochen Wuttke - wuttkej@gmail.com
  *
  */
-public class ShortestPathCarStrategy extends LookaheadShortestPathCarStrategy {
+public class TrafficLookaheadVehicleStrategy extends LookaheadShortestPathVehicleStrategy {
 
+	public TrafficLookaheadVehicleStrategy() {
+		super(5,1);
+	}
 }

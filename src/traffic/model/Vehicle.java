@@ -15,8 +15,8 @@
 package traffic.model;
 /**
  * 
- * The car object represents a single car on the graph, and holds an info object
- * with important information about itself. The car is given a graph traversal strategy
+ * The vehicle object represents a single vehicle on the graph, and holds an info object
+ * with important information about itself. The vehicle is given a graph traversal strategy
  * that it will use to select its path from start to end
  * 
  * @author Jonathan Ramaswamy - ramaswamyj12@gmail.com
@@ -25,26 +25,26 @@ package traffic.model;
 import org.apache.log4j.Logger;
 
 import traffic.graph.GraphNode;
-import traffic.strategy.CarStrategy;
+import traffic.strategy.VehicleStrategy;
 import traffic.strategy.RandomNoiseStrategy;
 
-public class Car {
+public class Vehicle {
 	
 	private GraphNode start; //Starting position
 	private GraphNode end; //Destination position
 	private GraphNode currentNode; //Current position
-	private int id; //This car's number in the list of cars
-	private boolean finish; //True if the car has reached its destination
-	protected CarInfo info; //Info for the car
-	private CarStrategy cs; //Strategy the car uses to traverse the graph
+	private int id; //This vehicle's number in the list of vehicles
+	private boolean finish; //True if the vehicle has reached its destination
+	protected VehicleInfo info; //Info for the vehicle
+	private VehicleStrategy cs; //Strategy the vehicle uses to traverse the graph
 	
-	private static Logger logger = Logger.getLogger(Car.class);
+	private static Logger logger = Logger.getLogger(Vehicle.class);
 	
-	protected Car( int id ) {
-		info = new CarInfo();
+	protected Vehicle( int id ) {
+		info = new VehicleInfo();
 	}
 	
-	public Car(GraphNode start, GraphNode end, CarStrategy strat, int num) {
+	public Vehicle(GraphNode start, GraphNode end, VehicleStrategy strat, int num) {
 		setStartNode(start);
 		setEndNode(end);
 		id = num;
@@ -53,7 +53,7 @@ public class Car {
 	}
 	
 	/**
-	 * @return The starting node for the car
+	 * @return The starting node for the vehicle
 	 */
 	public GraphNode getStartNode() {
 		return start;
@@ -70,7 +70,7 @@ public class Car {
 	}
 
 	/**
-	 * @return The ending node for the car
+	 * @return The ending node for the vehicle
 	 */
 	public GraphNode getEndNode() {
 		return end;
@@ -86,7 +86,7 @@ public class Car {
 	}
 
 	/**
-	 * @return The current node of the car
+	 * @return The current node of the vehicle
 	 */
 	public GraphNode getCurrentPosition() {
 		return currentNode;
@@ -100,21 +100,21 @@ public class Car {
 	}
 
 	/**
-	 * @return The number of this car
+	 * @return The number of this vehicle
 	 */
 	public int getID() {
 		return id;
 	}
 
 	/**
-	 * @return True if the car is at its ending node, false otherwise
+	 * @return True if the vehicle is at its ending node, false otherwise
 	 */
 	public boolean checkFinish() {
 		return finish;
 	}
 
 	/**
-	 * Sets the finish variable to true if the car's current position
+	 * Sets the finish variable to true if the vehicle's current position
 	 * is the same as its ending position
 	 */
 	public void setFinish() {
@@ -128,7 +128,7 @@ public class Car {
 	/**
 	 * @return the cs
 	 */
-	public CarStrategy getStrategy() {
+	public VehicleStrategy getStrategy() {
 		return cs;
 	}
 	
@@ -139,12 +139,12 @@ public class Car {
 	/**
 	 * @param cs the cs to set
 	 */
-	public void setStrategy(CarStrategy cs) {
+	public void setStrategy(VehicleStrategy cs) {
 		this.cs = cs;
 		if ( cs != null ) {
 			cs.setStartNode(start);
 			cs.setEndNode(end);
-			cs.setCarId(id);
+			cs.setVehicleId(id);
 		}
 	}
 
@@ -157,27 +157,27 @@ public class Car {
 	}
 
 	/**
-	 * Signals to the car that it should move to the next node or park.
+	 * Signals to the vehicle that it should move to the next node or park.
 	 */
 	public void move() {
 		GraphNode nextNode = getNextNode();
 		if ( nextNode == null ) {
-			//this happens if there is no path, or the car is at its goal
+			//this happens if there is no path, or the vehicle is at its goal
 			getCurrentPosition().park(this);
 			setFinish();
-			logger.info( "STOP: " + carPosition() );
+			logger.info( "STOP: " + vehiclePosition() );
 		} else {
-			logger.info( "MOVE: " + carPosition() + " To:" + nextNode.getID() );
+			logger.info( "MOVE: " + vehiclePosition() + " To:" + nextNode.getID() );
 			setCurrentPosition(nextNode);
 			nextNode.enterNode(this);
 		}
 	}
 	
 	/**
-	 * @return the position of the car as a string
+	 * @return the position of the vehicle as a string
 	 */
-	private String carPosition() {
-		StringBuffer buf = new StringBuffer( "Car: ");
+	private String vehiclePosition() {
+		StringBuffer buf = new StringBuffer( "Vehicle: ");
 		buf.append( getID() );
 		buf.append(" At: " );
 		buf.append( getCurrentPosition().getID() );
@@ -188,7 +188,7 @@ public class Car {
 	/**
 	 * @return the info
 	 */
-	public CarInfo getInfo() {
+	public VehicleInfo getInfo() {
 		return info;
 	}
 

@@ -18,9 +18,9 @@ package traffic.strategy;
  * @author Jochen Wuttke - wuttkej@gmail.com
  *
  */
-public class AdaptiveCarStrategy extends LookaheadShortestPathCarStrategy {
+public class AlwaysRecomputeVehicleStrategy extends LookaheadShortestPathVehicleStrategy {
 
-	public AdaptiveCarStrategy() {
-		super(5);
+	public AlwaysRecomputeVehicleStrategy() {
+		super(5,1);
 	}
 }

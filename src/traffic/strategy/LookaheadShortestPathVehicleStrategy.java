@@ -23,16 +23,16 @@ import org.apache.log4j.Logger;
 import traffic.graph.GraphNode;
 
 /**
- * This car strategy is the base implementation for all strategies 
+ * This vehicle strategy is the base implementation for all strategies 
  * using Dijkstras shortest path algorithm on node weights and 
  * traffic delays. 
  * 
  * @author Jochen Wuttke - wuttkej@gmail.com
  *
  */
-public class LookaheadShortestPathCarStrategy extends AbstractCarStrategy {
+public class LookaheadShortestPathVehicleStrategy extends AbstractVehicleStrategy {
 	
-	private final static Logger logger = Logger.getLogger(LookaheadShortestPathCarStrategy.class);
+	private final static Logger logger = Logger.getLogger(LookaheadShortestPathVehicleStrategy.class);
 	
 	private final int lookahead;
 	private final int recompute;
@@ -47,7 +47,7 @@ public class LookaheadShortestPathCarStrategy extends AbstractCarStrategy {
 	 * unmodified weight of each node, and for this reason will never recompute 
 	 * the path.
 	 */
-	public LookaheadShortestPathCarStrategy() {
+	public LookaheadShortestPathVehicleStrategy() {
 		this(0);
 	}
 
@@ -62,7 +62,7 @@ public class LookaheadShortestPathCarStrategy extends AbstractCarStrategy {
 	 * 
 	 * @param lookahead
 	 */
-	public LookaheadShortestPathCarStrategy( int lookahead ){
+	public LookaheadShortestPathVehicleStrategy( int lookahead ){
 		this(lookahead, lookahead );
 	}
 
@@ -77,7 +77,7 @@ public class LookaheadShortestPathCarStrategy extends AbstractCarStrategy {
 	 * 
 	 * @param lookahead
 	 */
-	public LookaheadShortestPathCarStrategy( int lookahead, int recomp ){
+	public LookaheadShortestPathVehicleStrategy( int lookahead, int recomp ){
 		this.lookahead = lookahead;
 		this.recompute = recomp;
 		this.steps = 0;
@@ -195,7 +195,7 @@ public class LookaheadShortestPathCarStrategy extends AbstractCarStrategy {
 	}
 
 	/* (non-Javadoc)
-	 * @see traffic.strategy.CarStrategy#getNextNode()
+	 * @see traffic.strategy.VehicleStrategy#getNextNode()
 	 */
 	@Override
 	public GraphNode getNextNode() {
@@ -232,8 +232,8 @@ public class LookaheadShortestPathCarStrategy extends AbstractCarStrategy {
 	}
 
 	private String pathLogMessage() {
-		StringBuffer buf = new StringBuffer( "PATH: Car: " );
-		buf.append( carID );
+		StringBuffer buf = new StringBuffer( "PATH: Vehicle: " );
+		buf.append( vehicleID );
 		buf.append( " From: " );
 		buf.append( source.getID() );
 		buf.append( " To: " );

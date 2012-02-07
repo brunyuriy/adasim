@@ -21,15 +21,15 @@ import java.util.Random;
 import traffic.graph.GraphNode;
 
 /**
- * This class returns a random path for the car to follow
+ * This class returns a random path for the vehicle to follow
  * No optimizations for shortest path are made
  * 
  * @author Jonathan Ramaswamy - ramaswamyj12@gmail.com
  */
 
-public class RandomCarStrategy extends AbstractCarStrategy {
+public class RandomVehicleStrategy extends AbstractVehicleStrategy {
 
-	public RandomCarStrategy(){}	
+	public RandomVehicleStrategy(){}	
 	
 	/**
 	 * Picks random neighbors to move towards until the destination is reached
@@ -49,7 +49,7 @@ public class RandomCarStrategy extends AbstractCarStrategy {
 	}
 
 	/* (non-Javadoc)
-	 * @see traffic.strategy.CarStrategy#getNextNode()
+	 * @see traffic.strategy.VehicleStrategy#getNextNode()
 	 */
 	@Override
 	public GraphNode getNextNode() {

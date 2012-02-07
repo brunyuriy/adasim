@@ -18,11 +18,11 @@ package traffic.model;
  * @author Jochen Wuttke - wuttkej@gmail.com
  *
  */
-class InternalCar extends Car {
+class InternalVehicle extends Vehicle {
 	
 	private int start, end;
 	
-	InternalCar( int id, int start, int end ) {
+	InternalVehicle( int id, int start, int end ) {
 		super( id );
 		this.start = start;
 		this.end = end;

@@ -22,13 +22,13 @@ import traffic.graph.GraphNode;
 /**
  * This interface defines routing strategies. Given a graph, start and end node,
  * a routing strategy should compute a path from start to end and upon request
- * (via <code>getNextNode()</code>) should return the next node the car
+ * (via <code>getNextNode()</code>) should return the next node the vehicle
  * has to move to to follow that path.
  * 
  * @author Jochen Wuttke - wuttkej@gmail.com
  *
  */
-public interface CarStrategy {
+public interface VehicleStrategy {
 	
 	/**
 	 * This is intended for testing only, as it circumvents the control
@@ -37,7 +37,7 @@ public interface CarStrategy {
 	 * @param to
 	 * @return
 	 */
-	public List<GraphNode> getPath(GraphNode from, GraphNode to); //Creates the path for the car to follow
+	public List<GraphNode> getPath(GraphNode from, GraphNode to); //Creates the path for the vehicle to follow
 
 	/**
 	 * @return The next node according to the routing strategy. May be <code>null</code> 
@@ -55,6 +55,6 @@ public interface CarStrategy {
 	
 	public void setEndNode( GraphNode end );
 	
-	public void setCarId( int id );
+	public void setVehicleId( int id );
 
 }

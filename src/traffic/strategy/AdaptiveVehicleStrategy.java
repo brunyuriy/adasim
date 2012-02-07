@@ -9,20 +9,18 @@
  *    Jochen Wuttke (wuttkej@gmail.com) - initial API and implementation
  ********************************************************************************
  *
- * Created: Jan 24, 2012
+ * Created: Dec 16, 2011
  */
 
 package traffic.strategy;
 
 /**
- * This is the TrafficLookahead strategy we use in the paper.
- * 
  * @author Jochen Wuttke - wuttkej@gmail.com
  *
  */
-public class TrafficLookaheadCarStrategy extends LookaheadShortestPathCarStrategy {
+public class AdaptiveVehicleStrategy extends LookaheadShortestPathVehicleStrategy {
 
-	public TrafficLookaheadCarStrategy() {
-		super(5,1);
+	public AdaptiveVehicleStrategy() {
+		super(5);
 	}
 }
