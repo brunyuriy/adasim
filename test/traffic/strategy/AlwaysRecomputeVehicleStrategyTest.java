@@ -32,7 +32,7 @@ import traffic.model.TrafficSimulator;
  * @author Jochen Wuttke - wuttkej@gmail.com
  *
  */
-public class AlwaysRecomputeVehicleStrategyTest {
+public class AlwaysRecomputeCarStrategyTest {
 	
 	private VehicleStrategy strategy = new AlwaysRecomputeVehicleStrategy();
 

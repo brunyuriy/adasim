@@ -1,9 +1,23 @@
 /*******************************************************************************
- * Copyright (c) 2011 - Jochen Wuttke.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (C) 2011 - 2012 Jochen Wuttke, Jonathan Ramaswamy
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to deal in
+ * the Software without restriction, including without limitation the rights to
+ * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+ * of the Software, and to permit persons to whom the Software is furnished to do
+ * so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  *
  * Contributors:
  *    Jochen Wuttke (wuttkej@gmail.com) - initial API and implementation
@@ -84,11 +98,11 @@ public class SimulationXMLWriter {
 	 * @param vehicles
 	 * @return
 	 */
-	private void writeVehicles(Element doc, List<Vehicle> vehicles) {
-		Element c = factory.element( "vehicles" );
+	private void writeCars(Element doc, List<Vehicle> cars) {
+		Element c = factory.element( "cars" );
 		c.setAttribute( factory.attribute( "default_strategy", DEFAULT_CAR_STRATEGY ) );
-		for ( Vehicle vehicle : vehicles ) {
-			writeVehicle( c, vehicle );
+		for ( Vehicle car : cars ) {
+			writeCar( c, car );
 		}
 		doc.addContent(c);
 	}
@@ -96,13 +110,13 @@ public class SimulationXMLWriter {
 	 * @param c
 	 * @param vehicle
 	 */
-	private void writeVehicle(Element vehicles, Vehicle vehicle) {
-		Element c = factory.element( "vehicle" );
-		c.setAttribute( factory.attribute( "start", "" + vehicle.getStartNode().getID() ) );
-		c.setAttribute( factory.attribute( "end", "" + vehicle.getEndNode().getID() ) );
-		c.setAttribute( factory.attribute( "id", "" + vehicle.getID() ) );
-		c.setAttribute( factory.attribute( "strategy", "" + vehicle.getStrategy().getClass().getCanonicalName() ) );
-		vehicles.addContent(c);
+	private void writeCar(Element cars, Vehicle car) {
+		Element c = factory.element( "car" );
+		c.setAttribute( factory.attribute( "start", "" + car.getStartNode().getID() ) );
+		c.setAttribute( factory.attribute( "end", "" + car.getEndNode().getID() ) );
+		c.setAttribute( factory.attribute( "id", "" + car.getID() ) );
+		c.setAttribute( factory.attribute( "strategy", "" + car.getStrategy().getClass().getCanonicalName() ) );
+		cars.addContent(c);
 	}
 
 
