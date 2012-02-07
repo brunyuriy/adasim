@@ -26,7 +26,6 @@ import org.apache.log4j.Logger;
 
 import traffic.graph.GraphNode;
 import traffic.strategy.CarStrategy;
-import traffic.strategy.RandomNoiseStrategy;
 
 public class Car {
 	
