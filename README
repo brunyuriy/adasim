@@ -1,0 +1,42 @@
+Building and running Adasim
+---------------------------
+
+Building and running Adasim is simple. There are two
+basic ways to compile and run Adasim. Either use Ant,
+or create an Eclipse workspace and compile through Eclipse.
+Below are instructions how to achieve both.
+
+Compiling with Ant
+------------------
+
+The ant build file supports the following targets:
+
+compile        compile the adasim core
+test-compile   compile the adasim test suite
+test           run the adasim test suite
+jar            build an executable JAR file containing only the 
+               adasim core
+jar-deps       build an executable JAR file that includes
+               all dependencies and should run without having 
+               to set the classpath
+               
+The easiest way to compile and run Adasim is to use
+ant jar-libs 
+to compile and package adasim. Then run
+java -jar adasim.jar -I config.xml
+where 'config.xml' must be a configuration file.
+For furhter details on running Adasim, check
+the Wiki at 
+https://code.google.com/p/adasim/wiki/Inst050
+
+
+Compiling with Eclipse
+----------------------
+
+The source checkout already contains a project file for
+Eclipse. Checking out through the MercurialEclipse 
+plugin should set you up.
+If it doesn't, import your checkout into your Eclipse 
+workspace, add all the JARs in the 'lib' directory
+to the classpath, define 'src' and 'test' as source
+directories and you are good to go.
