@@ -35,7 +35,7 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import traffic.model.Car;
+import traffic.model.Vehicle;
 
 /**
  * The {@link NodeVehicleQueue} handles traffic on a single node.
@@ -53,15 +53,15 @@ final class NodeVehicleQueue {
 	 * ID for the special queue tracking parked/stopped vehicles.
 	 */
 	private final static int PARKED = -1;
-	private Map<Integer, Set<Car>> queue;
+	private Map<Integer, Set<Vehicle>> queue;
 	
 	/**
 	 * Initializes an empty queue.
 	 */
 	public NodeVehicleQueue() {
-		queue = new HashMap<Integer, Set<Car>>();
-		queue.put( PARKED, new HashSet<Car>() );
-		queue.put( 0, new HashSet<Car>() );
+		queue = new HashMap<Integer, Set<Vehicle>>();
+		queue.put( PARKED, new HashSet<Vehicle>() );
+		queue.put( 0, new HashSet<Vehicle>() );
 	}
 	
 	/**
@@ -69,7 +69,7 @@ final class NodeVehicleQueue {
 	 * @param c
 	 * @param delay
 	 */
-	void enqueue( Car c, int delay ) {
+	void enqueue( Vehicle c, int delay ) {
 		assert delay >= 0;
 		ensureBucketExists( delay );
 		queue.get( delay ).add(c);
@@ -80,7 +80,7 @@ final class NodeVehicleQueue {
 	 */
 	private void ensureBucketExists(int delay) {
 		if ( queue.get(delay) == null ) {
-			queue.put(delay, new HashSet<Car>() );
+			queue.put(delay, new HashSet<Vehicle>() );
 		}
 	}
 
@@ -88,12 +88,12 @@ final class NodeVehicleQueue {
 	 * Moves all cars one step ahead
 	 * @return the list of cars that have reached the tip of the queue
 	 */
-	Set<Car> moveCars() {
-		Set<Car> fs = queue.remove(0);
+	Set<Vehicle> moveCars() {
+		Set<Vehicle> fs = queue.remove(0);
 		SortedSet<Integer> keys = new TreeSet<Integer>( queue.keySet() );
 		for ( Integer key : keys ) {
 			if ( key == PARKED ) continue;	//default cases handled separately
-			Set<Car> c = queue.remove(key);
+			Set<Vehicle> c = queue.remove(key);
 			queue.put(key-1, c );
 		}
 		return fs;
@@ -103,7 +103,7 @@ final class NodeVehicleQueue {
 	 * Removes <code>c</code> from the active list of vehicles.
 	 * @param c
 	 */
-	void park( Car c ) {
+	void park( Vehicle c ) {
 		removeFromQueue( c );
 		queue.get( PARKED ).add( c );
 	}
@@ -111,7 +111,7 @@ final class NodeVehicleQueue {
 	/**
 	 * @param c
 	 */
-	private void removeFromQueue(Car c) {
+	private void removeFromQueue(Vehicle c) {
 		for ( Integer key : queue.keySet() ) {
 			if ( key == PARKED ) continue;
 			if ( queue.get(key).remove(c) ) return;	//short circuit

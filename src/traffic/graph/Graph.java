@@ -36,7 +36,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import traffic.model.Car;
+import traffic.model.Vehicle;
 import traffic.strategy.SpeedStrategy;
 
 /**
@@ -128,7 +128,7 @@ public class Graph {
 	 * @param c
 	 * @param n
 	 */
-	public void addCarAtNode(Car c, int n) {
+	public void addCarAtNode(Vehicle c, int n) {
 		GraphNode gn = get(nodes, n);
 		gn.enterNode(c);
 	}
@@ -139,7 +139,7 @@ public class Graph {
 	 * @param o
 	 * @param n
 	 */
-	public void changeCarNode(Car c, int oldNode, int targetNode) {
+	public void changeCarNode(Vehicle c, int oldNode, int targetNode) {
 		GraphNode gn = get(nodes,targetNode);
 		//GraphNode go = get(nodes,o);
 		//go.exitNode(c);

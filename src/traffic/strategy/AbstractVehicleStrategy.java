@@ -23,39 +23,49 @@
  *    Jochen Wuttke (wuttkej@gmail.com) - initial API and implementation
  ********************************************************************************
  *
- * Created: Jan 18, 2012
+ * Created: Dec 12, 2011
  */
 
-package traffic.model;
+package traffic.strategy;
+
+import traffic.graph.Graph;
+import traffic.graph.GraphNode;
 
 /**
  * @author Jochen Wuttke - wuttkej@gmail.com
  *
  */
-class InternalCar extends Vehicle {
+public abstract class AbstractVehicleStrategy implements VehicleStrategy {
 	
-	private int start, end;
-	
-	InternalCar( int id, int start, int end ) {
-		super( id );
-		this.start = start;
-		this.end = end;
+	protected Graph graph;
+	protected GraphNode source, target;
+	protected int carID;
+
+	/* (non-Javadoc)
+	 * @see traffic.strategy.CarStrategy#setGraph(traffic.graph.Graph)
+	 */
+	@Override
+	public void setGraph(Graph g) {
+		this.graph = g;
 	}
 
-	/**
-	 * @return the start
-	 */
-	int getStart() {
-		return start;
-	}
-
-	/**
-	 * @return the end
-	 */
-	int getEnd() {
-		return end;
+	@Override
+	public void setStartNode( GraphNode start ) {
+		source = start;
+	}	
+	
+	@Override
+	public void setEndNode( GraphNode end ) {
+		target = end;
 	}
 	
+	/* (non-Javadoc)
+	 * @see traffic.strategy.CarStrategy#setCarId(int)
+	 */
+	@Override
+	public void setCarId(int id) {
+		this.carID = id;
+	}
 	
 
 }

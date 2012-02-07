@@ -33,7 +33,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import traffic.model.Car;
+import traffic.model.Vehicle;
 import traffic.strategy.SpeedStrategy;
 
 /**
@@ -137,7 +137,7 @@ public class GraphNode {
 	 * Adds the given car number to the list of cars currently at the node
 	 * Changes the speed limit at the node
 	 */
-	public void enterNode(Car c) {
+	public void enterNode(Vehicle c) {
 		queue.enqueue(c, getCurrentDelay() );
 	}
 	
@@ -149,7 +149,7 @@ public class GraphNode {
 	 * 
 	 * @param c
 	 */
-	public void park( Car c ) {
+	public void park( Vehicle c ) {
 		queue.park(c);
 	}
 	
@@ -220,9 +220,9 @@ public class GraphNode {
 	 *************************************************** */
 
 	public void takeSimulationStep() {
-		Set<Car> finishedCars = queue.moveCars();
+		Set<Vehicle> finishedCars = queue.moveCars();
 		if ( finishedCars == null ) return;
-		for ( Car c : finishedCars ) {
+		for ( Vehicle c : finishedCars ) {
 			c.move();
 		}
 	}

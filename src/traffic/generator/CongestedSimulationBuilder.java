@@ -35,10 +35,10 @@ import java.util.Random;
 
 import traffic.graph.Graph;
 import traffic.graph.GraphNode;
-import traffic.model.Car;
+import traffic.model.Vehicle;
 import traffic.model.ConfigurationException;
 import traffic.model.TrafficSimulator;
-import traffic.strategy.CarStrategy;
+import traffic.strategy.VehicleStrategy;
 import traffic.strategy.LinearSpeedStrategy;
 import traffic.strategy.SpeedStrategy;
 
@@ -68,8 +68,8 @@ public class CongestedSimulationBuilder {
 	 * @return
 	 * @throws ConfigurationException 
 	 */
-	private List<Car> buildCars(ConfigurationOptions opts, Graph g) throws ConfigurationException {
-		List<Car> cars = new ArrayList<Car>();
+	private List<Vehicle> buildCars(ConfigurationOptions opts, Graph g) throws ConfigurationException {
+		List<Vehicle> cars = new ArrayList<Vehicle>();
 		List<GraphNode> nodes = g.getNodes();
 		GraphNode start = randomNode( nodes );
 		GraphNode end;
@@ -89,10 +89,10 @@ public class CongestedSimulationBuilder {
 	 * @return
 	 * @throws ConfigurationException 
 	 */
-	private Car buildCar(int i, ConfigurationOptions opts, Graph g, GraphNode start, GraphNode end ) throws ConfigurationException {
-		CarStrategy cs = randomCarStrategy( opts.getStrategies() );
+	private Vehicle buildCar(int i, ConfigurationOptions opts, Graph g, GraphNode start, GraphNode end ) throws ConfigurationException {
+		VehicleStrategy cs = randomCarStrategy( opts.getStrategies() );
 		cs.setGraph(g);		
-		return new Car( start, end, cs, i);
+		return new Vehicle( start, end, cs, i);
 	}
 
 	/**
@@ -109,12 +109,12 @@ public class CongestedSimulationBuilder {
 	 * @return
 	 * @throws ConfigurationException 
 	 */
-	private CarStrategy randomCarStrategy(List<String> strategies) throws ConfigurationException {
+	private VehicleStrategy randomCarStrategy(List<String> strategies) throws ConfigurationException {
 		String s = strategies.get( random.nextInt( strategies.size() ) );
 		try {
 			@SuppressWarnings("rawtypes")
 			Class c = Class.forName( s );
-			return (CarStrategy) c.newInstance();
+			return (VehicleStrategy) c.newInstance();
 		} catch (Exception e) {
 			throw new ConfigurationException(e);
 		} 	}

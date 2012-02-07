@@ -36,7 +36,7 @@ import org.jdom.Element;
 
 import traffic.graph.Graph;
 import traffic.graph.GraphNode;
-import traffic.strategy.CarStrategy;
+import traffic.strategy.VehicleStrategy;
 import traffic.strategy.SpeedStrategy;
 
 /**
@@ -101,7 +101,7 @@ public class SimulationXMLBuilder {
 	}
 
 	/**
-	 * Constructs a list of {@link Car}s from the <code>&lt;cars&gt;</code> element.
+	 * Constructs a list of {@link Vehicle}s from the <code>&lt;cars&gt;</code> element.
 	 * It will also assign default values to cars that don't declare them explicitly.
 	 * <p>
 	 * Not start/end point validation will occur, as these are not known at this stage.
@@ -109,22 +109,22 @@ public class SimulationXMLBuilder {
 	 * @return
 	 * @throws ConfigurationException
 	 */
-	public List<Car> buildCars( Element carsNode ) throws ConfigurationException {
+	public List<Vehicle> buildCars( Element carsNode ) throws ConfigurationException {
 		@SuppressWarnings("unchecked")
 		List<Element> carNodes = carsNode.getChildren("car");
-		CarStrategy cs = null;
+		VehicleStrategy cs = null;
 		try {
 			Class<?> cls = Class.forName(carsNode.getAttributeValue("default_strategy"));
-			cs = (CarStrategy) cls.newInstance();
+			cs = (VehicleStrategy) cls.newInstance();
 			//TODO: assign this somewhere
 			//cs.setGraph(g);
 		} catch (Exception e ) {
 			throw new ConfigurationException("Invalid default car strategy: " + carsNode.getAttributeValue("default_strategy"));
 		}
-		List<Car> cars = new ArrayList<Car>();
+		List<Vehicle> cars = new ArrayList<Vehicle>();
 		for ( Element car : carNodes ) {
 			//Car c = buildCar( car, cs, g );
-			Car c = buildCar( car );
+			Vehicle c = buildCar( car );
 			if ( c != null ) cars.add( assignDefaultCarValues( c, cs ) );
 		}
 		return cars;	
@@ -135,7 +135,7 @@ public class SimulationXMLBuilder {
 	 * @param cs
 	 * @return
 	 */
-	private Car assignDefaultCarValues(Car c, CarStrategy cs) {
+	private Vehicle assignDefaultCarValues(Vehicle c, VehicleStrategy cs) {
 		if ( c.getStrategy() == null ) {
 			c.setStrategy(cs);
 		}
@@ -143,7 +143,7 @@ public class SimulationXMLBuilder {
 	}
 
 	/**
-	 * Builds a {@link Car} from the given <code>&lt;car&gt;</code> element.
+	 * Builds a {@link Vehicle} from the given <code>&lt;car&gt;</code> element.
 	 * <p>
 	 * No default values are assigned, as these are not known here. No start/end 
 	 * validation is performed, as the graph is not known at this stage.
@@ -151,7 +151,7 @@ public class SimulationXMLBuilder {
 	 * @param carNode
 	 * @return
 	 */
-	public Car buildCar( Element carNode ) {
+	public Vehicle buildCar( Element carNode ) {
 //		int start = Integer.parseInt(carNode.getAttributeValue("start"));
 //		int end = Integer.parseInt(carNode.getAttributeValue("end"));
 		int id = Integer.parseInt(carNode.getAttributeValue("id"));
@@ -165,12 +165,12 @@ public class SimulationXMLBuilder {
 		//			return null;
 		//		}
 		//CarStrategy cs = defaultStrategy;
-		CarStrategy cs = null;
+		VehicleStrategy cs = null;
 		if(carNode.getAttributeValue("strategy") != null) {
 			String s = null;
 			try {
 				s = carNode.getAttributeValue("strategy");
-				cs = (CarStrategy) Class.forName(s).newInstance();
+				cs = (VehicleStrategy) Class.forName(s).newInstance();
 
 				//TODO: link the graph somewhere else
 				//cs.setGraph(g);
@@ -178,7 +178,7 @@ public class SimulationXMLBuilder {
 				logger.warn( "CarStrategy " + s + " not found. Using default." );
 			}
 		}
-		return new Car(null, null, cs, id );
+		return new Vehicle(null, null, cs, id );
 	}
 
 	/**

@@ -18,7 +18,7 @@ package traffic.graph;
 import org.junit.Before;
 import org.junit.Test;
 
-import traffic.model.Car;
+import traffic.model.Vehicle;
 import traffic.strategy.LinearSpeedStrategy;
 import static org.junit.Assert.*;
 
@@ -38,11 +38,11 @@ public class GraphNodeTest {
 		int delay = 3;
 		int capacity = 5;
 		node = new GraphNode(0, new LinearSpeedStrategy(), delay, capacity);
-		Car c = new Car(null, null, null, 0);
+		Vehicle c = new Vehicle(null, null, null, 0);
 		node.enterNode(c);
-		c = new Car(null, null, null, 1);
+		c = new Vehicle(null, null, null, 1);
 		node.enterNode(c);
-		c = new Car(null, null, null, 2);
+		c = new Vehicle(null, null, null, 2);
 		node.enterNode(c);
 	}
 	
@@ -56,7 +56,7 @@ public class GraphNodeTest {
 		assertEquals(node.getDelay(), 3);
 		assertEquals(node.getCurrentDelay(), 3);
 		//Number > Capacity
-		Car c = new Car(null, null, null, 3);
+		Vehicle c = new Vehicle(null, null, null, 3);
 		node.enterNode(c);
 		assertEquals(node.getDelay(), 3);
 		assertEquals(node.getCurrentDelay(), 4);
