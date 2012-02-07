@@ -25,7 +25,7 @@ import static org.junit.Assert.*;
 
 import traffic.graph.Graph;
 import traffic.graph.GraphNode;
-import traffic.model.Car;
+import traffic.model.Vehicle;
 import traffic.model.ConfigurationException;
 import traffic.model.SimulationXMLReader;
 
@@ -36,11 +36,11 @@ import traffic.model.SimulationXMLReader;
  */
 public class LookaheadShortestPathCarStrategyTest {
 	
-	private LookaheadShortestPathCarStrategy strategy;
+	private LookaheadShortestPathVehicleStrategy strategy;
 	
 	@Before
 	public void setUp() {
-		strategy = new LookaheadShortestPathCarStrategy(0);
+		strategy = new LookaheadShortestPathVehicleStrategy(0);
 	}
 	
 	@Test
@@ -93,7 +93,7 @@ public class LookaheadShortestPathCarStrategyTest {
 	@Test
 	public void findShortestPathFromStartWithWeightsLookahead1() throws JDOMException, IOException, ConfigurationException {
 		Graph g = SimulationXMLReader.buildSimulator( new File("resources/test/shortest-path-test-weights.xml") ).getGraph();
-		strategy = new LookaheadShortestPathCarStrategy(1);
+		strategy = new LookaheadShortestPathVehicleStrategy(1);
 		strategy.setGraph(g);
 		List<GraphNode> path = strategy.getPath(g.getNode(6), g.getNode(4));
 		assertNotNull( "No path found", path );
@@ -105,7 +105,7 @@ public class LookaheadShortestPathCarStrategyTest {
 	@Test
 	public void findShortestPathFromStartWithWeightsLookahead2() throws JDOMException, IOException, ConfigurationException {
 		Graph g = SimulationXMLReader.buildSimulator( new File("resources/test/shortest-path-test-weights.xml") ).getGraph();
-		strategy = new LookaheadShortestPathCarStrategy(2);
+		strategy = new LookaheadShortestPathVehicleStrategy(2);
 		strategy.setGraph(g);
 		List<GraphNode> path = strategy.getPath(g.getNode(6), g.getNode(4));
 		assertNotNull( "No path found", path );
@@ -117,7 +117,7 @@ public class LookaheadShortestPathCarStrategyTest {
 	@Test
 	public void recomputeShortestPathFromStartWithWeightsLookahead1() throws JDOMException, IOException, ConfigurationException {
 		Graph g = SimulationXMLReader.buildSimulator( new File("resources/test/lookahead-recompute-test.xml") ).getGraph();
-		strategy = new LookaheadShortestPathCarStrategy(1);	//update after every step
+		strategy = new LookaheadShortestPathVehicleStrategy(1);	//update after every step
 		strategy.setGraph(g);
 		strategy.setStartNode(g.getNode(0));
 		strategy.setEndNode(g.getNode(4));
@@ -129,8 +129,8 @@ public class LookaheadShortestPathCarStrategyTest {
 		assertEquals( 4, firstPath.get(3).getID() );
 		
 		//now we load the graph with some cars to force a new path, these will make the firstPath too expensive
-		g.addCarAtNode( new Car( g.getNode(1), null, new LookaheadShortestPathCarStrategy(), 42 ), 1 );
-		g.addCarAtNode( new Car( g.getNode(1), null, new LookaheadShortestPathCarStrategy(), 43 ), 1 );
+		g.addCarAtNode( new Vehicle( g.getNode(1), null, new LookaheadShortestPathVehicleStrategy(), 42 ), 1 );
+		g.addCarAtNode( new Vehicle( g.getNode(1), null, new LookaheadShortestPathVehicleStrategy(), 43 ), 1 );
 		
 		GraphNode next = strategy.getNextNode();	//returns the first node of the first path and updates
 		assertEquals( 6, next.getID() );	//

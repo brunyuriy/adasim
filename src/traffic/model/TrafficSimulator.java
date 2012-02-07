@@ -48,11 +48,11 @@ public class TrafficSimulator{
 	private static Logger logger = Logger.getLogger(TrafficSimulator.class);
 
 		
-	private List<Car> cars; //List of cars in the simulation
+	private List<Vehicle> cars; //List of cars in the simulation
 	private Graph graph; //The graph the cars run on
 	private long cycle = 1;
 	
-	public TrafficSimulator( Graph g, List<Car> c ) {
+	public TrafficSimulator( Graph g, List<Vehicle> c ) {
 		if(g == null || c == null) {
 			throw new IllegalArgumentException();
 		}
@@ -63,7 +63,7 @@ public class TrafficSimulator{
 	
 	//Uses the previously specified algorithm to create paths for each car on the graph
 	private void addCarsToGraph() {
-		for(Car c: cars) {
+		for(Vehicle c: cars) {
 			graph.addCarAtNode(c, c.getCurrentNode());
 		}
 	}
@@ -82,7 +82,7 @@ public class TrafficSimulator{
 	
 	//Checks to see if all cars have finished moving, returns true if so
 	private boolean checkAllFinish() {
-		for(Car c: cars) {
+		for(Vehicle c: cars) {
 			if(!c.checkFinish()) {
 				return false;
 			}
@@ -93,7 +93,7 @@ public class TrafficSimulator{
 	/**
 	 * @return the cars
 	 */
-	public List<Car> getCars() {
+	public List<Vehicle> getCars() {
 		return cars;
 	}
 	
@@ -102,8 +102,8 @@ public class TrafficSimulator{
 	 * @param id
 	 * @return
 	 */
-	public Car getCar( int id ) {
-		for ( Car c : cars ) {
+	public Vehicle getCar( int id ) {
+		for ( Vehicle c : cars ) {
 			if ( c.getID() == id ) 
 				return c;
 		}

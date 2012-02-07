@@ -41,14 +41,14 @@ import org.jdom.output.XMLOutputter;
 
 import traffic.graph.Graph;
 import traffic.graph.GraphNode;
-import traffic.model.Car;
+import traffic.model.Vehicle;
 import traffic.model.TrafficSimulator;
-import traffic.strategy.CarStrategy;
+import traffic.strategy.VehicleStrategy;
 
 /**
  * This class takes a {@link TrafficSimulator} and some additional options
  * and produces an XML file that contains the descirption of the
- * {@link TrafficSimulator}. If optional fields like {@link CarStrategy} are not
+ * {@link TrafficSimulator}. If optional fields like {@link VehicleStrategy} are not
  * assigned for some objects, this write will create an explicit field for them.
  * 
  * @author Jochen Wuttke - wuttkej@gmail.com
@@ -98,10 +98,10 @@ public class SimulationXMLWriter {
 	 * @param cars
 	 * @return
 	 */
-	private void writeCars(Element doc, List<Car> cars) {
+	private void writeCars(Element doc, List<Vehicle> cars) {
 		Element c = factory.element( "cars" );
 		c.setAttribute( factory.attribute( "default_strategy", DEFAULT_CAR_STRATEGY ) );
-		for ( Car car : cars ) {
+		for ( Vehicle car : cars ) {
 			writeCar( c, car );
 		}
 		doc.addContent(c);
@@ -110,7 +110,7 @@ public class SimulationXMLWriter {
 	 * @param c
 	 * @param car
 	 */
-	private void writeCar(Element cars, Car car) {
+	private void writeCar(Element cars, Vehicle car) {
 		Element c = factory.element( "car" );
 		c.setAttribute( factory.attribute( "start", "" + car.getStartNode().getID() ) );
 		c.setAttribute( factory.attribute( "end", "" + car.getEndNode().getID() ) );

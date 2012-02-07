@@ -23,39 +23,18 @@
  *    Jochen Wuttke (wuttkej@gmail.com) - initial API and implementation
  ********************************************************************************
  *
- * Created: Jan 18, 2012
+ * Created: Jan 24, 2012
  */
 
-package traffic.model;
+package traffic.strategy;
 
 /**
+ * This is the class implementing the ShortestPath
+ * strategy we use for the paper.
+ * 
  * @author Jochen Wuttke - wuttkej@gmail.com
  *
  */
-class InternalCar extends Vehicle {
-	
-	private int start, end;
-	
-	InternalCar( int id, int start, int end ) {
-		super( id );
-		this.start = start;
-		this.end = end;
-	}
-
-	/**
-	 * @return the start
-	 */
-	int getStart() {
-		return start;
-	}
-
-	/**
-	 * @return the end
-	 */
-	int getEnd() {
-		return end;
-	}
-	
-	
+public class ShortestPathVehicleStrategy extends LookaheadShortestPathVehicleStrategy {
 
 }

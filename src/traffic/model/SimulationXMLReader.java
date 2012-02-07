@@ -109,13 +109,13 @@ final public class SimulationXMLReader {
 	 * @return
 	 * @throws ConfigurationException 
 	 */
-	private List<Car> buildCars( Element carsNode, Graph g ) throws ConfigurationException {
-		List<Car> cars = builder.buildCars(carsNode);
-		List<Car> l = new ArrayList<Car>();
+	private List<Vehicle> buildCars( Element carsNode, Graph g ) throws ConfigurationException {
+		List<Vehicle> cars = builder.buildCars(carsNode);
+		List<Vehicle> l = new ArrayList<Vehicle>();
 		@SuppressWarnings("unchecked")
 		List<Element> carNodes = carsNode.getChildren( "car" );
 		for ( Element car : carNodes ) {
-			Car c = validateCar(car, cars, g );
+			Vehicle c = validateCar(car, cars, g );
 			if ( c != null ) {
 				l.add(c);
 			}
@@ -127,14 +127,14 @@ final public class SimulationXMLReader {
 	 * @param car
 	 * @param g
 	 */
-	private Car validateCar(Element car, List<Car> cars, Graph g) {
+	private Vehicle validateCar(Element car, List<Vehicle> cars, Graph g) {
 		int start = Integer.parseInt(car.getAttributeValue("start"));
 		int end = Integer.parseInt(car.getAttributeValue("end"));
 		int id = Integer.parseInt(car.getAttributeValue("id"));
 
 		List<GraphNode> nodes = g.getNodes();
 		try {
-			Car c = getCar( id, cars );
+			Vehicle c = getCar( id, cars );
 			GraphNode node = checkEndPoint(nodes, start, id, "Start" );
 			c.setStartNode(node);
 			node = checkEndPoint(nodes, end, id, "End" );
@@ -151,8 +151,8 @@ final public class SimulationXMLReader {
 	 * @param cars
 	 * @return
 	 */
-	private Car getCar(int id, List<Car> cars) {
-		for ( Car c : cars ) {
+	private Vehicle getCar(int id, List<Vehicle> cars) {
+		for ( Vehicle c : cars ) {
 			if ( c.getID() == id ) return c;
 		}
 		return null;

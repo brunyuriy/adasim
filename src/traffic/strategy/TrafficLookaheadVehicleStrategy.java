@@ -23,39 +23,20 @@
  *    Jochen Wuttke (wuttkej@gmail.com) - initial API and implementation
  ********************************************************************************
  *
- * Created: Jan 18, 2012
+ * Created: Jan 24, 2012
  */
 
-package traffic.model;
+package traffic.strategy;
 
 /**
+ * This is the TrafficLookahead strategy we use in the paper.
+ * 
  * @author Jochen Wuttke - wuttkej@gmail.com
  *
  */
-class InternalCar extends Vehicle {
-	
-	private int start, end;
-	
-	InternalCar( int id, int start, int end ) {
-		super( id );
-		this.start = start;
-		this.end = end;
-	}
+public class TrafficLookaheadVehicleStrategy extends LookaheadShortestPathVehicleStrategy {
 
-	/**
-	 * @return the start
-	 */
-	int getStart() {
-		return start;
+	public TrafficLookaheadVehicleStrategy() {
+		super(5,1);
 	}
-
-	/**
-	 * @return the end
-	 */
-	int getEnd() {
-		return end;
-	}
-	
-	
-
 }

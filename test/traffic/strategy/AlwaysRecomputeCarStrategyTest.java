@@ -34,7 +34,7 @@ import traffic.model.TrafficSimulator;
  */
 public class AlwaysRecomputeCarStrategyTest {
 	
-	private CarStrategy strategy = new AlwaysRecomputeCarStrategy();
+	private VehicleStrategy strategy = new AlwaysRecomputeVehicleStrategy();
 
 	@Test(timeout=10000)
 	public void cityMapLifelock() throws FileNotFoundException, ConfigurationException {

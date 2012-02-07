@@ -23,39 +23,18 @@
  *    Jochen Wuttke (wuttkej@gmail.com) - initial API and implementation
  ********************************************************************************
  *
- * Created: Jan 18, 2012
+ * Created: Dec 16, 2011
  */
 
-package traffic.model;
+package traffic.strategy;
 
 /**
  * @author Jochen Wuttke - wuttkej@gmail.com
  *
  */
-class InternalCar extends Vehicle {
-	
-	private int start, end;
-	
-	InternalCar( int id, int start, int end ) {
-		super( id );
-		this.start = start;
-		this.end = end;
-	}
+public class AdaptiveVehicleStrategy extends LookaheadShortestPathVehicleStrategy {
 
-	/**
-	 * @return the start
-	 */
-	int getStart() {
-		return start;
+	public AdaptiveVehicleStrategy() {
+		super(5);
 	}
-
-	/**
-	 * @return the end
-	 */
-	int getEnd() {
-		return end;
-	}
-	
-	
-
 }
