@@ -63,7 +63,7 @@ public abstract class AbstractVehicleStrategy implements VehicleStrategy {
 	 * @see traffic.strategy.CarStrategy#setCarId(int)
 	 */
 	@Override
-	public void setCarId(int id) {
+	public void setVehicleId(int id) {
 		this.carID = id;
 	}
 	

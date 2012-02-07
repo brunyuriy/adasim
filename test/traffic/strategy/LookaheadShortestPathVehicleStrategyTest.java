@@ -34,7 +34,7 @@ import traffic.model.SimulationXMLReader;
  * @author Jochen Wuttke - wuttkej@gmail.com
  *
  */
-public class LookaheadShortestPathCarStrategyTest {
+public class LookaheadShortestPathVehicleStrategyTest {
 	
 	private LookaheadShortestPathVehicleStrategy strategy;
 	
@@ -129,8 +129,8 @@ public class LookaheadShortestPathCarStrategyTest {
 		assertEquals( 4, firstPath.get(3).getID() );
 		
 		//now we load the graph with some cars to force a new path, these will make the firstPath too expensive
-		g.addCarAtNode( new Vehicle( g.getNode(1), null, new LookaheadShortestPathVehicleStrategy(), 42 ), 1 );
-		g.addCarAtNode( new Vehicle( g.getNode(1), null, new LookaheadShortestPathVehicleStrategy(), 43 ), 1 );
+		g.addVehicleAtNode( new Vehicle( g.getNode(1), null, new LookaheadShortestPathVehicleStrategy(), 42 ), 1 );
+		g.addVehicleAtNode( new Vehicle( g.getNode(1), null, new LookaheadShortestPathVehicleStrategy(), 43 ), 1 );
 		
 		GraphNode next = strategy.getNextNode();	//returns the first node of the first path and updates
 		assertEquals( 6, next.getID() );	//
