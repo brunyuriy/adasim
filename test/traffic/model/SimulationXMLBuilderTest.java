@@ -92,9 +92,9 @@ public class SimulationXMLBuilderTest {
 		Document doc = parser.build( new StringReader( "<car id=\"27\" start=\"1\" end=\"1\"/>" ) );
 		Car car = builder.buildCar( doc.getRootElement() );
 		assertEquals( 27, car.getID() );
-		assertNull( car.info.getStartNode() );
-		assertNull( car.info.getEndNode() );
-		assertNull( car.getInfo().getStrategy() );
+		assertNull( car.getStartNode() );
+		assertNull( car.getEndNode() );
+		assertNull( car.getStrategy() );
 	}
 
 	@Test
@@ -102,9 +102,9 @@ public class SimulationXMLBuilderTest {
 		Document doc = parser.build( new StringReader( "<car id=\"27\" start=\"1\" end=\"1\" strategy=\"traffic.strategy.ShortestPathCarStrategy\" />" ) );
 		Car car = builder.buildCar( doc.getRootElement() );
 		assertEquals( 27, car.getID() );
-		assertNull( car.info.getStartNode() );
-		assertNull( car.info.getEndNode() );
-		assertTrue( car.getInfo().getStrategy() instanceof ShortestPathCarStrategy );
+		assertNull( car.getStartNode() );
+		assertNull( car.getEndNode() );
+		assertTrue( car.getStrategy() instanceof ShortestPathCarStrategy );
 	}
 
 	@Test
@@ -118,10 +118,10 @@ public class SimulationXMLBuilderTest {
 		assertEquals( 3, cars.size() );
 		Car car = cars.get(0);	//this should be the car with id 1
 		assertEquals( 1, car.getID() );
-		assertTrue( car.getInfo().getStrategy() instanceof AlwaysRecomputeCarStrategy );
+		assertTrue( car.getStrategy() instanceof AlwaysRecomputeCarStrategy );
 		car = cars.get(1);
 		assertEquals( 2, car.getID() );
-		assertTrue( car.getInfo().getStrategy() instanceof ShortestPathCarStrategy );
+		assertTrue( car.getStrategy() instanceof ShortestPathCarStrategy );
 	}
 
 }
