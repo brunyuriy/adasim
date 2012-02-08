@@ -31,6 +31,9 @@ package traffic.model;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,7 +65,12 @@ final public class SimulationXMLReader {
 		builder = new SimulationXMLBuilder();
 		SAXBuilder sbuilder = new SAXBuilder(true);
 		sbuilder.setProperty("http://java.sun.com/xml/jaxp/properties/schemaLanguage", "http://www.w3.org/2001/XMLSchema");
-		sbuilder.setProperty("http://java.sun.com/xml/jaxp/properties/schemaSource", "/Users/Jonathan/workspace/TrafficSim/resources/xml/adasim.xsd");
+		URL res = SimulationXMLReader.class.getClassLoader().getResource("resources/xml/adasim.xsd");
+		try {
+			sbuilder.setProperty("http://java.sun.com/xml/jaxp/properties/schemaSource", new File( new URI( res.toExternalForm() ) ) );
+		} catch (URISyntaxException e1) {
+			throw new RuntimeException( "Unexpected exception", e1 );
+		}
 		sbuilder.setErrorHandler(new SimpleErrorHandler());
 
 		try {
@@ -90,7 +98,7 @@ final public class SimulationXMLReader {
 		try {
 			SimulationXMLReader factory = new SimulationXMLReader(config);
 			Graph g = builder.buildGraph( factory.doc.getRootElement().getChild("graph" ) );
-			TrafficSimulator sim = new TrafficSimulator( g, factory.buildVehicles( factory.doc.getRootElement().getChild("vehicles" ), g ) );
+			TrafficSimulator sim = new TrafficSimulator( g, factory.buildVehicles( factory.doc.getRootElement().getChild("cars" ), g ) );
 			return sim;
 		} catch ( ConfigurationException e ) {
 			buildError(e);
@@ -113,7 +121,7 @@ final public class SimulationXMLReader {
 		List<Vehicle> vehicles = builder.buildVehicles(vehiclesNode);
 		List<Vehicle> l = new ArrayList<Vehicle>();
 		@SuppressWarnings("unchecked")
-		List<Element> vehicleNodes = vehiclesNode.getChildren( "vehicle" );
+		List<Element> vehicleNodes = vehiclesNode.getChildren( "car" );
 		for ( Element vehicle : vehicleNodes ) {
 			Vehicle c = validateVehicle(vehicle, vehicles, g );
 			if ( c != null ) {

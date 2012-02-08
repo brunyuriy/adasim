@@ -111,7 +111,7 @@ public class SimulationXMLBuilder {
 	 */
 	public List<Vehicle> buildVehicles( Element vehiclesNode ) throws ConfigurationException {
 		@SuppressWarnings("unchecked")
-		List<Element> vehicleNodes = vehiclesNode.getChildren("vehicle");
+		List<Element> vehicleNodes = vehiclesNode.getChildren("car");
 		VehicleStrategy cs = null;
 		try {
 			Class<?> cls = Class.forName(vehiclesNode.getAttributeValue("default_strategy"));

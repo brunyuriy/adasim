@@ -1002,7 +1002,7 @@
     <node id="998" neighbors="270 295 455 574 682 735 955" />
     <node id="999" neighbors="126 135 316 483 952" />
   </graph>
-  <cars default_strategy="traffic.strategy.LookaheadShortestPathCarStrategy">
+  <cars default_strategy="traffic.strategy.LookaheadShortestPathVehicleStrategy">
     <car id="0" start="255" end="109" strategy="traffic.strategy.DijkstraCarStrategy" />
     <car id="1" start="327" end="612" strategy="traffic.strategy.DijkstraCarStrategy" />
     <car id="2" start="738" end="584" strategy="traffic.strategy.DijkstraCarStrategy" />
