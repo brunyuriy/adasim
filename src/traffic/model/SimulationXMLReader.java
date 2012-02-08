@@ -67,7 +67,9 @@ final public class SimulationXMLReader {
 		sbuilder.setProperty("http://java.sun.com/xml/jaxp/properties/schemaLanguage", "http://www.w3.org/2001/XMLSchema");
 		URL res = SimulationXMLReader.class.getClassLoader().getResource("resources/xml/adasim.xsd");
 		try {
-			sbuilder.setProperty("http://java.sun.com/xml/jaxp/properties/schemaSource", new File( new URI( res.toExternalForm() ) ) );
+			System.out.println( res );
+			URI uri = new URI( res.toExternalForm() );
+			sbuilder.setProperty("http://java.sun.com/xml/jaxp/properties/schemaSource", new File( uri ) );
 		} catch (URISyntaxException e1) {
 			throw new RuntimeException( "Unexpected exception", e1 );
 		}
