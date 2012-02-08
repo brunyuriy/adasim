@@ -1,9 +1,9 @@
 <simulation>
-	<cars default_strategy="traffic.strategy.LookaheadShortestPathCarStrategy">
+	<cars default_strategy="traffic.strategy.LookaheadShortestPathVehicleStrategy">
 		<car id="0" start="0" end="2" />
 		<car id="1" start="4" end="7" strategy="fake.Strategy" />
-		<car id="2" start="3" end="9" strategy="traffic.strategy.RandomCarStrategy" />
-		<car id="3" start="8" end="4" strategy="traffic.strategy.RandomCarStrategy" />
+		<car id="2" start="3" end="9" strategy="traffic.strategy.RandomVehicleStrategy" />
+		<car id="3" start="8" end="4" strategy="traffic.strategy.RandomVehicleStrategy" />
 		<car id="4" start="3" end="7" />
 	</cars>
 
