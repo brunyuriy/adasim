@@ -31,6 +31,7 @@ package traffic.model;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -66,16 +67,11 @@ final public class SimulationXMLReader {
 		SAXBuilder sbuilder = new SAXBuilder(true);
 		sbuilder.setProperty("http://java.sun.com/xml/jaxp/properties/schemaLanguage", "http://www.w3.org/2001/XMLSchema");
 		URL res = SimulationXMLReader.class.getClassLoader().getResource("resources/xml/adasim.xsd");
-		try {
-			System.out.println( res );
-			URI uri = new URI( res.toExternalForm() );
-			sbuilder.setProperty("http://java.sun.com/xml/jaxp/properties/schemaSource", new File( uri ) );
-		} catch (URISyntaxException e1) {
-			throw new RuntimeException( "Unexpected exception", e1 );
-		}
-		sbuilder.setErrorHandler(new SimpleErrorHandler());
+		System.out.println( res );
 
 		try {
+			sbuilder.setProperty("http://java.sun.com/xml/jaxp/properties/schemaSource", res.openStream() );
+			sbuilder.setErrorHandler(new SimpleErrorHandler());
 			doc = sbuilder.build(f);
 		} catch ( FileNotFoundException e) {
 			throw e;
