@@ -67,8 +67,8 @@ final public class SimulationXMLReader {
 		SAXBuilder sbuilder = new SAXBuilder(true);
 		sbuilder.setProperty("http://java.sun.com/xml/jaxp/properties/schemaLanguage", "http://www.w3.org/2001/XMLSchema");
 		try {
-			URL res = SimulationXMLReader.class.getClassLoader().getResource("resources/xml/adasim.xsd");
-			sbuilder.setProperty("http://java.sun.com/xml/jaxp/properties/schemaSource", res.openStream() );
+			//URL res = SimulationXMLReader.class.getClassLoader().getResource("/Users/Jonathan/workspace/TrafficSim/adasim/resources/xml/adasim.xsd");
+			sbuilder.setProperty("http://java.sun.com/xml/jaxp/properties/schemaSource", "/Users/Jonathan/workspace/TrafficSim/adasim/resources/xml/adasim.xsd" );
 			sbuilder.setErrorHandler(new SimpleErrorHandler());
 			doc = sbuilder.build(f);
 		} catch ( FileNotFoundException e) {

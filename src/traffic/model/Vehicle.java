@@ -40,7 +40,6 @@ import org.apache.log4j.Logger;
 
 import traffic.graph.GraphNode;
 import traffic.strategy.VehicleStrategy;
-import traffic.strategy.RandomNoiseStrategy;
 
 public class Vehicle {
 	
