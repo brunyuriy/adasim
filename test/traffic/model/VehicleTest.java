@@ -52,8 +52,34 @@ public class VehicleTest {
 		assertEquals(vehicles.get(0).getStartNode().getID(), 0);
 		assertEquals(vehicles.get(2).getStartNode().getID(), 3);
 		assertEquals(vehicles.get(3).getStartNode().getID(), 8);
-		vehicles.get(3).setStartNode(vehicles.get(2).getCurrentPosition());
+		vehicles.get(3).setStartNode(vehicles.get(2).getStartNode());
 		assertEquals(vehicles.get(3).getStartNode().getID(), 3);
-
+	}
+	
+	@Test
+	public void endNodeTest() throws FileNotFoundException, ConfigurationException {
+		TrafficSimulator sim = SimulationXMLReader.buildSimulator( new File( "resources/test/config.xml" ) );
+		List<Vehicle> vehicles = sim.getVehicles();
+		assertEquals(vehicles.get(1).getEndNode().getID(), 7);
+		assertEquals(vehicles.get(2).getEndNode().getID(), 9);
+		assertEquals(vehicles.get(4).getEndNode().getID(), 7);
+		vehicles.get(4).setEndNode(vehicles.get(2).getEndNode());
+		assertEquals(vehicles.get(4).getEndNode().getID(), 9);
+	}
+	
+	@Test
+	public void moveTest() throws FileNotFoundException, ConfigurationException {
+		TrafficSimulator sim = SimulationXMLReader.buildSimulator( new File( "resources/test/config.xml" ) );
+		List<Vehicle> vehicles = sim.getVehicles();
+		Vehicle tester = vehicles.get(4);
+		assertEquals(tester.getCurrentNode(), 3);
+		tester.move();
+		assertEquals(tester.getCurrentNode(), 1);
+		tester.setCurrentPosition(sim.getGraph().getNode(2));
+		assertEquals(tester.getCurrentNode(), 2);
+		assertEquals(tester.checkFinish(), false);
+		tester.move();
+		assertEquals(tester.getCurrentNode(), 7);
+		assertEquals(tester.checkFinish(), true);
 	}
 }
