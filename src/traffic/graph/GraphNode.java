@@ -33,6 +33,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import traffic.model.AdasimAgent;
 import traffic.model.Vehicle;
 import traffic.strategy.SpeedStrategy;
 
@@ -43,7 +44,7 @@ import traffic.strategy.SpeedStrategy;
  * @author Jonathan Ramaswamy - ramaswamyj12@gmail.com
  */
 
-public class GraphNode {
+public class GraphNode implements AdasimAgent {
 	
 	private Set<GraphNode> outgoing; //Nodes that this node has an edge directed towards
 	private int nodeNum; //The number of this node on the graph
