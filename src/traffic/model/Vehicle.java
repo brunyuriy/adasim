@@ -134,10 +134,6 @@ public class Vehicle {
 		finish = true;
 	}
 
-	public boolean isFinished() {
-		return finish;
-	}
-
 	/**
 	 * @return the cs
 	 */
