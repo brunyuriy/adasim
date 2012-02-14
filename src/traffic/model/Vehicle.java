@@ -108,7 +108,7 @@ public class Vehicle {
 	/**
 	 * Sets the current position to the given variable c
 	 */
-	public void setCurrentPosition(GraphNode c) {
+	void setCurrentPosition(GraphNode c) {
 		currentNode = c;
 	}
 
@@ -141,6 +141,11 @@ public class Vehicle {
 		return cs;
 	}
 	
+	
+	/**
+	 * @return
+	 * @deprecated
+	 */
 	public int getCurrentNode() {
 		return getCurrentPosition().getID();
 	}
@@ -159,8 +164,9 @@ public class Vehicle {
 
 	/**
 	 * @return
+	 * @deprecated
 	 */
-	public GraphNode getNextNode() {
+	GraphNode getNextNode() {
 		return cs.getNextNode();
 		
 	}
