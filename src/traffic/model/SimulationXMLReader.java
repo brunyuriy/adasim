@@ -31,9 +31,6 @@ package traffic.model;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -94,12 +91,23 @@ final public class SimulationXMLReader {
 		try {
 			SimulationXMLReader factory = new SimulationXMLReader(config);
 			Graph g = builder.buildGraph( factory.doc.getRootElement().getChild("graph" ) );
-			TrafficSimulator sim = new TrafficSimulator( g, factory.buildVehicles( factory.doc.getRootElement().getChild("cars" ), g ) );
+			TrafficSimulator sim = new TrafficSimulator( g, factory.allAgents( g ) ); 
 			return sim;
 		} catch ( ConfigurationException e ) {
 			buildError(e);
 			throw e;
 		}
+	}
+
+	/**
+	 * @return
+	 * @throws ConfigurationException 
+	 */
+	private List<AdasimAgent> allAgents( Graph g ) throws ConfigurationException {
+		List<AdasimAgent> agents;
+		agents = new ArrayList<AdasimAgent>(buildVehicles( doc.getRootElement().getChild("cars" ), g ) );
+		agents.addAll( builder.buildAgents( doc.getRootElement().getChild("agents" ) ) );
+		return agents;
 	}
 
 	/**

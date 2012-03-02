@@ -28,6 +28,7 @@
 
 package traffic.model;
 
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -336,4 +337,47 @@ public class SimulationXMLBuilder {
 		}
 		return l;
 	}
+	
+	/**
+	 * @param child
+	 * @return
+	 * @throws ConfigurationException 
+	 */
+	public List<? extends AdasimAgent> buildAgents(Element child) throws ConfigurationException {
+		List<AdasimAgent> agents = new ArrayList<AdasimAgent>();
+		if ( child != null ) {
+			@SuppressWarnings("unchecked")
+			List<Element> agentNodes = child.getChildren( "agents" );
+			for ( Element agentNode : agentNodes ) {
+				AdasimAgent agent = buildAgent( agentNode );
+				if ( agent != null ) {
+					agents.add(agent);
+				}
+			}
+		}
+		return agents;
+	}
+	
+	/**
+	 * @param agent
+	 * @return
+	 * @throws ConfigurationException 
+	 */
+	public AdasimAgent buildAgent(Element agent) throws ConfigurationException {
+		String clazz = agent.getAttributeValue("class");
+		assert clazz != null;
+		String parameters = agent.getAttributeValue("parameters");
+		
+		AdasimAgent agt = null;
+		try {
+			Class<?> cls = this.getClass().getClassLoader().loadClass(clazz);
+			Constructor<?> c = cls.getConstructor( String.class );
+			agt = (AdasimAgent) c.newInstance( parameters );
+		} catch (Exception e) {
+			throw new ConfigurationException( "Invalid agent class " + clazz, e);
+		} 
+		
+		return agt;
+	}
+
 }
