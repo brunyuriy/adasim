@@ -5,6 +5,7 @@
         <xsd:all>
             <xsd:element name="cars" type="Cars" minOccurs="1" maxOccurs="1" />
             <xsd:element name="graph" type="Graph" minOccurs="1" maxOccurs="1" />
+            <xsd:element name="agents" type="Agents" minOccurs="0" maxOccurs="1" />
         </xsd:all>
     </xsd:complexType>
 
@@ -40,5 +41,16 @@
         <xsd:attribute name="capacity" type="xsd:nonNegativeInteger" />
     </xsd:complexType>
 
+    <xsd:complexType name="Agents">
+        <xsd:sequence>
+            <xsd:element name="agent" type="Agent" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="Agent">
+        <xsd:attribute name="id" type="xsd:string" use="required"/>
+        <xsd:attribute name="class" type="xsd:string" use="required"/>
+        <xsd:attribute name="parameters" type="xsd:string" />        
+    </xsd:complexType>
 
 </xsd:schema>
