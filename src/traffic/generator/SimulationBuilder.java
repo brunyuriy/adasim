@@ -27,6 +27,7 @@ import org.jdom.input.SAXBuilder;
 
 import traffic.graph.Graph;
 import traffic.graph.GraphNode;
+import traffic.model.AdasimAgent;
 import traffic.model.Vehicle;
 import traffic.model.ConfigurationException;
 import traffic.model.SimulationXMLBuilder;
@@ -86,8 +87,8 @@ public class SimulationBuilder {
 	 * @return
 	 * @throws ConfigurationException 
 	 */
-	private List<Vehicle> buildVehicles(ConfigurationOptions opts, Graph g) throws ConfigurationException {
-		List<Vehicle> vehicles = new ArrayList<Vehicle>();
+	private List<AdasimAgent> buildVehicles(ConfigurationOptions opts, Graph g) throws ConfigurationException {
+		List<AdasimAgent> vehicles = new ArrayList<AdasimAgent>();
 		for ( int i = 0; i < opts.getNumVehicles(); i++ ) {
 			vehicles.add( buildVehicle( i, opts, g ) );
 		}

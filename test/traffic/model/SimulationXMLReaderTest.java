@@ -43,7 +43,7 @@ public class SimulationXMLReaderTest {
 	
 	@Test
 	public void testStart() throws JDOMException, IOException, ConfigurationException {
-		List<Vehicle> cars = SimulationXMLReader.buildSimulator( new File("resources/test/config.xml" )).getVehicles();
+		List<Vehicle> cars = (List<Vehicle>)SimulationXMLReader.buildSimulator( new File("resources/test/config.xml" )).getAgents(Vehicle.class);
 		assertEquals(cars.get(0).getCurrentNode(), 0);
 		assertEquals(cars.get(1).getCurrentNode(), 4);
 		assertEquals(cars.get(2).getCurrentNode(), 3);
@@ -53,7 +53,7 @@ public class SimulationXMLReaderTest {
 	
 	@Test
 	public void testVehicleNum() throws JDOMException, IOException, ConfigurationException {
-		List<Vehicle> cars = SimulationXMLReader.buildSimulator( new File("resources/test/config.xml" )).getVehicles();
+		List<Vehicle> cars = SimulationXMLReader.buildSimulator( new File("resources/test/config.xml" )).getAgents(Vehicle.class);
 		assertEquals(cars.get(0).getID(), 0);
 		assertEquals(cars.get(1).getID(), 1);
 		assertEquals(cars.get(2).getID(), 2);
@@ -63,31 +63,31 @@ public class SimulationXMLReaderTest {
 	
 	@Test
 	public void invalidVehicleStrategyDefaultsCorrectly() throws JDOMException, IOException, ConfigurationException {
-		List<Vehicle> cars = SimulationXMLReader.buildSimulator( new File("resources/test/invalid-strategy.xml" )).getVehicles();
+		List<Vehicle> cars = SimulationXMLReader.buildSimulator( new File("resources/test/invalid-strategy.xml" )).getAgents(Vehicle.class);
 		assertEquals( LookaheadShortestPathVehicleStrategy.class, cars.get(1).getStrategy().getClass() );
 	}
 	
 	@Test(expected=ConfigurationException.class)
 	public void invalidDefaultVehicleStrategyThrows() throws JDOMException, IOException, ConfigurationException {
-		List<Vehicle> cars = SimulationXMLReader.buildSimulator( new File("resources/test/illegal-default-car-strategy.xml" )).getVehicles();
+		List<Vehicle> cars = SimulationXMLReader.buildSimulator( new File("resources/test/illegal-default-car-strategy.xml" )).getAgents(Vehicle.class);
 	}
 
 	
 	@Test(expected=ConfigurationException.class)
 	public void noVehicleThrows() throws JDOMException, IOException, ConfigurationException {
-		List<Vehicle> cars = SimulationXMLReader.buildSimulator( new File("resources/test/no-car.xml" )).getVehicles();
+		List<Vehicle> cars = SimulationXMLReader.buildSimulator( new File("resources/test/no-car.xml" )).getAgents(Vehicle.class);
 		fail( "This should throw a meaningful exception to be handled by main()" );
 	}
 
 	@Test(expected=ConfigurationException.class)
 	public void noVehiclesThrows() throws JDOMException, IOException, ConfigurationException {
-		List<Vehicle> cars = SimulationXMLReader.buildSimulator( new File("resources/test/no-cars.xml" )).getVehicles();
+		List<Vehicle> cars = SimulationXMLReader.buildSimulator( new File("resources/test/no-cars.xml" )).getAgents(Vehicle.class);
 		fail( "This should throw a meaningful exception to be handled by main()" );
 	}
 	
 	@Test
 	public void invalidStartEndIsIgnored() throws JDOMException, IOException, ConfigurationException {
-		List<Vehicle> cars = SimulationXMLReader.buildSimulator( new File("resources/test/invalid-start.xml" )).getVehicles();
+		List<Vehicle> cars = SimulationXMLReader.buildSimulator( new File("resources/test/invalid-start.xml" )).getAgents(Vehicle.class);
 		assertEquals( 3, cars.size() );
 		assertEquals( 0, cars.get(0).getID() );
 		assertEquals( 3, cars.get(1).getID() );

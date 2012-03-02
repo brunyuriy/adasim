@@ -41,6 +41,7 @@ import org.jdom.output.XMLOutputter;
 
 import traffic.graph.Graph;
 import traffic.graph.GraphNode;
+import traffic.model.AdasimAgent;
 import traffic.model.Vehicle;
 import traffic.model.TrafficSimulator;
 import traffic.strategy.VehicleStrategy;
@@ -86,7 +87,7 @@ public class SimulationXMLWriter {
 		Element s = factory.element( "simulation" );
 		Document doc = factory.document( s );
 		writeGraph( s, sim.getGraph() );
-		writeVehicles( s, sim.getVehicles() );
+		writeVehicles( s, sim.getAgents() );
 		FileOutputStream out = new FileOutputStream( f );
 		XMLOutputter p = new XMLOutputter( Format.getPrettyFormat() );
 		p.output(doc, out);
@@ -98,11 +99,11 @@ public class SimulationXMLWriter {
 	 * @param vehicles
 	 * @return
 	 */
-	private void writeVehicles(Element doc, List<Vehicle> cars) {
+	private void writeVehicles(Element doc, List<AdasimAgent> cars) {
 		Element c = factory.element( "cars" );
 		c.setAttribute( factory.attribute( "default_strategy", DEFAULT_CAR_STRATEGY ) );
-		for ( Vehicle car : cars ) {
-			writeCar( c, car );
+		for ( AdasimAgent car : cars ) {
+			writeCar( c, (Vehicle)car );
 		}
 		doc.addContent(c);
 	}

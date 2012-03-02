@@ -67,8 +67,8 @@ final public class SimulationXMLReader {
 		SAXBuilder sbuilder = new SAXBuilder(true);
 		sbuilder.setProperty("http://java.sun.com/xml/jaxp/properties/schemaLanguage", "http://www.w3.org/2001/XMLSchema");
 		try {
-			//URL res = SimulationXMLReader.class.getClassLoader().getResource("/Users/Jonathan/workspace/TrafficSim/adasim/resources/xml/adasim.xsd");
-			sbuilder.setProperty("http://java.sun.com/xml/jaxp/properties/schemaSource", "/Users/Jonathan/workspace/TrafficSim/adasim/resources/xml/adasim.xsd" );
+			URL res = SimulationXMLReader.class.getClassLoader().getResource("resources/xml/adasim.xsd");
+			sbuilder.setProperty("http://java.sun.com/xml/jaxp/properties/schemaSource", res.openStream() );
 			sbuilder.setErrorHandler(new SimpleErrorHandler());
 			doc = sbuilder.build(f);
 		} catch ( FileNotFoundException e) {
@@ -113,9 +113,9 @@ final public class SimulationXMLReader {
 	 * @return
 	 * @throws ConfigurationException 
 	 */
-	private List<Vehicle> buildVehicles( Element vehiclesNode, Graph g ) throws ConfigurationException {
+	private List<AdasimAgent> buildVehicles( Element vehiclesNode, Graph g ) throws ConfigurationException {
 		List<Vehicle> vehicles = builder.buildVehicles(vehiclesNode);
-		List<Vehicle> l = new ArrayList<Vehicle>();
+		List<AdasimAgent> l = new ArrayList<AdasimAgent>();
 		@SuppressWarnings("unchecked")
 		List<Element> vehicleNodes = vehiclesNode.getChildren( "car" );
 		for ( Element vehicle : vehicleNodes ) {
