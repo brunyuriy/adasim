@@ -41,7 +41,7 @@ import org.apache.log4j.Logger;
 import traffic.graph.GraphNode;
 import traffic.strategy.VehicleStrategy;
 
-public class Vehicle {
+public class Vehicle implements AdasimAgent {
 	
 	private GraphNode start; //Starting position
 	private GraphNode end; //Destination position
@@ -205,6 +205,15 @@ public class Vehicle {
 	 */
 	public VehicleInfo getInfo() {
 		return info;
+	}
+
+	/* (non-Javadoc)
+	 * @see traffic.model.AdasimAgent#takeSimulationStep()
+	 */
+	@Override
+	public void takeSimulationStep() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

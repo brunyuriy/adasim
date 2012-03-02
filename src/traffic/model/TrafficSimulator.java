@@ -44,30 +44,33 @@ import traffic.graph.GraphNode;
  */
 
 public class TrafficSimulator{
-	
+
 	private static Logger logger = Logger.getLogger(TrafficSimulator.class);
 
-		
-	private List<Vehicle> vehicles; //List of vehicles in the simulation
+
+	private List<AdasimAgent> agents; //List of vehicles in the simulation
 	private Graph graph; //The graph the vehicles run on
 	private long cycle = 1;
-	
-	public TrafficSimulator( Graph g, List<Vehicle> c ) {
+
+	public TrafficSimulator( Graph g, List<AdasimAgent> c ) {
 		if(g == null || c == null) {
 			throw new IllegalArgumentException();
 		}
 		this.graph = g;
-		this.vehicles = c;
+		this.agents = c;
 		addVehiclesToGraph();
 	}
-	
+
 	//Uses the previously specified algorithm to create paths for each vehicle on the graph
 	private void addVehiclesToGraph() {
-		for(Vehicle c: vehicles) {
-			graph.addVehicleAtNode(c, c.getCurrentNode());
+		for(AdasimAgent c: agents) {
+			if ( c instanceof Vehicle ) {
+				Vehicle v = (Vehicle)c;
+				graph.addVehicleAtNode(v, v.getStartNode().getID());
+			}
 		}
 	}
-	
+
 	/**
 	 * Runs the simulation by trying to move each vehicle one at a time
 	 * @return True if the simulation is over
@@ -79,11 +82,11 @@ public class TrafficSimulator{
 		}		
 		return checkAllFinish();
 	}
-	
+
 	//Checks to see if all vehicles have finished moving, returns true if so
 	private boolean checkAllFinish() {
-		for(Vehicle c: vehicles) {
-			if(!c.checkFinish()) {
+		for(AdasimAgent c: agents) {
+			if(c instanceof Vehicle && !((Vehicle)c).checkFinish()) {
 				return false;
 			}
 		}
@@ -93,20 +96,21 @@ public class TrafficSimulator{
 	/**
 	 * @return the vehicles
 	 */
-	public List<Vehicle> getVehicles() {
-		return vehicles;
+	public List<AdasimAgent> getAgents() {
+		return agents;
 	}
-	
+
 	/**
 	 * Returns the vehicle with the given ID
 	 * @param id
 	 * @return
+	 * @deprecated
 	 */
 	public Vehicle getVehicle( int id ) {
-		for ( Vehicle c : vehicles ) {
-			if ( c.getID() == id ) 
-				return c;
-		}
+//		//for ( Vehicle c : agents ) {
+//			if ( c.getID() == id ) 
+//				return c;
+//		}
 		return null;
 	}
 
@@ -115,6 +119,21 @@ public class TrafficSimulator{
 	 */
 	public Graph getGraph() {
 		return graph;
+	}
+	
+	/**
+	 * @param sample
+	 * @return all agents that have the specified type
+	 */
+	@SuppressWarnings("unchecked")
+	public <T extends AdasimAgent> List<T> getAgents( Class<T> sample ) {
+		List<T> l = new ArrayList<T>();
+		for ( AdasimAgent agt : agents ) {
+			if (agt.getClass().equals( sample ) ) {
+				l.add((T)agt);
+			}
+		}
+		return l;
 	}
 
 }

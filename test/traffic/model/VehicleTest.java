@@ -48,7 +48,7 @@ public class VehicleTest {
 	@Test
 	public void startNodeTest() throws FileNotFoundException, ConfigurationException {
 		TrafficSimulator sim = SimulationXMLReader.buildSimulator( new File( "resources/test/config.xml" ) );
-		List<Vehicle> vehicles = sim.getVehicles();
+		List<Vehicle> vehicles = sim.getAgents(Vehicle.class);
 		assertEquals(vehicles.get(0).getStartNode().getID(), 0);
 		assertEquals(vehicles.get(2).getStartNode().getID(), 3);
 		assertEquals(vehicles.get(3).getStartNode().getID(), 8);
@@ -59,7 +59,7 @@ public class VehicleTest {
 	@Test
 	public void endNodeTest() throws FileNotFoundException, ConfigurationException {
 		TrafficSimulator sim = SimulationXMLReader.buildSimulator( new File( "resources/test/config.xml" ) );
-		List<Vehicle> vehicles = sim.getVehicles();
+		List<Vehicle> vehicles = sim.getAgents(Vehicle.class);
 		assertEquals(vehicles.get(1).getEndNode().getID(), 7);
 		assertEquals(vehicles.get(2).getEndNode().getID(), 9);
 		assertEquals(vehicles.get(4).getEndNode().getID(), 7);
@@ -70,7 +70,7 @@ public class VehicleTest {
 	@Test
 	public void moveTest() throws FileNotFoundException, ConfigurationException {
 		TrafficSimulator sim = SimulationXMLReader.buildSimulator( new File( "resources/test/config.xml" ) );
-		List<Vehicle> vehicles = sim.getVehicles();
+		List<Vehicle> vehicles = sim.getAgents(Vehicle.class);
 		Vehicle tester = vehicles.get(4);
 		assertEquals(tester.getCurrentNode(), 3);
 		tester.move();
