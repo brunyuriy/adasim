@@ -123,5 +123,43 @@ public class SimulationXMLBuilderTest {
 		assertEquals( 2, car.getID() );
 		assertTrue( car.getStrategy() instanceof ShortestPathVehicleStrategy );
 	}
+	
+	@Test
+	public void agentNoOptionals() throws JDOMException, IOException, ConfigurationException {
+		Document doc = parser.build( new StringReader( "<agent id=\"27\" class=\"traffic.model.FakeAgent\" />" ) );
+		AdasimAgent agent = builder.buildAgent( doc.getRootElement() );
+	}
 
+	@Test
+	public void agentAllOptionals() throws JDOMException, IOException, ConfigurationException {
+		Document doc = parser.build( new StringReader( "<agent id=\"27\" class=\"traffic.model.FakeAgent\" parameters=\"blabab\"/>" ) );
+		AdasimAgent agent = builder.buildAgent( doc.getRootElement() );
+	}
+
+}
+
+class FakeAgent implements AdasimAgent {
+	
+	public FakeAgent(String s) {
+		
+	}
+	
+	/* (non-Javadoc)
+	 * @see traffic.model.AdasimAgent#takeSimulationStep()
+	 */
+	@Override
+	public void takeSimulationStep() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	/* (non-Javadoc)
+	 * @see traffic.model.AdasimAgent#setParameters(java.lang.String)
+	 */
+	@Override
+	public void setParameters(String params) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 }

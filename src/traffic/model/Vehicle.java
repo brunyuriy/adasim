@@ -216,4 +216,13 @@ public class Vehicle implements AdasimAgent {
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see traffic.model.AdasimAgent#setParameters(java.lang.String)
+	 */
+	@Override
+	public void setParameters(String params) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

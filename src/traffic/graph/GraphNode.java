@@ -227,4 +227,13 @@ public class GraphNode implements AdasimAgent {
 			c.move();
 		}
 	}
+
+	/* (non-Javadoc)
+	 * @see traffic.model.AdasimAgent#setParameters(java.lang.String)
+	 */
+	@Override
+	public void setParameters(String params) {
+		// TODO Auto-generated method stub
+		
+	}
 }

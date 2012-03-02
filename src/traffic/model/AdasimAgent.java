@@ -38,6 +38,8 @@ package traffic.model;
  * and making routing decisions.
  * An agent can be anything, even a virtual agent not tied to a 
  * "real" object in the simulation.
+ * <p>
+ * Agents <strong>must have</strong> a constructor that takes a String argument.
  * 
  * @author Jochen Wuttke - wuttkej@gmail.com
  *
@@ -49,4 +51,11 @@ public interface AdasimAgent {
 	 * method once per simulation cylce on each agent. 
 	 */
 	public void takeSimulationStep();
+	
+	/**
+	 * Method called to configure this agent when loading a simulation.
+	 * 
+	 * @param params
+	 */
+	public void setParameters( String params );
 }
