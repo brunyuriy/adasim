@@ -80,6 +80,9 @@ public class TrafficSimulator{
 		for ( GraphNode node: graph.getNodes() ) {
 			node.takeSimulationStep();
 		}		
+		for ( AdasimAgent agent : agents ) {
+			agent.takeSimulationStep();
+		}
 		return checkAllFinish();
 	}
 
