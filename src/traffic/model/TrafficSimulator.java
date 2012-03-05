@@ -63,7 +63,7 @@ public class TrafficSimulator{
 
 	//Uses the previously specified algorithm to create paths for each vehicle on the graph
 	private void addVehiclesToGraph() {
-		for(AdasimAgent c: agents) {
+		for(AdasimAgent c: getAgents( Vehicle.class ) ) {
 			if ( c instanceof Vehicle ) {
 				Vehicle v = (Vehicle)c;
 				graph.addVehicleAtNode(v, v.getStartNode().getID());
