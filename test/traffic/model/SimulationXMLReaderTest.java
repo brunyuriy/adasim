@@ -44,11 +44,11 @@ public class SimulationXMLReaderTest {
 	@Test
 	public void testStart() throws JDOMException, IOException, ConfigurationException {
 		List<Vehicle> cars = (List<Vehicle>)SimulationXMLReader.buildSimulator( new File("resources/test/config.xml" )).getAgents(Vehicle.class);
-		assertEquals(cars.get(0).getCurrentNode(), 0);
-		assertEquals(cars.get(1).getCurrentNode(), 4);
-		assertEquals(cars.get(2).getCurrentNode(), 3);
-		assertEquals(cars.get(3).getCurrentNode(), 8);
-		assertEquals(cars.get(4).getCurrentNode(), 3);
+		assertEquals(cars.get(0).getCurrentPosition().getID(), 0);
+		assertEquals(cars.get(1).getCurrentPosition().getID(), 4);
+		assertEquals(cars.get(2).getCurrentPosition().getID(), 3);
+		assertEquals(cars.get(3).getCurrentPosition().getID(), 8);
+		assertEquals(cars.get(4).getCurrentPosition().getID(), 3);
 	}
 	
 	@Test
