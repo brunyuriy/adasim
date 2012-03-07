@@ -72,14 +72,14 @@ public class VehicleTest {
 		TrafficSimulator sim = SimulationXMLReader.buildSimulator( new File( "resources/test/config.xml" ) );
 		List<Vehicle> vehicles = sim.getAgents(Vehicle.class);
 		Vehicle tester = vehicles.get(4);
-		assertEquals(tester.getCurrentNode(), 3);
-		tester.move();
-		assertEquals(tester.getCurrentNode(), 1);
+		assertEquals(tester.getCurrentPosition().getID(), 3);
+		tester.takeSimulationStep();
+		assertEquals(tester.getCurrentPosition().getID(), 1);
 		tester.setCurrentPosition(sim.getGraph().getNode(2));
-		assertEquals(tester.getCurrentNode(), 2);
+		assertEquals(tester.getCurrentPosition().getID(), 2);
 		assertEquals(tester.checkFinish(), false);
-		tester.move();
-		assertEquals(tester.getCurrentNode(), 7);
+		tester.takeSimulationStep();
+		assertEquals(tester.getCurrentPosition().getID(), 7);
 		assertEquals(tester.checkFinish(), true);
 	}
 }
