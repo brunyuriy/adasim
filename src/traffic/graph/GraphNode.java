@@ -224,7 +224,7 @@ public class GraphNode implements AdasimAgent {
 		Set<Vehicle> finishedVehicles = queue.moveVehicles();
 		if ( finishedVehicles == null ) return;
 		for ( Vehicle c : finishedVehicles ) {
-			c.move();
+			c.takeSimulationStep();
 		}
 	}
 
