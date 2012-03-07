@@ -140,15 +140,6 @@ public class Vehicle implements AdasimAgent {
 	public VehicleStrategy getStrategy() {
 		return cs;
 	}
-	
-	
-	/**
-	 * @return
-	 * @deprecated
-	 */
-	public int getCurrentNode() {
-		return getCurrentPosition().getID();
-	}
 
 	/**
 	 * @param cs the cs to set
@@ -159,32 +150,6 @@ public class Vehicle implements AdasimAgent {
 			cs.setStartNode(start);
 			cs.setEndNode(end);
 			cs.setVehicleId(id);
-		}
-	}
-
-	/**
-	 * @return
-	 * @deprecated
-	 */
-	GraphNode getNextNode() {
-		return cs.getNextNode();
-		
-	}
-
-	/**
-	 * Signals to the vehicle that it should move to the next node or park.
-	 */
-	public void move() {
-		GraphNode nextNode = getNextNode();
-		if ( nextNode == null ) {
-			//this happens if there is no path, or the vehicle is at its goal
-			getCurrentPosition().park(this);
-			setFinish();
-			logger.info( "STOP: " + vehiclePosition() );
-		} else {
-			logger.info( "MOVE: " + vehiclePosition() + " To:" + nextNode.getID() );
-			setCurrentPosition(nextNode);
-			nextNode.enterNode(this);
 		}
 	}
 	
@@ -212,8 +177,17 @@ public class Vehicle implements AdasimAgent {
 	 */
 	@Override
 	public void takeSimulationStep() {
-		// TODO Auto-generated method stub
-		
+		GraphNode nextNode = cs.getNextNode();
+		if ( nextNode == null ) {
+			//this happens if there is no path, or the vehicle is at its goal
+			getCurrentPosition().park(this);
+			setFinish();
+			logger.info( "STOP: " + vehiclePosition() );
+		} else {
+			logger.info( "MOVE: " + vehiclePosition() + " To:" + nextNode.getID() );
+			setCurrentPosition(nextNode);
+			nextNode.enterNode(this);
+		}
 	}
 
 	/* (non-Javadoc)
