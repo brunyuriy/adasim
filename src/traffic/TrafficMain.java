@@ -63,7 +63,7 @@ public class TrafficMain {
 	public static void main(String[] args) throws JDOMException, IOException, ConfigurationException {
 		BasicConfigurator.configure();
 		ConfigurationOptions opts = null;
-		logger.info( Version.versionString() );
+		//logger.info( Version.versionString() );
 		try {
 			opts = ConfigurationOptions.parse(args);
 		} catch (Exception e) { //Catches invalid commandline statement
