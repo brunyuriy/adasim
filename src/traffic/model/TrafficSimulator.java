@@ -33,7 +33,6 @@ import java.util.*;
 import org.apache.log4j.Logger;
 
 import traffic.graph.Graph;
-import traffic.graph.GraphNode;
 
 /**
  * TrafficSimulator is the main program for running the simulator. It keeps track
@@ -104,13 +103,12 @@ public class TrafficSimulator{
 	 * Returns the vehicle with the given ID
 	 * @param id
 	 * @return
-	 * @deprecated
 	 */
 	public Vehicle getVehicle( int id ) {
-//		//for ( Vehicle c : agents ) {
-//			if ( c.getID() == id ) 
-//				return c;
-//		}
+		for ( Vehicle c : getAgents(Vehicle.class) ) {
+			if ( c.getID() == id ) 
+				return c;
+		}
 		return null;
 	}
 
