@@ -77,9 +77,6 @@ public class TrafficSimulator{
 	 */
 	public boolean takeSimulationStep() {
 		logger.info( "SIMULATION: Cycle: " + cycle++ );
-		for ( GraphNode node: graph.getNodes() ) {
-			node.takeSimulationStep();
-		}		
 		for ( AdasimAgent agent : agents ) {
 			agent.takeSimulationStep();
 		}
