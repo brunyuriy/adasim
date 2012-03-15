@@ -184,9 +184,15 @@ public class Vehicle implements AdasimAgent {
 			setFinish();
 			logger.info( "STOP: " + vehiclePosition() );
 		} else {
-			logger.info( "MOVE: " + vehiclePosition() + " To:" + nextNode.getID() );
-			setCurrentPosition(nextNode);
-			nextNode.enterNode(this);
+			if(nextNode.isClosed()) {
+				logger.info( "HALT: Node " + nextNode.getID() + " is currently closed");
+			} else if(currentNode.isClosed()) {
+				logger.info( "HALT: Vehicle " + id + " is currently at a closed node");
+			} else {
+				logger.info( "MOVE: " + vehiclePosition() + " To:" + nextNode.getID() );
+				setCurrentPosition(nextNode);
+				nextNode.enterNode(this);
+			}
 		}
 	}
 
