@@ -45,7 +45,7 @@ import traffic.strategy.SpeedStrategy;
  * @author Jonathan Ramaswamy - ramaswamyj12@gmail.com
  */
 
-public class GraphNode implements AdasimAgent {
+public final class GraphNode implements AdasimAgent {
 	
 	private Set<GraphNode> outgoing; //Nodes that this node has an edge directed towards
 	private int nodeNum; //The number of this node on the graph
