@@ -183,6 +183,8 @@ public class Vehicle implements AdasimAgent {
 			getCurrentPosition().park(this);
 			setFinish();
 			logger.info( "STOP: " + vehiclePosition() );
+		} else if (!currentNode.isNeighbor(nextNode)) {
+			logger.info( "HALT: Node " + nextNode.getID() + " is not a neighbor of " + currentNode);
 		} else {
 			if(nextNode.isClosed()) {
 				logger.info( "HALT: Node " + nextNode.getID() + " is currently closed");

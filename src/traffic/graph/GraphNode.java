@@ -113,6 +113,11 @@ public class GraphNode implements AdasimAgent {
 	public List<GraphNode> getNeighbors() {
 		return new ArrayList<GraphNode>(outgoing);
 	}
+	
+	public boolean isNeighbor(GraphNode n) {
+		return outgoing.contains(n);
+	}
+	
 	/**
 	 * Returns this node's ID number
 	 * @return
