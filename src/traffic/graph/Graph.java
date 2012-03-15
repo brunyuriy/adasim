@@ -46,7 +46,7 @@ import traffic.strategy.SpeedStrategy;
  * @author Jonathan Ramaswamy - ramaswamyj12@gmail.com
  */
 
-public class Graph {
+public final class Graph {
 	
 	private Set<GraphNode> nodes; //The nodes within the graph
 	
