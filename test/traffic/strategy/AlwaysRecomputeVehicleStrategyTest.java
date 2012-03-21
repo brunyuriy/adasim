@@ -39,10 +39,8 @@ public class AlwaysRecomputeVehicleStrategyTest {
 	@Test(timeout=10000)
 	public void cityMapLifelock() throws FileNotFoundException, ConfigurationException {
 		TrafficSimulator sim = SimulationXMLReader.buildSimulator( new File("resources/test/168-1280-0.xml") );
-		boolean done = false;
-		do {
-			done = sim.takeSimulationStep();
-		} while ( !done );
+		sim.run();
+
 		//		strategy.setGraph(g);
 //		List<GraphNode> path = strategy.getPath( g.getNode(1), g.getNode(5));
 //		assertNotNull( "No path found", path );
@@ -61,10 +59,7 @@ public class AlwaysRecomputeVehicleStrategyTest {
 	@Test
 	public void cityMapLifelock2() throws FileNotFoundException, ConfigurationException {
 		TrafficSimulator sim = SimulationXMLReader.buildSimulator( new File("resources/test/lifelock-city-1.xml") );
-		boolean done = false;
-		do {
-			done = sim.takeSimulationStep();
-		} while ( !done );
+		sim.run();
 	}
 
 
