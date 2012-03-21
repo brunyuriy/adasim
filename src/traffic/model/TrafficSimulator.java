@@ -38,8 +38,12 @@ import traffic.graph.Graph;
  * TrafficSimulator is the main program for running the simulator. It keeps track
  * of the graph and where all the vehicles are located on it, and outputs information to
  * the logger object with every step taken.
+ * <p>
+ * To use, create a {@link TrafficSimulator} instance and call <code>run()</code>.
+ * No other interaction with the simulation is encourage or needed.
  * 
  * @author Jonathan Ramaswamy - ramaswamyj12@gmail.com
+ * @author Jochen Wuttke - wuttkej@gmail.com
  */
 
 public class TrafficSimulator{
@@ -60,7 +64,17 @@ public class TrafficSimulator{
 		addVehiclesToGraph();
 	}
 
-	//Uses the previously specified algorithm to create paths for each vehicle on the graph
+	/**
+	 * Runs the simulator until all agents concur that they are done.
+	 * Currently the only way to interrupt this is by forcing the program
+	 * to terminate (SIG_INT or suchlike).
+	 */
+	public void run() {
+		while(! checkAllFinish()) {
+			takeSimulationStep();
+		}
+	}
+
 	private void addVehiclesToGraph() {
 		for(AdasimAgent c: getAgents( Vehicle.class ) ) {
 			if ( c instanceof Vehicle ) {
@@ -71,8 +85,7 @@ public class TrafficSimulator{
 	}
 
 	/**
-	 * Runs the simulation by trying to move each vehicle one at a time
-	 * @return True if the simulation is over
+	 * All agents in the simulator take one step.
 	 */
 	private void takeSimulationStep() {
 		logger.info( "SIMULATION: Cycle: " + cycle++ );
@@ -82,7 +95,9 @@ public class TrafficSimulator{
 		}
 	}
 
-	//Checks to see if all vehicles have finished moving, returns true if so
+	/**
+	 * @return true if all vehicles return true on their <code>checkFinish()</code> call
+	 */
 	private boolean checkAllFinish() {
 		for(AdasimAgent c: agents) {
 			if(c instanceof Vehicle && !((Vehicle)c).checkFinish()) {
@@ -93,16 +108,16 @@ public class TrafficSimulator{
 	}
 
 	/**
-	 * @return the vehicles
+	 * @return an unmodifiable list of all agents known to this instance of {@link TrafficSimulator}. 
 	 */
 	public List<AdasimAgent> getAgents() {
-		return agents;
+		return Collections.unmodifiableList(agents);
 	}
 
 	/**
-	 * Returns the vehicle with the given ID
+	 * Convenience method that returns the vehicle with the given ID
 	 * @param id
-	 * @return
+	 * @return the vehicle with the given ID
 	 */
 	public Vehicle getVehicle( int id ) {
 		for ( Vehicle c : getAgents(Vehicle.class) ) {
@@ -113,13 +128,21 @@ public class TrafficSimulator{
 	}
 
 	/**
-	 * @return the graph
+	 * @return the graph (map) used by this {@link TrafficSimulator}.
+	 * <p>
+	 * While this instance is mutable, this is strongly discouraged, as 
+	 * effects are unspecified!
 	 */
 	public Graph getGraph() {
 		return graph;
 	}
 
 	/**
+	 * Returns a list of all agents that have the specified type.
+	 * While this list is mutable, it does not write through to the internal
+	 * store of agents, thus modifications to this list have no effect on the
+	 * simulator.
+	 * 
 	 * @param sample
 	 * @return all agents that have the specified type
 	 */
@@ -132,11 +155,5 @@ public class TrafficSimulator{
 			}
 		}
 		return l;
-	}
-
-	public void run() {
-		while(! checkAllFinish()) {
-			takeSimulationStep();
-		}
 	}
 }
