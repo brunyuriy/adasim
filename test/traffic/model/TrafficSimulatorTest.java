@@ -18,7 +18,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 
 /**
@@ -30,13 +29,13 @@ public class TrafficSimulatorTest {
 	@Test
 	public void zeroLengthPathTest() throws FileNotFoundException, ConfigurationException {
 		TrafficSimulator sim = SimulationXMLReader.buildSimulator( new File( "resources/test/random.xml" ) );
-		while( !sim.takeSimulationStep() ) {}
+		sim.run();
 	}
 	
 	@Test
 	public void basicConfigTest() throws FileNotFoundException, ConfigurationException {
 		TrafficSimulator sim = SimulationXMLReader.buildSimulator( new File( "resources/test/shortest-path-test-weights.xml" ) );
-		while( !sim.takeSimulationStep() ) {}
+		sim.run();
 	}
 	
 }
