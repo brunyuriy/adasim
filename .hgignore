@@ -3,3 +3,5 @@ syntax: regexp
 ^docs/metrics$
 syntax: regexp
 ^create-random\.sh$
+syntax: regexp
+^output\.xml$

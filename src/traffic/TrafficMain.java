@@ -51,8 +51,6 @@ public class TrafficMain {
 	
 	private static Logger logger = Logger.getLogger(TrafficMain.class); //Logger that outputs simulation information
 	
-	private static TrafficSimulator tsim; //The instance of the traffic simulator
-	
 	/**
 	 * 
 	 * @param args
@@ -60,10 +58,10 @@ public class TrafficMain {
 	 * @throws IOException
 	 * @throws ConfigurationException
 	 */
-	public static void main(String[] args) throws JDOMException, IOException, ConfigurationException {
+	public static void main(String[] args) {
 		BasicConfigurator.configure();
 		ConfigurationOptions opts = null;
-		//logger.info( Version.versionString() );
+		logger.info( Version.versionString() );
 		try {
 			opts = ConfigurationOptions.parse(args);
 		} catch (Exception e) { //Catches invalid commandline statement
@@ -75,20 +73,15 @@ public class TrafficMain {
 
 		logger.info("Loading Simulation");
 		try{
-			tsim = SimulationXMLReader.buildSimulator( new File(opts.getInputFile() ) );
+			TrafficSimulator tsim = SimulationXMLReader.buildSimulator( new File(opts.getInputFile() ) );
+			logger.info("Starting Simulation");
+			tsim.run();
+			logger.info("Stopping simulation");
 		} catch (ConfigurationException e) { //Catches configuration error in XML file
 			logger.info("Exiting due to configuration error " + e.getMessage());
-			System.exit(0);
 		} catch (FileNotFoundException e) {
 			logger.info("Exiting because file cannot be found " + e.getMessage());
-			System.exit(0);
 		}
-		logger.info("Starting Simulation");
-		boolean done = false;
-		while(!done) {
-			done = tsim.takeSimulationStep();
-		}
-		logger.info("Stopping simulation");
-		System.exit(0);
+		//NO CODE BEYOND THIS LINE
 	}
 }

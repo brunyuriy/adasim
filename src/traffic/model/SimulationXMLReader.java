@@ -46,7 +46,7 @@ import traffic.graph.GraphNode;
 
 
 /**
- * Reads in an XML configuration file, validates it agains the Adasim schema
+ * Reads in an XML configuration file, validates it against the Adasim schema
  * and constructs a simulation.
  * 
  * @author Jochen Wuttke - wuttkej@gmail.com
@@ -59,24 +59,23 @@ final public class SimulationXMLReader {
 	private Document doc;
 	private static SimulationXMLBuilder builder;
 
-	private SimulationXMLReader( File f ) throws FileNotFoundException, ConfigurationException {
+	private SimulationXMLReader( File f ) throws ConfigurationException {
 		builder = new SimulationXMLBuilder();
 		SAXBuilder sbuilder = new SAXBuilder(true);
 		sbuilder.setProperty("http://java.sun.com/xml/jaxp/properties/schemaLanguage", "http://www.w3.org/2001/XMLSchema");
 		try {
 			URL res = SimulationXMLReader.class.getClassLoader().getResource("resources/xml/adasim.xsd");
+			if (res == null ) {
+				throw new ConfigurationException( "XML Schema adasim.xsd not found on classpath" );
+			}
 			sbuilder.setProperty("http://java.sun.com/xml/jaxp/properties/schemaSource", res.openStream() );
 			sbuilder.setErrorHandler(new SimpleErrorHandler());
 			doc = sbuilder.build(f);
-		} catch ( FileNotFoundException e) {
-			throw e;
 		} catch (JDOMException e) {
 			throw new ConfigurationException(e);
 		} catch (IOException e) {
 			throw new ConfigurationException(e);
-		} catch (NullPointerException e) {
-			throw new ConfigurationException(e);
-		}
+		} 
 	}
 
 	/**
@@ -111,7 +110,7 @@ final public class SimulationXMLReader {
 		agents.addAll( builder.buildAgents( doc.getRootElement().getChild("agents" ) ) );
 		return agents;
 	}
-
+	
 	/**
 	 * @param e
 	 */
@@ -132,6 +131,8 @@ final public class SimulationXMLReader {
 			Vehicle c = validateVehicle(vehicle, vehicles, g );
 			if ( c != null ) {
 				l.add(c);
+				//add valid vehicle to their start node
+				g.addVehicleAtNode(c, c.getStartNode().getID());
 			}
 		}
 		return l;	
