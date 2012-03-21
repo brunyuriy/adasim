@@ -76,15 +76,14 @@ public class TrafficMain {
 		logger.info("Loading Simulation");
 		try{
 			tsim = SimulationXMLReader.buildSimulator( new File(opts.getInputFile() ) );
+			logger.info("Starting Simulation");
+			tsim.run();
+			logger.info("Stopping simulation");
 		} catch (ConfigurationException e) { //Catches configuration error in XML file
 			logger.info("Exiting due to configuration error " + e.getMessage());
-			System.exit(0);
 		} catch (FileNotFoundException e) {
 			logger.info("Exiting because file cannot be found " + e.getMessage());
-			System.exit(0);
 		}
-		logger.info("Starting Simulation");
-		tsim.run();
-		logger.info("Stopping simulation");
+		//NO CODE BEYOND THIS LINE
 	}
 }
