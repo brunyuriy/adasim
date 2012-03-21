@@ -14,16 +14,11 @@
 
 package traffic.strategy;
 
-import static org.junit.Assert.*;
-
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.List;
 
 import org.junit.Test;
 
-import traffic.graph.Graph;
-import traffic.graph.GraphNode;
 import traffic.model.ConfigurationException;
 import traffic.model.SimulationXMLReader;
 import traffic.model.TrafficSimulator;
@@ -34,8 +29,6 @@ import traffic.model.TrafficSimulator;
  */
 public class AlwaysRecomputeVehicleStrategyTest {
 	
-	private VehicleStrategy strategy = new AlwaysRecomputeVehicleStrategy();
-
 	@Test(timeout=10000)
 	public void cityMapLifelock() throws FileNotFoundException, ConfigurationException {
 		TrafficSimulator sim = SimulationXMLReader.buildSimulator( new File("resources/test/168-1280-0.xml") );
