@@ -51,8 +51,6 @@ public class TrafficMain {
 	
 	private static Logger logger = Logger.getLogger(TrafficMain.class); //Logger that outputs simulation information
 	
-	private static TrafficSimulator tsim; //The instance of the traffic simulator
-	
 	/**
 	 * 
 	 * @param args
@@ -75,7 +73,7 @@ public class TrafficMain {
 
 		logger.info("Loading Simulation");
 		try{
-			tsim = SimulationXMLReader.buildSimulator( new File(opts.getInputFile() ) );
+			TrafficSimulator tsim = SimulationXMLReader.buildSimulator( new File(opts.getInputFile() ) );
 			logger.info("Starting Simulation");
 			tsim.run();
 			logger.info("Stopping simulation");
