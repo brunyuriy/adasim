@@ -46,7 +46,7 @@ import traffic.graph.GraphNode;
 
 
 /**
- * Reads in an XML configuration file, validates it agains the Adasim schema
+ * Reads in an XML configuration file, validates it against the Adasim schema
  * and constructs a simulation.
  * 
  * @author Jochen Wuttke - wuttkej@gmail.com
@@ -108,8 +108,18 @@ final public class SimulationXMLReader {
 	private List<AdasimAgent> allAgents( Graph g ) throws ConfigurationException {
 		List<AdasimAgent> agents;
 		agents = new ArrayList<AdasimAgent>(buildVehicles( doc.getRootElement().getChild("cars" ), g ) );
+		addVehiclesToGraph(g, agents);
 		agents.addAll( builder.buildAgents( doc.getRootElement().getChild("agents" ) ) );
 		return agents;
+	}
+	
+	private void addVehiclesToGraph( Graph g, List<AdasimAgent>vehicles) {
+		for(AdasimAgent c: vehicles ) {
+			if ( c instanceof Vehicle ) {
+				Vehicle v = (Vehicle)c;
+				g.addVehicleAtNode(v, v.getStartNode().getID());
+			}
+		}
 	}
 
 	/**
