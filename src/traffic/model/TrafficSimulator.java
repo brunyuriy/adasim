@@ -61,7 +61,6 @@ public class TrafficSimulator{
 		}
 		this.graph = g;
 		this.agents = c;
-		addVehiclesToGraph();
 	}
 
 	/**
@@ -72,15 +71,6 @@ public class TrafficSimulator{
 	public void run() {
 		while(! checkAllFinish()) {
 			takeSimulationStep();
-		}
-	}
-
-	private void addVehiclesToGraph() {
-		for(AdasimAgent c: getAgents( Vehicle.class ) ) {
-			if ( c instanceof Vehicle ) {
-				Vehicle v = (Vehicle)c;
-				graph.addVehicleAtNode(v, v.getStartNode().getID());
-			}
 		}
 	}
 
