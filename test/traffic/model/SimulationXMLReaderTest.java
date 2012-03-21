@@ -36,7 +36,7 @@ import traffic.strategy.QuadraticSpeedStrategy;
  *
  */
 public class SimulationXMLReaderTest {
-	@Test (expected=FileNotFoundException.class)
+	@Test (expected=ConfigurationException.class)
 	public void testFileNotFound() throws JDOMException, IOException, ConfigurationException {
 		SimulationXMLReader.buildSimulator( new File("bad config") );
 	}

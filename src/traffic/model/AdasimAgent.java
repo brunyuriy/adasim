@@ -58,4 +58,29 @@ public interface AdasimAgent {
 	 * @param params
 	 */
 	public void setParameters( String params );
+	
+	/**
+	 * Injects the {@link TrafficSimulator} instance that contains this agent.
+	 * Access to this information is necessary when the agent wants structural
+	 * info about the simulation (graph, other agents, etc).
+	 * 
+	 * @param sim
+	 */
+	public void setSimulation( TrafficSimulator sim );
+	
+	/**
+	 * This method is used by the simulator to determine whether the entire 
+	 * simulation can stop or not. Each agent should respond with
+	 * <code>false</code> as long as it still might want to perform actions,
+	 * and with <code>true</code> once it no longer desires to perform actions.
+	 * <p>
+	 * Once an agent has responded with <code>true</code>, the simulator is
+	 * no longer obliged to send cylce notifications to this agent.
+	 * <p>
+	 * Once an agent has responded with <code>true</code>, it should never
+	 * respond with <code>false</code> afterwards.
+	 * 
+	 * @return true when the agent does no longer wish to perform actions
+	 */
+	public boolean isFinished();
 }

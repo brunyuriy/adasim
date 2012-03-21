@@ -138,28 +138,16 @@ public class SimulationXMLBuilderTest {
 
 }
 
-class FakeAgent implements AdasimAgent {
+class FakeAgent extends AbstractAdasimAgent {
 	
 	public FakeAgent(String s) {
 		
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see traffic.model.AdasimAgent#takeSimulationStep()
 	 */
 	@Override
-	public void takeSimulationStep() {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	/* (non-Javadoc)
-	 * @see traffic.model.AdasimAgent#setParameters(java.lang.String)
-	 */
-	@Override
-	public void setParameters(String params) {
-		// TODO Auto-generated method stub
-		
-	}
-	
+	public void takeSimulationStep() {}
+
 }
