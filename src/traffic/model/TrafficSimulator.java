@@ -74,13 +74,12 @@ public class TrafficSimulator{
 	 * Runs the simulation by trying to move each vehicle one at a time
 	 * @return True if the simulation is over
 	 */
-	private boolean takeSimulationStep() {
+	private void takeSimulationStep() {
 		logger.info( "SIMULATION: Cycle: " + cycle++ );
 		graph.setClosed();
 		for ( AdasimAgent agent : agents ) {
 			agent.takeSimulationStep();
 		}
-		return checkAllFinish();
 	}
 
 	//Checks to see if all vehicles have finished moving, returns true if so
@@ -119,7 +118,7 @@ public class TrafficSimulator{
 	public Graph getGraph() {
 		return graph;
 	}
-	
+
 	/**
 	 * @param sample
 	 * @return all agents that have the specified type
@@ -136,9 +135,8 @@ public class TrafficSimulator{
 	}
 
 	public void run() {
-		boolean done = false;
-		while(!done) {
-			done = takeSimulationStep();
+		while(! checkAllFinish()) {
+			takeSimulationStep();
 		}
 	}
 }
