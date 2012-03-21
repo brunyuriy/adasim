@@ -135,4 +135,10 @@ public class TrafficSimulator{
 		return l;
 	}
 
+	public void run() {
+		boolean done = false;
+		while(!done) {
+			done = takeSimulationStep();
+		}
+	}
 }
