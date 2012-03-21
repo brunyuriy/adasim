@@ -60,10 +60,10 @@ public class TrafficMain {
 	 * @throws IOException
 	 * @throws ConfigurationException
 	 */
-	public static void main(String[] args) throws JDOMException, IOException, ConfigurationException {
+	public static void main(String[] args) {
 		BasicConfigurator.configure();
 		ConfigurationOptions opts = null;
-		//logger.info( Version.versionString() );
+		logger.info( Version.versionString() );
 		try {
 			opts = ConfigurationOptions.parse(args);
 		} catch (Exception e) { //Catches invalid commandline statement
@@ -86,6 +86,5 @@ public class TrafficMain {
 		logger.info("Starting Simulation");
 		tsim.run();
 		logger.info("Stopping simulation");
-		System.exit(0);
 	}
 }
