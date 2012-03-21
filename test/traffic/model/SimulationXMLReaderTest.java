@@ -98,7 +98,7 @@ public class SimulationXMLReaderTest {
 	public void testStrategies() throws FileNotFoundException, ConfigurationException {
 		TrafficSimulator sim = SimulationXMLReader.buildSimulator( new File("resources/test/config.xml" ) );
 		Graph g = sim.getGraph();
-		assertEquals(g.getNode(6).getCurrentDelay(), 1);
+		assertEquals(1, g.getNode(6).getCurrentDelay());
 		g.addVehicleAtNode(sim.getVehicle(0), 6);
 		g.addVehicleAtNode(sim.getVehicle(1), 6);
 		assertEquals(3, g.getNode(6).getCurrentDelay()); //Tests Quadratic Speed Strategy
