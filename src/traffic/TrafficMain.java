@@ -84,10 +84,7 @@ public class TrafficMain {
 			System.exit(0);
 		}
 		logger.info("Starting Simulation");
-		boolean done = false;
-		while(!done) {
-			done = tsim.takeSimulationStep();
-		}
+		tsim.run();
 		logger.info("Stopping simulation");
 		System.exit(0);
 	}
