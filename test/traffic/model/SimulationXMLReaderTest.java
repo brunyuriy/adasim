@@ -139,10 +139,10 @@ public class SimulationXMLReaderTest {
 	@Test
 	public void invalidNeighborIsIgnored() throws FileNotFoundException, ConfigurationException {
 		Graph g = SimulationXMLReader.buildSimulator( new File("resources/test/invalid-neighbor.xml")).getGraph();
-		List<GraphNode> neighbors = g.getNeighbors( 0 ); 
+		List<GraphNode> neighbors = g.getNode( 0 ).getNeighbors(); 
 		assertEquals(1, neighbors.size() );
 		assertEquals(4, neighbors.get(0).getID() );
-		neighbors = g.getNeighbors( 1 ); 
+		neighbors = g.getNode( 1 ).getNeighbors(); 
 		assertEquals(null, neighbors );
 	}
 	

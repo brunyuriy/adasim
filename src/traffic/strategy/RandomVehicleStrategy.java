@@ -52,7 +52,7 @@ public class RandomVehicleStrategy extends AbstractVehicleStrategy {
 	public List<GraphNode> getPath(GraphNode c, GraphNode d) {
 		GraphNode next = c;
 		List<GraphNode> path = new ArrayList<GraphNode>();
-		while(!next.equals(d) && path.size() < graph.getNumNodes() ) {
+		while(!next.equals(d) && path.size() < graph.getNodes().size() ) {
 			List<GraphNode> dest = next.getNeighbors();
 			Random generator = new Random();
 			int rand = generator.nextInt(dest.size());
