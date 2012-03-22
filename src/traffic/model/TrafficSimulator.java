@@ -90,7 +90,7 @@ public class TrafficSimulator{
 	 */
 	private boolean checkAllFinish() {
 		for(AdasimAgent c: agents) {
-			if(c instanceof Vehicle && !((Vehicle)c).checkFinish()) {
+			if(!c.isFinished()) {
 				return false;
 			}
 		}
