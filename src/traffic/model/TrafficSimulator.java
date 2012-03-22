@@ -61,6 +61,10 @@ public class TrafficSimulator{
 		}
 		this.graph = g;
 		this.agents = c;
+		//inject this into agents
+		for ( AdasimAgent a : agents ) {
+			a.setSimulation( this );
+		}
 	}
 
 	/**
