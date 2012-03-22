@@ -153,8 +153,8 @@ public class SimulationXMLBuilder {
 	 * @return
 	 */
 	public Vehicle buildVehicle( Element vehicleNode ) {
-//		int start = Integer.parseInt(vehicleNode.getAttributeValue("start"));
-//		int end = Integer.parseInt(vehicleNode.getAttributeValue("end"));
+		//		int start = Integer.parseInt(vehicleNode.getAttributeValue("start"));
+		//		int end = Integer.parseInt(vehicleNode.getAttributeValue("end"));
 		int id = Integer.parseInt(vehicleNode.getAttributeValue("id"));
 		//TODO: move validation somewhere else!!!!
 
@@ -201,9 +201,7 @@ public class SimulationXMLBuilder {
 			}
 		}
 		for ( Element node: nodeElements ) {
-			if ( hasValidNeighbors(node) ) {
-				buildNeigbors(nodes, node );
-			}
+			buildNeigbors(nodes, node );
 		}
 		nodes = validate(nodes);
 		return nodes;		
@@ -221,11 +219,6 @@ public class SimulationXMLBuilder {
 			gn.setCapacity(capacity);
 		}
 		return gn;
-	}
-
-	private boolean hasValidNeighbors( Element node ) {
-		String n = node.getAttributeValue("neighbors").trim();
-		return !( n.equals("") );
 	}
 
 	/**
@@ -273,7 +266,9 @@ public class SimulationXMLBuilder {
 	 * @param node
 	 */
 	private void buildNeigbors(List<GraphNode> nodes, Element node) {
-		String[] neighbors = node.getAttributeValue("neighbors").trim().split(" ");
+		String nodeList = node.getAttributeValue("neighbors").trim();
+		if ( nodeList.equals("") ) return;	//this node has no outgoing edges
+		String[] neighbors = nodeList.split(" ");
 		GraphNode gn = getNode( nodes, node );
 		for ( String n : neighbors ) {
 			int nn = Integer.parseInt(n);
@@ -316,28 +311,23 @@ public class SimulationXMLBuilder {
 	}
 
 	/**
-	 * Removes nodes that have no neighbors, and removes links that point to invalid neighbors.
+	 * Removes links that point to invalid neighbors.
 	 * @param nodes
 	 * @return
 	 */
 	private List<GraphNode> reduce(List<GraphNode> nodes) {
 		List<GraphNode> l = new ArrayList<GraphNode>();
 		for ( GraphNode node : nodes ) {
-			boolean hasNeighbor = false;
 			for ( GraphNode i : node.getNeighbors() ) {
-				if ( nodes.contains( i ) ) {
-					hasNeighbor = true;
-				} else {
+				if ( ! nodes.contains( i ) ) {
 					node.removeEdge(i);
 				}
 			}
-			if ( hasNeighbor ) {
-				l.add( node );
-			}
+			l.add( node );
 		}
 		return l;
 	}
-	
+
 	/**
 	 * @param child
 	 * @return
@@ -357,7 +347,7 @@ public class SimulationXMLBuilder {
 		}
 		return agents;
 	}
-	
+
 	/**
 	 * @param agent
 	 * @return
@@ -367,7 +357,7 @@ public class SimulationXMLBuilder {
 		String clazz = agent.getAttributeValue("class");
 		assert clazz != null;
 		String parameters = agent.getAttributeValue("parameters");
-		
+
 		AdasimAgent agt = null;
 		try {
 			Class<?> cls = this.getClass().getClassLoader().loadClass(clazz);
@@ -376,7 +366,7 @@ public class SimulationXMLBuilder {
 		} catch (Exception e) {
 			throw new ConfigurationException( "Invalid agent class " + clazz, e);
 		} 
-		
+
 		return agt;
 	}
 

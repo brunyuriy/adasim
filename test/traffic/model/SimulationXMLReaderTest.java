@@ -14,8 +14,7 @@
 
 package traffic.model;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -121,9 +120,9 @@ public class SimulationXMLReaderTest {
 	}
 	
 	@Test
-	public void emptyNeighborListIsIgnored() throws FileNotFoundException, ConfigurationException {
+	public void emptyNeighborListIsNotIgnored() throws FileNotFoundException, ConfigurationException {
 		Graph g = SimulationXMLReader.buildSimulator( new File("resources/test/unconnected-node.xml")).getGraph();
-		assertEquals( g.getNodes().size(), 9);
+		assertEquals( g.getNodes().size(), 10);
 	}
 	
 	@Test(expected=ConfigurationException.class)
@@ -143,7 +142,7 @@ public class SimulationXMLReaderTest {
 		assertEquals(1, neighbors.size() );
 		assertEquals(4, neighbors.get(0).getID() );
 		neighbors = g.getNode( 1 ).getNeighbors(); 
-		assertEquals(null, neighbors );
+		assertTrue( neighbors.isEmpty() );
 	}
 	
 	@Test
