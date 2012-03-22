@@ -47,7 +47,6 @@ public class Vehicle extends AbstractAdasimAgent {
 	private GraphNode end; //Destination position
 	private GraphNode currentNode; //Current position
 	private int id; //This vehicle's number in the list of vehicles
-	private boolean finish; //True if the vehicle has reached its destination
 	protected VehicleInfo info; //Info for the vehicle
 	private VehicleStrategy cs; //Strategy the vehicle uses to traverse the graph
 	
@@ -61,7 +60,6 @@ public class Vehicle extends AbstractAdasimAgent {
 		setStartNode(start);
 		setEndNode(end);
 		id = num;
-		finish = false;
 		setStrategy(strat);
 	}
 	
@@ -120,21 +118,6 @@ public class Vehicle extends AbstractAdasimAgent {
 	}
 
 	/**
-	 * @return True if the vehicle is at its ending node, false otherwise
-	 */
-	public boolean checkFinish() {
-		return finish;
-	}
-
-	/**
-	 * Sets the finish variable to true if the vehicle's current position
-	 * is the same as its ending position
-	 */
-	public void setFinish() {
-		finish = true;
-	}
-
-	/**
 	 * @return the cs
 	 */
 	public VehicleStrategy getStrategy() {
@@ -179,23 +162,41 @@ public class Vehicle extends AbstractAdasimAgent {
 	public void takeSimulationStep() {
 		GraphNode nextNode = cs.getNextNode();
 		if ( nextNode == null ) {
-			//this happens if there is no path, or the vehicle is at its goal
-			getCurrentPosition().park(this);
-			setFinish();
+			fakeFinish();
 			logger.info( "STOP: " + vehiclePosition() );
 		} else if (!currentNode.isNeighbor(nextNode)) {
 			logger.info( "HALT: Node " + nextNode.getID() + " is not a neighbor of " + currentNode);
+			fakeFinish();
 		} else {
 			if(nextNode.isClosed()) {
 				logger.info( "HALT: Node " + nextNode.getID() + " is currently closed");
+				fakeFinish();
 			} else if(currentNode.isClosed()) {
 				logger.info( "HALT: Vehicle " + id + " is currently at a closed node");
+				fakeFinish();
 			} else {
 				logger.info( "MOVE: " + vehiclePosition() + " To:" + nextNode.getID() );
 				setCurrentPosition(nextNode);
 				nextNode.enterNode(this);
 			}
 		}
+	}
+
+	/**
+	 * 
+	 */
+	private void fakeFinish() {
+		//TODO: replace with correct code in GraphNode
+		getCurrentPosition().park(this);
+		setCurrentPosition(end);
+	}
+
+	/* (non-Javadoc)
+	 * @see traffic.model.AbstractAdasimAgent#isFinished()
+	 */
+	@Override
+	public boolean isFinished() {
+		return currentNode != null && currentNode.equals(end);
 	}
 
 }

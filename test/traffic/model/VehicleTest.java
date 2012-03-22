@@ -77,9 +77,9 @@ public class VehicleTest {
 		assertEquals(tester.getCurrentPosition().getID(), 1);
 		tester.setCurrentPosition(sim.getGraph().getNode(2));
 		assertEquals(tester.getCurrentPosition().getID(), 2);
-		assertEquals(tester.checkFinish(), false);
+		assertEquals(tester.isFinished(), false);
 		tester.takeSimulationStep();
 		assertEquals(tester.getCurrentPosition().getID(), 7);
-		assertEquals(tester.checkFinish(), true);
+		assertEquals(tester.isFinished(), true);
 	}
 }
