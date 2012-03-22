@@ -34,6 +34,7 @@ package traffic.model;
  * that it will use to select its path from start to end
  * 
  * @author Jonathan Ramaswamy - ramaswamyj12@gmail.com
+ * @author Jochen Wuttke - wuttkej@gmail.com
  */
 
 import org.apache.log4j.Logger;
@@ -160,6 +161,8 @@ public class Vehicle extends AbstractAdasimAgent {
 	 */
 	@Override
 	public void takeSimulationStep() {
+		if (isFinished()) return;	//quick end if we are done
+		
 		GraphNode nextNode = cs.getNextNode();
 		if ( nextNode == null ) {
 			fakeFinish();
