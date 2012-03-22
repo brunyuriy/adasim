@@ -132,7 +132,7 @@ final public class SimulationXMLReader {
 			if ( c != null ) {
 				l.add(c);
 				//add valid vehicle to their start node
-				g.addVehicleAtNode(c, c.getStartNode().getID());
+				c.getStartNode().enterNode(c);
 			}
 		}
 		return l;	
