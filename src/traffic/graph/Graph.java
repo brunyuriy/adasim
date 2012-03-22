@@ -114,16 +114,6 @@ public final class Graph {
 	}
 
 	/**
-	 * Returns the nodes that can be accessed directly from the given node
-	 * @param i
-	 * @return
-	 */
-	public List<GraphNode> getNeighbors(int i) {
-		GraphNode n = get(nodes, i);
-		return ( n == null? null:n.getNeighbors() );
-	}
-	
-	/**
 	 * Adds the vehicle to the given node
 	 * @param c
 	 * @param n
@@ -131,36 +121,6 @@ public final class Graph {
 	public void addVehicleAtNode(Vehicle c, int n) {
 		GraphNode gn = get(nodes, n);
 		gn.enterNode(c);
-	}
-	
-	/**
-	 * Shifts the given vehicle from the old node to the new one
-	 * @param c
-	 * @param o
-	 * @param n
-	 */
-	public void changeVehicleNode(Vehicle c, int oldNode, int targetNode) {
-		GraphNode gn = get(nodes,targetNode);
-		//GraphNode go = get(nodes,o);
-		//go.exitNode(c);
-		gn.enterNode(c);
-	}
-	
-	/**
-	 * Returns the delay at the given node
-	 * @param n
-	 * @return
-	 */
-	public int getDelayAtNode(int n) {
-		return get(nodes,n).getDelay();
-	}
-	
-	/**
-	 * Returns the number of nodes in the graph
-	 * @return
-	 */
-	public int getNumNodes() {
-		return nodes.size();
 	}
 	
 	/**
