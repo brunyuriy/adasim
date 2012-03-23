@@ -129,6 +129,12 @@ public class SimulationXMLReaderTest {
 	public void noNodesThrows() throws FileNotFoundException, ConfigurationException {
 		Graph g = SimulationXMLReader.buildSimulator(new File("resources/test/no-nodes.xml")).getGraph();
 	}
+	
+	@Test(expected=ConfigurationException.class)
+	public void oneNodesIsOK() throws FileNotFoundException, ConfigurationException {
+		Graph g = SimulationXMLReader.buildSimulator(new File("resources/test/one-node.xml")).getGraph();
+	}
+
 
 	@Test(expected=ConfigurationException.class)
 	public void noGraphThrows() throws FileNotFoundException, ConfigurationException {
