@@ -63,6 +63,9 @@ public interface AdasimAgent {
 	 * Injects the {@link TrafficSimulator} instance that contains this agent.
 	 * Access to this information is necessary when the agent wants structural
 	 * info about the simulation (graph, other agents, etc).
+	 * <p>
+	 * As a consequence, all agents should access the relevant state only
+	 * through this reference. (this is more of an internal development note).
 	 * 
 	 * @param sim
 	 */
