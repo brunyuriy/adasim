@@ -53,7 +53,6 @@ public final class GraphNode extends AbstractAdasimAgent {
 	private int delay; //The basic delay of this node. To be modified by the speed strategy
 	private NodeVehicleQueue queue; //Holds the vehicles on this node and deals with the traffic
 	private int capacity; //The number of vehicles the road can hold before the speed strategy takes effect
-	private RoadAgent roadAgent;
 	private boolean closed;
 	
 	/**
@@ -81,8 +80,6 @@ public final class GraphNode extends AbstractAdasimAgent {
 		this.delay = delay;
 		queue = new NodeVehicleQueue();
 		this.capacity = capacity;
-		roadAgent = new RoadAgent();
-		closed = roadAgent.isClosed();
 	}
 	
 	/* ***************************************************
@@ -196,8 +193,8 @@ public final class GraphNode extends AbstractAdasimAgent {
 		return queue.size();
 	}
 	
-	public void setClosed() {
-		closed = roadAgent.isClosed();
+	public void setClosed(boolean close) {
+		closed = close;
 	}
 	
 	public boolean isClosed() {

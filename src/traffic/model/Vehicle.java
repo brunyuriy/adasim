@@ -173,10 +173,10 @@ public class Vehicle extends AbstractAdasimAgent {
 		} else {
 			if(nextNode.isClosed()) {
 				logger.info( "HALT: Node " + nextNode.getID() + " is currently closed");
-				fakeFinish();
+				//fakeFinish();
 			} else if(currentNode.isClosed()) {
 				logger.info( "HALT: Vehicle " + id + " is currently at a closed node");
-				fakeFinish();
+				//fakeFinish();
 			} else {
 				logger.info( "MOVE: " + vehiclePosition() + " To:" + nextNode.getID() );
 				setCurrentPosition(nextNode);
