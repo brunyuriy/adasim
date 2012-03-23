@@ -54,6 +54,7 @@ public class TrafficSimulator{
 	private List<AdasimAgent> agents; //List of vehicles in the simulation
 	private Graph graph; //The graph the vehicles run on
 	private long cycle = 1;
+	private RoadAgent roadagent;
 
 	public TrafficSimulator( Graph g, List<AdasimAgent> c ) {
 		if(g == null || c == null) {
@@ -65,6 +66,7 @@ public class TrafficSimulator{
 		for ( AdasimAgent a : agents ) {
 			a.setSimulation( this );
 		}
+		roadagent = new RoadAgent();
 	}
 
 	/**
@@ -83,7 +85,6 @@ public class TrafficSimulator{
 	 */
 	private void takeSimulationStep() {
 		logger.info( "SIMULATION: Cycle: " + cycle++ );
-		graph.setClosed();
 		for ( AdasimAgent agent : agents ) {
 			agent.takeSimulationStep();
 		}

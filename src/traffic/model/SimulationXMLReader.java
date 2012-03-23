@@ -64,11 +64,11 @@ final public class SimulationXMLReader {
 		SAXBuilder sbuilder = new SAXBuilder(true);
 		sbuilder.setProperty("http://java.sun.com/xml/jaxp/properties/schemaLanguage", "http://www.w3.org/2001/XMLSchema");
 		try {
-			URL res = SimulationXMLReader.class.getClassLoader().getResource("resources/xml/adasim.xsd");
+			/*URL res = SimulationXMLReader.class.getClassLoader().getResource("C:/Users/Jonathan/workspace/TrafficSim/resources/xml/adasim.xsd");
 			if (res == null ) {
 				throw new ConfigurationException( "XML Schema adasim.xsd not found on classpath" );
-			}
-			sbuilder.setProperty("http://java.sun.com/xml/jaxp/properties/schemaSource", res.openStream() );
+			}*/
+			sbuilder.setProperty("http://java.sun.com/xml/jaxp/properties/schemaSource", "C:/Users/Jonathan/workspace/TrafficSim/resources/xml/adasim.xsd" );
 			sbuilder.setErrorHandler(new SimpleErrorHandler());
 			doc = sbuilder.build(f);
 		} catch (JDOMException e) {
