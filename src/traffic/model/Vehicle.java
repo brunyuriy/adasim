@@ -43,27 +43,27 @@ import traffic.graph.GraphNode;
 import traffic.strategy.VehicleStrategy;
 
 public class Vehicle extends AbstractAdasimAgent {
-	
+
 	private GraphNode start; //Starting position
 	private GraphNode end; //Destination position
 	private GraphNode currentNode; //Current position
 	private int id; //This vehicle's number in the list of vehicles
 	protected VehicleInfo info; //Info for the vehicle
 	private VehicleStrategy cs; //Strategy the vehicle uses to traverse the graph
-	
+
 	private static Logger logger = Logger.getLogger(Vehicle.class);
-	
+
 	protected Vehicle( int id ) {
 		info = new VehicleInfo();
 	}
-	
+
 	public Vehicle(GraphNode start, GraphNode end, VehicleStrategy strat, int num) {
 		setStartNode(start);
 		setEndNode(end);
 		id = num;
 		setStrategy(strat);
 	}
-	
+
 	/**
 	 * @return The starting node for the vehicle
 	 */
@@ -136,18 +136,18 @@ public class Vehicle extends AbstractAdasimAgent {
 			cs.setVehicleId(id);
 		}
 	}
-	
+
 	/**
 	 * @return the position of the car as a string
 	 */
-	private String vehiclePosition() {
+	public String vehiclePosition() {
 		StringBuffer buf = new StringBuffer( "Vehicle: ");
 		buf.append( getID() );
 		buf.append(" At: " );
 		buf.append( getCurrentPosition().getID() );
 		return buf.toString();
 	}
-	
+
 
 	/**
 	 * @return the info
@@ -162,26 +162,15 @@ public class Vehicle extends AbstractAdasimAgent {
 	@Override
 	public void takeSimulationStep( long cycle ) {
 		if (isFinished()) return;	//quick end if we are done
-		
+
 		GraphNode nextNode = cs.getNextNode();
 		if ( nextNode == null ) {
 			fakeFinish();
 			logger.info( "STOP: " + vehiclePosition() );
-		} else if (!currentNode.isNeighbor(nextNode)) {
-			logger.info( "HALT: Node " + nextNode.getID() + " is not a neighbor of " + currentNode);
-			fakeFinish();
 		} else {
-			if(nextNode.isClosed()) {
-				logger.info( "HALT: Node " + nextNode.getID() + " is currently closed");
-				fakeFinish();
-			} else if(currentNode.isClosed()) {
-				logger.info( "HALT: Vehicle " + id + " is currently at a closed node");
-				fakeFinish();
-			} else {
-				logger.info( "MOVE: " + vehiclePosition() + " To:" + nextNode.getID() );
-				setCurrentPosition(nextNode);
-				nextNode.enterNode(this);
-			}
+			logger.info( "MOVE: " + vehiclePosition() + " To:" + nextNode.getID() );
+			setCurrentPosition(nextNode);
+			nextNode.enterNode(this);
 		}
 	}
 

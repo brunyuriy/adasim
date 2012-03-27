@@ -80,7 +80,8 @@ public class SimulationBuilder {
 	 */
 	TrafficSimulator build( ConfigurationOptions opts ) throws ConfigurationException, IOException, JDOMException, ClassNotFoundException, InstantiationException, IllegalAccessException {
 		Graph g = buildGraph(opts);
-		return new TrafficSimulator( buildGraph(opts), null, buildVehicles(opts, g) );
+		VehicleManager m = new VehicleManager();
+		return new TrafficSimulator( buildGraph(opts), m, buildVehicles(opts, g) );
 	}
 
 	/**

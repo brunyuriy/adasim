@@ -64,6 +64,7 @@ public final class TrafficSimulator{
 		this.graph = g;
 		this.agents = c;
 		this.manager = m;
+		this.manager.setSimulation(this);
 		//inject this into agents
 		for ( AdasimAgent a : agents ) {
 			a.setSimulation( this );
@@ -86,8 +87,8 @@ public final class TrafficSimulator{
 	 * This is package private for testing only. NEVER call this explicitly!
 	 */
 	void takeSimulationStep() {
-		logger.info( "SIMULATION: Cycle: " + cycle++ );
-		graph.setClosed();
+		logger.info( "SIMULATION: Cycle: " + ++cycle );
+		//graph.setClosed();
 		manager.takeSimulationStep(cycle);
 		for ( AdasimAgent agent : agents ) {
 			agent.takeSimulationStep( cycle );
@@ -125,6 +126,16 @@ public final class TrafficSimulator{
 				return c;
 		}
 		return null;
+	}
+	
+	/**
+	 * Add a vehicle to the simulation. It will be added
+	 * to its starting node and start moving in the next simulation cycle.
+	 * @param v
+	 */
+	public void addVehicle( Vehicle v ) {
+		agents.add(v);
+		v.getStartNode().enterNode(v);
 	}
 
 	/**
