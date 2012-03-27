@@ -19,8 +19,10 @@ import static org.junit.Assert.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.List;
 
+import org.jdom.Document;
 import org.jdom.JDOMException;
 import org.junit.Test;
 
@@ -83,6 +85,18 @@ public class SimulationXMLReaderTest {
 	public void noVehiclesThrows() throws JDOMException, IOException, ConfigurationException {
 		SimulationXMLReader.buildSimulator( new File("resources/test/no-cars.xml" )).getAgents(Vehicle.class);
 		fail( "This should throw a meaningful exception to be handled by main()" );
+	}
+	
+	@Test(expected=ConfigurationException.class)
+	public void carNegativeTimeThrows() throws JDOMException, IOException, ConfigurationException {
+		SimulationXMLReader.buildSimulator( new File("resources/test/negative-time.xml" ));
+		fail( "Should throw a ConfigurationException" );
+	}
+
+	@Test
+	public void carValidTimeDoesNotThrow() throws JDOMException, IOException, ConfigurationException {
+		SimulationXMLReader.buildSimulator( new File("resources/test/valid-time.xml" ));
+		//this passes if no exception is thrown
 	}
 	
 	@Test
