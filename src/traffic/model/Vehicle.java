@@ -160,7 +160,7 @@ public class Vehicle extends AbstractAdasimAgent {
 	 * @see traffic.model.AdasimAgent#takeSimulationStep()
 	 */
 	@Override
-	public void takeSimulationStep() {
+	public void takeSimulationStep( long cycle ) {
 		if (isFinished()) return;	//quick end if we are done
 		
 		GraphNode nextNode = cs.getNextNode();

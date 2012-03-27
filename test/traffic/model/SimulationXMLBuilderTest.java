@@ -147,6 +147,6 @@ class FakeAgent extends AbstractAdasimAgent {
 	 * @see traffic.model.AdasimAgent#takeSimulationStep()
 	 */
 	@Override
-	public void takeSimulationStep() {}
+	public void takeSimulationStep( long cycle) {}
 
 }

@@ -92,7 +92,7 @@ final public class SimulationXMLReader {
 		try {
 			SimulationXMLReader factory = new SimulationXMLReader(config);
 			Graph g = builder.buildGraph( factory.doc.getRootElement().getChild("graph" ) );
-			TrafficSimulator sim = new TrafficSimulator( g, factory.allAgents( g ) ); 
+			TrafficSimulator sim = new TrafficSimulator( g, null, factory.allAgents( g ) ); 
 			return sim;
 		} catch ( ConfigurationException e ) {
 			buildError(e);

@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.Map;
 
 import traffic.graph.Graph;
+import traffic.model.AbstractAdasimAgent;
 import traffic.model.TrafficSimulator;
 import traffic.model.Vehicle;
 
@@ -46,12 +47,12 @@ import traffic.model.Vehicle;
  * @author Jochen Wuttke - wuttkej@gmail.com
  *
  */
-public final class VehicleManager {
+public final class VehicleManager extends AbstractAdasimAgent {
 
-	private Map<Integer, List<Vehicle>> startingQueue;
+	private Map<Long, List<Vehicle>> startingQueue;
 	
 	public VehicleManager() {
-		startingQueue = new HashMap<Integer, List<Vehicle>>();
+		startingQueue = new HashMap<Long, List<Vehicle>>();
 	}
 	
 	/**
@@ -60,12 +61,12 @@ public final class VehicleManager {
 	 * @param v
 	 * @param time must be <code>> 0</code>
 	 */
-	public void addVehicle( Vehicle v, int time ) {
+	public void addVehicle( Vehicle v, long time ) {
 		assert time > 0;
 		getSlot(time).add(v);
 	}
 	
-	private List<Vehicle> getSlot( int t ) {
+	private List<Vehicle> getSlot( long t ) {
 		List<Vehicle> l = startingQueue.get(t);
 		if ( l == null ) {
 			l = new ArrayList<Vehicle>();
@@ -75,25 +76,23 @@ public final class VehicleManager {
 	}
 	
 	/**
-	 * This method should only be called by the {@link TrafficSimulator}.
-	 * It is <em>not</em> for other users.
-	 * @param g
-	 * @param t
+	 * "Private" accessor method. For testing only.
+	 * @return
 	 */
-	public void cycle( Graph g, int t ) {
-		List<Vehicle> l = startingQueue.remove(t);
+	Map<Long, List<Vehicle>> getQueue() {
+		return startingQueue;
+	}
+
+	/* (non-Javadoc)
+	 * @see traffic.model.AdasimAgent#takeSimulationStep()
+	 */
+	@Override
+	public void takeSimulationStep( long cycle ) {
+		List<Vehicle> l = startingQueue.remove(cycle);
 		if ( l != null ) {
 			for ( Vehicle v : l ) {
 				v.getStartNode().enterNode(v);
 			}
 		}
-	}
-	
-	/**
-	 * "Private" accessor method. For testing only.
-	 * @return
-	 */
-	Map<Integer, List<Vehicle>> getQueue() {
-		return startingQueue;
 	}
 }

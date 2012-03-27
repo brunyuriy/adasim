@@ -33,6 +33,7 @@ import java.util.*;
 import org.apache.log4j.Logger;
 
 import traffic.graph.Graph;
+import traffic.model.internal.VehicleManager;
 
 /**
  * TrafficSimulator is the main program for running the simulator. It keeps track
@@ -46,21 +47,23 @@ import traffic.graph.Graph;
  * @author Jochen Wuttke - wuttkej@gmail.com
  */
 
-public class TrafficSimulator{
+public final class TrafficSimulator{
 
 	private static Logger logger = Logger.getLogger(TrafficSimulator.class);
 
 
 	private List<AdasimAgent> agents; //List of vehicles in the simulation
 	private Graph graph; //The graph the vehicles run on
+	private VehicleManager manager;
 	private long cycle = 1;
 
-	public TrafficSimulator( Graph g, List<AdasimAgent> c ) {
+	public TrafficSimulator( Graph g, VehicleManager m, List<AdasimAgent> c ) {
 		if(g == null || c == null) {
 			throw new IllegalArgumentException();
 		}
 		this.graph = g;
 		this.agents = c;
+		this.manager = m;
 		//inject this into agents
 		for ( AdasimAgent a : agents ) {
 			a.setSimulation( this );
@@ -85,7 +88,7 @@ public class TrafficSimulator{
 		logger.info( "SIMULATION: Cycle: " + cycle++ );
 		graph.setClosed();
 		for ( AdasimAgent agent : agents ) {
-			agent.takeSimulationStep();
+			agent.takeSimulationStep( cycle );
 		}
 	}
 
