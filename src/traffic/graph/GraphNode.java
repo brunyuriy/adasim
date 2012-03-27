@@ -241,11 +241,11 @@ public final class GraphNode extends AbstractAdasimAgent {
 	 * SIMULATION MANAGEMENT METHODS
 	 *************************************************** */
 
-	public void takeSimulationStep() {
+	public void takeSimulationStep( long cycle ) {
 		Set<Vehicle> finishedVehicles = queue.moveVehicles();
 		if ( finishedVehicles == null ) return;
 		for ( Vehicle c : finishedVehicles ) {
-			c.takeSimulationStep();
+			c.takeSimulationStep( cycle );
 		}
 	}
 
