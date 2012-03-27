@@ -65,8 +65,8 @@ public class VehicleManagerTest {
 		int pre_size = manager.getQueue().size();
 		manager.addVehicle( new Vehicle(null, null, null, 1), 5);
 		assertEquals( pre_size + 1, manager.getQueue().size() );
-		assertNotNull( manager.getQueue().get(5) );
-		assertNotNull( manager.getQueue().get(5).get(0) );
+		assertNotNull( manager.getQueue().get(5L) );
+		assertNotNull( manager.getQueue().get(5L).get(0) );
 	}
 
 	@Test
