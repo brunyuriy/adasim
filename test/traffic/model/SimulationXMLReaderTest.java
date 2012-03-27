@@ -93,8 +93,11 @@ public class SimulationXMLReaderTest {
 
 	@Test
 	public void carValidTimeDoesNotThrow() throws JDOMException, IOException, ConfigurationException {
-		SimulationXMLReader.buildSimulator( new File("resources/test/valid-time.xml" ));
-		//this passes if no exception is thrown
+		TrafficSimulator sim = SimulationXMLReader.buildSimulator( new File("resources/test/valid-time.xml" ));
+		assertEquals( 1, sim.getGraph().getNode(4).getCurrentDelay() );
+		sim.takeSimulationStep(); //cycle 1
+		sim.takeSimulationStep(); //cycle 2, this should add the new car
+		assertEquals( 2, sim.getGraph().getNode(4).getCurrentDelay() );
 	}
 	
 	@Test

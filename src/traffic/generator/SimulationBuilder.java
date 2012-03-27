@@ -32,6 +32,7 @@ import traffic.model.Vehicle;
 import traffic.model.ConfigurationException;
 import traffic.model.SimulationXMLBuilder;
 import traffic.model.TrafficSimulator;
+import traffic.model.internal.VehicleManager;
 import traffic.strategy.VehicleStrategy;
 import traffic.strategy.LinearSpeedStrategy;
 import traffic.strategy.SpeedStrategy;

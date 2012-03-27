@@ -34,9 +34,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import traffic.graph.Graph;
 import traffic.model.AbstractAdasimAgent;
-import traffic.model.TrafficSimulator;
 import traffic.model.Vehicle;
 
 /**
@@ -95,4 +93,13 @@ public final class VehicleManager extends AbstractAdasimAgent {
 			}
 		}
 	}
+
+	/* (non-Javadoc)
+	 * @see traffic.model.AbstractAdasimAgent#isFinished()
+	 */
+	@Override
+	public boolean isFinished() {
+		return startingQueue.isEmpty();
+	}
+	
 }
