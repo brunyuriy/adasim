@@ -34,7 +34,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import traffic.model.AbstractAdasimAgent;
+import traffic.model.TrafficSimulator;
 import traffic.model.Vehicle;
 
 /**
@@ -46,6 +49,8 @@ import traffic.model.Vehicle;
  *
  */
 public final class VehicleManager extends AbstractAdasimAgent {
+
+	private static Logger logger = Logger.getLogger(TrafficSimulator.class);
 
 	private Map<Long, List<Vehicle>> startingQueue;
 	
@@ -89,7 +94,8 @@ public final class VehicleManager extends AbstractAdasimAgent {
 		List<Vehicle> l = startingQueue.remove(cycle);
 		if ( l != null ) {
 			for ( Vehicle v : l ) {
-				v.getStartNode().enterNode(v);
+				logger.info( "ENTER: " + v.vehiclePosition() );
+				this.simulator.addVehicle( v );
 			}
 		}
 	}
