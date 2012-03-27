@@ -55,10 +55,10 @@ public final class TrafficSimulator{
 	private List<AdasimAgent> agents; //List of vehicles in the simulation
 	private Graph graph; //The graph the vehicles run on
 	private VehicleManager manager;
-	private long cycle = 1;
+	private long cycle = 0;
 
 	public TrafficSimulator( Graph g, VehicleManager m, List<AdasimAgent> c ) {
-		if(g == null || c == null) {
+		if(g == null || c == null || m == null ) {
 			throw new IllegalArgumentException();
 		}
 		this.graph = g;
@@ -82,11 +82,13 @@ public final class TrafficSimulator{
 	}
 
 	/**
-	 * All agents in the simulator take one step.
+	 * All agents in the simulator take one step. 
+	 * This is package private for testing only. NEVER call this explicitly!
 	 */
-	private void takeSimulationStep() {
+	void takeSimulationStep() {
 		logger.info( "SIMULATION: Cycle: " + cycle++ );
 		graph.setClosed();
+		manager.takeSimulationStep(cycle);
 		for ( AdasimAgent agent : agents ) {
 			agent.takeSimulationStep( cycle );
 		}
@@ -96,6 +98,7 @@ public final class TrafficSimulator{
 	 * @return true if all vehicles return true on their <code>checkFinish()</code> call
 	 */
 	private boolean checkAllFinish() {
+		if ( ! manager.isFinished() ) return false;
 		for(AdasimAgent c: agents) {
 			if(!c.isFinished()) {
 				return false;
