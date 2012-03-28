@@ -33,6 +33,8 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.jdom.Document;
 import org.jdom.JDOMException;
@@ -42,8 +44,10 @@ import org.junit.Test;
 
 import traffic.graph.Graph;
 import traffic.graph.GraphNode;
+import traffic.model.AdasimAgent;
 import traffic.model.ConfigurationException;
 import traffic.model.SimulationXMLBuilder;
+import traffic.model.TrafficSimulator;
 import traffic.model.Vehicle;
 
 /**
@@ -80,6 +84,7 @@ public class VehicleManagerTest {
 				"<node id=\"5\" neighbors=\"2 4\" delay=\"2\" strategy=\"traffic.strategy.LinearSpeedStrategy\"/>" +
 				"</graph>" ) );
 		graph = builder.buildGraph( doc.getRootElement() );
+		new TrafficSimulator(graph, manager, (List<AdasimAgent>)new ArrayList<AdasimAgent>() );
 		assertEquals( 2, graph.getNode(5).getCurrentDelay() );
 		GraphNode start = graph.getNode(5);
 		manager.addVehicle( new Vehicle(start, null, null, 1), 5);

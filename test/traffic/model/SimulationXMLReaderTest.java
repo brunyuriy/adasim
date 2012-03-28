@@ -97,6 +97,7 @@ public class SimulationXMLReaderTest {
 		assertEquals( 1, sim.getGraph().getNode(4).getCurrentDelay() );
 		sim.takeSimulationStep(); //cycle 1
 		sim.takeSimulationStep(); //cycle 2, this should add the new car
+		//TODO: this test is broken
 		assertEquals( 2, sim.getGraph().getNode(4).getCurrentDelay() );
 	}
 	
