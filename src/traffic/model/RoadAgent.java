@@ -35,8 +35,10 @@ import java.util.Random;
  * @author Jonathan Ramaswamy
  *
  */
-public class RoadAgent {
+public class RoadAgent implements AdasimAgent {
 
+	TrafficSimulator sim;
+	
 	public RoadAgent() {
 		
 	}
@@ -49,5 +51,27 @@ public class RoadAgent {
 		Random generator = new Random();
 		int rand = generator.nextInt(3);
 		return rand == 1;
+	}
+
+	@Override
+	public void takeSimulationStep() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setParameters(String params) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setSimulation(TrafficSimulator sim) {
+		this.sim = sim;
+	}
+
+	@Override
+	public boolean isFinished() {
+		return false;
 	}
 }
