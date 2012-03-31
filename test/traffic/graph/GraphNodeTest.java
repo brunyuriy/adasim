@@ -15,10 +15,13 @@
 package traffic.graph;
 
 
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 
 import traffic.model.Vehicle;
+import traffic.strategy.AbstractVehicleStrategy;
 import traffic.strategy.LinearSpeedStrategy;
 import static org.junit.Assert.*;
 
@@ -31,37 +34,80 @@ import static org.junit.Assert.*;
 
 public class GraphNodeTest {
 
-	private GraphNode node;
+	private GraphNode node, node2;
 	
 	@Before
 	public void setUp() {
-		int delay = 3;
-		int capacity = 5;
-		node = new GraphNode(0, new LinearSpeedStrategy(), delay, capacity);
+		node = new GraphNode(0, new LinearSpeedStrategy(), 1, 0);
+		node2 = new GraphNode(1, new LinearSpeedStrategy(), 1,0 ) ;
+		node.addEdge( node2 );
+	}
+	
+	@Test
+	public void testNodeDelay() {
 		Vehicle c = new Vehicle(null, null, null, 0);
 		node.enterNode(c);
 		c = new Vehicle(null, null, null, 1);
 		node.enterNode(c);
 		c = new Vehicle(null, null, null, 2);
 		node.enterNode(c);
+		//Number < Capacity
+		assertEquals(1, node.getDelay());
+		assertEquals(4, node.getCurrentDelay());
+		//Number = Capacity
+		node.setCapacity(3);
+		assertEquals(1, node.getDelay());
+		assertEquals(1, node.getCurrentDelay() );
+		//Number > Capacity
+		Vehicle c2 = new Vehicle(null, null, null, 3);
+		node.enterNode(c2);
+		assertEquals(1, node.getDelay());
+		assertEquals(2, node.getCurrentDelay());
 	}
 	
 	@Test
-	public void testNodeDelay() {
-		//Number < Capacity
-		assertEquals(node.getDelay(), 3);
-		assertEquals(node.getCurrentDelay(), 3);
-		//Number = Capacity
-		node.setCapacity(3);
-		assertEquals(node.getDelay(), 3);
-		assertEquals(node.getCurrentDelay(), 3);
-		//Number > Capacity
-		Vehicle c = new Vehicle(null, null, null, 3);
-		node.enterNode(c);
-		assertEquals(node.getDelay(), 3);
-		assertEquals(node.getCurrentDelay(), 4);
+	public void invalidRoutingPrevented() {
+		Vehicle v = new Vehicle( node, null, new AbstractVehicleStrategy() {
+			
+			@Override
+			public List<GraphNode> getPath(GraphNode from, GraphNode to) {
+				return null;
+			}
+			
+			@Override
+			public GraphNode getNextNode() {
+				return new GraphNode(2, null, 4);
+			}
+		}, 1 );
+		
+		node.enterNode(v);
+		assertEquals( 2, node.getCurrentDelay() );	//this should imply that the car is still waiting
+		node.takeSimulationStep(1);
+		node.takeSimulationStep(2);
+		assertEquals( 1, node.getCurrentDelay() );	//this should imply that the car has been removed
 	}
-	
-	
 
+	@Test
+	public void validRoutingConfirmed() {
+		Vehicle v = new Vehicle( node, null, new AbstractVehicleStrategy() {
+			
+			@Override
+			public List<GraphNode> getPath(GraphNode from, GraphNode to) {
+				return null;
+			}
+			
+			@Override
+			public GraphNode getNextNode() {
+				return node2;
+			}
+		}, 1 );
+		
+		node.enterNode(v);
+		assertEquals( 2, node.getCurrentDelay() );	//this should imply that the car is still waiting
+		assertEquals( 1, node2.getCurrentDelay() );	//this should imply that the car is still waiting
+		node.takeSimulationStep(1);
+		node.takeSimulationStep(2);
+		assertEquals( 1, node.getCurrentDelay() );	//this should imply that the car has been removed
+		assertEquals( 2, node2.getCurrentDelay() );	//this should imply that the car is still waiting
+	}
 }
