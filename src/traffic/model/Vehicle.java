@@ -170,8 +170,8 @@ public class Vehicle extends AbstractAdasimAgent {
 		} else {
 			logger.info( "MOVE: " + vehiclePosition() + " To:" + nextNode.getID() );
 			//TODO: technically, the nodes should set the vehicles position
-			setCurrentPosition(nextNode);
-			nextNode.enterNode(this);
+			currentNode.moveTo(nextNode, this);
+			//setCurrentPosition(nextNode);
 		}
 	}
 
