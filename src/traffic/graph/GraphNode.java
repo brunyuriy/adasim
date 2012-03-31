@@ -258,6 +258,7 @@ public final class GraphNode extends AbstractAdasimAgent {
 		if ( isNeighbor(targetNode) ) {
 			targetNode.enterNode(v);
 		} else {
+			logger.info( "INVALID: Move: " + v.vehiclePosition() + " To: " + targetNode.getID() );
 			park(v);
 		}
 	}
