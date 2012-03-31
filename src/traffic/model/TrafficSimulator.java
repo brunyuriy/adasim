@@ -33,6 +33,7 @@ import java.util.*;
 import org.apache.log4j.Logger;
 
 import traffic.graph.Graph;
+import traffic.graph.GraphNode;
 import traffic.model.internal.VehicleManager;
 
 /**
@@ -88,10 +89,12 @@ public final class TrafficSimulator{
 	 */
 	void takeSimulationStep() {
 		logger.info( "SIMULATION: Cycle: " + ++cycle );
-		//graph.setClosed();
 		manager.takeSimulationStep(cycle);
 		for ( AdasimAgent agent : agents ) {
 			agent.takeSimulationStep( cycle );
+		}
+		for ( GraphNode g: graph.getNodes() ) {
+			g.takeSimulationStep(cycle);
 		}
 	}
 

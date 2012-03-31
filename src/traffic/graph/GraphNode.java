@@ -33,6 +33,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
+
 import traffic.model.AbstractAdasimAgent;
 import traffic.model.Vehicle;
 import traffic.strategy.SpeedStrategy;
@@ -45,6 +47,9 @@ import traffic.strategy.SpeedStrategy;
  */
 
 public final class GraphNode extends AbstractAdasimAgent {
+	
+	private static Logger logger = Logger.getLogger(GraphNode.class);
+
 	
 	private Set<GraphNode> outgoing; //Nodes that this node has an edge directed towards
 	private int nodeNum; //The number of this node on the graph
@@ -146,6 +151,8 @@ public final class GraphNode extends AbstractAdasimAgent {
 	 */
 	public void enterNode(Vehicle c) {
 		queue.enqueue(c, getCurrentDelay() );
+		c.setCurrentPosition(this);
+		logger.info( "ENTER: " + c.vehiclePosition() );
 	}
 	
 	/**
@@ -158,6 +165,9 @@ public final class GraphNode extends AbstractAdasimAgent {
 	 */
 	public void park( Vehicle c ) {
 		queue.park(c);
+		logger.info( "STOP: " + c.vehiclePosition() );
+		//this is to ensure termination
+		c.setCurrentPosition(c.getEndNode());
 	}
 	
 	/**
@@ -240,7 +250,7 @@ public final class GraphNode extends AbstractAdasimAgent {
 		Set<Vehicle> finishedVehicles = queue.moveVehicles();
 		if ( finishedVehicles == null ) return;
 		for ( Vehicle c : finishedVehicles ) {
-			c.takeSimulationStep( cycle );
+			c.move();
 		}
 	}
 	
