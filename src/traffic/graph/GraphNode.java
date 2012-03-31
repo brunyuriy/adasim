@@ -110,7 +110,7 @@ public final class GraphNode extends AbstractAdasimAgent {
 		return new ArrayList<GraphNode>(outgoing);
 	}
 	
-	public boolean isNeighbor(GraphNode n) {
+	private boolean isNeighbor(GraphNode n) {
 		return outgoing.contains(n);
 	}
 	
@@ -241,6 +241,14 @@ public final class GraphNode extends AbstractAdasimAgent {
 		if ( finishedVehicles == null ) return;
 		for ( Vehicle c : finishedVehicles ) {
 			c.takeSimulationStep( cycle );
+		}
+	}
+	
+	public void moveTo( GraphNode targetNode, Vehicle v ) {
+		if ( isNeighbor(targetNode) ) {
+			targetNode.enterNode(v);
+		} else {
+			park(v);
 		}
 	}
 
