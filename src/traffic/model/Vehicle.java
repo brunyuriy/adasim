@@ -107,7 +107,7 @@ public class Vehicle extends AbstractAdasimAgent {
 	/**
 	 * Sets the current position to the given variable c
 	 */
-	void setCurrentPosition(GraphNode c) {
+	public void setCurrentPosition(GraphNode c) {
 		currentNode = c;
 	}
 
@@ -161,26 +161,18 @@ public class Vehicle extends AbstractAdasimAgent {
 	 */
 	@Override
 	public void takeSimulationStep( long cycle ) {
+	}
+	
+	public void move() {
 		if (isFinished()) return;	//quick end if we are done
-
+		
 		GraphNode nextNode = cs.getNextNode();
 		if ( nextNode == null ) {
-			fakeFinish();
-			logger.info( "STOP: " + vehiclePosition() );
+			getCurrentPosition().park(this);
 		} else {
 			logger.info( "MOVE: " + vehiclePosition() + " To:" + nextNode.getID() );
-			setCurrentPosition(nextNode);
-			nextNode.enterNode(this);
-		}
-	}
-
-	/**
-	 * 
-	 */
-	private void fakeFinish() {
-		//TODO: replace with correct code in GraphNode
-		getCurrentPosition().park(this);
-		setCurrentPosition(end);
+			currentNode.moveTo(nextNode, this);
+		}		
 	}
 
 	/* (non-Javadoc)
