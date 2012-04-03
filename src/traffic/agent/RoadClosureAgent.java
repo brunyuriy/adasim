@@ -103,7 +103,7 @@ public final class RoadClosureAgent extends AbstractAdasimAgent {
 		if ( closureDuration < 0 || closureProbability < 0.0 ) {
 			throw new IllegalArgumentException( "RoadClosureAgent.setParameters(): arguments must be positive.\nSee JavaDoc for details." );
 		}
-		logger.info( "Configuring RoadClosureAgent: " + closureProbability + "; " + closureDuration );
+		logger.debug( "Configuring RoadClosureAgent: " + closureProbability + "; " + closureDuration );
 	}
 
 	/* (non-Javadoc)
