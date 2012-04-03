@@ -48,9 +48,11 @@ public interface AdasimAgent {
 	/**
 	 * This is the main method through which the {@link TrafficSimulator} 
 	 * communicates with agents. The {@link TrafficSimulator} call this
-	 * method once per simulation cylce on each agent. 
+	 * method once per simulation cycle on each agent. 
+	 *
+	 * @param cycle the current simulation cycle. 
 	 */
-	public void takeSimulationStep();
+	public void takeSimulationStep(long cycle);
 	
 	/**
 	 * Method called to configure this agent when loading a simulation.

@@ -73,12 +73,12 @@ public class VehicleTest {
 		List<Vehicle> vehicles = sim.getAgents(Vehicle.class);
 		Vehicle tester = vehicles.get(4);
 		assertEquals(tester.getCurrentPosition().getID(), 3);
-		tester.takeSimulationStep();
+		tester.takeSimulationStep( 1 );
 		assertEquals(tester.getCurrentPosition().getID(), 1);
 		tester.setCurrentPosition(sim.getGraph().getNode(2));
 		assertEquals(tester.getCurrentPosition().getID(), 2);
 		assertEquals(tester.isFinished(), false);
-		tester.takeSimulationStep();
+		tester.takeSimulationStep( 2 );
 		assertEquals(tester.getCurrentPosition().getID(), 7);
 		assertEquals(tester.isFinished(), true);
 	}

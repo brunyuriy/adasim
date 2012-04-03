@@ -38,4 +38,10 @@ public class TrafficSimulatorTest {
 		sim.run();
 	}
 	
+	@Test
+	public void addingVehiclesTest() throws FileNotFoundException, ConfigurationException {
+		TrafficSimulator sim = SimulationXMLReader.buildSimulator( new File( "resources/test/only-delayed-cars.xml" ) );
+		sim.run();
+	}
+	
 }

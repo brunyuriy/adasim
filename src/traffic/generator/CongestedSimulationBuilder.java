@@ -47,7 +47,7 @@ public class CongestedSimulationBuilder {
 	
 	TrafficSimulator build( ConfigurationOptions opts ) throws ConfigurationException {
 		Graph g = buildGraph(opts);
-		return new TrafficSimulator( g, buildVehicles(opts, g) );
+		return new TrafficSimulator( g, null, buildVehicles(opts, g) );
 	}
 
 	/**
