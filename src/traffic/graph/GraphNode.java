@@ -177,11 +177,11 @@ public final class GraphNode extends AbstractAdasimAgent {
 		return delay;
 	}
 	
-	public int getCurrentDelay() {
-		if(closed) {
-			return Integer.MAX_VALUE;
-		}
-		return ss.getDelay(delay, capacity, queue.size());
+	/**
+	 * @return the traffic dependent delay at this node.
+	 */
+	public int getCurrentDelay() {		
+		return closed ? Integer.MAX_VALUE : ss.getDelay(delay, capacity, queue.size()); 
 	}
 	
 	public int getCapacity() {
@@ -202,9 +202,18 @@ public final class GraphNode extends AbstractAdasimAgent {
 		return queue.size();
 	}
 	
-	public void setClosed() {
+	/**
+	 * Sets the <code>closed</code> flag of this node to <code>c</code>.
+	 * 
+	 * @param c
+	 */
+	public void setClosed( boolean c ) {
+		closed = c;
 	}
 	
+	/**
+	 * @return <code>true</code> if the node is currently closed to traffic
+	 */
 	public boolean isClosed() {
 		return closed;
 	}
