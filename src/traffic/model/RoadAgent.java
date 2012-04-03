@@ -35,30 +35,27 @@ import java.util.Random;
  * @author Jonathan Ramaswamy
  *
  */
-public class RoadAgent extends AbstractAdasimAgent {
+public final class RoadAgent extends AbstractAdasimAgent {
 
+	private Random randomizer;
+	
 	public RoadAgent() {
-		
+		randomizer = new Random();
 	}
 	
 	/**
-	 * Has a 1 in 20 chance of returning true, indicating the road is closed
-	 * @return
+	 * This constructor is intended for testing only. It should guarantee
+	 * the same random results on each run given a fixed seed.
+	 * 
+	 * @param seed
 	 */
-	public boolean isClosed() {
-		Random generator = new Random();
-		int rand = generator.nextInt(3);
-		return rand == 1;
+	RoadAgent( long seed ) {
+		randomizer = new Random(seed);		
 	}
-
+	
 	@Override
 	public void setParameters(String params) {
 		
-	}
-
-	@Override
-	public boolean isFinished() {
-		return false;
 	}
 
 	/* (non-Javadoc)
