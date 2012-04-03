@@ -58,9 +58,10 @@ public final class RoadClosureAgent extends AbstractAdasimAgent {
 	private int closureDuration = 0;
 	private Map<GraphNode, Integer> closedNodes;
 	
-	public RoadClosureAgent() {
+	public RoadClosureAgent( String args) {
 		randomizer = new Random();
 		closedNodes = new HashMap<GraphNode, Integer>();
+		setParameters(args);
 	}
 	
 	/**
@@ -69,9 +70,10 @@ public final class RoadClosureAgent extends AbstractAdasimAgent {
 	 * 
 	 * @param seed
 	 */
-	RoadClosureAgent( long seed ) {
+	RoadClosureAgent( String args, long seed ) {
 		randomizer = new Random(seed);		
 		closedNodes = new HashMap<GraphNode, Integer>();
+		setParameters(args);
 	}
 
 	/**
@@ -101,6 +103,7 @@ public final class RoadClosureAgent extends AbstractAdasimAgent {
 		if ( closureDuration < 0 || closureProbability < 0.0 ) {
 			throw new IllegalArgumentException( "RoadClosureAgent.setParameters(): arguments must be positive.\nSee JavaDoc for details." );
 		}
+		logger.info( "Configuring RoadClosureAgent: " + closureProbability + "; " + closureDuration );
 	}
 
 	/* (non-Javadoc)

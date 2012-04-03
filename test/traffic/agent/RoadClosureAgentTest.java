@@ -53,7 +53,7 @@ public class RoadClosureAgentTest {
 	
 	@Before
 	public void setUp() {
-		agent = new RoadClosureAgent( 27L );
+		agent = new RoadClosureAgent( "0.0:0", 27L );
 	}
 
 	@Test
