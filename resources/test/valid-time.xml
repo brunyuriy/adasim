@@ -16,8 +16,4 @@
 		<node id="8" neighbors="3" />
 		<node id="9" strategy="traffic.strategy.LinearSpeedStrategy" neighbors="2" />
 	</graph>
-	
-	<agents>
-		<agent id="fake" class="fake" />
-	</agents>
 </simulation>

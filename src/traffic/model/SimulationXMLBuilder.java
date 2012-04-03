@@ -338,7 +338,7 @@ public class SimulationXMLBuilder {
 		List<AdasimAgent> agents = new ArrayList<AdasimAgent>();
 		if ( child != null ) {
 			@SuppressWarnings("unchecked")
-			List<Element> agentNodes = child.getChildren( "agents" );
+			List<Element> agentNodes = child.getChildren( "agent" );
 			for ( Element agentNode : agentNodes ) {
 				AdasimAgent agent = buildAgent( agentNode );
 				if ( agent != null ) {
