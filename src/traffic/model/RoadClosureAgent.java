@@ -46,6 +46,8 @@ import java.util.Random;
 public final class RoadClosureAgent extends AbstractAdasimAgent {
 
 	private Random randomizer;
+	private double closureProbability = 0.0;
+	private int closureDuration = 0;
 	
 	public RoadClosureAgent() {
 		randomizer = new Random();
@@ -60,10 +62,31 @@ public final class RoadClosureAgent extends AbstractAdasimAgent {
 	RoadClosureAgent( long seed ) {
 		randomizer = new Random(seed);		
 	}
-	
+
+	/**
+	 * The parameter string must consist of the string representation of
+	 * a positive double value, a colon, and the string representation of a positive integer. 
+	 * For example, <code>0.0034:42</code>. The string representations of
+	 * numbers must parse with the Double.parseDouble() and Integer.parseInt()
+	 * methods, respectively.
+	 * <p>
+	 * The first value is the probability with which a road becomes closed in any cycle,
+	 * and the integer is the duration for which it will stay closed. 
+	 * In principle, both the probability and the duration should be greater
+	 * than 0. 
+	 * 
+	 */
 	@Override
 	public void setParameters(String params) {
-		
+		String[] pars = params.trim().split(":");
+		if ( pars.length != 2 ) {
+			throw new IllegalArgumentException( "RoadClosureAgent.setParameters(): wrong number of parameters.\nSee JavaDoc for details." );
+		}
+		closureProbability = Double.parseDouble(pars[0]);
+		closureDuration = Integer.parseInt(pars[1]);
+		if ( closureDuration < 0 || closureProbability < 0.0 ) {
+			throw new IllegalArgumentException( "RoadClosureAgent.setParameters(): arguments must be positive.\nSee JavaDoc for details." );
+		}
 	}
 
 	/* (non-Javadoc)
@@ -74,4 +97,24 @@ public final class RoadClosureAgent extends AbstractAdasimAgent {
 		// TODO Auto-generated method stub
 		
 	}
+
+	
+	/* ***************
+	 * Inspection methods for testing
+	 */
+	
+	/**
+	 * @return the closureDuration
+	 */
+	int getClosureDuration() {
+		return closureDuration;
+	}
+	
+	/**
+	 * @return the closureProbability
+	 */
+	double getClosureProbability() {
+		return this.closureProbability ;
+	}
+	
 }
