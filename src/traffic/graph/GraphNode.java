@@ -212,6 +212,12 @@ public final class GraphNode extends AbstractAdasimAgent {
 	}
 	
 	/**
+	 * When a GraphNode (road) is closed, this means two things:
+	 * <ul>
+	 * <li>Vehicles can no longer enter the road. Trying to enter is considered invalid and vehicles will be removed.
+	 * <li>Vehicles that are already on the road can continue driving and will eventually leave the node.
+	 * </ul>
+	 * 
 	 * @return <code>true</code> if the node is currently closed to traffic
 	 */
 	public boolean isClosed() {
@@ -264,7 +270,7 @@ public final class GraphNode extends AbstractAdasimAgent {
 	}
 	
 	public void moveTo( GraphNode targetNode, Vehicle v ) {
-		if ( isNeighbor(targetNode) ) {
+		if ( isNeighbor(targetNode) && !targetNode.isClosed() ) {
 			targetNode.enterNode(v);
 		} else {
 			logger.info( "INVALID: Move: " + v.vehiclePosition() + " To: " + targetNode.getID() );
