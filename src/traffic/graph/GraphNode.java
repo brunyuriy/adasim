@@ -33,8 +33,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
+
 import traffic.model.AbstractAdasimAgent;
-import traffic.model.RoadAgent;
 import traffic.model.Vehicle;
 import traffic.strategy.SpeedStrategy;
 
@@ -47,13 +48,15 @@ import traffic.strategy.SpeedStrategy;
 
 public final class GraphNode extends AbstractAdasimAgent {
 	
+	private static Logger logger = Logger.getLogger(GraphNode.class);
+
+	
 	private Set<GraphNode> outgoing; //Nodes that this node has an edge directed towards
 	private int nodeNum; //The number of this node on the graph
 	private SpeedStrategy ss; //The strategy by which the speed changes
 	private int delay; //The basic delay of this node. To be modified by the speed strategy
 	private NodeVehicleQueue queue; //Holds the vehicles on this node and deals with the traffic
 	private int capacity; //The number of vehicles the road can hold before the speed strategy takes effect
-	private RoadAgent roadAgent;
 	private boolean closed;
 	
 	/**
@@ -81,8 +84,6 @@ public final class GraphNode extends AbstractAdasimAgent {
 		this.delay = delay;
 		queue = new NodeVehicleQueue();
 		this.capacity = capacity;
-		roadAgent = new RoadAgent();
-		closed = roadAgent.isClosed();
 	}
 	
 	/* ***************************************************
@@ -114,7 +115,7 @@ public final class GraphNode extends AbstractAdasimAgent {
 		return new ArrayList<GraphNode>(outgoing);
 	}
 	
-	public boolean isNeighbor(GraphNode n) {
+	private boolean isNeighbor(GraphNode n) {
 		return outgoing.contains(n);
 	}
 	
@@ -150,6 +151,8 @@ public final class GraphNode extends AbstractAdasimAgent {
 	 */
 	public void enterNode(Vehicle c) {
 		queue.enqueue(c, getCurrentDelay() );
+		c.setCurrentPosition(this);
+		logger.info( "ENTER: " + c.vehiclePosition() );
 	}
 	
 	/**
@@ -162,6 +165,9 @@ public final class GraphNode extends AbstractAdasimAgent {
 	 */
 	public void park( Vehicle c ) {
 		queue.park(c);
+		logger.info( "STOP: " + c.vehiclePosition() );
+		//this is to ensure termination
+		c.setCurrentPosition(c.getEndNode());
 	}
 	
 	/**
@@ -197,7 +203,6 @@ public final class GraphNode extends AbstractAdasimAgent {
 	}
 	
 	public void setClosed() {
-		closed = roadAgent.isClosed();
 	}
 	
 	public boolean isClosed() {
@@ -241,11 +246,20 @@ public final class GraphNode extends AbstractAdasimAgent {
 	 * SIMULATION MANAGEMENT METHODS
 	 *************************************************** */
 
-	public void takeSimulationStep() {
+	public void takeSimulationStep( long cycle ) {
 		Set<Vehicle> finishedVehicles = queue.moveVehicles();
 		if ( finishedVehicles == null ) return;
 		for ( Vehicle c : finishedVehicles ) {
-			c.takeSimulationStep();
+			c.move();
+		}
+	}
+	
+	public void moveTo( GraphNode targetNode, Vehicle v ) {
+		if ( isNeighbor(targetNode) ) {
+			targetNode.enterNode(v);
+		} else {
+			logger.info( "INVALID: Move: " + v.vehiclePosition() + " To: " + targetNode.getID() );
+			park(v);
 		}
 	}
 

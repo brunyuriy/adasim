@@ -22,6 +22,7 @@
         <xsd:attribute name="start" type="xsd:nonNegativeInteger" use="required" />
         <xsd:attribute name="end" type="xsd:nonNegativeInteger" use="required" />
         <xsd:attribute name="strategy" type="xsd:string" />
+        <xsd:attribute name="start_time" type="xsd:nonNegativeInteger"/>
     </xsd:complexType>
     
     <xsd:complexType name="Graph">

@@ -95,7 +95,7 @@ public class SimulationXMLBuilderTest {
 		assertNull( car.getEndNode() );
 		assertNull( car.getStrategy() );
 	}
-
+	
 	@Test
 	public void carAllOptionals() throws JDOMException, IOException {
 		Document doc = parser.build( new StringReader( "<car id=\"27\" start=\"1\" end=\"1\" strategy=\"traffic.strategy.ShortestPathVehicleStrategy\" />" ) );
@@ -147,6 +147,6 @@ class FakeAgent extends AbstractAdasimAgent {
 	 * @see traffic.model.AdasimAgent#takeSimulationStep()
 	 */
 	@Override
-	public void takeSimulationStep() {}
+	public void takeSimulationStep( long cycle) {}
 
 }

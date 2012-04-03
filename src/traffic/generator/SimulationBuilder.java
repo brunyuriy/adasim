@@ -32,6 +32,7 @@ import traffic.model.Vehicle;
 import traffic.model.ConfigurationException;
 import traffic.model.SimulationXMLBuilder;
 import traffic.model.TrafficSimulator;
+import traffic.model.internal.VehicleManager;
 import traffic.strategy.VehicleStrategy;
 import traffic.strategy.LinearSpeedStrategy;
 import traffic.strategy.SpeedStrategy;
@@ -79,7 +80,8 @@ public class SimulationBuilder {
 	 */
 	TrafficSimulator build( ConfigurationOptions opts ) throws ConfigurationException, IOException, JDOMException, ClassNotFoundException, InstantiationException, IllegalAccessException {
 		Graph g = buildGraph(opts);
-		return new TrafficSimulator( buildGraph(opts), buildVehicles(opts, g) );
+		VehicleManager m = new VehicleManager();
+		return new TrafficSimulator( buildGraph(opts), m, buildVehicles(opts, g) );
 	}
 
 	/**

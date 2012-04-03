@@ -43,6 +43,7 @@ import org.jdom.input.SAXBuilder;
 
 import traffic.graph.Graph;
 import traffic.graph.GraphNode;
+import traffic.model.internal.VehicleManager;
 
 
 /**
@@ -92,7 +93,8 @@ final public class SimulationXMLReader {
 		try {
 			SimulationXMLReader factory = new SimulationXMLReader(config);
 			Graph g = builder.buildGraph( factory.doc.getRootElement().getChild("graph" ) );
-			TrafficSimulator sim = new TrafficSimulator( g, factory.allAgents( g ) ); 
+			VehicleManager m = new VehicleManager();
+			TrafficSimulator sim = new TrafficSimulator( g, m, factory.allAgents( g, m ) ); 
 			return sim;
 		} catch ( ConfigurationException e ) {
 			buildError(e);
@@ -104,9 +106,9 @@ final public class SimulationXMLReader {
 	 * @return
 	 * @throws ConfigurationException 
 	 */
-	private List<AdasimAgent> allAgents( Graph g ) throws ConfigurationException {
+	private List<AdasimAgent> allAgents( Graph g, VehicleManager m ) throws ConfigurationException {
 		List<AdasimAgent> agents;
-		agents = new ArrayList<AdasimAgent>(buildVehicles( doc.getRootElement().getChild("cars" ), g ) );
+		agents = new ArrayList<AdasimAgent>(buildVehicles( doc.getRootElement().getChild("cars" ), g, m ) );
 		agents.addAll( builder.buildAgents( doc.getRootElement().getChild("agents" ) ) );
 		return agents;
 	}
@@ -122,20 +124,36 @@ final public class SimulationXMLReader {
 	 * @return
 	 * @throws ConfigurationException 
 	 */
-	private List<AdasimAgent> buildVehicles( Element vehiclesNode, Graph g ) throws ConfigurationException {
+	private List<AdasimAgent> buildVehicles( Element vehiclesNode, Graph g, VehicleManager m ) throws ConfigurationException {
 		List<Vehicle> vehicles = builder.buildVehicles(vehiclesNode);
 		List<AdasimAgent> l = new ArrayList<AdasimAgent>();
 		@SuppressWarnings("unchecked")
 		List<Element> vehicleNodes = vehiclesNode.getChildren( "car" );
 		for ( Element vehicle : vehicleNodes ) {
 			Vehicle c = validateVehicle(vehicle, vehicles, g );
+			long time = getStartTime( vehicle );
 			if ( c != null ) {
-				l.add(c);
-				//add valid vehicle to their start node
-				c.getStartNode().enterNode(c);
+				if ( time == 1 ) {
+					l.add(c);
+					//add valid vehicle to their start node
+					c.getStartNode().enterNode(c);
+				} else {
+					m.addVehicle(c, time);
+				}
 			}
 		}
 		return l;	
+	}
+
+	/**
+	 * @param vehicle
+	 * @return
+	 */
+	private long getStartTime(Element vehicle) {
+		String s = vehicle.getAttributeValue("start_time");
+		if ( s == null ) return 1L;
+		int time = Integer.parseInt( s );
+		return (long)time;
 	}
 
 	/**
