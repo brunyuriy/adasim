@@ -31,6 +31,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+import org.apache.log4j.Logger;
+
 import traffic.graph.GraphNode;
 
 /**
@@ -48,6 +50,8 @@ import traffic.graph.GraphNode;
  */
 
 public final class RoadClosureAgent extends AbstractAdasimAgent {
+
+	private static Logger logger = Logger.getLogger(RoadClosureAgent.class);
 
 	private Random randomizer;
 	private double closureProbability = 0.0;
@@ -109,12 +113,14 @@ public final class RoadClosureAgent extends AbstractAdasimAgent {
 				} else {
 					r.setClosed(false);
 					closedNodes.remove(r);
+					logger.info( "OPEN: Road: " + r.getID() );
 				}
 			} else {
 				boolean close = randomizer.nextDouble() < closureProbability;
 				if ( close ) {
 					r.setClosed( true );
 					closedNodes.put(r, 0);
+					logger.info( "CLOSE: Road: " + r.getID() );
 				}
 			}
 		}
