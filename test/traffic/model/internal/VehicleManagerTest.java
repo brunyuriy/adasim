@@ -42,9 +42,9 @@ import org.jdom.input.SAXBuilder;
 import org.junit.Before;
 import org.junit.Test;
 
+import traffic.agent.AdasimAgent;
 import traffic.graph.Graph;
 import traffic.graph.GraphNode;
-import traffic.model.AdasimAgent;
 import traffic.model.ConfigurationException;
 import traffic.model.SimulationXMLBuilder;
 import traffic.model.TrafficSimulator;

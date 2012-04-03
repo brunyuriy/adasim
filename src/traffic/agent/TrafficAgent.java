@@ -26,7 +26,7 @@
  * Created: Mar 7, 2012
  */
 
-package traffic.model;
+package traffic.agent;
 
 /**
  * A traffic agent is used to add cars to the simulator in the middle

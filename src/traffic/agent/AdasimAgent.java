@@ -26,7 +26,9 @@
  * Created: Jan 24, 2012
  */
 
-package traffic.model;
+package traffic.agent;
+
+import traffic.model.TrafficSimulator;
 
 /**
  * An {@link AdasimAgent} is an active component in Adasim.

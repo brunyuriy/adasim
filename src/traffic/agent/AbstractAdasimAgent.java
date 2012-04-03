@@ -27,7 +27,9 @@
  * Created: Mar 21, 2012
  */
 
-package traffic.model;
+package traffic.agent;
+
+import traffic.model.TrafficSimulator;
 
 /**
  * This is an abstract adapter class for {@link AdasimAgent}.

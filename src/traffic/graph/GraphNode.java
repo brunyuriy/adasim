@@ -35,7 +35,7 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
-import traffic.model.AbstractAdasimAgent;
+import traffic.agent.AbstractAdasimAgent;
 import traffic.model.Vehicle;
 import traffic.strategy.SpeedStrategy;
 

@@ -25,7 +25,7 @@
  *
  * Created: Mar 14, 2012
  */
-package traffic.model;
+package traffic.agent;
 
 import java.util.HashMap;
 import java.util.Map;

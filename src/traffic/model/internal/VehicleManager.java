@@ -36,7 +36,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import traffic.model.AbstractAdasimAgent;
+import traffic.agent.AbstractAdasimAgent;
 import traffic.model.TrafficSimulator;
 import traffic.model.Vehicle;
 
