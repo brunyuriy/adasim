@@ -31,8 +31,13 @@ package traffic.model;
 
 import static org.junit.Assert.*;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+
 import org.junit.Before;
 import org.junit.Test;
+
+import traffic.graph.GraphNode;
 
 /**
  * @author Jochen Wuttke - wuttkej@gmail.com
@@ -44,7 +49,7 @@ public class RoadClosureAgentTest {
 	
 	@Before
 	public void setUp() {
-		agent = new RoadClosureAgent();
+		agent = new RoadClosureAgent( 27L );
 	}
 
 	@Test
@@ -86,4 +91,20 @@ public class RoadClosureAgentTest {
 		fail( "Should throw IllegalArgumentException" );
 	}
 
+	@Test
+	public void closureTest() throws FileNotFoundException, ConfigurationException {
+		TrafficSimulator sim = SimulationXMLReader.buildSimulator( new File( "resources/test/closure-test.xml" ) );
+		agent.setSimulation(sim);
+		agent.setParameters( "1.0:2" );
+		GraphNode node = sim.getGraph().getNode( 0 );
+		assertFalse( "Node is closed", node.isClosed() );
+		agent.takeSimulationStep(1);
+		assertTrue( "Node is open", node.isClosed() );
+		agent.takeSimulationStep(2);
+		assertTrue( "Node is open", node.isClosed() );
+		agent.takeSimulationStep(3);
+		assertTrue( "Node is open", node.isClosed() );
+		agent.takeSimulationStep(4);
+		assertFalse( "Node is closed", node.isClosed() );		
+	}
 }
