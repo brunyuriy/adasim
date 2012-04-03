@@ -143,10 +143,4 @@ public final class Graph {
 		return null;
 	}
 	
-	public void setClosed() {
-		for (GraphNode node: nodes) {
-			node.setClosed();
-		}
-	}
-
 }
