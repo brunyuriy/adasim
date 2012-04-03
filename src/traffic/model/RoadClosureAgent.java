@@ -85,6 +85,9 @@ public final class RoadClosureAgent extends AbstractAdasimAgent {
 	 * and the integer is the duration for which it will stay closed. 
 	 * In principle, both the probability and the duration should be greater
 	 * than 0. 
+	 * <p>
+	 * If the agent decided in cycle <em>k</em> that a road is closed, the road will 
+	 * remain closed up to and including cycle <em>k+duration</em>.
 	 * 
 	 */
 	@Override
@@ -109,7 +112,7 @@ public final class RoadClosureAgent extends AbstractAdasimAgent {
 			if ( r.isClosed() ) {
 				int d = closedNodes.get(r);
 				if ( d < closureDuration) {
-					closedNodes.put(r, d + 1 );
+					closedNodes.put(r, d + 1);
 				} else {
 					r.setClosed(false);
 					closedNodes.remove(r);
