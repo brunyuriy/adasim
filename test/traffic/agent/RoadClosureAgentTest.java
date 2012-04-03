@@ -27,7 +27,7 @@
  * Created: Apr 3, 2012
  */
 
-package traffic.model;
+package traffic.agent;
 
 import static org.junit.Assert.*;
 
@@ -37,7 +37,11 @@ import java.io.FileNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
 
+import traffic.agent.RoadClosureAgent;
 import traffic.graph.GraphNode;
+import traffic.model.ConfigurationException;
+import traffic.model.SimulationXMLReader;
+import traffic.model.TrafficSimulator;
 
 /**
  * @author Jochen Wuttke - wuttkej@gmail.com

@@ -32,6 +32,7 @@ import java.util.*;
 
 import org.apache.log4j.Logger;
 
+import traffic.agent.AdasimAgent;
 import traffic.graph.Graph;
 import traffic.graph.GraphNode;
 import traffic.model.internal.VehicleManager;

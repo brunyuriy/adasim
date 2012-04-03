@@ -26,6 +26,8 @@ import org.jdom.input.SAXBuilder;
 import org.junit.Before;
 import org.junit.Test;
 
+import traffic.agent.AbstractAdasimAgent;
+import traffic.agent.AdasimAgent;
 import traffic.graph.Graph;
 import traffic.graph.GraphNode;
 import traffic.strategy.AlwaysRecomputeVehicleStrategy;
