@@ -27,7 +27,11 @@
  */
 package traffic.model;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
+
+import traffic.graph.GraphNode;
 
 /**
  * The RoadClosureAgent randomly selects roads to be closed
@@ -48,9 +52,11 @@ public final class RoadClosureAgent extends AbstractAdasimAgent {
 	private Random randomizer;
 	private double closureProbability = 0.0;
 	private int closureDuration = 0;
+	private Map<GraphNode, Integer> closedNodes;
 	
 	public RoadClosureAgent() {
 		randomizer = new Random();
+		closedNodes = new HashMap<GraphNode, Integer>();
 	}
 	
 	/**
@@ -61,6 +67,7 @@ public final class RoadClosureAgent extends AbstractAdasimAgent {
 	 */
 	RoadClosureAgent( long seed ) {
 		randomizer = new Random(seed);		
+		closedNodes = new HashMap<GraphNode, Integer>();
 	}
 
 	/**
@@ -94,12 +101,26 @@ public final class RoadClosureAgent extends AbstractAdasimAgent {
 	 */
 	@Override
 	public void takeSimulationStep(long cycle) {
-		// TODO Auto-generated method stub
-		
+		for ( GraphNode r : simulator.getGraph().getNodes() ) {
+			if ( r.isClosed() ) {
+				int d = closedNodes.get(r);
+				if ( d < closureDuration) {
+					closedNodes.put(r, d + 1 );
+				} else {
+					r.setClosed(false);
+					closedNodes.remove(r);
+				}
+			} else {
+				boolean close = randomizer.nextDouble() < closureProbability;
+				if ( close ) {
+					r.setClosed( true );
+					closedNodes.put(r, 0);
+				}
+			}
+		}
 	}
 
-	
-	/* ***************
+	/* 
 	 * Inspection methods for testing
 	 */
 	
