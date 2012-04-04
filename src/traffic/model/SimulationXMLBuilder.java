@@ -77,12 +77,12 @@ public class SimulationXMLBuilder {
 			List<Element> children = graphNode.getChildren("node");		
 			SpeedStrategy ss = (SpeedStrategy) loadClassFromAttribute(graphNode, "default_strategy" );
 			int capacity = Integer.parseInt(graphNode.getAttributeValue("default_capacity"));
-			String ufs = graphNode.getAttributeValue("uncertainty_filter");
 			AdasimFilter uf = (AdasimFilter) loadClassFromAttribute(graphNode, "uncertainty_filter");
-			if ( ufs == null ) {
+			if ( uf == null ) {
 				uf = new IdentityFilter();
 			} 
-			return new Graph( buildNodes( children, ss, uf, capacity) );
+			AdasimFilter pf = (AdasimFilter) loadClassFromAttribute(graphNode, "privacy_filter");
+			return new Graph( buildNodes( children, ss, uf, pf, capacity) );
 		} catch (ClassCastException e ) {
 			throw new ConfigurationException( "Error loading class: " + e.getMessage() );
 		} catch (Exception e) {
@@ -107,9 +107,12 @@ public class SimulationXMLBuilder {
 	public GraphNode buildNode( Element nodeElement ) {
 		int id = Integer.parseInt( nodeElement.getAttributeValue( "id" ) );
 		SpeedStrategy ss = (SpeedStrategy)loadClassFromAttribute(nodeElement, "strategy" ); 
-		AdasimFilter f = (AdasimFilter) loadClassFromAttribute(nodeElement, "uncertainty_filter" ); 
 		GraphNode gn = new GraphNode( id, ss, getDelay(nodeElement ), getCapacity(nodeElement)) ;
+		AdasimFilter f = (AdasimFilter) loadClassFromAttribute(nodeElement, "uncertainty_filter" ); 
 		gn.setUncertaintyFilter(f);
+		f = (AdasimFilter) loadClassFromAttribute(nodeElement, "privacy_filter" ); 
+		gn.setPrivacyFilter(f);
+		
 		return gn;
 	}
 
@@ -179,7 +182,7 @@ public class SimulationXMLBuilder {
 	 * @return
 	 */
 	private List<GraphNode> buildNodes( List<Element> nodeElements, SpeedStrategy defaultStrategy,
-			AdasimFilter uncertaintyFilter, int capacity ) {
+			AdasimFilter uncertaintyFilter, AdasimFilter privacyFilter, int capacity ) {
 		List<GraphNode> nodes = new ArrayList<GraphNode>( nodeElements.size() );
 		for( Element node : nodeElements ) {
 			GraphNode gn = buildNode( node );
@@ -192,6 +195,9 @@ public class SimulationXMLBuilder {
 			}
 			if ( gn.getSpeedStrategy() == null ) {
 				gn.setSpeedStrategy( defaultStrategy );
+			}
+			if ( gn.getPrivacyFilter() == null ) {
+				gn.setPrivacyFilter(privacyFilter);
 			}
 		}
 		for ( Element node: nodeElements ) {
