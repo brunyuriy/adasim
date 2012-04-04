@@ -34,6 +34,10 @@ package traffic.filter;
  * data types.
  * It can ideally serve as the superclass for all further 
  * filters.
+ * <p>
+ * This class is stateless and implements the Singleton
+ * pattern through the getInstance() method. Extending classes
+ * <strong>must</strong> override this method!
  * 
  * @author Jochen Wuttke - wuttkej@gmail.com
  *
@@ -114,6 +118,10 @@ public class IdentityFilter implements AdasimFilter {
 		return t;
 	}
 
+	/**
+	 * @return an instance of this filter type. Extending
+	 * classes must override this method.
+	 */
 	public static AdasimFilter getInstance() {
 		if ( instance == null  ) {
 			instance = new IdentityFilter();

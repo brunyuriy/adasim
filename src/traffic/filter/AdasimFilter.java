@@ -32,6 +32,11 @@ package traffic.filter;
 /**
  * The abstract interface for uncertainty and
  * privacy filters.
+ * <p>
+ * Implementers are free to implement the singleton pattern.
+ * If there is a method getInstance(), the simulation loader
+ * will use this method to obtain instances of the implemented
+ * filter. Otherwise, the default constructor will be called.
  * 
  * @author Jochen Wuttke - wuttkej@gmail.com
  *
