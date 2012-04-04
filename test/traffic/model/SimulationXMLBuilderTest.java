@@ -29,6 +29,7 @@ import org.junit.Test;
 import traffic.agent.AbstractAdasimAgent;
 import traffic.agent.AdasimAgent;
 import traffic.filter.AdasimFilter;
+import traffic.filter.IdentityFilter;
 import traffic.graph.Graph;
 import traffic.graph.GraphNode;
 import traffic.strategy.AlwaysRecomputeVehicleStrategy;
@@ -60,17 +61,21 @@ public class SimulationXMLBuilderTest {
 		assertNull( node.getSpeedStrategy() );
 		assertEquals(-1, node.getCapacity() );
 		assertEquals(1, node.getDelay() ); //1 is the default delay
+		assertNotNull( "No uncertainty filter assigned", node.getUncertaintyFilter() );
+		assertTrue( "Uncertainty filter has wrong type", node.getUncertaintyFilter() instanceof IdentityFilter );
 	}
 	
 	@Test
 	public void nodeNoAllOptionals() throws JDOMException, IOException {
-		Document doc = parser.build( new StringReader( "<node id=\"27\" neighbors=\"1 2 3\" delay=\"2\" capacity=\"5\" strategy=\"traffic.strategy.LinearSpeedStrategy\"/>" ) );
+		Document doc = parser.build( new StringReader( "<node id=\"27\" neighbors=\"1 2 3\" delay=\"2\" capacity=\"5\" strategy=\"traffic.strategy.LinearSpeedStrategy\" uncertainty_filter=\"traffic.filter.IdentityFilter\"/>" ) );
 		GraphNode node = builder.buildNode( doc.getRootElement() );
 		assertEquals( 27, node.getID() );
 		assertTrue( node.getNeighbors().isEmpty() );
 		assertTrue( node.getSpeedStrategy() instanceof LinearSpeedStrategy );
 		assertEquals(5, node.getCapacity() );
 		assertEquals(2, node.getDelay() );
+		assertNotNull( "No uncertainty filter assigned", node.getUncertaintyFilter() );
+		assertTrue( "Uncertainty filter has wrong type", node.getUncertaintyFilter() instanceof IdentityFilter );
 	}
 	
 	@Test

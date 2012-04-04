@@ -84,6 +84,10 @@ public abstract class AbstractAdasimAgent implements AdasimAgent {
 	public void setUncertaintyFilter(AdasimFilter filter) {
 		uncertaintyFilter = filter;
 	}
+	
+	public AdasimFilter getUncertaintyFilter() {
+		return uncertaintyFilter;
+	}
 
 	/**
 	 * Sets the filter for data privacy.
@@ -95,6 +99,10 @@ public abstract class AbstractAdasimAgent implements AdasimAgent {
 	@Override
 	public void setPrivacyFilter(AdasimFilter filter) {
 		privacyFilter = filter;
+	}
+	
+	public AdasimFilter getPrivacyFilter() {
+		return privacyFilter;
 	}
 
 }
