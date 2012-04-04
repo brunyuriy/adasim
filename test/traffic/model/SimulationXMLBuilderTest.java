@@ -102,7 +102,7 @@ public class SimulationXMLBuilderTest {
 		Document doc = parser.build( new StringReader( "<graph default_strategy=\"traffic.strategy.LinearSpeedStrategy\" default_capacity=\"0\" uncertainty_filter=\"traffic.model.FakeFilter\">" +
 				"<node id=\"1\" neighbors=\"1 2 3 4\" delay=\"2\" capacity=\"5\"/>" +
 				"<node id=\"2\" neighbors=\"3\" delay=\"2\" capacity=\"5\" strategy=\"traffic.strategy.LinearSpeedStrategy\"/>" +
-				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"traffic.strategy.QuadraticSpeedStrategy\"/>" +
+				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"traffic.strategy.QuadraticSpeedStrategy\" uncertainty_filter=\"traffic.filter.IdentityFilter\"/>" +
 				"</graph>" ) );
 		Graph graph = builder.buildGraph( doc.getRootElement() );
 		assertEquals( 3, graph.getNodes().size() );
@@ -115,8 +115,31 @@ public class SimulationXMLBuilderTest {
 		node = graph.getNode(4);
 		assertEquals(0, node.getCapacity() );
 		assertTrue( node.getSpeedStrategy() instanceof QuadraticSpeedStrategy );
+		assertNotNull( "No uncertainty filter assigned", node.getUncertaintyFilter() );
+		assertTrue( "Uncertainty filter has wrong type", node.getUncertaintyFilter() instanceof IdentityFilter );
 	}
 
+	@Test
+	public void graphWithPrivacyFilter() throws JDOMException, IOException, ConfigurationException {
+		Document doc = parser.build( new StringReader( "<graph default_strategy=\"traffic.strategy.LinearSpeedStrategy\" default_capacity=\"0\" privacy_filter=\"traffic.model.FakeFilter\">" +
+				"<node id=\"1\" neighbors=\"1 2 3 4\" delay=\"2\" capacity=\"5\"/>" +
+				"<node id=\"2\" neighbors=\"3\" delay=\"2\" capacity=\"5\" strategy=\"traffic.strategy.LinearSpeedStrategy\"/>" +
+				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"traffic.strategy.QuadraticSpeedStrategy\" privacy_filter=\"traffic.filter.IdentityFilter\"/>" +
+				"</graph>" ) );
+		Graph graph = builder.buildGraph( doc.getRootElement() );
+		assertEquals( 3, graph.getNodes().size() );
+		GraphNode node = graph.getNode( 1 );
+		assertEquals( 3, node.getNeighbors().size() );
+		assertNotNull( "No default speed strategy assigned", node.getSpeedStrategy() );
+		assertTrue( "Default speed strategy has wrong type", node.getSpeedStrategy() instanceof LinearSpeedStrategy );
+		assertNotNull( "No privacy filter assigned", node.getPrivacyFilter() );
+		assertTrue( "Privacy filter has wrong type", node.getPrivacyFilter() instanceof FakeFilter );
+		node = graph.getNode(4);
+		assertEquals(0, node.getCapacity() );
+		assertTrue( node.getSpeedStrategy() instanceof QuadraticSpeedStrategy );
+		assertNotNull( "No privacy filter assigned", node.getPrivacyFilter() );
+		assertTrue( "Privacy filter has wrong type", node.getPrivacyFilter() instanceof IdentityFilter );
+	}
 	@Test
 	public void carNoOptionals() throws JDOMException, IOException {
 		Document doc = parser.build( new StringReader( "<car id=\"27\" start=\"1\" end=\"1\"/>" ) );
