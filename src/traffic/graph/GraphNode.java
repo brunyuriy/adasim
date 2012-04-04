@@ -44,6 +44,7 @@ import traffic.strategy.SpeedStrategy;
  * and uses a given speed strategy and delay to determine their movements
  * 
  * @author Jonathan Ramaswamy - ramaswamyj12@gmail.com
+ * @author Jochen Wuttke - wuttkej@gmail.com
  */
 
 public final class GraphNode extends AbstractAdasimAgent {
