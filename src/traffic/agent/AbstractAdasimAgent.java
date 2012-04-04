@@ -29,6 +29,7 @@
 
 package traffic.agent;
 
+import traffic.filter.AdasimFilter;
 import traffic.model.TrafficSimulator;
 
 /**
@@ -44,6 +45,8 @@ import traffic.model.TrafficSimulator;
 public abstract class AbstractAdasimAgent implements AdasimAgent {
 	
 	protected TrafficSimulator simulator;
+	protected AdasimFilter privacyFilter;
+	protected AdasimFilter uncertaintyFilter;
 
 	/**
 	 * Does nothing (ignores the parameter!).
@@ -67,6 +70,31 @@ public abstract class AbstractAdasimAgent implements AdasimAgent {
 	@Override
 	public boolean isFinished() {
 		return true;
+	}
+
+
+	/**
+	 * Sets the filter for sensor uncertainty.
+	 * Assigning <code>null</code> is legal here. The agent
+	 * implementation is responsible for ensuring safe behavior.
+	 * 
+	 * @param the uncertainty filter
+	 */
+	@Override
+	public void setUncertaintyFilter(AdasimFilter filter) {
+		uncertaintyFilter = filter;
+	}
+
+	/**
+	 * Sets the filter for data privacy.
+	 * Assigning <code>null</code> is legal here. The agent
+	 * implementation is responsible for ensuring safe behavior.
+	 * 
+	 * @param the uncertainty filter
+	 */
+	@Override
+	public void setPrivacyFilter(AdasimFilter filter) {
+		privacyFilter = filter;
 	}
 
 }

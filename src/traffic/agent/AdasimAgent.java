@@ -28,6 +28,7 @@
 
 package traffic.agent;
 
+import traffic.filter.AdasimFilter;
 import traffic.model.TrafficSimulator;
 
 /**
@@ -90,4 +91,18 @@ public interface AdasimAgent {
 	 * @return true when the agent does no longer wish to perform actions
 	 */
 	public boolean isFinished();
+	
+	/**
+	 * Sets the uncertainty filter that this agent applies to
+	 * all its output.
+	 * 
+	 * @param filter
+	 */
+	public void setUncertaintyFilter( AdasimFilter filter );
+	
+	/**
+	 * Sets the privacy filter that this agent applies to all its output.
+	 * @param filter
+	 */
+	public void setPrivacyFilter( AdasimFilter filter );
 }
