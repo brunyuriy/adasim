@@ -28,6 +28,7 @@ import org.junit.Test;
 
 import traffic.agent.AbstractAdasimAgent;
 import traffic.agent.AdasimAgent;
+import traffic.filter.AdasimFilter;
 import traffic.graph.Graph;
 import traffic.graph.GraphNode;
 import traffic.strategy.AlwaysRecomputeVehicleStrategy;
@@ -150,5 +151,23 @@ class FakeAgent extends AbstractAdasimAgent {
 	 */
 	@Override
 	public void takeSimulationStep( long cycle) {}
+
+	/* (non-Javadoc)
+	 * @see traffic.agent.AdasimAgent#setUncertaintyFilter(traffic.filter.AdasimFilter)
+	 */
+	@Override
+	public void setUncertaintyFilter(AdasimFilter filter) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see traffic.agent.AdasimAgent#setPrivacyFilter(traffic.filter.AdasimFilter)
+	 */
+	@Override
+	public void setPrivacyFilter(AdasimFilter filter) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }
