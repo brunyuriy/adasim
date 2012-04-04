@@ -75,20 +75,18 @@ public class SimulationXMLBuilder {
 		try {
 			@SuppressWarnings("unchecked")
 			List<Element> children = graphNode.getChildren("node");		
-			Class<?> cls = Class.forName(graphNode.getAttributeValue("default_strategy"));
-			SpeedStrategy ss = (SpeedStrategy) cls.newInstance();
+			SpeedStrategy ss = (SpeedStrategy) loadClassFromAttribute(graphNode, "default_strategy" );
 			int capacity = Integer.parseInt(graphNode.getAttributeValue("default_capacity"));
 			String ufs = graphNode.getAttributeValue("uncertainty_filter");
-			AdasimFilter uf = null;
+			AdasimFilter uf = (AdasimFilter) loadClassFromAttribute(graphNode, "uncertainty_filter");
 			if ( ufs == null ) {
 				uf = new IdentityFilter();
-			} else {
-				cls = Class.forName(ufs);
-				uf = (AdasimFilter) cls.newInstance();
-			}
+			} 
 			return new Graph( buildNodes( children, ss, uf, capacity) );
+		} catch (ClassCastException e ) {
+			throw new ConfigurationException( "Error loading class: " + e.getMessage() );
 		} catch (Exception e) {
-			throw new ConfigurationException("Invalid default graph strategy: " + graphNode.getAttributeValue("default_strategy"));
+			throw new ConfigurationException("Unexpected error: " + e.getMessage() );
 		}
 	}
 
@@ -108,29 +106,11 @@ public class SimulationXMLBuilder {
 	 */
 	public GraphNode buildNode( Element nodeElement ) {
 		int id = Integer.parseInt( nodeElement.getAttributeValue( "id" ) );
-		SpeedStrategy ss = buildStrategy( nodeElement );
-		AdasimFilter f = buildFilter( "uncertainty_filter", nodeElement );
+		SpeedStrategy ss = (SpeedStrategy)loadClassFromAttribute(nodeElement, "strategy" ); 
+		AdasimFilter f = (AdasimFilter) loadClassFromAttribute(nodeElement, "uncertainty_filter" ); 
 		GraphNode gn = new GraphNode( id, ss, getDelay(nodeElement ), getCapacity(nodeElement)) ;
 		gn.setUncertaintyFilter(f);
 		return gn;
-	}
-
-	/**
-	 * @param string
-	 * @param nodeElement
-	 * @return
-	 */
-	private AdasimFilter buildFilter(String filterName, Element node) {
-		AdasimFilter f = null;
-		String fn = node.getAttributeValue( filterName );
-		if ( fn != null ) {
-			try {
-				@SuppressWarnings("rawtypes")
-				Class fc = Class.forName( fn );
-				f = (AdasimFilter) fc.newInstance();
-			} catch (Exception e) {}
-		}
-		return f;
 	}
 
 	/**
@@ -145,18 +125,9 @@ public class SimulationXMLBuilder {
 	public List<Vehicle> buildVehicles( Element vehiclesNode ) throws ConfigurationException {
 		@SuppressWarnings("unchecked")
 		List<Element> vehicleNodes = vehiclesNode.getChildren("car");
-		VehicleStrategy cs = null;
-		try {
-			Class<?> cls = Class.forName(vehiclesNode.getAttributeValue("default_strategy"));
-			cs = (VehicleStrategy) cls.newInstance();
-			//TODO: assign this somewhere
-			//cs.setGraph(g);
-		} catch (Exception e ) {
-			throw new ConfigurationException("Invalid default vehicle strategy: " + vehiclesNode.getAttributeValue("default_strategy"));
-		}
+		VehicleStrategy cs = (VehicleStrategy)loadClassFromAttribute(vehiclesNode, "default_strategy" );
 		List<Vehicle> vehicles = new ArrayList<Vehicle>();
 		for ( Element vehicle : vehicleNodes ) {
-			//Vehicle c = buildVehicle( vehicle, cs, g );
 			Vehicle c = buildVehicle( vehicle );
 			if ( c != null ) vehicles.add( assignDefaultVehicleValues( c, cs ) );
 		}
@@ -185,30 +156,13 @@ public class SimulationXMLBuilder {
 	 * @return
 	 */
 	public Vehicle buildVehicle( Element vehicleNode ) {
-		//		int start = Integer.parseInt(vehicleNode.getAttributeValue("start"));
-		//		int end = Integer.parseInt(vehicleNode.getAttributeValue("end"));
 		int id = Integer.parseInt(vehicleNode.getAttributeValue("id"));
-		//TODO: move validation somewhere else!!!!
-
-		//		List<GraphNode> nodes = g.getNodes();
-		//		try {
-		//			checkEndPoint(nodes, start, id, "Start" );
-		//			checkEndPoint(nodes, end, id, "End" );
-		//		} catch ( ConfigurationException e ) {
-		//			return null;
-		//		}
-		//VehicleStrategy cs = defaultStrategy;
 		VehicleStrategy cs = null;
 		if(vehicleNode.getAttributeValue("strategy") != null) {
-			String s = null;
 			try {
-				s = vehicleNode.getAttributeValue("strategy");
-				cs = (VehicleStrategy) Class.forName(s).newInstance();
-
-				//TODO: link the graph somewhere else
-				//cs.setGraph(g);
+				cs = (VehicleStrategy) loadClassFromAttribute(vehicleNode, "strategy");
 			} catch (Exception e) {
-				logger.warn( "VehicleStrategy " + s + " not found. Using default." );
+				logger.warn( "VehicleStrategy " + vehicleNode.getAttributeValue("strategy") + " not found. Using default." );
 			}
 		}
 		return new Vehicle(null, null, cs, id );
@@ -261,22 +215,17 @@ public class SimulationXMLBuilder {
 		return gn;
 	}
 
-	/**
-	 * @param node
-	 * @param defaultStrategy
-	 * @return
-	 */
-	private SpeedStrategy buildStrategy(Element node) {
-		SpeedStrategy ss = null;
-		String ssn = node.getAttributeValue( "strategy" );
-		if ( ssn != null ) {
+	private Object loadClassFromAttribute(Element node, String attribute ) {
+		Object t = null;
+		String n = node.getAttributeValue( attribute );
+		if ( n != null ) {
 			try {
 				@SuppressWarnings("rawtypes")
-				Class ssc = Class.forName( ssn );
-				ss = (SpeedStrategy) ssc.newInstance();
+				Class c = Class.forName( n );
+				t = c.newInstance();
 			} catch (Exception e) {}
 		}
-		return ss;
+		return t;
 	}
 
 	/**
