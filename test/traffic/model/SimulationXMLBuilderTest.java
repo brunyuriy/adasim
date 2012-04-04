@@ -95,7 +95,28 @@ public class SimulationXMLBuilderTest {
 		assertEquals(0, node.getCapacity() );
 		assertTrue( node.getSpeedStrategy() instanceof QuadraticSpeedStrategy );
 	}
+
 	
+	@Test
+	public void graphWithUncertaintyFilter() throws JDOMException, IOException, ConfigurationException {
+		Document doc = parser.build( new StringReader( "<graph default_strategy=\"traffic.strategy.LinearSpeedStrategy\" default_capacity=\"0\" uncertainty_filter=\"traffic.model.FakeFilter\">" +
+				"<node id=\"1\" neighbors=\"1 2 3 4\" delay=\"2\" capacity=\"5\"/>" +
+				"<node id=\"2\" neighbors=\"3\" delay=\"2\" capacity=\"5\" strategy=\"traffic.strategy.LinearSpeedStrategy\"/>" +
+				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"traffic.strategy.QuadraticSpeedStrategy\"/>" +
+				"</graph>" ) );
+		Graph graph = builder.buildGraph( doc.getRootElement() );
+		assertEquals( 3, graph.getNodes().size() );
+		GraphNode node = graph.getNode( 1 );
+		assertEquals( 3, node.getNeighbors().size() );
+		assertNotNull( "No default speed strategy assigned", node.getSpeedStrategy() );
+		assertTrue( "Default speed strategy has wrong type", node.getSpeedStrategy() instanceof LinearSpeedStrategy );
+		assertNotNull( "No uncertainty filter assigned", node.getUncertaintyFilter() );
+		assertTrue( "Uncertainty filter has wrong type", node.getUncertaintyFilter() instanceof FakeFilter );
+		node = graph.getNode(4);
+		assertEquals(0, node.getCapacity() );
+		assertTrue( node.getSpeedStrategy() instanceof QuadraticSpeedStrategy );
+	}
+
 	@Test
 	public void carNoOptionals() throws JDOMException, IOException {
 		Document doc = parser.build( new StringReader( "<car id=\"27\" start=\"1\" end=\"1\"/>" ) );
@@ -176,5 +197,89 @@ class FakeAgent extends AbstractAdasimAgent {
 		// TODO Auto-generated method stub
 		
 	}
+}
 
+class FakeFilter implements AdasimFilter {
+	
+	/* (non-Javadoc)
+	 * @see traffic.filter.AdasimFilter#filter(byte)
+	 */
+	@Override
+	public byte filter(byte b) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	/* (non-Javadoc)
+	 * @see traffic.filter.AdasimFilter#filter(char)
+	 */
+	@Override
+	public char filter(char b) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	/* (non-Javadoc)
+	 * @see traffic.filter.AdasimFilter#filter(short)
+	 */
+	@Override
+	public short filter(short b) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	/* (non-Javadoc)
+	 * @see traffic.filter.AdasimFilter#filter(int)
+	 */
+	@Override
+	public int filter(int b) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	/* (non-Javadoc)
+	 * @see traffic.filter.AdasimFilter#filter(long)
+	 */
+	@Override
+	public long filter(long b) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	/* (non-Javadoc)
+	 * @see traffic.filter.AdasimFilter#filter(float)
+	 */
+	@Override
+	public float filter(float b) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	/* (non-Javadoc)
+	 * @see traffic.filter.AdasimFilter#filter(double)
+	 */
+	@Override
+	public double filter(double b) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	/* (non-Javadoc)
+	 * @see traffic.filter.AdasimFilter#filter(boolean)
+	 */
+	@Override
+	public boolean filter(boolean b) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	/* (non-Javadoc)
+	 * @see traffic.filter.AdasimFilter#filter(java.lang.Object)
+	 */
+	@Override
+	public <T> T filter(T b) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 }
