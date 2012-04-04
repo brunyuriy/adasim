@@ -37,6 +37,7 @@ import org.jdom.Element;
 
 import traffic.agent.AdasimAgent;
 import traffic.filter.AdasimFilter;
+import traffic.filter.IdentityFilter;
 import traffic.graph.Graph;
 import traffic.graph.GraphNode;
 import traffic.strategy.VehicleStrategy;
@@ -77,7 +78,15 @@ public class SimulationXMLBuilder {
 			Class<?> cls = Class.forName(graphNode.getAttributeValue("default_strategy"));
 			SpeedStrategy ss = (SpeedStrategy) cls.newInstance();
 			int capacity = Integer.parseInt(graphNode.getAttributeValue("default_capacity"));
-			return new Graph( buildNodes( children, ss, capacity) );
+			String ufs = graphNode.getAttributeValue("uncertainty_filter");
+			AdasimFilter uf = null;
+			if ( ufs == null ) {
+				uf = new IdentityFilter();
+			} else {
+				cls = Class.forName(ufs);
+				uf = (AdasimFilter) cls.newInstance();
+			}
+			return new Graph( buildNodes( children, ss, uf, capacity) );
 		} catch (Exception e) {
 			throw new ConfigurationException("Invalid default graph strategy: " + graphNode.getAttributeValue("default_strategy"));
 		}
@@ -215,12 +224,20 @@ public class SimulationXMLBuilder {
 	 * @param capacity
 	 * @return
 	 */
-	private List<GraphNode> buildNodes( List<Element> nodeElements, SpeedStrategy defaultStrategy, int capacity ) {
+	private List<GraphNode> buildNodes( List<Element> nodeElements, SpeedStrategy defaultStrategy,
+			AdasimFilter uncertaintyFilter, int capacity ) {
 		List<GraphNode> nodes = new ArrayList<GraphNode>( nodeElements.size() );
 		for( Element node : nodeElements ) {
 			GraphNode gn = buildNode( node );
 			if ( gn != null ) {
 				nodes.add( assignDefaultNodeValues(gn, defaultStrategy, capacity) );
+			}
+			//assign default when needed
+			if ( gn.getUncertaintyFilter() == null ) {
+				gn.setUncertaintyFilter( uncertaintyFilter );
+			}
+			if ( gn.getSpeedStrategy() == null ) {
+				gn.setSpeedStrategy( defaultStrategy );
 			}
 		}
 		for ( Element node: nodeElements ) {
