@@ -31,6 +31,7 @@
         </xsd:sequence>
         <xsd:attribute name="default_strategy" type="xsd:string" />
         <xsd:attribute name="default_capacity" type="xsd:nonNegativeInteger" />
+        <xsd:attribute name="uncertainty_filter" type="xsd:string"/>
     </xsd:complexType>
 
 
@@ -40,6 +41,7 @@
         <xsd:attribute name="neighbors" type="xsd:string" use="required" />
         <xsd:attribute name="delay" type="xsd:nonNegativeInteger" />
         <xsd:attribute name="capacity" type="xsd:nonNegativeInteger" />
+        <xsd:attribute name="uncertainty_filter" type="xsd:string"/>
     </xsd:complexType>
 
     <xsd:complexType name="Agents">

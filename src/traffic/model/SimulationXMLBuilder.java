@@ -36,6 +36,7 @@ import org.apache.log4j.Logger;
 import org.jdom.Element;
 
 import traffic.agent.AdasimAgent;
+import traffic.filter.AdasimFilter;
 import traffic.graph.Graph;
 import traffic.graph.GraphNode;
 import traffic.strategy.VehicleStrategy;
@@ -99,7 +100,28 @@ public class SimulationXMLBuilder {
 	public GraphNode buildNode( Element nodeElement ) {
 		int id = Integer.parseInt( nodeElement.getAttributeValue( "id" ) );
 		SpeedStrategy ss = buildStrategy( nodeElement );
-		return new GraphNode( id, ss, getDelay(nodeElement ), getCapacity(nodeElement)) ;
+		AdasimFilter f = buildFilter( "uncertainty_filter", nodeElement );
+		GraphNode gn = new GraphNode( id, ss, getDelay(nodeElement ), getCapacity(nodeElement)) ;
+		gn.setUncertaintyFilter(f);
+		return gn;
+	}
+
+	/**
+	 * @param string
+	 * @param nodeElement
+	 * @return
+	 */
+	private AdasimFilter buildFilter(String filterName, Element node) {
+		AdasimFilter f = null;
+		String fn = node.getAttributeValue( filterName );
+		if ( fn != null ) {
+			try {
+				@SuppressWarnings("rawtypes")
+				Class fc = Class.forName( fn );
+				f = (AdasimFilter) fc.newInstance();
+			} catch (Exception e) {}
+		}
+		return f;
 	}
 
 	/**
