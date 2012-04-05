@@ -43,6 +43,12 @@ import traffic.strategy.SpeedStrategy;
  * A GraphNode is a single node on the graph. It has a queue of vehicles
  * and uses a given speed strategy and delay to determine their movements
  * <p>
+ * The GraphNode applies an uncertainty filter to only some properties, 
+ * others it reports faithfully, because precision there is crucial for 
+ * the internal working of the simulator. As a convenience for testing, while
+ * no filter is configured (i.e. <code>null</code> is assigned
+ * to the filter field), it will faithfully report all values.
+ * <p>
  * Properties accessible to other agents:
  * <ul>
  * <li>ID: certain

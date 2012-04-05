@@ -77,6 +77,9 @@ public abstract class AbstractAdasimAgent implements AdasimAgent {
 	 * Sets the filter for sensor uncertainty.
 	 * Assigning <code>null</code> is legal here. The agent
 	 * implementation is responsible for ensuring safe behavior.
+	 * <p>
+	 * The agent is also responsible for ensuring that the 
+	 * filter is applied to all properties that have uncertainty.
 	 * 
 	 * @param the uncertainty filter
 	 */
