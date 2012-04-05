@@ -120,6 +120,28 @@ public class SimulationXMLBuilderTest {
 	}
 
 	@Test
+	public void graphWithUncertaintyFilterHookup() throws JDOMException, IOException, ConfigurationException {
+		//test that the uncertainty filter gets called correctly.
+		Document doc = parser.build( new StringReader( "<graph default_strategy=\"traffic.strategy.LinearSpeedStrategy\" default_capacity=\"0\" uncertainty_filter=\"traffic.model.FakeFilter\">" +
+				"<node id=\"1\" neighbors=\"1 2 3 4\" delay=\"2\" capacity=\"5\"/>" +
+				"<node id=\"2\" neighbors=\"3\" delay=\"2\" capacity=\"5\" strategy=\"traffic.strategy.LinearSpeedStrategy\"/>" +
+				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"traffic.strategy.LinearSpeedStrategy\" uncertainty_filter=\"traffic.model.FakeFilter\"/>" +
+				"</graph>" ) );
+		Graph graph = builder.buildGraph( doc.getRootElement() );
+		assertEquals( 3, graph.getNodes().size() );
+		GraphNode node = graph.getNode(4);
+		assertNotNull( "No uncertainty filter assigned", node.getUncertaintyFilter() );
+		assertTrue( "Uncertainty filter has wrong type", node.getUncertaintyFilter() instanceof FakeFilter );
+		//this "fake" node has a capacity of -1, because it has not passed validation yet
+		assertEquals( 0, node.getCapacity() );
+		assertEquals( 3, node.getDelay() );
+		assertEquals( 4, node.getCurrentDelay() );
+		assertEquals( 1, node.numVehiclesAtNode() );
+		assertEquals( 4, node.getID() );
+		assertFalse( node.isClosed() ); 
+	}
+
+	@Test
 	public void graphWithPrivacyFilter() throws JDOMException, IOException, ConfigurationException {
 		Document doc = parser.build( new StringReader( "<graph default_strategy=\"traffic.strategy.LinearSpeedStrategy\" default_capacity=\"0\" privacy_filter=\"traffic.model.FakeFilter\">" +
 				"<node id=\"1\" neighbors=\"1 2 3 4\" delay=\"2\" capacity=\"5\"/>" +
@@ -256,8 +278,7 @@ class FakeFilter implements AdasimFilter {
 	 */
 	@Override
 	public int filter(int b) {
-		// TODO Auto-generated method stub
-		return 0;
+		return b+1;
 	}
 	
 	/* (non-Javadoc)

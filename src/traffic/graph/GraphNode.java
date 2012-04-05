@@ -42,6 +42,16 @@ import traffic.strategy.SpeedStrategy;
 /**
  * A GraphNode is a single node on the graph. It has a queue of vehicles
  * and uses a given speed strategy and delay to determine their movements
+ * <p>
+ * Properties accessible to other agents:
+ * <ul>
+ * <li>ID: certain
+ * <li>delay: uncertain
+ * <li>currentDelay: uncertain
+ * <li>capacity: uncertain
+ * <li>closed: certain
+ * <li>numVehiclesAtNode: uncertain
+ * </ul>
  * 
  * @author Jonathan Ramaswamy - ramaswamyj12@gmail.com
  * @author Jochen Wuttke - wuttkej@gmail.com
@@ -53,8 +63,10 @@ public final class GraphNode extends AbstractAdasimAgent {
 
 	
 	private Set<GraphNode> outgoing; //Nodes that this node has an edge directed towards
-	private int nodeNum; //The number of this node on the graph
 	private SpeedStrategy ss; //The strategy by which the speed changes
+
+	//PROPERTIES
+	private int nodeNum; //The number of this node on the graph
 	private int delay; //The basic delay of this node. To be modified by the speed strategy
 	private NodeVehicleQueue queue; //Holds the vehicles on this node and deals with the traffic
 	private int capacity; //The number of vehicles the road can hold before the speed strategy takes effect
@@ -119,14 +131,10 @@ public final class GraphNode extends AbstractAdasimAgent {
 	private boolean isNeighbor(GraphNode n) {
 		return outgoing.contains(n);
 	}
-	
-	/**
-	 * Returns this node's ID number
-	 * @return
-	 */
-	public int getID() {
-		return nodeNum;
-	}
+
+	/* ***************************************************
+	 * GRAPH NODE INTERNALS
+	 *************************************************** */	
 
 	/**
 	 * Returns this node's speed strategy
@@ -143,6 +151,87 @@ public final class GraphNode extends AbstractAdasimAgent {
 		this.ss = ss;
 	}
 
+	
+	/* ***************************************************
+	 * AGENT PROPERTIES
+	 *************************************************** */	
+	
+	/**
+	 * Returns this node's ID number
+	 * @return
+	 */
+	public int getID() {
+		return nodeNum;
+	}
+
+	/**
+	 * Returns the number of turns a vehicle must stay limited at this node
+	 */
+	public int getDelay() {
+		return filterValue(delay);
+	}
+	
+	/**
+	 * @param filter
+	 * @return
+	 */
+	private int filterValue(int value) {
+		if ( uncertaintyFilter == null ) {
+			return value;
+		}
+		else { 
+			return uncertaintyFilter.filter(value);
+		}
+	}
+
+	/**
+	 * @return the traffic dependent delay at this node.
+	 */
+	public int getCurrentDelay() {		
+		int cd = closed ? Integer.MAX_VALUE : ss.getDelay(delay, capacity, queue.size());
+		return filterValue(cd);
+	}
+	
+	public int getCapacity() {
+		return filterValue(capacity);
+	}
+	
+	/**
+	 * @param capacity the capacity to set
+	 */
+	public void setCapacity(int capacity) {
+		this.capacity = capacity;
+	}
+
+	/**
+	 * Returns the number of vehicles currently at this node
+	 */
+	public int numVehiclesAtNode() {
+		return uncertaintyFilter.filter(queue.size() );
+	}
+	
+	/**
+	 * Sets the <code>closed</code> flag of this node to <code>c</code>.
+	 * 
+	 * @param c
+	 */
+	public void setClosed( boolean c ) {
+		closed = c;
+	}
+	
+	/**
+	 * When a GraphNode (road) is closed, this means two things:
+	 * <ul>
+	 * <li>Vehicles can no longer enter the road. Trying to enter is considered invalid and vehicles will be removed.
+	 * <li>Vehicles that are already on the road can continue driving and will eventually leave the node.
+	 * </ul>
+	 * 
+	 * @return <code>true</code> if the node is currently closed to traffic
+	 */
+	public boolean isClosed() {
+		return closed;
+	}
+	
 	/* ***************************************************
 	 * TRAFFIC MANAGEMENT METHODS
 	 *************************************************** */
@@ -171,60 +260,31 @@ public final class GraphNode extends AbstractAdasimAgent {
 		c.setCurrentPosition(c.getEndNode());
 	}
 	
-	/**
-	 * Returns the number of turns a vehicle must stay limited at this node
-	 */
-	public int getDelay() {
-		return delay;
+	/* ***************************************************
+	 * SIMULATION MANAGEMENT METHODS
+	 *************************************************** */
+
+	public void takeSimulationStep( long cycle ) {
+		Set<Vehicle> finishedVehicles = queue.moveVehicles();
+		if ( finishedVehicles == null ) return;
+		for ( Vehicle c : finishedVehicles ) {
+			c.move();
+		}
 	}
 	
-	/**
-	 * @return the traffic dependent delay at this node.
-	 */
-	public int getCurrentDelay() {		
-		return closed ? Integer.MAX_VALUE : ss.getDelay(delay, capacity, queue.size()); 
-	}
-	
-	public int getCapacity() {
-		return capacity;
-	}
-	
-	/**
-	 * @param capacity the capacity to set
-	 */
-	public void setCapacity(int capacity) {
-		this.capacity = capacity;
+	public void moveTo( GraphNode targetNode, Vehicle v ) {
+		if ( isNeighbor(targetNode) && !targetNode.isClosed() ) {
+			targetNode.enterNode(v);
+		} else {
+			logger.info( "INVALID: Move: " + v.vehiclePosition() + " To: " + targetNode.getID() );
+			park(v);
+		}
 	}
 
-	/**
-	 * Returns the number of vehicles currently at this node
-	 */
-	public int numVehiclesAtNode() {
-		return queue.size();
-	}
-	
-	/**
-	 * Sets the <code>closed</code> flag of this node to <code>c</code>.
-	 * 
-	 * @param c
-	 */
-	public void setClosed( boolean c ) {
-		closed = c;
-	}
-	
-	/**
-	 * When a GraphNode (road) is closed, this means two things:
-	 * <ul>
-	 * <li>Vehicles can no longer enter the road. Trying to enter is considered invalid and vehicles will be removed.
-	 * <li>Vehicles that are already on the road can continue driving and will eventually leave the node.
-	 * </ul>
-	 * 
-	 * @return <code>true</code> if the node is currently closed to traffic
-	 */
-	public boolean isClosed() {
-		return closed;
-	}
-	
+	/* ***************************************************
+	 * OBJECT METHODS
+	 *************************************************** */
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */
@@ -256,27 +316,6 @@ public final class GraphNode extends AbstractAdasimAgent {
 	@Override
 	public String toString() {
 		return "" + nodeNum;
-	}
-
-	/* ***************************************************
-	 * SIMULATION MANAGEMENT METHODS
-	 *************************************************** */
-
-	public void takeSimulationStep( long cycle ) {
-		Set<Vehicle> finishedVehicles = queue.moveVehicles();
-		if ( finishedVehicles == null ) return;
-		for ( Vehicle c : finishedVehicles ) {
-			c.move();
-		}
-	}
-	
-	public void moveTo( GraphNode targetNode, Vehicle v ) {
-		if ( isNeighbor(targetNode) && !targetNode.isClosed() ) {
-			targetNode.enterNode(v);
-		} else {
-			logger.info( "INVALID: Move: " + v.vehiclePosition() + " To: " + targetNode.getID() );
-			park(v);
-		}
 	}
 
 }
