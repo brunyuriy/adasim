@@ -80,9 +80,21 @@
 		<javadoc sourcepath="${src.dir}" 
 			destdir="${javadoc.dir}"
 			access="protected"
-			Doctitle="Adasim End-User API Documentation">
+			Doctitle="Adasim End-User API Documentation"
+			Author="no">
 			<excludepackage name="**.internal"/>
 			<excludepackage name="**.generator"/>
+		</javadoc>
+	</target>
+
+	<target name="dev-javadoc">
+	<!-- Target for end user Javadoc -->
+		<javadoc sourcepath="${src.dir}" 
+			destdir="${javadoc.dir}"
+			access="private"
+			Doctitle="Adasim Developer API Documentation"
+			Use="yes"
+			Author="yes">
 		</javadoc>
 	</target>
 </project>
