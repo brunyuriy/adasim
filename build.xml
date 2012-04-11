@@ -6,6 +6,7 @@
 	<property name="src.dir" value="src"/>
 	<property name="test.dir" value="test"/>
 	<property name="lib.dir" value="lib"/>
+	<property name="javadoc.dir" value="javadoc"/>
 	<property name="xml.resources" value="resources/xml"/>
 	<loadproperties srcFile="resources/VERSION"/>
 	<property name="version" value="${version.major}.${version.minor}.${version.build}"/>
@@ -18,6 +19,7 @@
 
 	<target name="clean">
 		<delete dir="${build.dir}"/>
+		<delete dir="${javadoc.dir}"/>
 	</target>
 
 	<target name="out_dirs">
@@ -71,5 +73,16 @@
 				</zips>
 			</archives>
 		</jar>
+	</target>
+
+	<target name="javadoc">
+	<!-- Target for end user Javadoc -->
+		<javadoc sourcepath="${src.dir}" 
+			destdir="${javadoc.dir}"
+			access="protected"
+			Doctitle="Adasim End-User API Documentation">
+			<excludepackage name="**.internal"/>
+			<excludepackage name="**.generator"/>
+		</javadoc>
 	</target>
 </project>
