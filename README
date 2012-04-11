@@ -19,6 +19,8 @@ jar            build an executable JAR file containing only the
 jar-deps       build an executable JAR file that includes
                all dependencies and should run without having 
                to set the classpath
+javadoc        generate end-user JavaDoc documentation. The
+               generated HTML will be in 'javadoc'.
                
 The easiest way to compile and run Adasim is to use
 ant jar-libs 
