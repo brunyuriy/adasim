@@ -243,12 +243,19 @@ public final class GraphNode extends AbstractAdasimAgent {
 	 *************************************************** */
 	/**
 	 * Adds the given vehicle number to the list of vehicles currently at the node
-	 * Changes the speed limit at the node
+	 * if the node is open (i.e. <code>isClosed() == false</code>.
+	 * If the node is closed, an attempt to enter is invalid and leads to the 
+	 * vehicle being stopped.
 	 */
-	public void enterNode(Vehicle c) {
-		queue.enqueue(c, getCurrentDelay() );
-		c.setCurrentPosition(this);
-		logger.info( "ENTER: " + c.vehiclePosition() );
+	public void enterNode(Vehicle v) {
+		if (closed) {
+			logger.info( "INVALID: Node " + this.getID() + " is closed." );
+			park(v);
+		} else {
+			queue.enqueue(v, getCurrentDelay() );
+			v.setCurrentPosition(this);
+			logger.info( "ENTER: " + v.vehiclePosition() );
+		}
 	}
 	
 	/**
@@ -270,6 +277,20 @@ public final class GraphNode extends AbstractAdasimAgent {
 	 * SIMULATION MANAGEMENT METHODS
 	 *************************************************** */
 
+	/**
+	 * Handles the vehicle movement protocol.
+	 * <p>
+	 * In each cycle all cars currently on the node move a distance matching
+	 * the currently allowed maximum speed of this node.
+	 * If a vehicle reaches the end of the street segment, {@link Vehicle#move()}
+	 * is called and the vehicle can propose a new node it wishes to move to
+	 * by calling {@link GraphNode#moveTo(GraphNode, Vehicle)} on this node. 
+	 * This node verifies whether this is legal (the target node must be a 
+	 * neighbor in the graph), and if it is legal, hands off the vehicle
+	 * by calling {@link GraphNode#enterNode(Vehicle)} on the target node.
+	 * If the move is not legal, the vehicle is stopped and removed 
+	 * from the simulation. Corresponding events will be logged.
+	 */
 	public void takeSimulationStep( long cycle ) {
 		Set<Vehicle> finishedVehicles = queue.moveVehicles();
 		if ( finishedVehicles == null ) return;
@@ -279,7 +300,7 @@ public final class GraphNode extends AbstractAdasimAgent {
 	}
 	
 	public void moveTo( GraphNode targetNode, Vehicle v ) {
-		if ( isNeighbor(targetNode) && !targetNode.isClosed() ) {
+		if ( isNeighbor(targetNode) ) {
 			targetNode.enterNode(v);
 		} else {
 			logger.info( "INVALID: Move: " + v.vehiclePosition() + " To: " + targetNode.getID() );
