@@ -27,15 +27,7 @@
  */
 
 package traffic.model;
-/**
- * 
- * The vehicle object represents a single vehicle on the graph, and holds an info object
- * with important information about itself. The vehicle is given a graph traversal strategy
- * that it will use to select its path from start to end
- * 
- * @author Jonathan Ramaswamy - ramaswamyj12@gmail.com
- * @author Jochen Wuttke - wuttkej@gmail.com
- */
+
 
 import org.apache.log4j.Logger;
 
@@ -43,7 +35,28 @@ import traffic.agent.AbstractAdasimAgent;
 import traffic.graph.GraphNode;
 import traffic.strategy.VehicleStrategy;
 
-public class Vehicle extends AbstractAdasimAgent {
+/**
+ * 
+ * The vehicle object represents a single vehicle on the graph.
+ * <p>
+ * Vehicles are part of the core classes of Adasim and receive
+ * special treatment up to a point. While they also implement the 
+ * AdasimAgent interface, the takeSimulationStep() method is empty.
+ * <p>
+ * Special treatment arises because both TrafficSimulator and 
+ * GraphNode know about Vehicles and implement protocols for communicating 
+ * with them. The specifics of these protocols are documented in the 
+ * corresponding classes.
+ * <p>
+ * User implemented agents and strategies should never <strong>set</strong>
+ * any properties of vehicles (with the possible exception of updating strategies).
+ * Users also must never call protocol methods such as takeSimulationStep() 
+ * and move(). Their internals and use are restricted to the core simulator. 
+ * 
+ * @author Jonathan Ramaswamy - ramaswamyj12@gmail.com
+ * @author Jochen Wuttke - wuttkej@gmail.com
+ */
+public final class Vehicle extends AbstractAdasimAgent {
 
 	private GraphNode start; //Starting position
 	private GraphNode end; //Destination position
@@ -164,6 +177,11 @@ public class Vehicle extends AbstractAdasimAgent {
 	public void takeSimulationStep( long cycle ) {
 	}
 	
+	/**
+	 * Called by GraphNodes during the vehicle movement protocol.
+	 * The Vehicle responds by calling moveTo() on its
+	 * currentNode.
+	 */
 	public void move() {
 		if (isFinished()) return;	//quick end if we are done
 		
@@ -176,10 +194,11 @@ public class Vehicle extends AbstractAdasimAgent {
 		}		
 	}
 
-	/* (non-Javadoc)
-	 * @see traffic.model.AbstractAdasimAgent#isFinished()
+	/**
+	 * A vehicle is finished when it either has reached its
+	 * target node, or when the strategy can no longer compute
+	 * a path to the target.
 	 */
-	@Override
 	public boolean isFinished() {
 		return currentNode != null && currentNode.equals(end);
 	}

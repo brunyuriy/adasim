@@ -49,9 +49,9 @@ public interface VehicleStrategy {
 	 * that can be implemented in getNextNode()
 	 * @param from
 	 * @param to
-	 * @return
+	 * @return the path computed by this strategy
 	 */
-	public List<GraphNode> getPath(GraphNode from, GraphNode to); //Creates the path for the vehicle to follow
+	public List<GraphNode> getPath(GraphNode from, GraphNode to); 
 
 	/**
 	 * @return The next node according to the routing strategy. May be <code>null</code> 

@@ -103,10 +103,14 @@ public class LookaheadShortestPathVehicleStrategy extends AbstractVehicleStrateg
 	}
 	
 	/**
-	 * @param g
-	 * @param source ID of the source node
-	 * @param target ID of the target node
+	 * Computes Dijkstra's shortest path algorithm on the graph represented by
+	 * <code>nodes</code>, and returns a list of nodes that represent
+	 * the shortest past from <code>source</code> to <code>target</code>.
+	 * @param nodes
+	 * @param source
+	 * @param target
 	 * @param l
+	 * @return the shortest past from <code>source</code> to <code>target</code>
 	 */
 	private List<GraphNode> dijkstra(List<GraphNode> nodes, GraphNode source, GraphNode target, int l) {
 		int size = nodes.size();
@@ -122,7 +126,7 @@ public class LookaheadShortestPathVehicleStrategy extends AbstractVehicleStrateg
 			
 			for ( GraphNode node : nodes.get(current).getNeighbors() ) {
 				int depth = getCurrentDepth(previous, nodes, source, nodes.get(current) ); 
-				int t = dist[current] + ( depth <= lookahead ? node.getCurrentDelay() : node.getDelay() );
+				int t = dist[current] + ( depth <= l ? node.getCurrentDelay() : node.getDelay() );
 				int thisIndex = getIndex( nodes, node );
 				if ( t < dist[ thisIndex ] ) {
 					dist[thisIndex] = t;
@@ -137,8 +141,8 @@ public class LookaheadShortestPathVehicleStrategy extends AbstractVehicleStrateg
 	 * @param previous
 	 * @param nodes
 	 * @param source
-	 * @param graphNode
-	 * @return
+	 * @param current
+	 * @return the current depth of the search path
 	 */
 	private int getCurrentDepth(int[] previous, List<GraphNode> nodes,
 			GraphNode source, GraphNode current) {
@@ -148,10 +152,11 @@ public class LookaheadShortestPathVehicleStrategy extends AbstractVehicleStrateg
 	}
 
 	/**
-	 * @param previous
-	 * @param ID of source node
-	 * @param ID of target node
-	 * @return
+	 * @param previous map to previous nodes on a path 
+	 * @param nodes list of all nodes
+	 * @param source ID of source node
+	 * @param target ID of target node
+	 * @return the path constructed from the intermediate data structures passed in
 	 */
 	private List<GraphNode> reconstructPath(int[] previous, List<GraphNode> nodes, GraphNode source, GraphNode target) {
 		int ti = getIndex(nodes, target);
@@ -168,7 +173,7 @@ public class LookaheadShortestPathVehicleStrategy extends AbstractVehicleStrateg
 	/**
 	 * @param nodes
 	 * @param node
-	 * @return
+	 * @return the index of the node in the list, -1 if the node cannot be found
 	 */
 	private int getIndex(List<GraphNode> nodes, GraphNode node) {
 		for ( int i =0 ; i < nodes.size() ; i++ ) {
@@ -181,7 +186,7 @@ public class LookaheadShortestPathVehicleStrategy extends AbstractVehicleStrateg
 	/**
 	 * Computes the array index of the smallest element
 	 * @param q
-	 * @return
+	 * @return the index of the smalles element
 	 */
 	private int getIndexOfMin(Set<Integer> q, int[] dist) {
 		int min = q.iterator().next();
@@ -235,7 +240,9 @@ public class LookaheadShortestPathVehicleStrategy extends AbstractVehicleStrateg
 	}
 
 	/**
-	 * @param next
+	 * Computes a path to the configured target node starting from
+	 * the passed <code>start</code> node.
+	 * @param start
 	 */
 	private List<GraphNode> getPath(GraphNode start) {
 		List<GraphNode> p = dijkstra(graph.getNodes(), start, target, lookahead );

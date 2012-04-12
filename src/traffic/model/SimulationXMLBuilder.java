@@ -66,7 +66,7 @@ public class SimulationXMLBuilder {
 	 * nodes that have explicit declarations.
 	 * 
 	 * @param graphNode
-	 * @return
+	 * @return the fully validated graph
 	 * @throws ConfigurationException
 	 * @throws IllegalAccessException 
 	 * @throws InstantiationException 
@@ -102,7 +102,7 @@ public class SimulationXMLBuilder {
 	 * </ul>
 	 * 
 	 * @param nodeElement
-	 * @return
+	 * @return a partically configured node
 	 */
 	public GraphNode buildNode( Element nodeElement ) {
 		int id = Integer.parseInt( nodeElement.getAttributeValue( "id" ) );
@@ -122,7 +122,7 @@ public class SimulationXMLBuilder {
 	 * <p>
 	 * Not start/end point validation will occur, as these are not known at this stage.
 	 * @param vehiclesNode
-	 * @return
+	 * @return the list of all fully configured vehicles
 	 * @throws ConfigurationException
 	 */
 	public List<Vehicle> buildVehicles( Element vehiclesNode ) throws ConfigurationException {
@@ -140,7 +140,6 @@ public class SimulationXMLBuilder {
 	/**
 	 * @param c
 	 * @param cs
-	 * @return
 	 */
 	private Vehicle assignDefaultVehicleValues(Vehicle c, VehicleStrategy cs) {
 		if ( c.getStrategy() == null ) {
@@ -156,7 +155,7 @@ public class SimulationXMLBuilder {
 	 * validation is performed, as the graph is not known at this stage.
 	 * 
 	 * @param vehicleNode
-	 * @return
+	 * @return a partially configured vehicle (global default may be missing) 
 	 */
 	public Vehicle buildVehicle( Element vehicleNode ) {
 		int id = Integer.parseInt(vehicleNode.getAttributeValue("id"));
@@ -176,10 +175,7 @@ public class SimulationXMLBuilder {
 	 * It assigns default values where no explicit values are defined and performs other validation
 	 * as required.
 	 * 
-	 * @param nodes
-	 * @param defaultStrategy
-	 * @param capacity
-	 * @return
+	 * @return the list of fully validated GraphNodes
 	 */
 	private List<GraphNode> buildNodes( List<Element> nodeElements, SpeedStrategy defaultStrategy,
 			AdasimFilter uncertaintyFilter, AdasimFilter privacyFilter, int capacity ) {
@@ -209,7 +205,7 @@ public class SimulationXMLBuilder {
 
 	/**
 	 * @param gn
-	 * @return
+	 * @return the updated GraphNode (should be reference equal)
 	 */
 	private GraphNode assignDefaultNodeValues(GraphNode gn, SpeedStrategy ss, int capacity ) {
 		if ( gn.getSpeedStrategy() == null ) {
@@ -236,7 +232,7 @@ public class SimulationXMLBuilder {
 
 	/**
 	 * @param node
-	 * @return
+	 * @return the delay declared in the XML element or the default 1
 	 * @throws ConfigurationException 
 	 */
 	private int getDelay(Element node) {
@@ -281,7 +277,7 @@ public class SimulationXMLBuilder {
 	/**
 	 * @param nodes
 	 * @param node
-	 * @return
+	 * @return the GraphNode with the same ID as the XML element or <code>null</code>.
 	 */
 	private GraphNode getNode(List<GraphNode> nodes, Element node) {
 		int id = Integer.parseInt( node.getAttributeValue( "id" ) );
@@ -293,7 +289,7 @@ public class SimulationXMLBuilder {
 
 	/**
 	 * @param nodes
-	 * @return
+	 * @return the list of validated nodes
 	 */
 	private List<GraphNode> validate(List<GraphNode> nodes) {
 		List<GraphNode> l = new ArrayList<GraphNode>( nodes );
@@ -308,7 +304,7 @@ public class SimulationXMLBuilder {
 	/**
 	 * Removes links that point to invalid neighbors.
 	 * @param nodes
-	 * @return
+	 * @return the updated list
 	 */
 	private List<GraphNode> reduce(List<GraphNode> nodes) {
 		List<GraphNode> l = new ArrayList<GraphNode>();
@@ -325,7 +321,7 @@ public class SimulationXMLBuilder {
 
 	/**
 	 * @param child
-	 * @return
+	 * @return a list of partially configured agents
 	 * @throws ConfigurationException 
 	 */
 	public List<? extends AdasimAgent> buildAgents(Element child) throws ConfigurationException {
@@ -345,7 +341,7 @@ public class SimulationXMLBuilder {
 
 	/**
 	 * @param agent
-	 * @return
+	 * @return a partially configured agent
 	 * @throws ConfigurationException 
 	 */
 	public AdasimAgent buildAgent(Element agent) throws ConfigurationException {

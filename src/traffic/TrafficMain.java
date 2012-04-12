@@ -41,8 +41,12 @@ import traffic.model.SimulationXMLReader;
 import traffic.model.TrafficSimulator;
 
 /**
- * This is the main class for running the simulator
- * It takes in a commandline argument and attempts to run the simulation with it
+ * This is the main class for running the simulator.
+ * <p>
+ * It takes on commandline argument <code>-I file</code> with the name
+ * of a configuration file defining a simulation. It will then load,
+ * validate and run the simulation. All simulation output is 
+ * written to stdout.
  * 
  * @author Jonathan Ramaswamy - ramaswamyj12@gmail.com
  */

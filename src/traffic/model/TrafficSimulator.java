@@ -32,18 +32,28 @@ import java.util.*;
 
 import org.apache.log4j.Logger;
 
+import traffic.TrafficMain;
 import traffic.agent.AdasimAgent;
 import traffic.graph.Graph;
 import traffic.graph.GraphNode;
 import traffic.model.internal.VehicleManager;
 
 /**
- * TrafficSimulator is the main program for running the simulator. It keeps track
+ * TrafficSimulator is the core the simulator. It keeps track
  * of the graph and where all the vehicles are located on it, and outputs information to
  * the logger object with every step taken.
  * <p>
- * To use, create a {@link TrafficSimulator} instance and call <code>run()</code>.
- * No other interaction with the simulation is encourage or needed.
+ * Usually there is no need to explicitly create an object of this type. Normal use of
+ * the simulator is handled through the commandline interface of {@link TrafficMain}.
+ * <p>
+ * There are several types of agents and other active elements in a
+ * simulation. Currently the simulator enforces the following 
+ * protocol in each cycle <em>t</em>:
+ * <ol>
+ * <li>Vehicles scheduled to start in cycle <em>t</em> are added to the simulation
+ * <li>All agents (including vehicles, but not GraphNodes) can perform an action
+ * <li>All GraphNodes execute the vehicle movement protocol (documented in {@link GraphNode}).
+ * </ol>
  * 
  * @author Jonathan Ramaswamy - ramaswamyj12@gmail.com
  * @author Jochen Wuttke - wuttkej@gmail.com
@@ -131,7 +141,7 @@ public final class TrafficSimulator{
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Add a vehicle to the simulation. It will be added
 	 * to its starting node and start moving in the next simulation cycle.
