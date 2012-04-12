@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <simulation>
-  <graph default_strategy="traffic.algorithm.LinearTrafficDelayFunction">
+  <graph default_strategy="adasim.algorithm.LinearTrafficDelayFunction">
     <node id="0" delay="3" neighbors="70 26" />
     <node id="1" delay="4" neighbors="96 52 8 92" />
     <node id="2" delay="5" neighbors="67 7 42" />
@@ -102,37 +102,37 @@
     <node id="96" delay="6" neighbors="1 20 83 7 59 26 91" />
     <node id="97" delay="4" neighbors="27" />
   </graph>
-  <cars default_strategy="traffic.algorithm.LookaheadShortestPathCarStrategy">
-    <car start="61" end="83" id="0" strategy="traffic.algorithm.LookaheadShortestPathCarStrategy" />
-    <car start="61" end="83" id="1" strategy="traffic.algorithm.LookaheadShortestPathCarStrategy" />
-    <car start="61" end="83" id="2" strategy="traffic.algorithm.AlwaysRecomputeCarStrategy" />
-    <car start="61" end="83" id="3" strategy="traffic.algorithm.LookaheadShortestPathCarStrategy" />
-    <car start="61" end="83" id="4" strategy="traffic.algorithm.LookaheadShortestPathCarStrategy" />
-    <car start="61" end="83" id="5" strategy="traffic.algorithm.LookaheadShortestPathCarStrategy" />
-    <car start="61" end="83" id="6" strategy="traffic.algorithm.AlwaysRecomputeCarStrategy" />
-    <car start="61" end="83" id="7" strategy="traffic.algorithm.LookaheadShortestPathCarStrategy" />
-    <car start="61" end="83" id="8" strategy="traffic.algorithm.LookaheadShortestPathCarStrategy" />
-    <car start="61" end="83" id="9" strategy="traffic.algorithm.AlwaysRecomputeCarStrategy" />
-    <car start="61" end="83" id="10" strategy="traffic.algorithm.LookaheadShortestPathCarStrategy" />
-    <car start="61" end="83" id="11" strategy="traffic.algorithm.AlwaysRecomputeCarStrategy" />
-    <car start="61" end="83" id="12" strategy="traffic.algorithm.AlwaysRecomputeCarStrategy" />
-    <car start="61" end="83" id="13" strategy="traffic.algorithm.AlwaysRecomputeCarStrategy" />
-    <car start="61" end="83" id="14" strategy="traffic.algorithm.AlwaysRecomputeCarStrategy" />
-    <car start="61" end="83" id="15" strategy="traffic.algorithm.LookaheadShortestPathCarStrategy" />
-    <car start="61" end="83" id="16" strategy="traffic.algorithm.AlwaysRecomputeCarStrategy" />
-    <car start="61" end="83" id="17" strategy="traffic.algorithm.LookaheadShortestPathCarStrategy" />
-    <car start="61" end="83" id="18" strategy="traffic.algorithm.AlwaysRecomputeCarStrategy" />
-    <car start="61" end="83" id="19" strategy="traffic.algorithm.LookaheadShortestPathCarStrategy" />
-    <car start="61" end="83" id="20" strategy="traffic.algorithm.LookaheadShortestPathCarStrategy" />
-    <car start="61" end="83" id="21" strategy="traffic.algorithm.LookaheadShortestPathCarStrategy" />
-    <car start="61" end="83" id="22" strategy="traffic.algorithm.AlwaysRecomputeCarStrategy" />
-    <car start="61" end="83" id="23" strategy="traffic.algorithm.AlwaysRecomputeCarStrategy" />
-    <car start="61" end="83" id="24" strategy="traffic.algorithm.AlwaysRecomputeCarStrategy" />
-    <car start="61" end="83" id="25" strategy="traffic.algorithm.LookaheadShortestPathCarStrategy" />
-    <car start="61" end="83" id="26" strategy="traffic.algorithm.LookaheadShortestPathCarStrategy" />
-    <car start="61" end="83" id="27" strategy="traffic.algorithm.LookaheadShortestPathCarStrategy" />
-    <car start="61" end="83" id="28" strategy="traffic.algorithm.AlwaysRecomputeCarStrategy" />
-    <car start="61" end="83" id="29" strategy="traffic.algorithm.AlwaysRecomputeCarStrategy" />
+  <cars default_strategy="adasim.algorithm.LookaheadShortestPathCarStrategy">
+    <car start="61" end="83" id="0" strategy="adasim.algorithm.LookaheadShortestPathCarStrategy" />
+    <car start="61" end="83" id="1" strategy="adasim.algorithm.LookaheadShortestPathCarStrategy" />
+    <car start="61" end="83" id="2" strategy="adasim.algorithm.AlwaysRecomputeCarStrategy" />
+    <car start="61" end="83" id="3" strategy="adasim.algorithm.LookaheadShortestPathCarStrategy" />
+    <car start="61" end="83" id="4" strategy="adasim.algorithm.LookaheadShortestPathCarStrategy" />
+    <car start="61" end="83" id="5" strategy="adasim.algorithm.LookaheadShortestPathCarStrategy" />
+    <car start="61" end="83" id="6" strategy="adasim.algorithm.AlwaysRecomputeCarStrategy" />
+    <car start="61" end="83" id="7" strategy="adasim.algorithm.LookaheadShortestPathCarStrategy" />
+    <car start="61" end="83" id="8" strategy="adasim.algorithm.LookaheadShortestPathCarStrategy" />
+    <car start="61" end="83" id="9" strategy="adasim.algorithm.AlwaysRecomputeCarStrategy" />
+    <car start="61" end="83" id="10" strategy="adasim.algorithm.LookaheadShortestPathCarStrategy" />
+    <car start="61" end="83" id="11" strategy="adasim.algorithm.AlwaysRecomputeCarStrategy" />
+    <car start="61" end="83" id="12" strategy="adasim.algorithm.AlwaysRecomputeCarStrategy" />
+    <car start="61" end="83" id="13" strategy="adasim.algorithm.AlwaysRecomputeCarStrategy" />
+    <car start="61" end="83" id="14" strategy="adasim.algorithm.AlwaysRecomputeCarStrategy" />
+    <car start="61" end="83" id="15" strategy="adasim.algorithm.LookaheadShortestPathCarStrategy" />
+    <car start="61" end="83" id="16" strategy="adasim.algorithm.AlwaysRecomputeCarStrategy" />
+    <car start="61" end="83" id="17" strategy="adasim.algorithm.LookaheadShortestPathCarStrategy" />
+    <car start="61" end="83" id="18" strategy="adasim.algorithm.AlwaysRecomputeCarStrategy" />
+    <car start="61" end="83" id="19" strategy="adasim.algorithm.LookaheadShortestPathCarStrategy" />
+    <car start="61" end="83" id="20" strategy="adasim.algorithm.LookaheadShortestPathCarStrategy" />
+    <car start="61" end="83" id="21" strategy="adasim.algorithm.LookaheadShortestPathCarStrategy" />
+    <car start="61" end="83" id="22" strategy="adasim.algorithm.AlwaysRecomputeCarStrategy" />
+    <car start="61" end="83" id="23" strategy="adasim.algorithm.AlwaysRecomputeCarStrategy" />
+    <car start="61" end="83" id="24" strategy="adasim.algorithm.AlwaysRecomputeCarStrategy" />
+    <car start="61" end="83" id="25" strategy="adasim.algorithm.LookaheadShortestPathCarStrategy" />
+    <car start="61" end="83" id="26" strategy="adasim.algorithm.LookaheadShortestPathCarStrategy" />
+    <car start="61" end="83" id="27" strategy="adasim.algorithm.LookaheadShortestPathCarStrategy" />
+    <car start="61" end="83" id="28" strategy="adasim.algorithm.AlwaysRecomputeCarStrategy" />
+    <car start="61" end="83" id="29" strategy="adasim.algorithm.AlwaysRecomputeCarStrategy" />
   </cars>
 </simulation>
 
