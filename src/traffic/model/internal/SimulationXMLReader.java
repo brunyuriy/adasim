@@ -43,7 +43,7 @@ import org.jdom.input.SAXBuilder;
 
 import traffic.agent.AdasimAgent;
 import traffic.model.ConfigurationException;
-import traffic.model.Graph;
+import traffic.model.AdasimMap;
 import traffic.model.GraphNode;
 import traffic.model.TrafficSimulator;
 import traffic.model.Vehicle;
@@ -95,7 +95,7 @@ final public class SimulationXMLReader {
 	public static TrafficSimulator buildSimulator( File config ) throws FileNotFoundException, ConfigurationException {
 		try {
 			SimulationXMLReader factory = new SimulationXMLReader(config);
-			Graph g = builder.buildGraph( factory.doc.getRootElement().getChild("graph" ) );
+			AdasimMap g = builder.buildGraph( factory.doc.getRootElement().getChild("graph" ) );
 			VehicleManager m = new VehicleManager();
 			TrafficSimulator sim = new TrafficSimulator( g, m, factory.allAgents( g, m ) ); 
 			return sim;
@@ -108,7 +108,7 @@ final public class SimulationXMLReader {
 	/**
 	 * @throws ConfigurationException 
 	 */
-	private List<AdasimAgent> allAgents( Graph g, VehicleManager m ) throws ConfigurationException {
+	private List<AdasimAgent> allAgents( AdasimMap g, VehicleManager m ) throws ConfigurationException {
 		List<AdasimAgent> agents;
 		agents = new ArrayList<AdasimAgent>(buildVehicles( doc.getRootElement().getChild("cars" ), g, m ) );
 		agents.addAll( builder.buildAgents( doc.getRootElement().getChild("agents" ) ) );
@@ -125,7 +125,7 @@ final public class SimulationXMLReader {
 	/**
 	 * @throws ConfigurationException 
 	 */
-	private List<AdasimAgent> buildVehicles( Element vehiclesNode, Graph g, VehicleManager m ) throws ConfigurationException {
+	private List<AdasimAgent> buildVehicles( Element vehiclesNode, AdasimMap g, VehicleManager m ) throws ConfigurationException {
 		List<Vehicle> vehicles = builder.buildVehicles(vehiclesNode);
 		List<AdasimAgent> l = new ArrayList<AdasimAgent>();
 		@SuppressWarnings("unchecked")
@@ -160,7 +160,7 @@ final public class SimulationXMLReader {
 	 * @param vehicle
 	 * @param g
 	 */
-	private Vehicle validateVehicle(Element vehicle, List<Vehicle> vehicles, Graph g) {
+	private Vehicle validateVehicle(Element vehicle, List<Vehicle> vehicles, AdasimMap g) {
 		int start = Integer.parseInt(vehicle.getAttributeValue("start"));
 		int end = Integer.parseInt(vehicle.getAttributeValue("end"));
 		int id = Integer.parseInt(vehicle.getAttributeValue("id"));

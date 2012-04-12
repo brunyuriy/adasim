@@ -39,7 +39,7 @@ import traffic.agent.AdasimAgent;
 import traffic.filter.AdasimFilter;
 import traffic.filter.IdentityFilter;
 import traffic.model.ConfigurationException;
-import traffic.model.Graph;
+import traffic.model.AdasimMap;
 import traffic.model.GraphNode;
 import traffic.model.Vehicle;
 import traffic.strategy.VehicleStrategy;
@@ -73,7 +73,7 @@ public class SimulationXMLBuilder {
 	 * @throws IllegalAccessException 
 	 * @throws InstantiationException 
 	 */
-	public Graph buildGraph( Element graphNode ) throws ConfigurationException {
+	public AdasimMap buildGraph( Element graphNode ) throws ConfigurationException {
 		try {
 			@SuppressWarnings("unchecked")
 			List<Element> children = graphNode.getChildren("node");		
@@ -84,7 +84,7 @@ public class SimulationXMLBuilder {
 				uf = new IdentityFilter();
 			} 
 			AdasimFilter pf = (AdasimFilter) loadClassFromAttribute(graphNode, "privacy_filter");
-			return new Graph( buildNodes( children, ss, uf, pf, capacity) );
+			return new AdasimMap( buildNodes( children, ss, uf, pf, capacity) );
 		} catch (ClassCastException e ) {
 			throw new ConfigurationException( "Error loading class: " + e.getMessage() );
 		} catch (Exception e) {

@@ -25,7 +25,7 @@ import org.jdom.JDOMException;
 import org.junit.Test;
 
 import traffic.model.ConfigurationException;
-import traffic.model.Graph;
+import traffic.model.AdasimMap;
 import traffic.model.GraphNode;
 import traffic.model.TrafficSimulator;
 import traffic.model.Vehicle;
@@ -116,7 +116,7 @@ public class SimulationXMLReaderTest {
 	@Test
 	public void testStrategies() throws FileNotFoundException, ConfigurationException {
 		TrafficSimulator sim = SimulationXMLReader.buildSimulator( new File("resources/test/config.xml" ) );
-		Graph g = sim.getGraph();
+		AdasimMap g = sim.getGraph();
 		assertEquals(1, g.getNode(6).getCurrentDelay());
 		g.addVehicleAtNode(sim.getVehicle(0), 6);
 		g.addVehicleAtNode(sim.getVehicle(1), 6);
@@ -129,7 +129,7 @@ public class SimulationXMLReaderTest {
 	
 	@Test
 	public void testNeighbors() throws FileNotFoundException, ConfigurationException {
-		Graph g = SimulationXMLReader.buildSimulator( new File("resources/test/config.xml")).getGraph();
+		AdasimMap g = SimulationXMLReader.buildSimulator( new File("resources/test/config.xml")).getGraph();
 		List<GraphNode> neighbors = g.getNodes().get(2).getNeighbors();
 		int first = neighbors.get(0).getID();
 		assertEquals(first, 4);
@@ -141,7 +141,7 @@ public class SimulationXMLReaderTest {
 	
 	@Test
 	public void emptyNeighborListIsNotIgnored() throws FileNotFoundException, ConfigurationException {
-		Graph g = SimulationXMLReader.buildSimulator( new File("resources/test/unconnected-node.xml")).getGraph();
+		AdasimMap g = SimulationXMLReader.buildSimulator( new File("resources/test/unconnected-node.xml")).getGraph();
 		assertEquals( g.getNodes().size(), 10);
 	}
 	
@@ -166,7 +166,7 @@ public class SimulationXMLReaderTest {
 	
 	@Test
 	public void invalidNeighborIsIgnored() throws FileNotFoundException, ConfigurationException {
-		Graph g = SimulationXMLReader.buildSimulator( new File("resources/test/invalid-neighbor.xml")).getGraph();
+		AdasimMap g = SimulationXMLReader.buildSimulator( new File("resources/test/invalid-neighbor.xml")).getGraph();
 		List<GraphNode> neighbors = g.getNode( 0 ).getNeighbors(); 
 		assertEquals(1, neighbors.size() );
 		assertEquals(4, neighbors.get(0).getID() );
@@ -176,7 +176,7 @@ public class SimulationXMLReaderTest {
 	
 	@Test
 	public void invalidSpeedStrategyDefaultsCorrectly() throws FileNotFoundException, ConfigurationException {
-		Graph g = SimulationXMLReader.buildSimulator( new File("resources/test/invalid-strategy2.xml")).getGraph();
+		AdasimMap g = SimulationXMLReader.buildSimulator( new File("resources/test/invalid-strategy2.xml")).getGraph();
 		assertEquals( QuadraticSpeedStrategy.class, g.getNodes().get(1).getSpeedStrategy().getClass() );
 	}
 
@@ -188,13 +188,13 @@ public class SimulationXMLReaderTest {
 
 	@Test
 	public void setsDelayCorrectly() throws FileNotFoundException, ConfigurationException {
-		Graph g = SimulationXMLReader.buildSimulator( new File("resources/test/config-weights.xml")).getGraph();
+		AdasimMap g = SimulationXMLReader.buildSimulator( new File("resources/test/config-weights.xml")).getGraph();
 		assertEquals( 7, g.getNodes().get(1).getDelay() );
 	}
 
 	@Test
 	public void setsDelayCorrectly2() throws FileNotFoundException, ConfigurationException {
-		Graph g = SimulationXMLReader.buildSimulator( new File("resources/test/shortest-path-test-weights.xml")).getGraph();
+		AdasimMap g = SimulationXMLReader.buildSimulator( new File("resources/test/shortest-path-test-weights.xml")).getGraph();
 		assertEquals( 4, g.getNodes().get(3).getDelay() );
 	}
 
@@ -212,7 +212,7 @@ public class SimulationXMLReaderTest {
 
 	@Test
 	public void nodesHaveAllVehicles() throws FileNotFoundException, ConfigurationException {
-		Graph g = SimulationXMLReader.buildSimulator( new File("resources/test/shortest-path-test-weights.xml")).getGraph();
+		AdasimMap g = SimulationXMLReader.buildSimulator( new File("resources/test/shortest-path-test-weights.xml")).getGraph();
 		assertEquals( 3, g.getNode(2).numVehiclesAtNode() );		
 	}
 }

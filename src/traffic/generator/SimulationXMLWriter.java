@@ -40,7 +40,7 @@ import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
 import traffic.agent.AdasimAgent;
-import traffic.model.Graph;
+import traffic.model.AdasimMap;
 import traffic.model.GraphNode;
 import traffic.model.Vehicle;
 import traffic.model.TrafficSimulator;
@@ -125,7 +125,7 @@ public class SimulationXMLWriter {
 	 * @param doc
 	 * @param graph
 	 */
-	private void writeGraph(Element doc, Graph graph) {
+	private void writeGraph(Element doc, AdasimMap graph) {
 		Element g = factory.element( "graph" );
 		g.setAttribute( factory.attribute( "default_strategy", DEFAULT_SPEED_STRATEGY) );
 		g.setAttribute( factory.attribute( "default_capacity", DEFAULT_NODE_CAPACITY ) );

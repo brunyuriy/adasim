@@ -28,7 +28,7 @@
 
 package traffic.strategy;
 
-import traffic.model.Graph;
+import traffic.model.AdasimMap;
 import traffic.model.GraphNode;
 
 /**
@@ -37,7 +37,7 @@ import traffic.model.GraphNode;
  */
 public abstract class AbstractVehicleStrategy implements VehicleStrategy {
 	
-	protected Graph graph;
+	protected AdasimMap graph;
 	protected GraphNode source, target;
 	protected int carID;
 
@@ -45,7 +45,7 @@ public abstract class AbstractVehicleStrategy implements VehicleStrategy {
 	 * @see traffic.strategy.CarStrategy#setGraph(traffic.graph.Graph)
 	 */
 	@Override
-	public void setGraph(Graph g) {
+	public void setGraph(AdasimMap g) {
 		this.graph = g;
 	}
 

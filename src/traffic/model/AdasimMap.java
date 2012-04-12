@@ -45,7 +45,7 @@ import traffic.strategy.SpeedStrategy;
  * @author Jonathan Ramaswamy - ramaswamyj12@gmail.com
  */
 
-public final class Graph {
+public final class AdasimMap {
 	
 	private Set<GraphNode> nodes; //The nodes within the graph
 	
@@ -53,7 +53,7 @@ public final class Graph {
 	 * Creates a graph comprised of the given set of nodes
 	 * @param nodes
 	 */
-	public Graph( Set<GraphNode> nodes ) {
+	public AdasimMap( Set<GraphNode> nodes ) {
 		this.nodes = nodes;
 	}
 	
@@ -61,7 +61,7 @@ public final class Graph {
 	 * Creates a graph comprised of the given set of nodes
 	 * @param nodes
 	 */
-	public Graph( List<GraphNode> nodes ) {
+	public AdasimMap( List<GraphNode> nodes ) {
 		this.nodes = new HashSet<GraphNode>( nodes );
 	}
 	

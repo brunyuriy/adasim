@@ -44,7 +44,7 @@ import org.junit.Test;
 
 import traffic.agent.AdasimAgent;
 import traffic.model.ConfigurationException;
-import traffic.model.Graph;
+import traffic.model.AdasimMap;
 import traffic.model.GraphNode;
 import traffic.model.TrafficSimulator;
 import traffic.model.Vehicle;
@@ -56,7 +56,7 @@ import traffic.model.Vehicle;
 public class VehicleManagerTest {
 	
 	private VehicleManager manager;
-	private Graph graph;
+	private AdasimMap graph;
 	
 	@Before
 	public void setUp() {

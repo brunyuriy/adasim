@@ -31,7 +31,7 @@ import traffic.agent.AdasimAgent;
 import traffic.filter.AdasimFilter;
 import traffic.filter.IdentityFilter;
 import traffic.model.ConfigurationException;
-import traffic.model.Graph;
+import traffic.model.AdasimMap;
 import traffic.model.GraphNode;
 import traffic.model.Vehicle;
 import traffic.model.internal.SimulationXMLBuilder;
@@ -86,7 +86,7 @@ public class SimulationXMLBuilderTest {
 				"<node id=\"2\" neighbors=\"3\" delay=\"2\" capacity=\"5\" strategy=\"traffic.strategy.LinearSpeedStrategy\"/>" +
 				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"traffic.strategy.QuadraticSpeedStrategy\"/>" +
 				"</graph>" ) );
-		Graph graph = builder.buildGraph( doc.getRootElement() );
+		AdasimMap graph = builder.buildGraph( doc.getRootElement() );
 		assertEquals( 3, graph.getNodes().size() );
 		GraphNode node = graph.getNode( 1 );
 		assertEquals( 3, node.getNeighbors().size() );
@@ -107,7 +107,7 @@ public class SimulationXMLBuilderTest {
 				"<node id=\"2\" neighbors=\"3\" delay=\"2\" capacity=\"5\" strategy=\"traffic.strategy.LinearSpeedStrategy\"/>" +
 				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"traffic.strategy.QuadraticSpeedStrategy\" uncertainty_filter=\"traffic.filter.IdentityFilter\"/>" +
 				"</graph>" ) );
-		Graph graph = builder.buildGraph( doc.getRootElement() );
+		AdasimMap graph = builder.buildGraph( doc.getRootElement() );
 		assertEquals( 3, graph.getNodes().size() );
 		GraphNode node = graph.getNode( 1 );
 		assertEquals( 3, node.getNeighbors().size() );
@@ -130,7 +130,7 @@ public class SimulationXMLBuilderTest {
 				"<node id=\"2\" neighbors=\"3\" delay=\"2\" capacity=\"5\" strategy=\"traffic.strategy.LinearSpeedStrategy\"/>" +
 				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"traffic.strategy.LinearSpeedStrategy\" uncertainty_filter=\"traffic.model.internal.FakeFilter\"/>" +
 				"</graph>" ) );
-		Graph graph = builder.buildGraph( doc.getRootElement() );
+		AdasimMap graph = builder.buildGraph( doc.getRootElement() );
 		assertEquals( 3, graph.getNodes().size() );
 		GraphNode node = graph.getNode(4);
 		assertNotNull( "No uncertainty filter assigned", node.getUncertaintyFilter() );
@@ -151,7 +151,7 @@ public class SimulationXMLBuilderTest {
 				"<node id=\"2\" neighbors=\"3\" delay=\"2\" capacity=\"5\" strategy=\"traffic.strategy.LinearSpeedStrategy\"/>" +
 				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"traffic.strategy.QuadraticSpeedStrategy\" privacy_filter=\"traffic.filter.IdentityFilter\"/>" +
 				"</graph>" ) );
-		Graph graph = builder.buildGraph( doc.getRootElement() );
+		AdasimMap graph = builder.buildGraph( doc.getRootElement() );
 		assertEquals( 3, graph.getNodes().size() );
 		GraphNode node = graph.getNode( 1 );
 		assertEquals( 3, node.getNeighbors().size() );

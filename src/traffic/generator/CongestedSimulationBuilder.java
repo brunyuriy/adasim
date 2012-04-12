@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Random;
 
 import traffic.agent.AdasimAgent;
-import traffic.model.Graph;
+import traffic.model.AdasimMap;
 import traffic.model.GraphNode;
 import traffic.model.Vehicle;
 import traffic.model.ConfigurationException;
@@ -50,7 +50,7 @@ public class CongestedSimulationBuilder {
 	}
 	
 	TrafficSimulator build( ConfigurationOptions opts ) throws ConfigurationException {
-		Graph g = buildGraph(opts);
+		AdasimMap g = buildGraph(opts);
 		return new TrafficSimulator( g, null, buildVehicles(opts, g) );
 	}
 
@@ -59,7 +59,7 @@ public class CongestedSimulationBuilder {
 	 * @return a list of vehicles, size determined by commandline argument
 	 * @throws ConfigurationException 
 	 */
-	private List<AdasimAgent> buildVehicles(ConfigurationOptions opts, Graph g) throws ConfigurationException {
+	private List<AdasimAgent> buildVehicles(ConfigurationOptions opts, AdasimMap g) throws ConfigurationException {
 		List<AdasimAgent> vehicles = new ArrayList<AdasimAgent>();
 		List<GraphNode> nodes = g.getNodes();
 		GraphNode start = randomNode( nodes );
@@ -80,7 +80,7 @@ public class CongestedSimulationBuilder {
 	 * @return a fully configured vehicle
 	 * @throws ConfigurationException 
 	 */
-	private Vehicle buildVehicle(int i, ConfigurationOptions opts, Graph g, GraphNode start, GraphNode end ) throws ConfigurationException {
+	private Vehicle buildVehicle(int i, ConfigurationOptions opts, AdasimMap g, GraphNode start, GraphNode end ) throws ConfigurationException {
 		VehicleStrategy cs = randomVehicleStrategy( opts.getStrategies() );
 		cs.setGraph(g);		
 		return new Vehicle( start, end, cs, i);
@@ -115,8 +115,8 @@ public class CongestedSimulationBuilder {
 	 * @return a fully configured graph
 	 * @throws ConfigurationException 
 	 */
-	private Graph buildGraph(ConfigurationOptions opts) throws ConfigurationException {
-		Graph g = new Graph( new HashSet<GraphNode>() );
+	private AdasimMap buildGraph(ConfigurationOptions opts) throws ConfigurationException {
+		AdasimMap g = new AdasimMap( new HashSet<GraphNode>() );
 		for ( int i = 0; i < opts.getNumNodes(); i++ ) {
 			g.addNode( buildNode( opts, i ) );
 		}
