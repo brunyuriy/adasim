@@ -1,0 +1,5 @@
+<simulation>
+	<graph default_strategy="adasim.algorithm.QuadraticTrafficDelayFunction">
+		<node id="0" neighbors="0" />
+	</graph>
+</simulation>

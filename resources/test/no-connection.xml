@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<simulation>
+  <graph default_strategy="adasim.algorithm.LinearTrafficDelayFunction">
+    <node id="0" neighbors="1" />
+    <node id="1" neighbors="0" />
+    <node id="2" neighbors="0" />
+    </graph>
+  <cars default_strategy="adasim.algorithm.DijkstraCarStrategy">
+    <car id="0" start="1" end="2" />
+    <car id="1" start="2" end="1" />
+  </cars>
+</simulation>

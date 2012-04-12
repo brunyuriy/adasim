@@ -1,0 +1,61 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+    <xsd:element name="simulation" type="Simulation" />
+    <xsd:complexType name="Simulation">
+        <xsd:all>
+            <xsd:element name="cars" type="Cars" minOccurs="1" maxOccurs="1" />
+            <xsd:element name="graph" type="Graph" minOccurs="1" maxOccurs="1" />
+            <xsd:element name="agents" type="Agents" minOccurs="0" maxOccurs="1" />
+        </xsd:all>
+    </xsd:complexType>
+
+    <xsd:complexType name="Cars">
+        <xsd:sequence>
+            <xsd:element name="car" type="Car" minOccurs="1" maxOccurs="unbounded" />
+        </xsd:sequence>
+        <xsd:attribute name="default_strategy" type="xsd:string" />
+    </xsd:complexType>
+
+
+    <xsd:complexType name="Car">
+        <xsd:attribute name="id" type="xsd:nonNegativeInteger" use="required" />
+        <xsd:attribute name="start" type="xsd:nonNegativeInteger" use="required" />
+        <xsd:attribute name="end" type="xsd:nonNegativeInteger" use="required" />
+        <xsd:attribute name="strategy" type="xsd:string" />
+        <xsd:attribute name="start_time" type="xsd:nonNegativeInteger"/>
+    </xsd:complexType>
+    
+    <xsd:complexType name="Graph">
+        <xsd:sequence>
+            <xsd:element name="node" type="Node" minOccurs="1" maxOccurs="unbounded" />
+        </xsd:sequence>
+        <xsd:attribute name="default_strategy" type="xsd:string" />
+        <xsd:attribute name="default_capacity" type="xsd:nonNegativeInteger" />
+        <xsd:attribute name="uncertainty_filter" type="xsd:string"/>
+        <xsd:attribute name="privacy_filter" type="xsd:string"/>
+    </xsd:complexType>
+
+
+    <xsd:complexType name="Node">
+        <xsd:attribute name="id" type="xsd:nonNegativeInteger" use="required" />
+        <xsd:attribute name="strategy" type="xsd:string" />
+        <xsd:attribute name="neighbors" type="xsd:string" use="required" />
+        <xsd:attribute name="delay" type="xsd:nonNegativeInteger" />
+        <xsd:attribute name="capacity" type="xsd:nonNegativeInteger" />
+        <xsd:attribute name="uncertainty_filter" type="xsd:string"/>
+        <xsd:attribute name="privacy_filter" type="xsd:string"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="Agents">
+        <xsd:sequence>
+            <xsd:element name="agent" type="Agent" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="Agent">
+        <xsd:attribute name="id" type="xsd:string" use="required"/>
+        <xsd:attribute name="class" type="xsd:string" use="required"/>
+        <xsd:attribute name="parameters" type="xsd:string" />        
+    </xsd:complexType>
+
+</xsd:schema>

@@ -1,0 +1,16 @@
+<simulation>
+	<cars>
+		<car start="00" end="02" strategy="D" />
+		<car start="04" end="07" strategy="D" />
+		<car end="09" strategy="fdsafds" />
+		<car start="08" end="04" strategy="D" />
+	</cars>
+
+	<graph>
+		<node strategy="Q" neighbors="4 7" />
+		<node  />
+		<node strategy="P" neighbors="4 7 9" />
+		<node strategy="Q" neighbors="5 y 4 e2" />
+		<node strategy="L" neighbors="2" />
+	</graph>
+</simulation>

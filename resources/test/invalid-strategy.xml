@@ -1,0 +1,22 @@
+<simulation>
+	<cars default_strategy="adasim.algorithm.routing.LookaheadShortestPathRoutingAlgorithm">
+		<car id="0" start="0" end="2" />
+		<car id="1" start="4" end="7" strategy="fake.Strategy" />
+		<car id="2" start="3" end="9" strategy="adasim.algorithm.routing.RandomRoutingAlgorithm" />
+		<car id="3" start="8" end="4" strategy="adasim.algorithm.routing.RandomRoutingAlgorithm" />
+		<car id="4" start="3" end="7" />
+	</cars>
+
+	<graph default_strategy="adasim.algorithm.delay.QuadraticTrafficDelayFunction" default_capacity="5">
+		<node id="0" neighbors="4 7" />
+		<node id="1" strategy="adasim.algorithm.delay.LinearTrafficDelayFunction" neighbors="5" />
+		<node id="2" strategy="adasim.algorithm.delay.LinearTrafficDelayFunction" neighbors="4 7 9" />
+		<node id="3" neighbors="1" />
+		<node id="4" strategy="adasim.algorithm.delay.LinearTrafficDelayFunction" neighbors="6 8" />
+		<node id="5" strategy="adasim.algorithm.delay.LinearTrafficDelayFunction" neighbors="0 2 9" />
+		<node id="6" neighbors="5 8" />
+		<node id="7" neighbors="0 1" />
+		<node id="8" neighbors="3" />
+		<node id="9" strategy="adasim.algorithm.delay.LinearTrafficDelayFunction" neighbors="2" />
+	</graph>
+</simulation>

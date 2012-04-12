@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<simulation>
+  <graph default_strategy="adasim.algorithm.LinearTrafficDelayFunction">
+    <node id="0" delay="3" neighbors="70 26" />
+    <node id="1" delay="4" neighbors="96 52 8 92" />
+    <node id="2" delay="5" neighbors="67 7 42" />
+    <node id="3" delay="3" neighbors="4 81" />
+    <node id="4" delay="6" neighbors="34 3 24" />
+    <node id="5" delay="5" neighbors="33 99 23 93 78 29" />
+    <node id="6" delay="4" neighbors="16 33 81 38 39 27" />
+    <node id="7" delay="3" neighbors="2 80 96 91" />
+    <node id="8" delay="3" neighbors="69 1 49 41 28" />
+    <node id="9" delay="3" neighbors="" />
+    <node id="10" delay="6" neighbors="17 55" />
+    <node id="11" delay="3" neighbors="16" />
+    <node id="12" delay="4" neighbors="17 33 98 25 41 44" />
+    <node id="13" delay="5" neighbors="51 87 47 30" />
+    <node id="14" delay="3" neighbors="94 63 62 91 31 45" />
+    <node id="15" delay="5" neighbors="57 79" />
+    <node id="17" delay="6" neighbors="54 20 67 10 12" />
+    <node id="16" delay="6" neighbors="6 67 11 30" />
+    <node id="19" delay="6" neighbors="41" />
+    <node id="18" delay="6" neighbors="51 68 47 73 91 74 75" />
+    <node id="21" delay="4" neighbors="80 65" />
+    <node id="20" delay="5" neighbors="17 35 70 55 96 78" />
+    <node id="23" delay="5" neighbors="70 81 5 42" />
+    <node id="22" delay="4" neighbors="67 78 75" />
+    <node id="25" delay="6" neighbors="87 98 99 78 12" />
+    <node id="24" delay="5" neighbors="4 65 82 63" />
+    <node id="27" delay="6" neighbors="50 6 97 91" />
+    <node id="26" delay="5" neighbors="0 99 96 89" />
+    <node id="29" delay="3" neighbors="64 5" />
+    <node id="28" delay="4" neighbors="8" />
+    <node id="31" delay="4" neighbors="14" />
+    <node id="30" delay="3" neighbors="34 16 77 13 60" />
+    <node id="34" delay="3" neighbors="68 4 99 30" />
+    <node id="35" delay="5" neighbors="51 33 20" />
+    <node id="32" delay="4" neighbors="84 91 44" />
+    <node id="33" delay="3" neighbors="35 5 6 12 88" />
+    <node id="38" delay="4" neighbors="51 6 67 95 72 88 73" />
+    <node id="39" delay="3" neighbors="6 47" />
+    <node id="36" delay="3" neighbors="" />
+    <node id="37" delay="3" neighbors="71 64 59 92 88" />
+    <node id="42" delay="4" neighbors="2 83 23 41 44" />
+    <node id="43" delay="5" neighbors="69 50" />
+    <node id="40" delay="6" neighbors="68 69 67" />
+    <node id="41" delay="4" neighbors="19 42 8 12" />
+    <node id="46" delay="6" neighbors="73" />
+    <node id="47" delay="3" neighbors="18 39 13 90 60" />
+    <node id="44" delay="3" neighbors="32 93 42 77 79 12" />
+    <node id="45" delay="3" neighbors="14" />
+    <node id="51" delay="4" neighbors="68 35 32 18 38 13" />
+    <node id="50" delay="5" neighbors="92 43 27" />
+    <node id="49" delay="6" neighbors="81 8 78" />
+    <node id="48" delay="5" neighbors="84 83 79" />
+    <node id="55" delay="4" neighbors="20 53 10" />
+    <node id="54" delay="6" neighbors="17 80 93 90" />
+    <node id="53" delay="3" neighbors="69 55 90" />
+    <node id="52" delay="4" neighbors="1 66 59" />
+    <node id="59" delay="5" neighbors="85 96 52 37" />
+    <node id="58" delay="4" neighbors="1" />
+    <node id="57" delay="5" neighbors="83 15" />
+    <node id="56" delay="4" neighbors="66 72" />
+    <node id="63" delay="5" neighbors="92 24 14" />
+    <node id="62" delay="4" neighbors="69 76 89 14" />
+    <node id="61" delay="4" neighbors="10 89" />
+    <node id="60" delay="5" neighbors="30" />
+    <node id="68" delay="6" neighbors="51 34 18 98 40 56" />
+    <node id="69" delay="5" neighbors="53 8 43 40 62" />
+    <node id="70" delay="5" neighbors="0 20 23" />
+    <node id="71" delay="4" neighbors="37" />
+    <node id="64" delay="3" neighbors="66 37 95 29" />
+    <node id="65" delay="4" neighbors="21 24 95 79" />
+    <node id="66" delay="5" neighbors="98 64 52 92 94 56" />
+    <node id="67" delay="6" neighbors="17 16 38 22" />
+    <node id="76" delay="3" neighbors="49 62" />
+    <node id="77" delay="6" neighbors="7 44 30" />
+    <node id="78" delay="4" neighbors="49 5 20 22 25" />
+    <node id="79" delay="4" neighbors="48 65 7 74 44 15" />
+    <node id="72" delay="6" neighbors="86 38 56" />
+    <node id="73" delay="4" neighbors="18 38 92 46" />
+    <node id="74" delay="3" neighbors="18 93 79 91" />
+    <node id="75" delay="6" neighbors="18 22" />
+    <node id="85" delay="5" neighbors="59" />
+    <node id="84" delay="3" neighbors="32 48" />
+    <node id="87" delay="3" neighbors="25 13" />
+    <node id="86" delay="3" neighbors="83 72" />
+    <node id="81" delay="4" neighbors="49 3 23 6 88" />
+    <node id="80" delay="6" neighbors="21 54 7" />
+    <node id="83" delay="3" neighbors="86 48 96 42 57" />
+    <node id="82" delay="3" neighbors="24" />
+    <node id="93" delay="4" neighbors="54 5 74 44" />
+    <node id="92" delay="6" neighbors="1 50 3 66 37 63 73" />
+    <node id="95" delay="3" neighbors="38 64 65" />
+    <node id="94" delay="5" neighbors="66 13 14" />
+    <node id="89" delay="5" neighbors="26 62 61" />
+    <node id="88" delay="5" neighbors="33 81 38 37" />
+    <node id="91" delay="6" neighbors="32 18 96 7 27 14" />
+    <node id="90" delay="5" neighbors="54 83 53 47" />
+    <node id="98" delay="4" neighbors="68 66 25 12" />
+    <node id="99" delay="5" neighbors="34 25 26" />
+    <node id="96" delay="6" neighbors="1 20 83 7 59 26 91" />
+    <node id="97" delay="4" neighbors="27" />
+  </graph>
+  <cars default_strategy="adasim.algorithm.LookaheadShortestPathCarStrategy">
+    <car start="61" end="83" id="0" strategy="adasim.algorithm.LookaheadShortestPathCarStrategy" />
+    <car start="61" end="83" id="1" strategy="adasim.algorithm.LookaheadShortestPathCarStrategy" />
+    <car start="61" end="83" id="2" strategy="adasim.algorithm.AlwaysRecomputeCarStrategy" />
+    <car start="61" end="83" id="3" strategy="adasim.algorithm.LookaheadShortestPathCarStrategy" />
+    <car start="61" end="83" id="4" strategy="adasim.algorithm.LookaheadShortestPathCarStrategy" />
+    <car start="61" end="83" id="5" strategy="adasim.algorithm.LookaheadShortestPathCarStrategy" />
+    <car start="61" end="83" id="6" strategy="adasim.algorithm.AlwaysRecomputeCarStrategy" />
+    <car start="61" end="83" id="7" strategy="adasim.algorithm.LookaheadShortestPathCarStrategy" />
+    <car start="61" end="83" id="8" strategy="adasim.algorithm.LookaheadShortestPathCarStrategy" />
+    <car start="61" end="83" id="9" strategy="adasim.algorithm.AlwaysRecomputeCarStrategy" />
+    <car start="61" end="83" id="10" strategy="adasim.algorithm.LookaheadShortestPathCarStrategy" />
+    <car start="61" end="83" id="11" strategy="adasim.algorithm.AlwaysRecomputeCarStrategy" />
+    <car start="61" end="83" id="12" strategy="adasim.algorithm.AlwaysRecomputeCarStrategy" />
+    <car start="61" end="83" id="13" strategy="adasim.algorithm.AlwaysRecomputeCarStrategy" />
+    <car start="61" end="83" id="14" strategy="adasim.algorithm.AlwaysRecomputeCarStrategy" />
+    <car start="61" end="83" id="15" strategy="adasim.algorithm.LookaheadShortestPathCarStrategy" />
+    <car start="61" end="83" id="16" strategy="adasim.algorithm.AlwaysRecomputeCarStrategy" />
+    <car start="61" end="83" id="17" strategy="adasim.algorithm.LookaheadShortestPathCarStrategy" />
+    <car start="61" end="83" id="18" strategy="adasim.algorithm.AlwaysRecomputeCarStrategy" />
+    <car start="61" end="83" id="19" strategy="adasim.algorithm.LookaheadShortestPathCarStrategy" />
+    <car start="61" end="83" id="20" strategy="adasim.algorithm.LookaheadShortestPathCarStrategy" />
+    <car start="61" end="83" id="21" strategy="adasim.algorithm.LookaheadShortestPathCarStrategy" />
+    <car start="61" end="83" id="22" strategy="adasim.algorithm.AlwaysRecomputeCarStrategy" />
+    <car start="61" end="83" id="23" strategy="adasim.algorithm.AlwaysRecomputeCarStrategy" />
+    <car start="61" end="83" id="24" strategy="adasim.algorithm.AlwaysRecomputeCarStrategy" />
+    <car start="61" end="83" id="25" strategy="adasim.algorithm.LookaheadShortestPathCarStrategy" />
+    <car start="61" end="83" id="26" strategy="adasim.algorithm.LookaheadShortestPathCarStrategy" />
+    <car start="61" end="83" id="27" strategy="adasim.algorithm.LookaheadShortestPathCarStrategy" />
+    <car start="61" end="83" id="28" strategy="adasim.algorithm.AlwaysRecomputeCarStrategy" />
+    <car start="61" end="83" id="29" strategy="adasim.algorithm.AlwaysRecomputeCarStrategy" />
+  </cars>
+</simulation>
+

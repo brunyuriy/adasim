@@ -1,0 +1,102 @@
+<project>
+
+	<property name="build.dir" value="build"/>
+	<property name="class.dir" value="${build.dir}/classes"/>
+	<property name="test.class.dir" value="${build.dir}/test-classes"/>
+	<property name="src.dir" value="src"/>
+	<property name="test.dir" value="test"/>
+	<property name="lib.dir" value="lib"/>
+	<property name="javadoc.dir" value="javadoc"/>
+	<property name="xml.resources" value="resources/xml"/>
+	<loadproperties srcFile="resources/VERSION"/>
+	<property name="version" value="${version.major}.${version.minor}.${version.build}"/>
+
+	<path id="classpath">
+		<fileset dir="${lib.dir}" includes="**/*.jar"/>
+		<pathelement location="${class.dir}"/>
+		<pathelement location="${test.class.dir}"/>
+	</path>
+
+	<target name="clean">
+		<delete dir="${build.dir}"/>
+		<delete dir="${javadoc.dir}"/>
+	</target>
+
+	<target name="out_dirs">
+		<!-- check if dirs exist and if not, make them -->
+		<mkdir dir="${build.dir}"/>
+		<mkdir dir="${class.dir}"/>
+		<mkdir dir="${test.class.dir}"/>
+	</target>
+
+	<target name="compile" depends="out_dirs">
+		<javac srcdir="${src.dir}" destdir="${class.dir}" classpathref="classpath" includeantruntime="false"/>
+	</target>
+
+	<target name="test-compile" depends="out_dirs,compile">
+		<javac srcdir="${test.dir}" destdir="${test.class.dir}" classpathref="classpath"/>
+	</target>
+
+	<target name="test" depends="compile,test-compile">
+		<junit printsummary="yes">
+			<classpath>
+				<path refid="classpath"/>
+			</classpath>
+			<batchtest >
+				<fileset dir="${test.dir}">
+			    		<include name="**/*.java"/>
+			        </fileset>
+			</batchtest>
+		</junit>
+	</target>
+
+	<target name="jar" depends="compile">
+		<jar destfile="adasim-${version}.jar" manifest="resources/MANIFEST.MF"> 
+			<fileset dir="${class.dir}"/>
+			<fileset dir=".">
+				<include name="resources/xml/adasim.xsd"/>
+				<include name="resources/VERSION"/>
+			</fileset>
+		</jar>
+	</target>
+
+	<target name="jar-deps" depends="compile">
+		<jar destfile="adasim-${version}-deps.jar" manifest="resources/MANIFEST.MF">
+			<fileset dir="${class.dir}"/>
+			<fileset dir=".">
+				<include name="resources/xml/adasim.xsd"/>
+				<include name="resources/VERSION"/>
+			</fileset>
+			<archives>
+				<zips>
+					<fileset dir="${lib.dir}" includes="**/*.jar" excludes="**/junit*.jar"/>
+				</zips>
+			</archives>
+		</jar>
+	</target>
+
+	<target name="javadoc">
+	<!-- Target for end user Javadoc -->
+		<javadoc sourcepath="${src.dir}" 
+			destdir="${javadoc.dir}"
+			access="protected"
+			Doctitle="Adasim End-User API Documentation"
+			Author="no"
+			classpathref="classpath">
+			<excludepackage name="**.internal"/>
+			<excludepackage name="**.generator"/>
+		</javadoc>
+	</target>
+
+	<target name="dev-javadoc">
+	<!-- Target for end user Javadoc -->
+		<javadoc sourcepath="${src.dir}" 
+			destdir="${javadoc.dir}"
+			classpathref="classpath"
+			access="private"
+			Doctitle="Adasim Developer API Documentation"
+			Use="yes"
+			Author="yes">
+		</javadoc>
+	</target>
+</project>

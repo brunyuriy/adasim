@@ -1,0 +1,171 @@
+  <graph default_strategy="adasim.algorithm.LinearTrafficDelayFunction" default_capacity="0">
+    <node id="0" delay="5" neighbors="42 84" />
+    <node id="1" delay="5" neighbors="0 43 85" />
+    <node id="2" delay="5" neighbors="1 44 86" />
+    <node id="3" delay="5" neighbors="2 45 87" />
+    <node id="4" delay="5" neighbors="3 46 88" />
+    <node id="5" delay="5" neighbors=" 4 47 89" />
+    <node id="6" delay="5" neighbors="49 126 90" />
+    <node id="7" delay="5" neighbors="6 50 127 91" />
+    <node id="8" delay="5" neighbors="7 51 128 92" />
+    <node id="9" delay="5" neighbors="8 52 129 93" />
+    <node id="10" delay="5" neighbors="9 53 130 94" />
+    <node id="11" delay="5" neighbors="10 54 131 95" />
+    <node id="12" delay="5" neighbors="56 133 96" />
+    <node id="13" delay="5" neighbors="12 57 134 97" />
+    <node id="14" delay="5" neighbors="13 58 135 98" />
+    <node id="15" delay="5" neighbors="14 59 136 99" />
+    <node id="16" delay="5" neighbors="15 60 137 100" />
+    <node id="17" delay="5" neighbors="16 61 138 101" />
+    <node id="18" delay="5" neighbors="63 140 102" capacity="1000"/>
+    <node id="19" delay="5" neighbors="18 64 141 103" capacity="1000"/>
+    <node id="20" delay="5" neighbors="19 65 142 104" capacity="1000"/>
+    <node id="21" delay="5" neighbors="20 66 143 105" capacity="1000"/>
+    <node id="22" delay="5" neighbors="21 67 144 106" capacity="1000"/>
+    <node id="23" delay="5" neighbors="22 68 145 107" capacity="1000"/>
+    <node id="24" delay="5" neighbors="70 147 108" />
+    <node id="25" delay="5" neighbors="24 71 148 109" />
+    <node id="26" delay="5" neighbors="25 72 149 110" />
+    <node id="27" delay="5" neighbors="26 73 150 111" />
+    <node id="28" delay="5" neighbors="27 74 151 112" />
+    <node id="29" delay="5" neighbors="28 75 152 113" />
+    <node id="30" delay="5" neighbors="77 154 114" />
+    <node id="31" delay="5" neighbors="30 78 155 115" />
+    <node id="32" delay="5" neighbors="31 79 156 116" />
+    <node id="33" delay="5" neighbors="32 80 157 117" />
+    <node id="34" delay="5" neighbors="33 81 158 118" />
+    <node id="35" delay="5" neighbors="34 82 159 119" />
+    <node id="36" delay="5" neighbors="161 120" />
+    <node id="37" delay="5" neighbors="36 162 121" />
+    <node id="38" delay="5" neighbors="37 163 122" />
+    <node id="39" delay="5" neighbors="38 164 123" />
+    <node id="40" delay="5" neighbors="39 165 124" />
+    <node id="41" delay="5" neighbors="40 166 125" />
+    <node id="42" delay="5" neighbors="49 90 126" />
+    <node id="43" delay="5" neighbors="50 6 91 127" />
+    <node id="44" delay="5" neighbors="51 7 92 128" />
+    <node id="45" delay="5" neighbors="52 8 93 129" capacity="1000"/>
+    <node id="46" delay="5" neighbors="53 9 94 130" />
+    <node id="47" delay="5" neighbors="54 10 95 131" />
+    <node id="48" delay="5" neighbors="55 11 132" />
+    <node id="49" delay="5" neighbors="56 96 133" />
+    <node id="50" delay="5" neighbors="12 57 97 134" />
+    <node id="51" delay="5" neighbors="13 58 98 135" />
+    <node id="52" delay="5" neighbors="14 59 99 136" capacity="1000"/>
+    <node id="53" delay="5" neighbors="15 60 100 137" />
+    <node id="54" delay="5" neighbors="16 61 101 138" />
+    <node id="55" delay="5" neighbors="17 62 139" />
+    <node id="56" delay="5" neighbors="63 102 140" />
+    <node id="57" delay="5" neighbors="18 64 103 141" />
+    <node id="58" delay="5" neighbors="19 65 104 142" />
+    <node id="59" delay="5" neighbors="20 66 105 143" capacity="1000"/>
+    <node id="60" delay="5" neighbors="21 67 106 144" />
+    <node id="61" delay="5" neighbors="22 68 107 145" />
+    <node id="62" delay="5" neighbors="23 69 146" />
+    <node id="63" delay="5" neighbors="70 108 147" />
+    <node id="64" delay="5" neighbors="24 71 109 148" />
+    <node id="65" delay="5" neighbors="25 72 110 149" />
+    <node id="66" delay="5" neighbors="26 73 111 150" capacity="1000"/>
+    <node id="67" delay="5" neighbors="27 74 112 151" />
+    <node id="68" delay="5" neighbors="28 75 113 152" />
+    <node id="69" delay="5" neighbors="29 76 153" />
+    <node id="70" delay="5" neighbors="77 114 154" />
+    <node id="71" delay="5" neighbors="30 78 115 155" />
+    <node id="72" delay="5" neighbors="31 79 116 156" />
+    <node id="73" delay="5" neighbors="32 80 117 157" capacity="1000"/>
+    <node id="74" delay="5" neighbors="33 81 118 158" />
+    <node id="75" delay="5" neighbors="34 82 119 159" />
+    <node id="76" delay="5" neighbors="35 83 160" />
+    <node id="77" delay="5" neighbors="120 161" />
+    <node id="78" delay="5" neighbors="36 121 162" />
+    <node id="79" delay="5" neighbors="37 122 163" />
+    <node id="80" delay="5" neighbors="38 123 164" capacity="1000"/>
+    <node id="81" delay="5" neighbors="39 124 165" />
+    <node id="82" delay="5" neighbors="40 125 166" />
+    <node id="83" delay="5" neighbors="41 167" />
+    <node id="84" delay="5" neighbors="0 43 85 " />
+    <node id="85" delay="5" neighbors="1 44 86" />
+    <node id="86" delay="5" neighbors="2 45 87" />
+    <node id="87" delay="5" neighbors="3 46 88 " />
+    <node id="88" delay="5" neighbors="4 47 89" />
+    <node id="89" delay="5" neighbors="5 48" />
+    <node id="90" delay="5" neighbors="6 50 91 127" />
+    <node id="91" delay="5" neighbors="7 51 92 128" />
+    <node id="92" delay="5" neighbors="8 52 93 129" />
+    <node id="93" delay="5" neighbors="9 53 94 130" />
+    <node id="94" delay="5" neighbors="10 54 95 131" />
+    <node id="95" delay="5" neighbors="11 55 132" />
+    <node id="96" delay="5" neighbors="12 57 97 134" />
+    <node id="97" delay="5" neighbors="13 58 98 135" />
+    <node id="98" delay="5" neighbors="14 59 99 136" />
+    <node id="99" delay="5" neighbors="15 60 100 137" />
+    <node id="100" delay="5" neighbors="16 61 101 138" />
+    <node id="101" delay="5" neighbors="17 62 139" />
+    <node id="102" delay="5" neighbors="18 64 103 141" capacity="1000"/>
+    <node id="103" delay="5" neighbors="19 65 104 142" capacity="1000"/>
+    <node id="104" delay="5" neighbors="20 66 105 143" capacity="1000"/>
+    <node id="105" delay="5" neighbors="21 67 106 144" capacity="1000"/>
+    <node id="106" delay="5" neighbors="22 68 107 145" capacity="1000"/>
+    <node id="107" delay="5" neighbors="23 69 146" capacity="1000"/>
+    <node id="108" delay="5" neighbors="24 71 109 148" />
+    <node id="109" delay="5" neighbors="25 72 110 149" />
+    <node id="110" delay="5" neighbors="26 73 111 150" />
+    <node id="111" delay="5" neighbors="27 74 112 151" />
+    <node id="112" delay="5" neighbors="28 75 113 152" />
+    <node id="113" delay="5" neighbors="29 76 153" />
+    <node id="114" delay="5" neighbors="30 78 115 155" />
+    <node id="115" delay="5" neighbors="31 79 116 156" />
+    <node id="116" delay="5" neighbors="32 80 117 157" />
+    <node id="117" delay="5" neighbors="33 81 118 158" />
+    <node id="118" delay="5" neighbors="34 82 119 159" />
+    <node id="119" delay="5" neighbors="35 83 160" />
+    <node id="120" delay="5" neighbors="36 121 162" />
+    <node id="121" delay="5" neighbors="37 122 163" />
+    <node id="122" delay="5" neighbors="38 123 164" />
+    <node id="123" delay="5" neighbors="39 124 165" />
+    <node id="124" delay="5" neighbors="40 125 166" />
+    <node id="125" delay="5" neighbors="41 167" />
+    <node id="126" delay="5" neighbors="84 42" />
+    <node id="127" delay="5" neighbors="85 0 43" />
+    <node id="128" delay="5" neighbors="86 1 44" />
+    <node id="129" delay="5" neighbors="87 2 45" capacity="1000"/>
+    <node id="130" delay="5" neighbors="88 3 46" />
+    <node id="131" delay="5" neighbors="89 4 47" />
+    <node id="132" delay="5" neighbors="5 48" />
+    <node id="133" delay="5" neighbors="126 90 49" />
+    <node id="134" delay="5" neighbors="127 91 6 50" />
+    <node id="135" delay="5" neighbors="128 92 7 51" />
+    <node id="136" delay="5" neighbors="129 93 8 52" capacity="1000"/>
+    <node id="137" delay="5" neighbors="130 94 9 53" />
+    <node id="138" delay="5" neighbors="131 95 10 54" />
+    <node id="139" delay="5" neighbors="132 11 55" />
+    <node id="140" delay="5" neighbors="133 96 56" />
+    <node id="141" delay="5" neighbors="134 97 12 57" />
+    <node id="142" delay="5" neighbors="135 98 13 58" />
+    <node id="143" delay="5" neighbors="136 99 14 59" capacity="1000" />
+    <node id="144" delay="5" neighbors="137 100 15 60" />
+    <node id="145" delay="5" neighbors="138 101 16 61" />
+    <node id="146" delay="5" neighbors="139 17 62" />
+    <node id="147" delay="5" neighbors="140 102 63" />
+    <node id="148" delay="5" neighbors="141 103 18 64" />
+    <node id="149" delay="5" neighbors="142 104 19 65" />
+    <node id="150" delay="5" neighbors="143 105 20 66" capacity="1000"/>
+    <node id="151" delay="5" neighbors="144 106 21 67" />
+    <node id="152" delay="5" neighbors="145 107 22 68" />
+    <node id="153" delay="5" neighbors="146 23 69" />
+    <node id="154" delay="5" neighbors="147 108 70" />
+    <node id="155" delay="5" neighbors="148 109 24 71" />
+    <node id="156" delay="5" neighbors="149 110 25 72" />
+    <node id="157" delay="5" neighbors="150 111 26 73" capacity="1000"/>
+    <node id="158" delay="5" neighbors="151 112 27 74" />
+    <node id="159" delay="5" neighbors="152 113 28 75" />
+    <node id="160" delay="5" neighbors="153 29 76" />
+    <node id="161" delay="5" neighbors="154 114 77" />
+    <node id="162" delay="5" neighbors="155 115 30 78" />
+    <node id="163" delay="5" neighbors="156 116 31 79" />
+    <node id="164" delay="5" neighbors="157 117 32 80" capacity="1000"/>
+    <node id="165" delay="5" neighbors="158 118 33 81" />
+    <node id="166" delay="5" neighbors="159 119 34 82" />
+    <node id="167" delay="5" neighbors="160 35 83" />  
+ </graph>
+
