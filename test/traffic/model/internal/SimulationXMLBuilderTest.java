@@ -102,7 +102,7 @@ public class SimulationXMLBuilderTest {
 	
 	@Test
 	public void graphWithUncertaintyFilter() throws JDOMException, IOException, ConfigurationException {
-		Document doc = parser.build( new StringReader( "<graph default_strategy=\"traffic.strategy.LinearSpeedStrategy\" default_capacity=\"0\" uncertainty_filter=\"traffic.model.FakeFilter\">" +
+		Document doc = parser.build( new StringReader( "<graph default_strategy=\"traffic.strategy.LinearSpeedStrategy\" default_capacity=\"0\" uncertainty_filter=\"traffic.model.internal.FakeFilter\">" +
 				"<node id=\"1\" neighbors=\"1 2 3 4\" delay=\"2\" capacity=\"5\"/>" +
 				"<node id=\"2\" neighbors=\"3\" delay=\"2\" capacity=\"5\" strategy=\"traffic.strategy.LinearSpeedStrategy\"/>" +
 				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"traffic.strategy.QuadraticSpeedStrategy\" uncertainty_filter=\"traffic.filter.IdentityFilter\"/>" +
@@ -128,7 +128,7 @@ public class SimulationXMLBuilderTest {
 		Document doc = parser.build( new StringReader( "<graph default_strategy=\"traffic.strategy.LinearSpeedStrategy\" default_capacity=\"0\" uncertainty_filter=\"traffic.model.FakeFilter\">" +
 				"<node id=\"1\" neighbors=\"1 2 3 4\" delay=\"2\" capacity=\"5\"/>" +
 				"<node id=\"2\" neighbors=\"3\" delay=\"2\" capacity=\"5\" strategy=\"traffic.strategy.LinearSpeedStrategy\"/>" +
-				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"traffic.strategy.LinearSpeedStrategy\" uncertainty_filter=\"traffic.model.FakeFilter\"/>" +
+				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"traffic.strategy.LinearSpeedStrategy\" uncertainty_filter=\"traffic.model.internal.FakeFilter\"/>" +
 				"</graph>" ) );
 		Graph graph = builder.buildGraph( doc.getRootElement() );
 		assertEquals( 3, graph.getNodes().size() );
@@ -146,7 +146,7 @@ public class SimulationXMLBuilderTest {
 
 	@Test
 	public void graphWithPrivacyFilter() throws JDOMException, IOException, ConfigurationException {
-		Document doc = parser.build( new StringReader( "<graph default_strategy=\"traffic.strategy.LinearSpeedStrategy\" default_capacity=\"0\" privacy_filter=\"traffic.model.FakeFilter\">" +
+		Document doc = parser.build( new StringReader( "<graph default_strategy=\"traffic.strategy.LinearSpeedStrategy\" default_capacity=\"0\" privacy_filter=\"traffic.model.internal.FakeFilter\">" +
 				"<node id=\"1\" neighbors=\"1 2 3 4\" delay=\"2\" capacity=\"5\"/>" +
 				"<node id=\"2\" neighbors=\"3\" delay=\"2\" capacity=\"5\" strategy=\"traffic.strategy.LinearSpeedStrategy\"/>" +
 				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"traffic.strategy.QuadraticSpeedStrategy\" privacy_filter=\"traffic.filter.IdentityFilter\"/>" +
@@ -204,13 +204,13 @@ public class SimulationXMLBuilderTest {
 	
 	@Test
 	public void agentNoOptionals() throws JDOMException, IOException, ConfigurationException {
-		Document doc = parser.build( new StringReader( "<agent id=\"27\" class=\"traffic.model.FakeAgent\" />" ) );
+		Document doc = parser.build( new StringReader( "<agent id=\"27\" class=\"traffic.model.internal.FakeAgent\" />" ) );
 		AdasimAgent agent = builder.buildAgent( doc.getRootElement() );
 	}
 
 	@Test
 	public void agentAllOptionals() throws JDOMException, IOException, ConfigurationException {
-		Document doc = parser.build( new StringReader( "<agent id=\"27\" class=\"traffic.model.FakeAgent\" parameters=\"blabab\"/>" ) );
+		Document doc = parser.build( new StringReader( "<agent id=\"27\" class=\"traffic.model.internal.FakeAgent\" parameters=\"blabab\"/>" ) );
 		AdasimAgent agent = builder.buildAgent( doc.getRootElement() );
 	}
 
