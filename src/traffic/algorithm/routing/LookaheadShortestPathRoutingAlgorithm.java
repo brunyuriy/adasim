@@ -25,7 +25,7 @@
  *
  * Created: Dec 3, 2011
  */
-package traffic.algorithm;
+package traffic.algorithm.routing;
 
 import java.util.HashSet;
 import java.util.LinkedList;

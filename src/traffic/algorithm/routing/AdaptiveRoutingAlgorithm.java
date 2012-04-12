@@ -26,15 +26,15 @@
  * Created: Dec 16, 2011
  */
 
-package traffic.algorithm;
+package traffic.algorithm.routing;
 
 /**
  * @author Jochen Wuttke - wuttkej@gmail.com
  *
  */
-public class AlwaysRecomputeRoutingAlgorithm extends LookaheadShortestPathRoutingAlgorithm {
+public class AdaptiveRoutingAlgorithm extends LookaheadShortestPathRoutingAlgorithm {
 
-	public AlwaysRecomputeRoutingAlgorithm() {
-		super(5,1);
+	public AdaptiveRoutingAlgorithm() {
+		super(5);
 	}
 }

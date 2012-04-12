@@ -23,49 +23,20 @@
  *    Jochen Wuttke (wuttkej@gmail.com) - initial API and implementation
  ********************************************************************************
  *
- * Created: Dec 12, 2011
+ * Created: Jan 24, 2012
  */
 
-package traffic.algorithm;
-
-import traffic.model.AdasimMap;
-import traffic.model.RoadSegment;
+package traffic.algorithm.routing;
 
 /**
+ * This is the TrafficLookahead strategy we use in the paper.
+ * 
  * @author Jochen Wuttke - wuttkej@gmail.com
  *
  */
-public abstract class AbstractRoutingAlgorithm implements RoutingAlgorithm {
-	
-	protected AdasimMap graph;
-	protected RoadSegment source, target;
-	protected int carID;
+public class TrafficLookaheadRoutingAlgorithm extends LookaheadShortestPathRoutingAlgorithm {
 
-	/* (non-Javadoc)
-	 * @see traffic.algorithm.CarStrategy#setGraph(traffic.graph.Graph)
-	 */
-	@Override
-	public void setGraph(AdasimMap g) {
-		this.graph = g;
+	public TrafficLookaheadRoutingAlgorithm() {
+		super(5,1);
 	}
-
-	@Override
-	public void setStartNode( RoadSegment start ) {
-		source = start;
-	}	
-	
-	@Override
-	public void setEndNode( RoadSegment end ) {
-		target = end;
-	}
-	
-	/* (non-Javadoc)
-	 * @see traffic.algorithm.CarStrategy#setCarId(int)
-	 */
-	@Override
-	public void setVehicleId(int id) {
-		this.carID = id;
-	}
-	
-
 }

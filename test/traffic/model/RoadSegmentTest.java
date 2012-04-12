@@ -20,8 +20,8 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import traffic.algorithm.AbstractRoutingAlgorithm;
 import traffic.algorithm.delay.LinearTrafficDelayFunction;
+import traffic.algorithm.routing.AbstractRoutingAlgorithm;
 import traffic.model.RoadSegment;
 import traffic.model.Vehicle;
 import static org.junit.Assert.*;

@@ -170,7 +170,7 @@
     <node id="165" delay="5" neighbors="118 33 81 158" capacity="0" />
     <node id="164" delay="5" neighbors="32 117 80 157" capacity="1000" />
   </graph>
-  <cars default_strategy="traffic.algorithm.LookaheadShortestPathRoutingAlgorithm">
+  <cars default_strategy="traffic.algorithm.routing.LookaheadShortestPathRoutingAlgorithm">
     <car start="159" end="0" id="0" strategy="traffic.algorithm.AlwaysRecomputeCarStrategy" />
     <car start="163" end="126" id="1" strategy="traffic.algorithm.AlwaysRecomputeCarStrategy" />
     <car start="109" end="4" id="2" strategy="traffic.algorithm.AlwaysRecomputeCarStrategy" />
