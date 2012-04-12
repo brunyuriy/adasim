@@ -21,7 +21,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import traffic.algorithm.routing.LookaheadShortestPathRoutingAlgorithm;
-import traffic.model.NodeVehicleQueue;
+import traffic.model.RoadVehicleQueue;
 import traffic.model.Vehicle;
 
 
@@ -29,13 +29,13 @@ import traffic.model.Vehicle;
  * @author Jochen Wuttke - wuttkej@gmail.com
  *
  */
-public class NodeVehicleQueueTest {
+public class RoadVehicleQueueTest {
 	
-	private NodeVehicleQueue queue;
+	private RoadVehicleQueue queue;
 	
 	@Before
 	public void setUp() {
-		queue = new NodeVehicleQueue();
+		queue = new RoadVehicleQueue();
 	}
 	
 	@Test

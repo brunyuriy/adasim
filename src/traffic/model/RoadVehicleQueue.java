@@ -37,7 +37,7 @@ import java.util.TreeSet;
 
 
 /**
- * The {@link NodeVehicleQueue} handles traffic on a single node.
+ * The {@link RoadVehicleQueue} handles traffic on a single node.
  * Entering vehicles are assigned to a slot matching the current delay
  * of the node, and in each simulation cycle, they are moved
  * forward one slot.
@@ -46,7 +46,7 @@ import java.util.TreeSet;
  * @author Jochen Wuttke - wuttkej@gmail.com
  *
  */
-final class NodeVehicleQueue {
+final class RoadVehicleQueue {
 	
 	/**
 	 * ID for the special queue tracking parked/stopped vehicles.
@@ -57,7 +57,7 @@ final class NodeVehicleQueue {
 	/**
 	 * Initializes an empty queue.
 	 */
-	public NodeVehicleQueue() {
+	public RoadVehicleQueue() {
 		queue = new HashMap<Integer, Set<Vehicle>>();
 		queue.put( PARKED, new HashSet<Vehicle>() );
 		queue.put( 0, new HashSet<Vehicle>() );
