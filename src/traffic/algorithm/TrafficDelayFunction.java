@@ -23,25 +23,22 @@
  *    Jonathan Ramaswamy (ramaswamyj12@gmail.com) - initial API and implementation
  ********************************************************************************
  *
- * Created: Oct 25, 2011
+ * Created: Oct 18, 2011
  */
 
-package traffic.strategy;
-
-import java.util.Random;
+package traffic.algorithm;
 
 /**
- * Returns a random noise value
+ * This interface implement traffic delay functions.
+ * Given the weight of a node, the number of cars and an additional parameter 
+ * (the traffic capacity of a node), it returns the time required
+ * to traverse that node.
  * 
- * @author Jonathan Ramaswamy - ramaswamyj12@gmail.com
+ * @author Jochen Wuttke - wuttkej@gmail.com
  *
  */
-public class RandomNoiseStrategy implements NoiseStrategy{
+public interface TrafficDelayFunction {
 	
-	public double getNoise() {
-		Random generator = new Random();
-		double rand = generator.nextDouble();
-		return rand;
-	}
+	public int getDelay(int weight, int cutoff, int number); //Returns the speed limit for the node depending on the number of cars
 
 }

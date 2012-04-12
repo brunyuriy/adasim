@@ -40,11 +40,11 @@ import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
 import traffic.agent.AdasimAgent;
+import traffic.algorithm.VehicleStrategy;
 import traffic.model.AdasimMap;
 import traffic.model.RoadSegment;
 import traffic.model.Vehicle;
 import traffic.model.TrafficSimulator;
-import traffic.strategy.VehicleStrategy;
 
 /**
  * This class takes a {@link TrafficSimulator} and some additional options
@@ -57,8 +57,8 @@ import traffic.strategy.VehicleStrategy;
  */
 public class SimulationXMLWriter {
 	
-	private static final String DEFAULT_SPEED_STRATEGY = "traffic.strategy.LinearTrafficDelayFunction";
-	private static final String DEFAULT_CAR_STRATEGY = "traffic.strategy.LookaheadShortestPathVehicleStrategy";
+	private static final String DEFAULT_SPEED_STRATEGY = "traffic.algorithm.LinearTrafficDelayFunction";
+	private static final String DEFAULT_CAR_STRATEGY = "traffic.algorithm.LookaheadShortestPathVehicleStrategy";
 	private static final String DEFAULT_NODE_CAPACITY = "0";
 	
 	private DefaultJDOMFactory factory = new DefaultJDOMFactory();

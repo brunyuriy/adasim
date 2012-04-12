@@ -25,7 +25,7 @@
  *
  * Created: Dec 3, 2011
  */
-package traffic.strategy;
+package traffic.algorithm;
 
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -214,7 +214,7 @@ public class LookaheadShortestPathVehicleStrategy extends AbstractVehicleStrateg
 	}
 
 	/* (non-Javadoc)
-	 * @see traffic.strategy.CarStrategy#getNextNode()
+	 * @see traffic.algorithm.CarStrategy#getNextNode()
 	 */
 	@Override
 	public RoadSegment getNextNode() {

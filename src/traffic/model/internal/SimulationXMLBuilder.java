@@ -36,14 +36,14 @@ import org.apache.log4j.Logger;
 import org.jdom.Element;
 
 import traffic.agent.AdasimAgent;
+import traffic.algorithm.TrafficDelayFunction;
+import traffic.algorithm.VehicleStrategy;
 import traffic.filter.AdasimFilter;
 import traffic.filter.IdentityFilter;
 import traffic.model.ConfigurationException;
 import traffic.model.AdasimMap;
 import traffic.model.RoadSegment;
 import traffic.model.Vehicle;
-import traffic.strategy.VehicleStrategy;
-import traffic.strategy.TrafficDelayFunction;
 
 /**
  * A builder that constructs elements in a traffic simulation 

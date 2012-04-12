@@ -23,18 +23,49 @@
  *    Jochen Wuttke (wuttkej@gmail.com) - initial API and implementation
  ********************************************************************************
  *
- * Created: Dec 16, 2011
+ * Created: Dec 12, 2011
  */
 
-package traffic.strategy;
+package traffic.algorithm;
+
+import traffic.model.AdasimMap;
+import traffic.model.RoadSegment;
 
 /**
  * @author Jochen Wuttke - wuttkej@gmail.com
  *
  */
-public class AlwaysRecomputeVehicleStrategy extends LookaheadShortestPathVehicleStrategy {
+public abstract class AbstractVehicleStrategy implements VehicleStrategy {
+	
+	protected AdasimMap graph;
+	protected RoadSegment source, target;
+	protected int carID;
 
-	public AlwaysRecomputeVehicleStrategy() {
-		super(5,1);
+	/* (non-Javadoc)
+	 * @see traffic.algorithm.CarStrategy#setGraph(traffic.graph.Graph)
+	 */
+	@Override
+	public void setGraph(AdasimMap g) {
+		this.graph = g;
 	}
+
+	@Override
+	public void setStartNode( RoadSegment start ) {
+		source = start;
+	}	
+	
+	@Override
+	public void setEndNode( RoadSegment end ) {
+		target = end;
+	}
+	
+	/* (non-Javadoc)
+	 * @see traffic.algorithm.CarStrategy#setCarId(int)
+	 */
+	@Override
+	public void setVehicleId(int id) {
+		this.carID = id;
+	}
+	
+
 }

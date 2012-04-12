@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <simulation>
-  <graph default_strategy="traffic.strategy.LinearTrafficDelayFunction">
+  <graph default_strategy="traffic.algorithm.LinearTrafficDelayFunction">
     <node id="0" delay="3" neighbors="70 26" />
     <node id="1" delay="4" neighbors="96 52 8 92" />
     <node id="2" delay="5" neighbors="67 7 42" />
@@ -102,37 +102,37 @@
     <node id="96" delay="6" neighbors="1 20 83 7 59 26 91" />
     <node id="97" delay="4" neighbors="27" />
   </graph>
-  <cars default_strategy="traffic.strategy.LookaheadShortestPathCarStrategy">
-    <car start="61" end="83" id="0" strategy="traffic.strategy.LookaheadShortestPathCarStrategy" />
-    <car start="61" end="83" id="1" strategy="traffic.strategy.LookaheadShortestPathCarStrategy" />
-    <car start="61" end="83" id="2" strategy="traffic.strategy.AlwaysRecomputeCarStrategy" />
-    <car start="61" end="83" id="3" strategy="traffic.strategy.LookaheadShortestPathCarStrategy" />
-    <car start="61" end="83" id="4" strategy="traffic.strategy.LookaheadShortestPathCarStrategy" />
-    <car start="61" end="83" id="5" strategy="traffic.strategy.LookaheadShortestPathCarStrategy" />
-    <car start="61" end="83" id="6" strategy="traffic.strategy.AlwaysRecomputeCarStrategy" />
-    <car start="61" end="83" id="7" strategy="traffic.strategy.LookaheadShortestPathCarStrategy" />
-    <car start="61" end="83" id="8" strategy="traffic.strategy.LookaheadShortestPathCarStrategy" />
-    <car start="61" end="83" id="9" strategy="traffic.strategy.AlwaysRecomputeCarStrategy" />
-    <car start="61" end="83" id="10" strategy="traffic.strategy.LookaheadShortestPathCarStrategy" />
-    <car start="61" end="83" id="11" strategy="traffic.strategy.AlwaysRecomputeCarStrategy" />
-    <car start="61" end="83" id="12" strategy="traffic.strategy.AlwaysRecomputeCarStrategy" />
-    <car start="61" end="83" id="13" strategy="traffic.strategy.AlwaysRecomputeCarStrategy" />
-    <car start="61" end="83" id="14" strategy="traffic.strategy.AlwaysRecomputeCarStrategy" />
-    <car start="61" end="83" id="15" strategy="traffic.strategy.LookaheadShortestPathCarStrategy" />
-    <car start="61" end="83" id="16" strategy="traffic.strategy.AlwaysRecomputeCarStrategy" />
-    <car start="61" end="83" id="17" strategy="traffic.strategy.LookaheadShortestPathCarStrategy" />
-    <car start="61" end="83" id="18" strategy="traffic.strategy.AlwaysRecomputeCarStrategy" />
-    <car start="61" end="83" id="19" strategy="traffic.strategy.LookaheadShortestPathCarStrategy" />
-    <car start="61" end="83" id="20" strategy="traffic.strategy.LookaheadShortestPathCarStrategy" />
-    <car start="61" end="83" id="21" strategy="traffic.strategy.LookaheadShortestPathCarStrategy" />
-    <car start="61" end="83" id="22" strategy="traffic.strategy.AlwaysRecomputeCarStrategy" />
-    <car start="61" end="83" id="23" strategy="traffic.strategy.AlwaysRecomputeCarStrategy" />
-    <car start="61" end="83" id="24" strategy="traffic.strategy.AlwaysRecomputeCarStrategy" />
-    <car start="61" end="83" id="25" strategy="traffic.strategy.LookaheadShortestPathCarStrategy" />
-    <car start="61" end="83" id="26" strategy="traffic.strategy.LookaheadShortestPathCarStrategy" />
-    <car start="61" end="83" id="27" strategy="traffic.strategy.LookaheadShortestPathCarStrategy" />
-    <car start="61" end="83" id="28" strategy="traffic.strategy.AlwaysRecomputeCarStrategy" />
-    <car start="61" end="83" id="29" strategy="traffic.strategy.AlwaysRecomputeCarStrategy" />
+  <cars default_strategy="traffic.algorithm.LookaheadShortestPathCarStrategy">
+    <car start="61" end="83" id="0" strategy="traffic.algorithm.LookaheadShortestPathCarStrategy" />
+    <car start="61" end="83" id="1" strategy="traffic.algorithm.LookaheadShortestPathCarStrategy" />
+    <car start="61" end="83" id="2" strategy="traffic.algorithm.AlwaysRecomputeCarStrategy" />
+    <car start="61" end="83" id="3" strategy="traffic.algorithm.LookaheadShortestPathCarStrategy" />
+    <car start="61" end="83" id="4" strategy="traffic.algorithm.LookaheadShortestPathCarStrategy" />
+    <car start="61" end="83" id="5" strategy="traffic.algorithm.LookaheadShortestPathCarStrategy" />
+    <car start="61" end="83" id="6" strategy="traffic.algorithm.AlwaysRecomputeCarStrategy" />
+    <car start="61" end="83" id="7" strategy="traffic.algorithm.LookaheadShortestPathCarStrategy" />
+    <car start="61" end="83" id="8" strategy="traffic.algorithm.LookaheadShortestPathCarStrategy" />
+    <car start="61" end="83" id="9" strategy="traffic.algorithm.AlwaysRecomputeCarStrategy" />
+    <car start="61" end="83" id="10" strategy="traffic.algorithm.LookaheadShortestPathCarStrategy" />
+    <car start="61" end="83" id="11" strategy="traffic.algorithm.AlwaysRecomputeCarStrategy" />
+    <car start="61" end="83" id="12" strategy="traffic.algorithm.AlwaysRecomputeCarStrategy" />
+    <car start="61" end="83" id="13" strategy="traffic.algorithm.AlwaysRecomputeCarStrategy" />
+    <car start="61" end="83" id="14" strategy="traffic.algorithm.AlwaysRecomputeCarStrategy" />
+    <car start="61" end="83" id="15" strategy="traffic.algorithm.LookaheadShortestPathCarStrategy" />
+    <car start="61" end="83" id="16" strategy="traffic.algorithm.AlwaysRecomputeCarStrategy" />
+    <car start="61" end="83" id="17" strategy="traffic.algorithm.LookaheadShortestPathCarStrategy" />
+    <car start="61" end="83" id="18" strategy="traffic.algorithm.AlwaysRecomputeCarStrategy" />
+    <car start="61" end="83" id="19" strategy="traffic.algorithm.LookaheadShortestPathCarStrategy" />
+    <car start="61" end="83" id="20" strategy="traffic.algorithm.LookaheadShortestPathCarStrategy" />
+    <car start="61" end="83" id="21" strategy="traffic.algorithm.LookaheadShortestPathCarStrategy" />
+    <car start="61" end="83" id="22" strategy="traffic.algorithm.AlwaysRecomputeCarStrategy" />
+    <car start="61" end="83" id="23" strategy="traffic.algorithm.AlwaysRecomputeCarStrategy" />
+    <car start="61" end="83" id="24" strategy="traffic.algorithm.AlwaysRecomputeCarStrategy" />
+    <car start="61" end="83" id="25" strategy="traffic.algorithm.LookaheadShortestPathCarStrategy" />
+    <car start="61" end="83" id="26" strategy="traffic.algorithm.LookaheadShortestPathCarStrategy" />
+    <car start="61" end="83" id="27" strategy="traffic.algorithm.LookaheadShortestPathCarStrategy" />
+    <car start="61" end="83" id="28" strategy="traffic.algorithm.AlwaysRecomputeCarStrategy" />
+    <car start="61" end="83" id="29" strategy="traffic.algorithm.AlwaysRecomputeCarStrategy" />
   </cars>
 </simulation>
 

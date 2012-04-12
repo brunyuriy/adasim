@@ -23,52 +23,22 @@
  *    Jonathan Ramaswamy (ramaswamyj12@gmail.com) - initial API and implementation
  ********************************************************************************
  *
- * Created: Oct 11, 2011
+ * Created: Oct 18, 2011
  */
 
-package traffic.strategy;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
-import traffic.model.RoadSegment;
+package traffic.algorithm;
 
 /**
- * This class returns a random path for the car to follow
- * No optimizations for shortest path are made
+ * This sets the delay at a node to be equal to the number of cars
+ * at the node, minus a given maximum capacity
  * 
  * @author Jonathan Ramaswamy - ramaswamyj12@gmail.com
  */
 
-public class RandomVehicleStrategy extends AbstractVehicleStrategy {
+public class LinearTrafficDelayFunction implements TrafficDelayFunction {
 
-	public RandomVehicleStrategy(){}	
-	
-	/**
-	 * Picks random neighbors to move towards until the destination is reached
-	 * Returns the path represented as a list of integers
-	 */
-	public List<RoadSegment> getPath(RoadSegment c, RoadSegment d) {
-		RoadSegment next = c;
-		List<RoadSegment> path = new ArrayList<RoadSegment>();
-		while(!next.equals(d) && path.size() < graph.getNodes().size() ) {
-			List<RoadSegment> dest = next.getNeighbors();
-			Random generator = new Random();
-			int rand = generator.nextInt(dest.size());
-			next = dest.get(rand);
-			path.add(next);
-		}
-		return path.get( path.size() - 1 ) == d ? path : null ;	//The random strategy must terminate even it if can't find a path
-	}
-
-	/* (non-Javadoc)
-	 * @see traffic.strategy.CarStrategy#getNextNode()
-	 */
-	@Override
-	public RoadSegment getNextNode() {
-		// TODO Auto-generated method stub
-		return null;
+	public int getDelay(int weight, int capacity, int number) {
+		return Math.max(weight, number - capacity + weight);
 	}
 
 }

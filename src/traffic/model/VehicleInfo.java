@@ -27,8 +27,8 @@
  */
 package traffic.model;
 
-import traffic.strategy.NoiseStrategy;
-import traffic.strategy.RandomNoiseStrategy;
+import traffic.algorithm.NoiseStrategy;
+import traffic.algorithm.RandomNoiseStrategy;
 
 /**
  * CarInfo holds all the information for a car object, including its starting, ending,

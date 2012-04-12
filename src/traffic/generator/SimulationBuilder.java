@@ -26,6 +26,9 @@ import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
 import traffic.agent.AdasimAgent;
+import traffic.algorithm.LinearTrafficDelayFunction;
+import traffic.algorithm.TrafficDelayFunction;
+import traffic.algorithm.VehicleStrategy;
 import traffic.model.AdasimMap;
 import traffic.model.RoadSegment;
 import traffic.model.Vehicle;
@@ -33,9 +36,6 @@ import traffic.model.ConfigurationException;
 import traffic.model.TrafficSimulator;
 import traffic.model.internal.SimulationXMLBuilder;
 import traffic.model.internal.VehicleManager;
-import traffic.strategy.VehicleStrategy;
-import traffic.strategy.LinearTrafficDelayFunction;
-import traffic.strategy.TrafficDelayFunction;
 
 /**
  * This class constructs (randomizes) a TrafficSimulation based

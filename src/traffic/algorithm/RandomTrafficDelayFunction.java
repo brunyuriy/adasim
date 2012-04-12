@@ -26,7 +26,7 @@
  * Created: Oct 18, 2011
  */
 
-package traffic.strategy;
+package traffic.algorithm;
 
 import java.util.Random;
 

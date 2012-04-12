@@ -24,14 +24,14 @@ import java.util.List;
 import org.jdom.JDOMException;
 import org.junit.Test;
 
+import traffic.algorithm.LookaheadShortestPathVehicleStrategy;
+import traffic.algorithm.QuadraticTrafficDelayFunction;
 import traffic.model.ConfigurationException;
 import traffic.model.AdasimMap;
 import traffic.model.RoadSegment;
 import traffic.model.TrafficSimulator;
 import traffic.model.Vehicle;
 import traffic.model.internal.SimulationXMLReader;
-import traffic.strategy.LookaheadShortestPathVehicleStrategy;
-import traffic.strategy.QuadraticTrafficDelayFunction;
 
 
 /**

@@ -23,6 +23,7 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import traffic.algorithm.LookaheadShortestPathVehicleStrategy;
 import traffic.model.AdasimMap;
 import traffic.model.RoadSegment;
 import traffic.model.Vehicle;

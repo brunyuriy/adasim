@@ -20,10 +20,10 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import traffic.algorithm.AbstractVehicleStrategy;
+import traffic.algorithm.LinearTrafficDelayFunction;
 import traffic.model.RoadSegment;
 import traffic.model.Vehicle;
-import traffic.strategy.AbstractVehicleStrategy;
-import traffic.strategy.LinearTrafficDelayFunction;
 import static org.junit.Assert.*;
 
 

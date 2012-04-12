@@ -20,9 +20,9 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import traffic.algorithm.LookaheadShortestPathVehicleStrategy;
 import traffic.model.NodeVehicleQueue;
 import traffic.model.Vehicle;
-import traffic.strategy.LookaheadShortestPathVehicleStrategy;
 
 
 /**
