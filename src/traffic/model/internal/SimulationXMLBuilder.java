@@ -43,7 +43,7 @@ import traffic.model.AdasimMap;
 import traffic.model.RoadSegment;
 import traffic.model.Vehicle;
 import traffic.strategy.VehicleStrategy;
-import traffic.strategy.SpeedStrategy;
+import traffic.strategy.TrafficDelayFunction;
 
 /**
  * A builder that constructs elements in a traffic simulation 
@@ -77,7 +77,7 @@ public class SimulationXMLBuilder {
 		try {
 			@SuppressWarnings("unchecked")
 			List<Element> children = graphNode.getChildren("node");		
-			SpeedStrategy ss = (SpeedStrategy) loadClassFromAttribute(graphNode, "default_strategy" );
+			TrafficDelayFunction ss = (TrafficDelayFunction) loadClassFromAttribute(graphNode, "default_strategy" );
 			int capacity = Integer.parseInt(graphNode.getAttributeValue("default_capacity"));
 			AdasimFilter uf = (AdasimFilter) loadClassFromAttribute(graphNode, "uncertainty_filter");
 			if ( uf == null ) {
@@ -108,7 +108,7 @@ public class SimulationXMLBuilder {
 	 */
 	public RoadSegment buildNode( Element nodeElement ) {
 		int id = Integer.parseInt( nodeElement.getAttributeValue( "id" ) );
-		SpeedStrategy ss = (SpeedStrategy)loadClassFromAttribute(nodeElement, "strategy" ); 
+		TrafficDelayFunction ss = (TrafficDelayFunction)loadClassFromAttribute(nodeElement, "strategy" ); 
 		RoadSegment gn = new RoadSegment( id, ss, getDelay(nodeElement ), getCapacity(nodeElement)) ;
 		AdasimFilter f = (AdasimFilter) loadClassFromAttribute(nodeElement, "uncertainty_filter" ); 
 		gn.setUncertaintyFilter(f);
@@ -179,7 +179,7 @@ public class SimulationXMLBuilder {
 	 * 
 	 * @return the list of fully validated GraphNodes
 	 */
-	private List<RoadSegment> buildNodes( List<Element> nodeElements, SpeedStrategy defaultStrategy,
+	private List<RoadSegment> buildNodes( List<Element> nodeElements, TrafficDelayFunction defaultStrategy,
 			AdasimFilter uncertaintyFilter, AdasimFilter privacyFilter, int capacity ) {
 		List<RoadSegment> nodes = new ArrayList<RoadSegment>( nodeElements.size() );
 		for( Element node : nodeElements ) {
@@ -209,7 +209,7 @@ public class SimulationXMLBuilder {
 	 * @param gn
 	 * @return the updated RoadSegment (should be reference equal)
 	 */
-	private RoadSegment assignDefaultNodeValues(RoadSegment gn, SpeedStrategy ss, int capacity ) {
+	private RoadSegment assignDefaultNodeValues(RoadSegment gn, TrafficDelayFunction ss, int capacity ) {
 		if ( gn.getSpeedStrategy() == null ) {
 			gn.setSpeedStrategy(ss);
 		}

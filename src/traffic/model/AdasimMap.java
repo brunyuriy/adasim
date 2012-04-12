@@ -36,7 +36,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import traffic.strategy.SpeedStrategy;
+import traffic.strategy.TrafficDelayFunction;
 
 /**
  * The graph class represents a collection of GraphNodes
@@ -72,7 +72,7 @@ public final class AdasimMap {
 	 * @param speed
 	 * @param capacity
 	 */
-	public void addNode(int num, SpeedStrategy speed, int capacity) {
+	public void addNode(int num, TrafficDelayFunction speed, int capacity) {
 		nodes.add(new RoadSegment(num, speed, capacity));
 	}
 	

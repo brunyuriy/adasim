@@ -35,7 +35,7 @@ package traffic.strategy;
  * @author Jonathan Ramaswamy - ramaswamyj12@gmail.com
  */
 
-public class LinearSpeedStrategy implements SpeedStrategy {
+public class LinearSpeedStrategy implements TrafficDelayFunction {
 
 	public int getDelay(int weight, int capacity, int number) {
 		return Math.max(weight, number - capacity + weight);
