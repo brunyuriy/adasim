@@ -47,7 +47,7 @@ public class LookaheadShortestPathRoutingAlgorithmTest {
 	@Test
 	public void findShortestPathFromStartNoWeights() throws JDOMException, IOException, ConfigurationException {
 		AdasimMap g = SimulationXMLReader.buildSimulator( new File("resources/test/shortest-path-test.xml") ).getGraph();
-		strategy.setGraph(g);
+		strategy.setMap(g);
 		List<RoadSegment> path = strategy.getPath( g.getNode(1), g.getNode(5));
 		assertNotNull( "No path found", path );
 		assertEquals( "Path too short", 2, path.size() );
@@ -65,7 +65,7 @@ public class LookaheadShortestPathRoutingAlgorithmTest {
 	@Test
 	public void findShortestPathFromStartNoWeightsRandom() throws JDOMException, IOException, ConfigurationException {
 		AdasimMap g = SimulationXMLReader.buildSimulator( new File("resources/test/shortest-path-test-random-ids.xml") ).getGraph();
-		strategy.setGraph(g);
+		strategy.setMap(g);
 		List<RoadSegment> path = strategy.getPath( g.getNode(21), g.getNode(5));
 		assertNotNull( "No path found", path );
 		assertEquals( "Path too short", 2, path.size() );
@@ -83,7 +83,7 @@ public class LookaheadShortestPathRoutingAlgorithmTest {
 	@Test
 	public void findShortestPathFromStartWithWeights() throws JDOMException, IOException, ConfigurationException {
 		AdasimMap g = SimulationXMLReader.buildSimulator( new File("resources/test/shortest-path-test-weights.xml") ).getGraph();
-		strategy.setGraph(g);
+		strategy.setMap(g);
 		List<RoadSegment> path = strategy.getPath(g.getNode(6), g.getNode(4));
 		assertNotNull( "No path found", path );
 		assertEquals( "Path has wrong length", 3, path.size() );
@@ -95,7 +95,7 @@ public class LookaheadShortestPathRoutingAlgorithmTest {
 	public void findShortestPathFromStartWithWeightsLookahead1() throws JDOMException, IOException, ConfigurationException {
 		AdasimMap g = SimulationXMLReader.buildSimulator( new File("resources/test/shortest-path-test-weights.xml") ).getGraph();
 		strategy = new LookaheadShortestPathRoutingAlgorithm(1);
-		strategy.setGraph(g);
+		strategy.setMap(g);
 		List<RoadSegment> path = strategy.getPath(g.getNode(6), g.getNode(4));
 		assertNotNull( "No path found", path );
 		assertEquals( "Path has wrong length", 3, path.size() );
@@ -107,7 +107,7 @@ public class LookaheadShortestPathRoutingAlgorithmTest {
 	public void findShortestPathFromStartWithWeightsLookahead2() throws JDOMException, IOException, ConfigurationException {
 		AdasimMap g = SimulationXMLReader.buildSimulator( new File("resources/test/shortest-path-test-weights.xml") ).getGraph();
 		strategy = new LookaheadShortestPathRoutingAlgorithm(2);
-		strategy.setGraph(g);
+		strategy.setMap(g);
 		List<RoadSegment> path = strategy.getPath(g.getNode(6), g.getNode(4));
 		assertNotNull( "No path found", path );
 		assertEquals( "Path has wrong length", 2, path.size() );
@@ -119,9 +119,9 @@ public class LookaheadShortestPathRoutingAlgorithmTest {
 	public void recomputeShortestPathFromStartWithWeightsLookahead1() throws JDOMException, IOException, ConfigurationException {
 		AdasimMap g = SimulationXMLReader.buildSimulator( new File("resources/test/lookahead-recompute-test.xml") ).getGraph();
 		strategy = new LookaheadShortestPathRoutingAlgorithm(1);	//update after every step
-		strategy.setGraph(g);
-		strategy.setStartNode(g.getNode(0));
-		strategy.setEndNode(g.getNode(4));
+		strategy.setMap(g);
+		strategy.setStartRoad(g.getNode(0));
+		strategy.setEndRoad(g.getNode(4));
 		
 		List<RoadSegment> firstPath = strategy.getPath(g.getNode(0), g.getNode(4));
 		assertEquals( 6, firstPath.get(0).getID() );

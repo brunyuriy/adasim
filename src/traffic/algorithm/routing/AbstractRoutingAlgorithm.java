@@ -45,17 +45,17 @@ public abstract class AbstractRoutingAlgorithm implements RoutingAlgorithm {
 	 * @see traffic.algorithm.CarStrategy#setGraph(traffic.graph.Graph)
 	 */
 	@Override
-	public void setGraph(AdasimMap g) {
+	public void setMap(AdasimMap g) {
 		this.graph = g;
 	}
 
 	@Override
-	public void setStartNode( RoadSegment start ) {
+	public void setStartRoad( RoadSegment start ) {
 		source = start;
 	}	
 	
 	@Override
-	public void setEndNode( RoadSegment end ) {
+	public void setEndRoad( RoadSegment end ) {
 		target = end;
 	}
 	

@@ -105,7 +105,7 @@ public class SimulationBuilder {
 	 */
 	private Vehicle buildVehicle(int i, ConfigurationOptions opts, AdasimMap g) throws ConfigurationException {
 		RoutingAlgorithm cs = randomVehicleStrategy( opts.getStrategies() );
-		cs.setGraph(g);
+		cs.setMap(g);
 		List<RoadSegment> nodes = g.getNodes();
 		RoadSegment start = randomNode( nodes );
 		RoadSegment end;

@@ -172,7 +172,7 @@ final public class SimulationXMLReader {
 			c.setStartNode(node);
 			node = checkEndPoint(nodes, end, id, "End" );
 			c.setEndNode(node);
-			c.getStrategy().setGraph(g);
+			c.getStrategy().setMap(g);
 			return c;
 		} catch ( ConfigurationException e ) {
 			return null;
