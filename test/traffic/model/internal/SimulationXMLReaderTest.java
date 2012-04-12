@@ -25,7 +25,7 @@ import org.jdom.JDOMException;
 import org.junit.Test;
 
 import traffic.algorithm.LookaheadShortestPathVehicleStrategy;
-import traffic.algorithm.QuadraticTrafficDelayFunction;
+import traffic.algorithm.delay.QuadraticTrafficDelayFunction;
 import traffic.model.ConfigurationException;
 import traffic.model.AdasimMap;
 import traffic.model.RoadSegment;

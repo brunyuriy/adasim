@@ -26,19 +26,23 @@
  * Created: Oct 18, 2011
  */
 
-package traffic.algorithm;
+package traffic.algorithm.delay;
 
 /**
- * This interface implement traffic delay functions.
- * Given the weight of a node, the number of cars and an additional parameter 
- * (the traffic capacity of a node), it returns the time required
- * to traverse that node.
+ * The speed limit is set to be equal to the square of the number of cars at the node,
+ * above a certain capacity
  * 
- * @author Jochen Wuttke - wuttkej@gmail.com
- *
+ * @author Jonathan Ramaswamy - ramaswamyj12@gmail.com
  */
-public interface TrafficDelayFunction {
-	
-	public int getDelay(int weight, int cutoff, int number); //Returns the speed limit for the node depending on the number of cars
+
+public class QuadraticTrafficDelayFunction implements TrafficDelayFunction {
+
+	public int getDelay(int weight, int capacity, int number) {
+		if (number > capacity) {
+			return number - capacity + (weight * weight);
+		} else {
+			return weight * weight;
+		}
+	}
 
 }

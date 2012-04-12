@@ -12,7 +12,7 @@
  * Created: Nov 22, 2011
  */
 
-package traffic.strategy;
+package traffic.algorithm;
 
 import java.io.File;
 import java.io.IOException;

@@ -12,7 +12,7 @@
  * Created: Jan 19, 2012
  */
 
-package traffic.strategy;
+package traffic.algorithm;
 
 import java.io.File;
 import java.io.FileNotFoundException;

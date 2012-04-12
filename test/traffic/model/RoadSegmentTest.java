@@ -21,7 +21,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import traffic.algorithm.AbstractVehicleStrategy;
-import traffic.algorithm.LinearTrafficDelayFunction;
+import traffic.algorithm.delay.LinearTrafficDelayFunction;
 import traffic.model.RoadSegment;
 import traffic.model.Vehicle;
 import static org.junit.Assert.*;

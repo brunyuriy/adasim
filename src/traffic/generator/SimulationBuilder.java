@@ -26,9 +26,9 @@ import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
 import traffic.agent.AdasimAgent;
-import traffic.algorithm.LinearTrafficDelayFunction;
-import traffic.algorithm.TrafficDelayFunction;
 import traffic.algorithm.VehicleStrategy;
+import traffic.algorithm.delay.LinearTrafficDelayFunction;
+import traffic.algorithm.delay.TrafficDelayFunction;
 import traffic.model.AdasimMap;
 import traffic.model.RoadSegment;
 import traffic.model.Vehicle;

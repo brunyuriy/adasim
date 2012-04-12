@@ -36,7 +36,7 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 
 import traffic.agent.AbstractAdasimAgent;
-import traffic.algorithm.TrafficDelayFunction;
+import traffic.algorithm.delay.TrafficDelayFunction;
 
 /**
  * A RoadSegment is a single node on the graph. It has a queue of vehicles
