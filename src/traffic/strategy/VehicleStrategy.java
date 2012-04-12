@@ -30,7 +30,7 @@ package traffic.strategy;
 
 import java.util.List;
 
-import traffic.model.Graph;
+import traffic.model.AdasimMap;
 import traffic.model.GraphNode;
 
 /**
@@ -63,7 +63,7 @@ public interface VehicleStrategy {
 	 * Required setter to configure the strategy with the graph to work on
 	 * @param g
 	 */
-	public void setGraph( Graph g );
+	public void setGraph( AdasimMap g );
 	
 	public void setStartNode( GraphNode start );
 	

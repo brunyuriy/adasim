@@ -63,11 +63,11 @@ public final class TrafficSimulator{
 
 
 	private List<AdasimAgent> agents; //List of vehicles in the simulation
-	private Graph graph; //The graph the vehicles run on
+	private AdasimMap graph; //The graph the vehicles run on
 	private VehicleManager manager;
 	private long cycle = 0;
 
-	public TrafficSimulator( Graph g, VehicleManager m, List<AdasimAgent> c ) {
+	public TrafficSimulator( AdasimMap g, VehicleManager m, List<AdasimAgent> c ) {
 		if(g == null || c == null || m == null ) {
 			throw new IllegalArgumentException();
 		}
@@ -156,7 +156,7 @@ public final class TrafficSimulator{
 	 * While this instance is mutable, this is strongly discouraged, as 
 	 * effects are unspecified!
 	 */
-	public Graph getGraph() {
+	public AdasimMap getGraph() {
 		return graph;
 	}
 

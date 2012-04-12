@@ -26,7 +26,7 @@ import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
 import traffic.agent.AdasimAgent;
-import traffic.model.Graph;
+import traffic.model.AdasimMap;
 import traffic.model.GraphNode;
 import traffic.model.Vehicle;
 import traffic.model.ConfigurationException;
@@ -79,7 +79,7 @@ public class SimulationBuilder {
 	 * @throws IllegalAccessException
 	 */
 	TrafficSimulator build( ConfigurationOptions opts ) throws ConfigurationException, IOException, JDOMException, ClassNotFoundException, InstantiationException, IllegalAccessException {
-		Graph g = buildGraph(opts);
+		AdasimMap g = buildGraph(opts);
 		VehicleManager m = new VehicleManager();
 		return new TrafficSimulator( buildGraph(opts), m, buildVehicles(opts, g) );
 	}
@@ -89,7 +89,7 @@ public class SimulationBuilder {
 	 * @return a list of vehicles of the size spec'd on the commandline
 	 * @throws ConfigurationException 
 	 */
-	private List<AdasimAgent> buildVehicles(ConfigurationOptions opts, Graph g) throws ConfigurationException {
+	private List<AdasimAgent> buildVehicles(ConfigurationOptions opts, AdasimMap g) throws ConfigurationException {
 		List<AdasimAgent> vehicles = new ArrayList<AdasimAgent>();
 		for ( int i = 0; i < opts.getNumVehicles(); i++ ) {
 			vehicles.add( buildVehicle( i, opts, g ) );
@@ -103,7 +103,7 @@ public class SimulationBuilder {
 	 * @return a fully configured vehicle
 	 * @throws ConfigurationException 
 	 */
-	private Vehicle buildVehicle(int i, ConfigurationOptions opts, Graph g) throws ConfigurationException {
+	private Vehicle buildVehicle(int i, ConfigurationOptions opts, AdasimMap g) throws ConfigurationException {
 		VehicleStrategy cs = randomVehicleStrategy( opts.getStrategies() );
 		cs.setGraph(g);
 		List<GraphNode> nodes = g.getNodes();
@@ -150,8 +150,8 @@ public class SimulationBuilder {
 	 * @throws InstantiationException 
 	 * @throws ClassNotFoundException 
 	 */
-	private Graph buildGraph(ConfigurationOptions opts) throws ConfigurationException, JDOMException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
-		Graph g = new Graph( new HashSet<GraphNode>() );
+	private AdasimMap buildGraph(ConfigurationOptions opts) throws ConfigurationException, JDOMException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+		AdasimMap g = new AdasimMap( new HashSet<GraphNode>() );
 		if ( opts.getGraphFile() == null ) {
 			//we have to generate a graph
 			for ( int i = 0; i < opts.getNumNodes(); i++ ) {
@@ -177,7 +177,7 @@ public class SimulationBuilder {
 	 * @throws InstantiationException 
 	 * @throws ConfigurationException 
 	 */
-	private Graph readGraphFromFile(File graphFile) throws JDOMException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, ConfigurationException {
+	private AdasimMap readGraphFromFile(File graphFile) throws JDOMException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, ConfigurationException {
 		SAXBuilder sbuilder = new SAXBuilder(false);
 		Document doc = sbuilder.build(graphFile);
 		return new SimulationXMLBuilder().buildGraph( doc.getRootElement() );
