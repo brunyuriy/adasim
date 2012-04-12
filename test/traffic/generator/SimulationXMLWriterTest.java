@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.junit.Test;
+import static org.junit.Assert.assertTrue;
 
 import traffic.model.ConfigurationException;
 import traffic.model.SimulationXMLReader;
@@ -36,6 +37,9 @@ public class SimulationXMLWriterTest {
 		TrafficSimulator sim = SimulationXMLReader.buildSimulator( inFile );
 		File outFile = new File( "output.xml" );
 		SimulationXMLWriter.write(sim, outFile );
+		assertTrue( outFile.exists() );
+		assertTrue( outFile.length() > 0 );
+		outFile.delete();
 	}
 
 }

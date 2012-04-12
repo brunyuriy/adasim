@@ -20,4 +20,7 @@
 		<node id="9" strategy="traffic.strategy.LinearSpeedStrategy" neighbors="2" />
 	</graph>
 	
+	<agents>
+		<agent id="closure" class="traffic.agent.RoadClosureAgent" parameters="0.5:100" />
+	</agents>
 </simulation>

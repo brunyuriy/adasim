@@ -41,8 +41,10 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
+import traffic.agent.AdasimAgent;
 import traffic.graph.Graph;
 import traffic.graph.GraphNode;
+import traffic.model.internal.VehicleManager;
 
 
 /**
@@ -84,7 +86,7 @@ final public class SimulationXMLReader {
 	 * and exception detailing the cause of failure.
 	 * 
 	 * @param config
-	 * @return
+	 * @return the configured instance of TrafficSimulator
 	 * @throws FileNotFoundException
 	 * @throws ConfigurationException
 	 */
@@ -92,7 +94,8 @@ final public class SimulationXMLReader {
 		try {
 			SimulationXMLReader factory = new SimulationXMLReader(config);
 			Graph g = builder.buildGraph( factory.doc.getRootElement().getChild("graph" ) );
-			TrafficSimulator sim = new TrafficSimulator( g, factory.allAgents( g ) ); 
+			VehicleManager m = new VehicleManager();
+			TrafficSimulator sim = new TrafficSimulator( g, m, factory.allAgents( g, m ) ); 
 			return sim;
 		} catch ( ConfigurationException e ) {
 			buildError(e);
@@ -101,12 +104,11 @@ final public class SimulationXMLReader {
 	}
 
 	/**
-	 * @return
 	 * @throws ConfigurationException 
 	 */
-	private List<AdasimAgent> allAgents( Graph g ) throws ConfigurationException {
+	private List<AdasimAgent> allAgents( Graph g, VehicleManager m ) throws ConfigurationException {
 		List<AdasimAgent> agents;
-		agents = new ArrayList<AdasimAgent>(buildVehicles( doc.getRootElement().getChild("cars" ), g ) );
+		agents = new ArrayList<AdasimAgent>(buildVehicles( doc.getRootElement().getChild("cars" ), g, m ) );
 		agents.addAll( builder.buildAgents( doc.getRootElement().getChild("agents" ) ) );
 		return agents;
 	}
@@ -119,23 +121,37 @@ final public class SimulationXMLReader {
 	}
 
 	/**
-	 * @return
 	 * @throws ConfigurationException 
 	 */
-	private List<AdasimAgent> buildVehicles( Element vehiclesNode, Graph g ) throws ConfigurationException {
+	private List<AdasimAgent> buildVehicles( Element vehiclesNode, Graph g, VehicleManager m ) throws ConfigurationException {
 		List<Vehicle> vehicles = builder.buildVehicles(vehiclesNode);
 		List<AdasimAgent> l = new ArrayList<AdasimAgent>();
 		@SuppressWarnings("unchecked")
 		List<Element> vehicleNodes = vehiclesNode.getChildren( "car" );
 		for ( Element vehicle : vehicleNodes ) {
 			Vehicle c = validateVehicle(vehicle, vehicles, g );
+			long time = getStartTime( vehicle );
 			if ( c != null ) {
-				l.add(c);
-				//add valid vehicle to their start node
-				c.getStartNode().enterNode(c);
+				if ( time == 1 ) {
+					l.add(c);
+					//add valid vehicle to their start node
+					c.getStartNode().enterNode(c);
+				} else {
+					m.addVehicle(c, time);
+				}
 			}
 		}
 		return l;	
+	}
+
+	/**
+	 * @param vehicle
+	 */
+	private long getStartTime(Element vehicle) {
+		String s = vehicle.getAttributeValue("start_time");
+		if ( s == null ) return 1L;
+		int time = Integer.parseInt( s );
+		return (long)time;
 	}
 
 	/**
@@ -164,7 +180,7 @@ final public class SimulationXMLReader {
 	/**
 	 * @param id
 	 * @param vehicles
-	 * @return
+	 * @return the vehicle with ID <code>id</code> in the list or <code>null</code>
 	 */
 	private Vehicle getVehicle(int id, List<Vehicle> vehicles) {
 		for ( Vehicle c : vehicles ) {
@@ -174,9 +190,11 @@ final public class SimulationXMLReader {
 	}
 
 	/**
+	 * Checks if the end node is valid, prints a warning and throws an exception if not.
 	 * @param nodes
 	 * @param end
 	 * @param id
+	 * @param s
 	 * @throws ConfigurationException 
 	 */
 	private GraphNode checkEndPoint(List<GraphNode> nodes, int end, int id, String s) throws ConfigurationException {
@@ -189,7 +207,9 @@ final public class SimulationXMLReader {
 	}
 
 	/**
-	 * @param end
+	 * @param id
+	 * @param nodes
+	 * @return the GraphNode with ID <code>id</code> if it's in the list, or <code>null</code>
 	 */
 	private GraphNode isValidNode(int id, List<GraphNode> nodes ) {
 		for ( GraphNode node : nodes ) {

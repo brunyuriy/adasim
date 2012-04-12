@@ -26,7 +26,10 @@
  * Created: Jan 24, 2012
  */
 
-package traffic.model;
+package traffic.agent;
+
+import traffic.filter.AdasimFilter;
+import traffic.model.TrafficSimulator;
 
 /**
  * An {@link AdasimAgent} is an active component in Adasim.
@@ -48,9 +51,11 @@ public interface AdasimAgent {
 	/**
 	 * This is the main method through which the {@link TrafficSimulator} 
 	 * communicates with agents. The {@link TrafficSimulator} call this
-	 * method once per simulation cylce on each agent. 
+	 * method once per simulation cycle on each agent. 
+	 *
+	 * @param cycle the current simulation cycle. 
 	 */
-	public void takeSimulationStep();
+	public void takeSimulationStep(long cycle);
 	
 	/**
 	 * Method called to configure this agent when loading a simulation.
@@ -86,4 +91,18 @@ public interface AdasimAgent {
 	 * @return true when the agent does no longer wish to perform actions
 	 */
 	public boolean isFinished();
+	
+	/**
+	 * Sets the uncertainty filter that this agent applies to
+	 * all its output.
+	 * 
+	 * @param filter
+	 */
+	public void setUncertaintyFilter( AdasimFilter filter );
+	
+	/**
+	 * Sets the privacy filter that this agent applies to all its output.
+	 * @param filter
+	 */
+	public void setPrivacyFilter( AdasimFilter filter );
 }

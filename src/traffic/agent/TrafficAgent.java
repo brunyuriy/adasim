@@ -23,31 +23,22 @@
  *    Jochen Wuttke (wuttkej@gmail.com) - initial API and implementation
  ********************************************************************************
  *
- * Created: Mar 14, 2012
+ * Created: Mar 7, 2012
  */
-package traffic.model;
 
-import java.util.Random;
+package traffic.agent;
 
 /**
- * A road agent can close roads, simulating accidents or construction
- * Once a road is closed, a car cannot enter it, and cars on the road cannot move
+ * A traffic agent is used to add cars to the simulator in the middle
+ * of a simulation run. It can be extended to insert vehicles in different ways 
  * @author Jonathan Ramaswamy
  *
  */
-public class RoadAgent {
+public interface TrafficAgent {
 
-	public RoadAgent() {
-		
-	}
-	
 	/**
-	 * Has a 1 in 20 chance of returning true, indicating the road is closed
-	 * @return
+	 * Adds a new car to the simulation
 	 */
-	public boolean isClosed() {
-		Random generator = new Random();
-		int rand = generator.nextInt(3);
-		return rand == 1;
-	}
+	public void addCar();
+	
 }

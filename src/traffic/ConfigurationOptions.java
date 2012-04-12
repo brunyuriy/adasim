@@ -49,7 +49,8 @@ final class ConfigurationOptions {
 	/**
 	 * This is the main interface to ConfigurationOptions. Passing in
 	 * the arguments array will return an object containing all
-	 * parsed arguments and default values for arguments not specified
+	 * parsed arguments and default values for arguments not specified.
+	 * 
 	 * @param args the arguments array from <code>main(String[] args)</code>.
 	 * @return A set of configuration options.
 	 * @throws Exception
@@ -64,9 +65,9 @@ final class ConfigurationOptions {
 	}
 
 	/**
-	 * @param parse
-	 * @param cfg
-	 * @throws Exception 
+	 * @param opts	the options found on the commandline
+	 * @param cfg	the data object storing option values
+	 * @throws Exception
 	 */
 	private static void processOptions(OptionSet opts, ConfigurationOptions cfg) throws Exception {
 		if ( opts.has( "I" ) ) {
@@ -75,7 +76,7 @@ final class ConfigurationOptions {
 	}
 
 	/**
-	 * 
+	 * Defines all the options the parser should recognize. 
 	 */
 	private static OptionParser setupParser() {
 		OptionParser parser = new OptionParser();

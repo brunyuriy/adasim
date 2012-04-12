@@ -33,27 +33,49 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import traffic.model.AbstractAdasimAgent;
-import traffic.model.RoadAgent;
+import org.apache.log4j.Logger;
+
+import traffic.agent.AbstractAdasimAgent;
 import traffic.model.Vehicle;
 import traffic.strategy.SpeedStrategy;
 
 /**
  * A GraphNode is a single node on the graph. It has a queue of vehicles
  * and uses a given speed strategy and delay to determine their movements
+ * <p>
+ * The GraphNode applies an uncertainty filter to only some properties, 
+ * others it reports faithfully, because precision there is crucial for 
+ * the internal working of the simulator. As a convenience for testing, while
+ * no filter is configured (i.e. <code>null</code> is assigned
+ * to the filter field), it will faithfully report all values.
+ * <p>
+ * Properties accessible to other agents:
+ * <ul>
+ * <li>ID: certain
+ * <li>delay: uncertain
+ * <li>currentDelay: uncertain
+ * <li>capacity: uncertain
+ * <li>closed: certain
+ * <li>numVehiclesAtNode: uncertain
+ * </ul>
  * 
  * @author Jonathan Ramaswamy - ramaswamyj12@gmail.com
+ * @author Jochen Wuttke - wuttkej@gmail.com
  */
 
 public final class GraphNode extends AbstractAdasimAgent {
 	
+	private static Logger logger = Logger.getLogger(GraphNode.class);
+
+	
 	private Set<GraphNode> outgoing; //Nodes that this node has an edge directed towards
-	private int nodeNum; //The number of this node on the graph
 	private SpeedStrategy ss; //The strategy by which the speed changes
+
+	//PROPERTIES
+	private int nodeNum; //The number of this node on the graph
 	private int delay; //The basic delay of this node. To be modified by the speed strategy
 	private NodeVehicleQueue queue; //Holds the vehicles on this node and deals with the traffic
 	private int capacity; //The number of vehicles the road can hold before the speed strategy takes effect
-	private RoadAgent roadAgent;
 	private boolean closed;
 	
 	/**
@@ -81,8 +103,6 @@ public final class GraphNode extends AbstractAdasimAgent {
 		this.delay = delay;
 		queue = new NodeVehicleQueue();
 		this.capacity = capacity;
-		roadAgent = new RoadAgent();
-		closed = roadAgent.isClosed();
 	}
 	
 	/* ***************************************************
@@ -107,28 +127,22 @@ public final class GraphNode extends AbstractAdasimAgent {
 	}
 	
 	/**
-	 * Returns all nodes this node has an outgoing edge towards
-	 * @return
+	 * @return all nodes this node has an outgoing edge towards
 	 */
 	public List<GraphNode> getNeighbors() {
 		return new ArrayList<GraphNode>(outgoing);
 	}
 	
-	public boolean isNeighbor(GraphNode n) {
+	private boolean isNeighbor(GraphNode n) {
 		return outgoing.contains(n);
 	}
-	
-	/**
-	 * Returns this node's ID number
-	 * @return
-	 */
-	public int getID() {
-		return nodeNum;
-	}
+
+	/* ***************************************************
+	 * GRAPH NODE INTERNALS
+	 *************************************************** */	
 
 	/**
-	 * Returns this node's speed strategy
-	 * @return
+	 * @return this node's speed strategy
 	 */
 	public SpeedStrategy getSpeedStrategy() {
 		return ss;
@@ -141,45 +155,48 @@ public final class GraphNode extends AbstractAdasimAgent {
 		this.ss = ss;
 	}
 
+	
 	/* ***************************************************
-	 * TRAFFIC MANAGEMENT METHODS
-	 *************************************************** */
-	/**
-	 * Adds the given vehicle number to the list of vehicles currently at the node
-	 * Changes the speed limit at the node
-	 */
-	public void enterNode(Vehicle c) {
-		queue.enqueue(c, getCurrentDelay() );
-	}
+	 * AGENT PROPERTIES
+	 *************************************************** */	
 	
 	/**
-	 * Signals to the node that the vehicle will stop at this
-	 * node and no longer move. This should normally only
-	 * happen when the vehicle is at it's destination or when
-	 * it cannot find a path to follow.
-	 * 
-	 * @param c
+	 * @return this node's ID number
 	 */
-	public void park( Vehicle c ) {
-		queue.park(c);
+	public int getID() {
+		return nodeNum;
 	}
-	
+
 	/**
 	 * Returns the number of turns a vehicle must stay limited at this node
 	 */
 	public int getDelay() {
-		return delay;
+		return filterValue(delay);
 	}
 	
-	public int getCurrentDelay() {
-		if(closed) {
-			return Integer.MAX_VALUE;
+	/**
+	 * @param value
+	 * @return the filtered input value
+	 */
+	private int filterValue(int value) {
+		if ( uncertaintyFilter == null ) {
+			return value;
 		}
-		return ss.getDelay(delay, capacity, queue.size());
+		else { 
+			return uncertaintyFilter.filter(value);
+		}
+	}
+
+	/**
+	 * @return the traffic dependent delay at this node.
+	 */
+	public int getCurrentDelay() {		
+		int cd = closed ? Integer.MAX_VALUE : ss.getDelay(delay, capacity, queue.size());
+		return filterValue(cd);
 	}
 	
 	public int getCapacity() {
-		return capacity;
+		return filterValue(capacity);
 	}
 	
 	/**
@@ -193,17 +210,115 @@ public final class GraphNode extends AbstractAdasimAgent {
 	 * Returns the number of vehicles currently at this node
 	 */
 	public int numVehiclesAtNode() {
-		return queue.size();
+		return uncertaintyFilter.filter(queue.size() );
 	}
 	
-	public void setClosed() {
-		closed = roadAgent.isClosed();
+	/**
+	 * Sets the <code>closed</code> flag of this node to <code>c</code>.
+	 * 
+	 * @param c
+	 */
+	public void setClosed( boolean c ) {
+		closed = c;
 	}
 	
+	/**
+	 * When a GraphNode (road) is closed, this means two things:
+	 * <ul>
+	 * <li>Vehicles can no longer enter the road. Trying to enter is considered invalid and vehicles will be removed.
+	 * <li>Vehicles that are already on the road can continue driving and will eventually leave the node.
+	 * </ul>
+	 * 
+	 * @return <code>true</code> if the node is currently closed to traffic
+	 */
 	public boolean isClosed() {
 		return closed;
 	}
 	
+	/* ***************************************************
+	 * TRAFFIC MANAGEMENT METHODS
+	 *************************************************** */
+	/**
+	 * Adds the given vehicle number to the list of vehicles currently at the node
+	 * if the node is open (i.e. <code>isClosed() == false</code>.
+	 * If the node is closed, an attempt to enter is invalid and leads to the 
+	 * vehicle being stopped.
+	 */
+	public void enterNode(Vehicle v) {
+		if (closed) {
+			logger.info( "INVALID: Node " + this.getID() + " is closed." );
+			park(v);
+		} else {
+			queue.enqueue(v, getCurrentDelay() );
+			v.setCurrentPosition(this);
+			logger.info( "ENTER: " + v.vehiclePosition() );
+		}
+	}
+	
+	/**
+	 * Signals to the node that the vehicle will stop at this
+	 * node and no longer move. This should normally only
+	 * happen when the vehicle is at it's destination or when
+	 * it cannot find a path to follow.
+	 * 
+	 * @param c
+	 */
+	public void park( Vehicle c ) {
+		queue.park(c);
+		logger.info( "STOP: " + c.vehiclePosition() );
+		//this is to ensure termination
+		c.setCurrentPosition(c.getEndNode());
+	}
+	
+	/* ***************************************************
+	 * SIMULATION MANAGEMENT METHODS
+	 *************************************************** */
+
+	/**
+	 * Handles the vehicle movement protocol.
+	 * <p>
+	 * In each cycle all cars currently on the node move a distance matching
+	 * the currently allowed maximum speed of this node.
+	 * If a vehicle reaches the end of the street segment, {@link Vehicle#move()}
+	 * is called and the vehicle can propose a new node it wishes to move to
+	 * by calling {@link GraphNode#moveTo(GraphNode, Vehicle)} on this node. 
+	 * This node verifies whether this is legal (the target node must be a 
+	 * neighbor in the graph), and if it is legal, hands off the vehicle
+	 * by calling {@link GraphNode#enterNode(Vehicle)} on the target node.
+	 * If the move is not legal, the vehicle is stopped and removed 
+	 * from the simulation. Corresponding events will be logged.
+	 */
+	public void takeSimulationStep( long cycle ) {
+		Set<Vehicle> finishedVehicles = queue.moveVehicles();
+		if ( finishedVehicles == null ) return;
+		for ( Vehicle c : finishedVehicles ) {
+			c.move();
+		}
+	}
+	
+	/**
+	 * Called by vehicles during the movement protocol. 
+	 * <p>
+	 * This method is used to announce a vehicle's intention to enter
+	 * node <code>targetNode</code>. This GraphNode checks the move for 
+	 * validity and rejects illegal moves.
+	 * 
+	 * @param targetNode
+	 * @param v
+	 */
+	public void moveTo( GraphNode targetNode, Vehicle v ) {
+		if ( isNeighbor(targetNode) ) {
+			targetNode.enterNode(v);
+		} else {
+			logger.info( "INVALID: Move: " + v.vehiclePosition() + " To: " + targetNode.getID() );
+			park(v);
+		}
+	}
+
+	/* ***************************************************
+	 * OBJECT METHODS
+	 *************************************************** */
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */
@@ -235,18 +350,6 @@ public final class GraphNode extends AbstractAdasimAgent {
 	@Override
 	public String toString() {
 		return "" + nodeNum;
-	}
-
-	/* ***************************************************
-	 * SIMULATION MANAGEMENT METHODS
-	 *************************************************** */
-
-	public void takeSimulationStep() {
-		Set<Vehicle> finishedVehicles = queue.moveVehicles();
-		if ( finishedVehicles == null ) return;
-		for ( Vehicle c : finishedVehicles ) {
-			c.takeSimulationStep();
-		}
 	}
 
 }
