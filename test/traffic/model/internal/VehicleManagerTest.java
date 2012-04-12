@@ -76,11 +76,11 @@ public class VehicleManagerTest {
 	public void cycleVehiclesIntoGraph() throws JDOMException, IOException, ConfigurationException {
 		SAXBuilder parser = new SAXBuilder( false );
 		SimulationXMLBuilder builder = new SimulationXMLBuilder();
-		Document doc = parser.build( new StringReader( "<graph default_strategy=\"traffic.algorithm.LinearTrafficDelayFunction\" default_capacity=\"0\">" +
-				"<node id=\"1\" neighbors=\"1 2 3 4\" delay=\"2\" capacity=\"5\" strategy=\"traffic.algorithm.LinearTrafficDelayFunction\"/>" +
-				"<node id=\"2\" neighbors=\"3\" delay=\"2\" capacity=\"5\" strategy=\"traffic.algorithm.LinearTrafficDelayFunction\"/>" +
-				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"traffic.algorithm.QuadraticTrafficDelayFunction\"/>" +
-				"<node id=\"5\" neighbors=\"2 4\" delay=\"2\" strategy=\"traffic.algorithm.LinearTrafficDelayFunction\"/>" +
+		Document doc = parser.build( new StringReader( "<graph default_strategy=\"traffic.algorithm.delay.LinearTrafficDelayFunction\" default_capacity=\"0\">" +
+				"<node id=\"1\" neighbors=\"1 2 3 4\" delay=\"2\" capacity=\"5\" strategy=\"traffic.algorithm.delay.LinearTrafficDelayFunction\"/>" +
+				"<node id=\"2\" neighbors=\"3\" delay=\"2\" capacity=\"5\" strategy=\"traffic.algorithm.delay.LinearTrafficDelayFunction\"/>" +
+				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"traffic.algorithm.delay.QuadraticTrafficDelayFunction\"/>" +
+				"<node id=\"5\" neighbors=\"2 4\" delay=\"2\" strategy=\"traffic.algorithm.delay.LinearTrafficDelayFunction\"/>" +
 				"</graph>" ) );
 		graph = builder.buildGraph( doc.getRootElement() );
 		new TrafficSimulator(graph, manager, (List<AdasimAgent>)new ArrayList<AdasimAgent>() );

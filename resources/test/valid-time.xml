@@ -4,7 +4,7 @@
 		<car id="1" start="4" end="7" start_time="2"/>
 	</cars>
 
-	<graph default_strategy="traffic.algorithm.QuadraticTrafficDelayFunction" default_capacity="0">
+	<graph default_strategy="traffic.algorithm.delay.QuadraticTrafficDelayFunction" default_capacity="0">
 		<node id="0" neighbors="4 7" />
 		<node id="1" strategy="traffic.algorithm.LinearTrafficDelayFunction" neighbors="5" capacity ="0"/>
 		<node id="2" strategy="traffic.algorithm.LinearTrafficDelayFunction" neighbors="4 7 9" />
