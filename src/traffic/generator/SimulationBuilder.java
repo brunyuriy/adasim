@@ -26,12 +26,12 @@ import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
 import traffic.agent.AdasimAgent;
-import traffic.graph.Graph;
-import traffic.graph.GraphNode;
+import traffic.model.Graph;
+import traffic.model.GraphNode;
 import traffic.model.Vehicle;
 import traffic.model.ConfigurationException;
-import traffic.model.SimulationXMLBuilder;
 import traffic.model.TrafficSimulator;
+import traffic.model.internal.SimulationXMLBuilder;
 import traffic.model.internal.VehicleManager;
 import traffic.strategy.VehicleStrategy;
 import traffic.strategy.LinearSpeedStrategy;

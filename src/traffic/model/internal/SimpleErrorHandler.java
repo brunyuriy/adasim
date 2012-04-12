@@ -26,7 +26,7 @@
  * Created: Jan 1, 2012
  */
 
-package traffic.model;
+package traffic.model.internal;
 
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXParseException;

@@ -23,11 +23,11 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import traffic.graph.Graph;
-import traffic.graph.GraphNode;
+import traffic.model.Graph;
+import traffic.model.GraphNode;
 import traffic.model.Vehicle;
 import traffic.model.ConfigurationException;
-import traffic.model.SimulationXMLReader;
+import traffic.model.internal.SimulationXMLReader;
 
 
 /**

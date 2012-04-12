@@ -20,8 +20,8 @@ import java.util.List;
 import java.util.Random;
 
 import traffic.agent.AdasimAgent;
-import traffic.graph.Graph;
-import traffic.graph.GraphNode;
+import traffic.model.Graph;
+import traffic.model.GraphNode;
 import traffic.model.Vehicle;
 import traffic.model.ConfigurationException;
 import traffic.model.TrafficSimulator;

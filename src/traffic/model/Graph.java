@@ -27,7 +27,7 @@
  * Created: Sep 5, 2011
  */
 
-package traffic.graph;
+package traffic.model;
 
 
 
@@ -36,7 +36,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import traffic.model.Vehicle;
 import traffic.strategy.SpeedStrategy;
 
 /**

@@ -12,7 +12,7 @@
  * Created: Dec 13, 2011
  */
 
-package traffic.graph;
+package traffic.model;
 
 import java.util.Set;
 
@@ -20,6 +20,7 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import traffic.model.NodeVehicleQueue;
 import traffic.model.Vehicle;
 import traffic.strategy.LookaheadShortestPathVehicleStrategy;
 

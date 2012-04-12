@@ -26,7 +26,7 @@
  * Created: Dec 13, 2011
  */
 
-package traffic.graph;
+package traffic.model;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -35,7 +35,6 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import traffic.model.Vehicle;
 
 /**
  * The {@link NodeVehicleQueue} handles traffic on a single node.

@@ -43,10 +43,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import traffic.agent.AdasimAgent;
-import traffic.graph.Graph;
-import traffic.graph.GraphNode;
 import traffic.model.ConfigurationException;
-import traffic.model.SimulationXMLBuilder;
+import traffic.model.Graph;
+import traffic.model.GraphNode;
 import traffic.model.TrafficSimulator;
 import traffic.model.Vehicle;
 

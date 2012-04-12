@@ -37,8 +37,8 @@ import org.apache.log4j.BasicConfigurator;
 import org.jdom.JDOMException;
 
 import traffic.model.ConfigurationException;
-import traffic.model.SimulationXMLReader;
 import traffic.model.TrafficSimulator;
+import traffic.model.internal.SimulationXMLReader;
 
 /**
  * This is the main class for running the simulator.

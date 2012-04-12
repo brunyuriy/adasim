@@ -12,7 +12,7 @@
  * Created: Jan 31, 2012
  */
 
-package traffic.graph;
+package traffic.model;
 
 
 import java.util.List;
@@ -20,6 +20,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import traffic.model.GraphNode;
 import traffic.model.Vehicle;
 import traffic.strategy.AbstractVehicleStrategy;
 import traffic.strategy.LinearSpeedStrategy;

@@ -26,7 +26,7 @@
  * Created: Jan 18, 2012
  */
 
-package traffic.model;
+package traffic.model.internal;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -38,8 +38,10 @@ import org.jdom.Element;
 import traffic.agent.AdasimAgent;
 import traffic.filter.AdasimFilter;
 import traffic.filter.IdentityFilter;
-import traffic.graph.Graph;
-import traffic.graph.GraphNode;
+import traffic.model.ConfigurationException;
+import traffic.model.Graph;
+import traffic.model.GraphNode;
+import traffic.model.Vehicle;
 import traffic.strategy.VehicleStrategy;
 import traffic.strategy.SpeedStrategy;
 

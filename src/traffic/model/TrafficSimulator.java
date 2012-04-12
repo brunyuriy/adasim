@@ -34,8 +34,6 @@ import org.apache.log4j.Logger;
 
 import traffic.TrafficMain;
 import traffic.agent.AdasimAgent;
-import traffic.graph.Graph;
-import traffic.graph.GraphNode;
 import traffic.model.internal.VehicleManager;
 
 /**
@@ -96,9 +94,9 @@ public final class TrafficSimulator{
 
 	/**
 	 * All agents in the simulator take one step. 
-	 * This is package private for testing only. NEVER call this explicitly!
+	 * This is for testing only. NEVER call this explicitly!
 	 */
-	void takeSimulationStep() {
+	public void takeSimulationStep() {
 		logger.info( "SIMULATION: Cycle: " + ++cycle );
 		manager.takeSimulationStep(cycle);
 		for ( AdasimAgent agent : agents ) {

@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import traffic.graph.GraphNode;
+import traffic.model.GraphNode;
 
 /**
  * This class returns a random path for the car to follow

@@ -12,7 +12,7 @@
  * Created: Jan 25, 2012
  */
 
-package traffic.model;
+package traffic.model.internal;
 
 import static org.junit.Assert.*;
 
@@ -30,8 +30,11 @@ import traffic.agent.AbstractAdasimAgent;
 import traffic.agent.AdasimAgent;
 import traffic.filter.AdasimFilter;
 import traffic.filter.IdentityFilter;
-import traffic.graph.Graph;
-import traffic.graph.GraphNode;
+import traffic.model.ConfigurationException;
+import traffic.model.Graph;
+import traffic.model.GraphNode;
+import traffic.model.Vehicle;
+import traffic.model.internal.SimulationXMLBuilder;
 import traffic.strategy.AlwaysRecomputeVehicleStrategy;
 import traffic.strategy.LinearSpeedStrategy;
 import traffic.strategy.QuadraticSpeedStrategy;

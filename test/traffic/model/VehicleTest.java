@@ -33,6 +33,8 @@ import java.io.FileNotFoundException;
 import java.util.List;
 
 import org.junit.Test;
+
+import traffic.model.internal.SimulationXMLReader;
 import static org.junit.Assert.*;
 
 

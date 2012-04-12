@@ -34,7 +34,7 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
-import traffic.graph.GraphNode;
+import traffic.model.GraphNode;
 
 /**
  * This car strategy is the base implementation for all strategies 

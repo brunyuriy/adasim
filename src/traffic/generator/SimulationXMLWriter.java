@@ -40,8 +40,8 @@ import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
 import traffic.agent.AdasimAgent;
-import traffic.graph.Graph;
-import traffic.graph.GraphNode;
+import traffic.model.Graph;
+import traffic.model.GraphNode;
 import traffic.model.Vehicle;
 import traffic.model.TrafficSimulator;
 import traffic.strategy.VehicleStrategy;

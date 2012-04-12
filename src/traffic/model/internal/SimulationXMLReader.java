@@ -26,7 +26,7 @@
  * Created: Dec 6, 2011
  */
 
-package traffic.model;
+package traffic.model.internal;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -42,9 +42,11 @@ import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
 import traffic.agent.AdasimAgent;
-import traffic.graph.Graph;
-import traffic.graph.GraphNode;
-import traffic.model.internal.VehicleManager;
+import traffic.model.ConfigurationException;
+import traffic.model.Graph;
+import traffic.model.GraphNode;
+import traffic.model.TrafficSimulator;
+import traffic.model.Vehicle;
 
 
 /**
