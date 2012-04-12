@@ -1,8 +1,8 @@
 <simulation>
-	<cars default_strategy="traffic.algorithm.DijkstraCarStrategy">
+	<cars default_strategy="adasim.algorithm.DijkstraCarStrategy">
 	</cars>
 
-	<graph default_strategy="traffic.algorithm.QuadraticTrafficDelayFunction">
+	<graph default_strategy="adasim.algorithm.QuadraticTrafficDelayFunction">
 		<node id="0" neighbors="0" />
 	</graph>
 </simulation>

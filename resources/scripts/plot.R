@@ -1,6 +1,6 @@
 
 map_s <- function(str) {
-	if ( str == "traffic.algorithm.LookaheadShortestPathCarStrategy" ) {
+	if ( str == "adasim.algorithm.LookaheadShortestPathCarStrategy" ) {
 		"ShortestPath"
 	} else {
 		"TrafficLookahead"

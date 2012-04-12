@@ -43,7 +43,7 @@ def get_cmd_output(cmd, args):
 
 def run_simulation(nodes, cars, iteration):
 	print str(iteration) + ": Running simulation from " + file_prefix(nodes, cars, iteration) + ".xml"
-	log = get_cmd_output( "java", ["traffic.TrafficMain", "-I", file_prefix(nodes, cars, iteration) + ".xml"])
+	log = get_cmd_output( "java", ["adasim.TrafficMain", "-I", file_prefix(nodes, cars, iteration) + ".xml"])
 	out = open( file_prefix(nodes, cars, iteration) + ".log", "w")
 	out.write( log );
 	out.close()
