@@ -33,7 +33,7 @@ import static org.junit.Assert.*;
  * @author Jonathan Ramaswamy - ramaswamyj12@gmail.com
  */
 
-public class GraphNodeTest {
+public class RoadSegmentTest {
 
 	private RoadSegment node, node2;
 	
