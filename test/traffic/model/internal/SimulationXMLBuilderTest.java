@@ -68,7 +68,7 @@ public class SimulationXMLBuilderTest {
 	
 	@Test
 	public void nodeNoAllOptionals() throws JDOMException, IOException {
-		Document doc = parser.build( new StringReader( "<node id=\"27\" neighbors=\"1 2 3\" delay=\"2\" capacity=\"5\" strategy=\"traffic.algorithm.LinearTrafficDelayFunction\" uncertainty_filter=\"traffic.filter.IdentityFilter\"/>" ) );
+		Document doc = parser.build( new StringReader( "<node id=\"27\" neighbors=\"1 2 3\" delay=\"2\" capacity=\"5\" strategy=\"traffic.algorithm.delay.LinearTrafficDelayFunction\" uncertainty_filter=\"traffic.filter.IdentityFilter\"/>" ) );
 		RoadSegment node = builder.buildNode( doc.getRootElement() );
 		assertEquals( 27, node.getID() );
 		assertTrue( node.getNeighbors().isEmpty() );
@@ -81,10 +81,10 @@ public class SimulationXMLBuilderTest {
 	
 	@Test
 	public void graphWithDefaults() throws JDOMException, IOException, ConfigurationException {
-		Document doc = parser.build( new StringReader( "<graph default_strategy=\"traffic.algorithm.LinearTrafficDelayFunction\" default_capacity=\"0\">" +
+		Document doc = parser.build( new StringReader( "<graph default_strategy=\"traffic.algorithm.delay.LinearTrafficDelayFunction\" default_capacity=\"0\">" +
 				"<node id=\"1\" neighbors=\"1 2 3 4\" delay=\"2\" capacity=\"5\"/>" +
-				"<node id=\"2\" neighbors=\"3\" delay=\"2\" capacity=\"5\" strategy=\"traffic.algorithm.LinearTrafficDelayFunction\"/>" +
-				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"traffic.algorithm.QuadraticTrafficDelayFunction\"/>" +
+				"<node id=\"2\" neighbors=\"3\" delay=\"2\" capacity=\"5\" strategy=\"traffic.algorithm.delay.LinearTrafficDelayFunction\"/>" +
+				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"traffic.algorithm.delay.QuadraticTrafficDelayFunction\"/>" +
 				"</graph>" ) );
 		AdasimMap graph = builder.buildGraph( doc.getRootElement() );
 		assertEquals( 3, graph.getNodes().size() );
@@ -102,10 +102,10 @@ public class SimulationXMLBuilderTest {
 	
 	@Test
 	public void graphWithUncertaintyFilter() throws JDOMException, IOException, ConfigurationException {
-		Document doc = parser.build( new StringReader( "<graph default_strategy=\"traffic.algorithm.LinearTrafficDelayFunction\" default_capacity=\"0\" uncertainty_filter=\"traffic.model.internal.FakeFilter\">" +
+		Document doc = parser.build( new StringReader( "<graph default_strategy=\"traffic.algorithm.delay.LinearTrafficDelayFunction\" default_capacity=\"0\" uncertainty_filter=\"traffic.model.internal.FakeFilter\">" +
 				"<node id=\"1\" neighbors=\"1 2 3 4\" delay=\"2\" capacity=\"5\"/>" +
-				"<node id=\"2\" neighbors=\"3\" delay=\"2\" capacity=\"5\" strategy=\"traffic.algorithm.LinearTrafficDelayFunction\"/>" +
-				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"traffic.algorithm.QuadraticTrafficDelayFunction\" uncertainty_filter=\"traffic.filter.IdentityFilter\"/>" +
+				"<node id=\"2\" neighbors=\"3\" delay=\"2\" capacity=\"5\" strategy=\"traffic.algorithm.delay.LinearTrafficDelayFunction\"/>" +
+				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"traffic.algorithm.delay.QuadraticTrafficDelayFunction\" uncertainty_filter=\"traffic.filter.IdentityFilter\"/>" +
 				"</graph>" ) );
 		AdasimMap graph = builder.buildGraph( doc.getRootElement() );
 		assertEquals( 3, graph.getNodes().size() );
@@ -125,10 +125,10 @@ public class SimulationXMLBuilderTest {
 	@Test
 	public void graphWithUncertaintyFilterHookup() throws JDOMException, IOException, ConfigurationException {
 		//test that the uncertainty filter gets called correctly.
-		Document doc = parser.build( new StringReader( "<graph default_strategy=\"traffic.algorithm.LinearTrafficDelayFunction\" default_capacity=\"0\" uncertainty_filter=\"traffic.model.FakeFilter\">" +
+		Document doc = parser.build( new StringReader( "<graph default_strategy=\"traffic.algorithm.delay.LinearTrafficDelayFunction\" default_capacity=\"0\" uncertainty_filter=\"traffic.model.FakeFilter\">" +
 				"<node id=\"1\" neighbors=\"1 2 3 4\" delay=\"2\" capacity=\"5\"/>" +
-				"<node id=\"2\" neighbors=\"3\" delay=\"2\" capacity=\"5\" strategy=\"traffic.algorithm.LinearTrafficDelayFunction\"/>" +
-				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"traffic.algorithm.LinearTrafficDelayFunction\" uncertainty_filter=\"traffic.model.internal.FakeFilter\"/>" +
+				"<node id=\"2\" neighbors=\"3\" delay=\"2\" capacity=\"5\" strategy=\"traffic.algorithm.delay.LinearTrafficDelayFunction\"/>" +
+				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"traffic.algorithm.delay.LinearTrafficDelayFunction\" uncertainty_filter=\"traffic.model.internal.FakeFilter\"/>" +
 				"</graph>" ) );
 		AdasimMap graph = builder.buildGraph( doc.getRootElement() );
 		assertEquals( 3, graph.getNodes().size() );
@@ -146,10 +146,10 @@ public class SimulationXMLBuilderTest {
 
 	@Test
 	public void graphWithPrivacyFilter() throws JDOMException, IOException, ConfigurationException {
-		Document doc = parser.build( new StringReader( "<graph default_strategy=\"traffic.algorithm.LinearTrafficDelayFunction\" default_capacity=\"0\" privacy_filter=\"traffic.model.internal.FakeFilter\">" +
+		Document doc = parser.build( new StringReader( "<graph default_strategy=\"traffic.algorithm.delay.LinearTrafficDelayFunction\" default_capacity=\"0\" privacy_filter=\"traffic.model.internal.FakeFilter\">" +
 				"<node id=\"1\" neighbors=\"1 2 3 4\" delay=\"2\" capacity=\"5\"/>" +
-				"<node id=\"2\" neighbors=\"3\" delay=\"2\" capacity=\"5\" strategy=\"traffic.algorithm.LinearTrafficDelayFunction\"/>" +
-				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"traffic.algorithm.QuadraticTrafficDelayFunction\" privacy_filter=\"traffic.filter.IdentityFilter\"/>" +
+				"<node id=\"2\" neighbors=\"3\" delay=\"2\" capacity=\"5\" strategy=\"traffic.algorithm.delay.LinearTrafficDelayFunction\"/>" +
+				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"traffic.algorithm.delay.QuadraticTrafficDelayFunction\" privacy_filter=\"traffic.filter.IdentityFilter\"/>" +
 				"</graph>" ) );
 		AdasimMap graph = builder.buildGraph( doc.getRootElement() );
 		assertEquals( 3, graph.getNodes().size() );
