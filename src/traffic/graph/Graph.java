@@ -92,40 +92,25 @@ public final class Graph {
 	 * @param o
 	 */
 	public void addEdge(int i, int o) {
-		GraphNode n = get(nodes, i);
+		GraphNode n = getNode( i);
 		if ( n != null ) {
-			GraphNode n2 = get(nodes, o );
+			GraphNode n2 = getNode( o );
 			if ( n2 != null ) n.addEdge( n2 );
 		}
 	}
 	
-	/**
-	 * Gets node i from the given list of nodes
-	 * Returns null if the node is not in the set
-	 * @param nodes
-	 * @param i
-	 * @return
-	 */
-	private GraphNode get(Set<GraphNode> nodes, int i) {
-		for ( GraphNode node : nodes ) {
-			if ( node.getID() == i ) return node;
-		}
-		return null;
-	}
-
 	/**
 	 * Adds the vehicle to the given node
 	 * @param c
 	 * @param n
 	 */
 	public void addVehicleAtNode(Vehicle c, int n) {
-		GraphNode gn = get(nodes, n);
+		GraphNode gn = getNode(n);
 		gn.enterNode(c);
 	}
 	
 	/**
-	 * Returns the list of nodes in the graph
-	 * @return
+	 * @return the list of nodes in the graph
 	 */
 	public List<GraphNode> getNodes() {
 		return new ArrayList<GraphNode>(nodes);
@@ -134,7 +119,8 @@ public final class Graph {
 	/**
 	 * Returns the graph node with the given ID
 	 * @param id
-	 * @return
+	 * @return the node with ID <code>id</code> or <code>null</code> if
+	 * no such node exists 
 	 */
 	public GraphNode getNode( int id ) {
 		for ( GraphNode node : nodes ) {
