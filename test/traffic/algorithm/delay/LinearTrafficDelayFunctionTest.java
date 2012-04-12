@@ -12,12 +12,12 @@
  * Created: Jan 31, 2012
  */
 
-package traffic.strategy;
+package traffic.algorithm.delay;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import traffic.algorithm.LinearTrafficDelayFunction;
+import traffic.algorithm.delay.LinearTrafficDelayFunction;
 import static org.junit.Assert.*;
 
 /**

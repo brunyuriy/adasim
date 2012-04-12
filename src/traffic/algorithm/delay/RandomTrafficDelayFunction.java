@@ -26,19 +26,24 @@
  * Created: Oct 18, 2011
  */
 
-package traffic.algorithm;
+package traffic.algorithm.delay;
+
+import java.util.Random;
 
 /**
- * This sets the delay at a node to be equal to the number of cars
- * at the node, minus a given maximum capacity
+ * This sets the delay at a node to be a random number
  * 
  * @author Jonathan Ramaswamy - ramaswamyj12@gmail.com
  */
 
-public class LinearTrafficDelayFunction implements TrafficDelayFunction {
+public class RandomTrafficDelayFunction implements TrafficDelayFunction{
 
+	/**
+	 * Picks a random number between 0 and 9 to be the speed limit
+	 */
 	public int getDelay(int weight, int capacity, int number) {
-		return Math.max(weight, number - capacity + weight);
+		Random generator = new Random();
+		return generator.nextInt(10);
 	}
 
 }
