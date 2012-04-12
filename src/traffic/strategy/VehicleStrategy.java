@@ -31,7 +31,7 @@ package traffic.strategy;
 import java.util.List;
 
 import traffic.model.AdasimMap;
-import traffic.model.GraphNode;
+import traffic.model.RoadSegment;
 
 /**
  * This interface defines routing strategies. Given a graph, start and end node,
@@ -51,13 +51,13 @@ public interface VehicleStrategy {
 	 * @param to
 	 * @return the path computed by this strategy
 	 */
-	public List<GraphNode> getPath(GraphNode from, GraphNode to); 
+	public List<RoadSegment> getPath(RoadSegment from, RoadSegment to); 
 
 	/**
 	 * @return The next node according to the routing strategy. May be <code>null</code> 
 	 * if there is no next node.
 	 */
-	public GraphNode getNextNode();
+	public RoadSegment getNextNode();
 	
 	/**
 	 * Required setter to configure the strategy with the graph to work on
@@ -65,9 +65,9 @@ public interface VehicleStrategy {
 	 */
 	public void setGraph( AdasimMap g );
 	
-	public void setStartNode( GraphNode start );
+	public void setStartNode( RoadSegment start );
 	
-	public void setEndNode( GraphNode end );
+	public void setEndNode( RoadSegment end );
 	
 	public void setVehicleId( int id );
 

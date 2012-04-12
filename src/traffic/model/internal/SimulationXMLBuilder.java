@@ -40,7 +40,7 @@ import traffic.filter.AdasimFilter;
 import traffic.filter.IdentityFilter;
 import traffic.model.ConfigurationException;
 import traffic.model.AdasimMap;
-import traffic.model.GraphNode;
+import traffic.model.RoadSegment;
 import traffic.model.Vehicle;
 import traffic.strategy.VehicleStrategy;
 import traffic.strategy.SpeedStrategy;
@@ -50,7 +50,7 @@ import traffic.strategy.SpeedStrategy;
  * from their corresponding XML nodes.
  * <p>
  * Each public method maps a node type from the XML configuration
- * to either an explicit simulation object (for example a GraphNode),
+ * to either an explicit simulation object (for example a RoadSegment),
  * or a container of such objects (for example a list of GraphNodes).
  * 
  * @author Jochen Wuttke - wuttkej@gmail.com
@@ -93,7 +93,7 @@ public class SimulationXMLBuilder {
 	}
 
 	/**
-	 * Builds a {@link GraphNode} from the given <code>&lt;node&gt;</code> element.
+	 * Builds a {@link RoadSegment} from the given <code>&lt;node&gt;</code> element.
 	 * <p>
 	 * It will assign only values declared in the XML Other values will be:
 	 * <ul>
@@ -106,10 +106,10 @@ public class SimulationXMLBuilder {
 	 * @param nodeElement
 	 * @return a partically configured node
 	 */
-	public GraphNode buildNode( Element nodeElement ) {
+	public RoadSegment buildNode( Element nodeElement ) {
 		int id = Integer.parseInt( nodeElement.getAttributeValue( "id" ) );
 		SpeedStrategy ss = (SpeedStrategy)loadClassFromAttribute(nodeElement, "strategy" ); 
-		GraphNode gn = new GraphNode( id, ss, getDelay(nodeElement ), getCapacity(nodeElement)) ;
+		RoadSegment gn = new RoadSegment( id, ss, getDelay(nodeElement ), getCapacity(nodeElement)) ;
 		AdasimFilter f = (AdasimFilter) loadClassFromAttribute(nodeElement, "uncertainty_filter" ); 
 		gn.setUncertaintyFilter(f);
 		f = (AdasimFilter) loadClassFromAttribute(nodeElement, "privacy_filter" ); 
@@ -179,11 +179,11 @@ public class SimulationXMLBuilder {
 	 * 
 	 * @return the list of fully validated GraphNodes
 	 */
-	private List<GraphNode> buildNodes( List<Element> nodeElements, SpeedStrategy defaultStrategy,
+	private List<RoadSegment> buildNodes( List<Element> nodeElements, SpeedStrategy defaultStrategy,
 			AdasimFilter uncertaintyFilter, AdasimFilter privacyFilter, int capacity ) {
-		List<GraphNode> nodes = new ArrayList<GraphNode>( nodeElements.size() );
+		List<RoadSegment> nodes = new ArrayList<RoadSegment>( nodeElements.size() );
 		for( Element node : nodeElements ) {
-			GraphNode gn = buildNode( node );
+			RoadSegment gn = buildNode( node );
 			if ( gn != null ) {
 				nodes.add( assignDefaultNodeValues(gn, defaultStrategy, capacity) );
 			}
@@ -207,9 +207,9 @@ public class SimulationXMLBuilder {
 
 	/**
 	 * @param gn
-	 * @return the updated GraphNode (should be reference equal)
+	 * @return the updated RoadSegment (should be reference equal)
 	 */
-	private GraphNode assignDefaultNodeValues(GraphNode gn, SpeedStrategy ss, int capacity ) {
+	private RoadSegment assignDefaultNodeValues(RoadSegment gn, SpeedStrategy ss, int capacity ) {
 		if ( gn.getSpeedStrategy() == null ) {
 			gn.setSpeedStrategy(ss);
 		}
@@ -258,19 +258,19 @@ public class SimulationXMLBuilder {
 	 * @param nodes
 	 * @param node
 	 */
-	private void buildNeigbors(List<GraphNode> nodes, Element node) {
+	private void buildNeigbors(List<RoadSegment> nodes, Element node) {
 		String nodeList = node.getAttributeValue("neighbors").trim();
 		if ( nodeList.equals("") ) return;	//this node has no outgoing edges
 		String[] neighbors = nodeList.split(" ");
-		GraphNode gn = getNode( nodes, node );
+		RoadSegment gn = getNode( nodes, node );
 		for ( String n : neighbors ) {
 			int nn = Integer.parseInt(n);
 			gn.addEdge( getNode( nodes, nn ));					
 		}
 	}
 
-	private GraphNode getNode(List<GraphNode> nodes, int node) {
-		for ( GraphNode n : nodes ) {
+	private RoadSegment getNode(List<RoadSegment> nodes, int node) {
+		for ( RoadSegment n : nodes ) {
 			if ( n.getID() == node ) return n;
 		}
 		return null;
@@ -279,11 +279,11 @@ public class SimulationXMLBuilder {
 	/**
 	 * @param nodes
 	 * @param node
-	 * @return the GraphNode with the same ID as the XML element or <code>null</code>.
+	 * @return the RoadSegment with the same ID as the XML element or <code>null</code>.
 	 */
-	private GraphNode getNode(List<GraphNode> nodes, Element node) {
+	private RoadSegment getNode(List<RoadSegment> nodes, Element node) {
 		int id = Integer.parseInt( node.getAttributeValue( "id" ) );
-		for ( GraphNode n : nodes ) {
+		for ( RoadSegment n : nodes ) {
 			if ( n.getID() == id ) return n;
 		}
 		return null;
@@ -293,9 +293,9 @@ public class SimulationXMLBuilder {
 	 * @param nodes
 	 * @return the list of validated nodes
 	 */
-	private List<GraphNode> validate(List<GraphNode> nodes) {
-		List<GraphNode> l = new ArrayList<GraphNode>( nodes );
-		List<GraphNode> last;
+	private List<RoadSegment> validate(List<RoadSegment> nodes) {
+		List<RoadSegment> l = new ArrayList<RoadSegment>( nodes );
+		List<RoadSegment> last;
 		do {
 			last = l;
 			l = reduce( last );
@@ -308,10 +308,10 @@ public class SimulationXMLBuilder {
 	 * @param nodes
 	 * @return the updated list
 	 */
-	private List<GraphNode> reduce(List<GraphNode> nodes) {
-		List<GraphNode> l = new ArrayList<GraphNode>();
-		for ( GraphNode node : nodes ) {
-			for ( GraphNode i : node.getNeighbors() ) {
+	private List<RoadSegment> reduce(List<RoadSegment> nodes) {
+		List<RoadSegment> l = new ArrayList<RoadSegment>();
+		for ( RoadSegment node : nodes ) {
+			for ( RoadSegment i : node.getNeighbors() ) {
 				if ( ! nodes.contains( i ) ) {
 					node.removeEdge(i);
 				}

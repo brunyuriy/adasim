@@ -47,13 +47,13 @@ import traffic.strategy.SpeedStrategy;
 
 public final class AdasimMap {
 	
-	private Set<GraphNode> nodes; //The nodes within the graph
+	private Set<RoadSegment> nodes; //The nodes within the graph
 	
 	/**
 	 * Creates a graph comprised of the given set of nodes
 	 * @param nodes
 	 */
-	public AdasimMap( Set<GraphNode> nodes ) {
+	public AdasimMap( Set<RoadSegment> nodes ) {
 		this.nodes = nodes;
 	}
 	
@@ -61,8 +61,8 @@ public final class AdasimMap {
 	 * Creates a graph comprised of the given set of nodes
 	 * @param nodes
 	 */
-	public AdasimMap( List<GraphNode> nodes ) {
-		this.nodes = new HashSet<GraphNode>( nodes );
+	public AdasimMap( List<RoadSegment> nodes ) {
+		this.nodes = new HashSet<RoadSegment>( nodes );
 	}
 	
 	/**
@@ -73,14 +73,14 @@ public final class AdasimMap {
 	 * @param capacity
 	 */
 	public void addNode(int num, SpeedStrategy speed, int capacity) {
-		nodes.add(new GraphNode(num, speed, capacity));
+		nodes.add(new RoadSegment(num, speed, capacity));
 	}
 	
 	/**
 	 * Inserts the given node into the graph
 	 * @param node
 	 */
-	public void addNode( GraphNode node ) {
+	public void addNode( RoadSegment node ) {
 		nodes.add(node);
 	}
 	
@@ -91,9 +91,9 @@ public final class AdasimMap {
 	 * @param o
 	 */
 	public void addEdge(int i, int o) {
-		GraphNode n = getNode( i);
+		RoadSegment n = getNode( i);
 		if ( n != null ) {
-			GraphNode n2 = getNode( o );
+			RoadSegment n2 = getNode( o );
 			if ( n2 != null ) n.addEdge( n2 );
 		}
 	}
@@ -104,15 +104,15 @@ public final class AdasimMap {
 	 * @param n
 	 */
 	public void addVehicleAtNode(Vehicle c, int n) {
-		GraphNode gn = getNode(n);
+		RoadSegment gn = getNode(n);
 		gn.enterNode(c);
 	}
 	
 	/**
 	 * @return the list of nodes in the graph
 	 */
-	public List<GraphNode> getNodes() {
-		return new ArrayList<GraphNode>(nodes);
+	public List<RoadSegment> getNodes() {
+		return new ArrayList<RoadSegment>(nodes);
 	}
 	
 	/**
@@ -121,8 +121,8 @@ public final class AdasimMap {
 	 * @return the node with ID <code>id</code> or <code>null</code> if
 	 * no such node exists 
 	 */
-	public GraphNode getNode( int id ) {
-		for ( GraphNode node : nodes ) {
+	public RoadSegment getNode( int id ) {
+		for ( RoadSegment node : nodes ) {
 			if ( node.getID() == id ) return node;
 		}
 		return null;

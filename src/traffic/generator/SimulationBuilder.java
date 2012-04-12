@@ -27,7 +27,7 @@ import org.jdom.input.SAXBuilder;
 
 import traffic.agent.AdasimAgent;
 import traffic.model.AdasimMap;
-import traffic.model.GraphNode;
+import traffic.model.RoadSegment;
 import traffic.model.Vehicle;
 import traffic.model.ConfigurationException;
 import traffic.model.TrafficSimulator;
@@ -106,9 +106,9 @@ public class SimulationBuilder {
 	private Vehicle buildVehicle(int i, ConfigurationOptions opts, AdasimMap g) throws ConfigurationException {
 		VehicleStrategy cs = randomVehicleStrategy( opts.getStrategies() );
 		cs.setGraph(g);
-		List<GraphNode> nodes = g.getNodes();
-		GraphNode start = randomNode( nodes );
-		GraphNode end;
+		List<RoadSegment> nodes = g.getNodes();
+		RoadSegment start = randomNode( nodes );
+		RoadSegment end;
 		do {
 			end = randomNode(nodes);
 		} while ( start.equals(end) );
@@ -120,7 +120,7 @@ public class SimulationBuilder {
 	 * @param nodes
 	 * @return the ID of the randomly chosen node
 	 */
-	private GraphNode randomNode(List<GraphNode> nodes) {
+	private RoadSegment randomNode(List<RoadSegment> nodes) {
 		return nodes.get( random.nextInt( nodes.size() ) );
 	}
 
@@ -151,13 +151,13 @@ public class SimulationBuilder {
 	 * @throws ClassNotFoundException 
 	 */
 	private AdasimMap buildGraph(ConfigurationOptions opts) throws ConfigurationException, JDOMException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
-		AdasimMap g = new AdasimMap( new HashSet<GraphNode>() );
+		AdasimMap g = new AdasimMap( new HashSet<RoadSegment>() );
 		if ( opts.getGraphFile() == null ) {
 			//we have to generate a graph
 			for ( int i = 0; i < opts.getNumNodes(); i++ ) {
 				g.addNode( buildNode( opts, i ) );
 			}
-			for ( GraphNode node : g.getNodes() ) {
+			for ( RoadSegment node : g.getNodes() ) {
 				randomizeNeighbors(node, g.getNodes(), opts.getDegreeProb(), opts.getOneWayProbability() );
 			}
 		} else {
@@ -188,10 +188,10 @@ public class SimulationBuilder {
 	 * @return a fully configured node
 	 * @throws ConfigurationException 
 	 */
-	private GraphNode buildNode(ConfigurationOptions opts, int id ) throws ConfigurationException {
+	private RoadSegment buildNode(ConfigurationOptions opts, int id ) throws ConfigurationException {
 		SpeedStrategy ss = randomSpeedStrategy( opts );
 		int delay = randomDelay( opts );
-		GraphNode node = new GraphNode(id, ss, delay, opts.getCapacity() );
+		RoadSegment node = new RoadSegment(id, ss, delay, opts.getCapacity() );
 		return node;
 	}
 
@@ -214,10 +214,10 @@ public class SimulationBuilder {
 		return ss;
 	}
 
-	private void randomizeNeighbors(GraphNode node, List<GraphNode> nodes, double degreeProb, double oneWayProb ) {
+	private void randomizeNeighbors(RoadSegment node, List<RoadSegment> nodes, double degreeProb, double oneWayProb ) {
 		for ( int i = 0; i < nodes.size(); i++) {
 			if ( random.nextDouble() < degreeProb/2/(1+oneWayProb) && !nodes.get(i).equals(node)) {
-				GraphNode target = nodes.get(i);
+				RoadSegment target = nodes.get(i);
 				node.addEdge(target);
 				if ( random.nextDouble() > oneWayProb ) {
 					target.addEdge( node );

@@ -44,7 +44,7 @@ import org.jdom.input.SAXBuilder;
 import traffic.agent.AdasimAgent;
 import traffic.model.ConfigurationException;
 import traffic.model.AdasimMap;
-import traffic.model.GraphNode;
+import traffic.model.RoadSegment;
 import traffic.model.TrafficSimulator;
 import traffic.model.Vehicle;
 
@@ -165,10 +165,10 @@ final public class SimulationXMLReader {
 		int end = Integer.parseInt(vehicle.getAttributeValue("end"));
 		int id = Integer.parseInt(vehicle.getAttributeValue("id"));
 
-		List<GraphNode> nodes = g.getNodes();
+		List<RoadSegment> nodes = g.getNodes();
 		try {
 			Vehicle c = getVehicle( id, vehicles );
-			GraphNode node = checkEndPoint(nodes, start, id, "Start" );
+			RoadSegment node = checkEndPoint(nodes, start, id, "Start" );
 			c.setStartNode(node);
 			node = checkEndPoint(nodes, end, id, "End" );
 			c.setEndNode(node);
@@ -199,8 +199,8 @@ final public class SimulationXMLReader {
 	 * @param s
 	 * @throws ConfigurationException 
 	 */
-	private GraphNode checkEndPoint(List<GraphNode> nodes, int end, int id, String s) throws ConfigurationException {
-		GraphNode n = isValidNode( end, nodes );
+	private RoadSegment checkEndPoint(List<RoadSegment> nodes, int end, int id, String s) throws ConfigurationException {
+		RoadSegment n = isValidNode( end, nodes );
 		if ( n == null ) { 
 			logger.warn( s + " node " + end + " for vehicle " + id + " does not exist");
 			throw new ConfigurationException("");
@@ -211,10 +211,10 @@ final public class SimulationXMLReader {
 	/**
 	 * @param id
 	 * @param nodes
-	 * @return the GraphNode with ID <code>id</code> if it's in the list, or <code>null</code>
+	 * @return the RoadSegment with ID <code>id</code> if it's in the list, or <code>null</code>
 	 */
-	private GraphNode isValidNode(int id, List<GraphNode> nodes ) {
-		for ( GraphNode node : nodes ) {
+	private RoadSegment isValidNode(int id, List<RoadSegment> nodes ) {
+		for ( RoadSegment node : nodes ) {
 			if ( node.getID() == id ) return node;
 		}
 		return null;

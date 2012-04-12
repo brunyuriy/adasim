@@ -26,7 +26,7 @@ import org.junit.Test;
 
 import traffic.model.ConfigurationException;
 import traffic.model.AdasimMap;
-import traffic.model.GraphNode;
+import traffic.model.RoadSegment;
 import traffic.model.TrafficSimulator;
 import traffic.model.Vehicle;
 import traffic.model.internal.SimulationXMLReader;
@@ -130,7 +130,7 @@ public class SimulationXMLReaderTest {
 	@Test
 	public void testNeighbors() throws FileNotFoundException, ConfigurationException {
 		AdasimMap g = SimulationXMLReader.buildSimulator( new File("resources/test/config.xml")).getGraph();
-		List<GraphNode> neighbors = g.getNodes().get(2).getNeighbors();
+		List<RoadSegment> neighbors = g.getNodes().get(2).getNeighbors();
 		int first = neighbors.get(0).getID();
 		assertEquals(first, 4);
 		int second = neighbors.get(1).getID();
@@ -167,7 +167,7 @@ public class SimulationXMLReaderTest {
 	@Test
 	public void invalidNeighborIsIgnored() throws FileNotFoundException, ConfigurationException {
 		AdasimMap g = SimulationXMLReader.buildSimulator( new File("resources/test/invalid-neighbor.xml")).getGraph();
-		List<GraphNode> neighbors = g.getNode( 0 ).getNeighbors(); 
+		List<RoadSegment> neighbors = g.getNode( 0 ).getNeighbors(); 
 		assertEquals(1, neighbors.size() );
 		assertEquals(4, neighbors.get(0).getID() );
 		neighbors = g.getNode( 1 ).getNeighbors(); 

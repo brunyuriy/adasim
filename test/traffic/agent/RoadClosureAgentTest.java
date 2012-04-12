@@ -39,7 +39,7 @@ import org.junit.Test;
 
 import traffic.agent.RoadClosureAgent;
 import traffic.model.ConfigurationException;
-import traffic.model.GraphNode;
+import traffic.model.RoadSegment;
 import traffic.model.TrafficSimulator;
 import traffic.model.internal.SimulationXMLReader;
 
@@ -100,7 +100,7 @@ public class RoadClosureAgentTest {
 		TrafficSimulator sim = SimulationXMLReader.buildSimulator( new File( "resources/test/closure-test.xml" ) );
 		agent.setSimulation(sim);
 		agent.setParameters( "1.0:2" );
-		GraphNode node = sim.getGraph().getNode( 0 );
+		RoadSegment node = sim.getGraph().getNode( 0 );
 		assertFalse( "Node is closed", node.isClosed() );
 		agent.takeSimulationStep(1);
 		assertTrue( "Node is open", node.isClosed() );

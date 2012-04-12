@@ -21,7 +21,7 @@ import java.util.Random;
 
 import traffic.agent.AdasimAgent;
 import traffic.model.AdasimMap;
-import traffic.model.GraphNode;
+import traffic.model.RoadSegment;
 import traffic.model.Vehicle;
 import traffic.model.ConfigurationException;
 import traffic.model.TrafficSimulator;
@@ -61,9 +61,9 @@ public class CongestedSimulationBuilder {
 	 */
 	private List<AdasimAgent> buildVehicles(ConfigurationOptions opts, AdasimMap g) throws ConfigurationException {
 		List<AdasimAgent> vehicles = new ArrayList<AdasimAgent>();
-		List<GraphNode> nodes = g.getNodes();
-		GraphNode start = randomNode( nodes );
-		GraphNode end;
+		List<RoadSegment> nodes = g.getNodes();
+		RoadSegment start = randomNode( nodes );
+		RoadSegment end;
 		do {
 			end = randomNode(nodes);
 		} while ( start.equals(end) );
@@ -80,7 +80,7 @@ public class CongestedSimulationBuilder {
 	 * @return a fully configured vehicle
 	 * @throws ConfigurationException 
 	 */
-	private Vehicle buildVehicle(int i, ConfigurationOptions opts, AdasimMap g, GraphNode start, GraphNode end ) throws ConfigurationException {
+	private Vehicle buildVehicle(int i, ConfigurationOptions opts, AdasimMap g, RoadSegment start, RoadSegment end ) throws ConfigurationException {
 		VehicleStrategy cs = randomVehicleStrategy( opts.getStrategies() );
 		cs.setGraph(g);		
 		return new Vehicle( start, end, cs, i);
@@ -90,7 +90,7 @@ public class CongestedSimulationBuilder {
 	 * @param nodes
 	 * @return the ID of the randomly chose node
 	 */
-	private GraphNode randomNode(List<GraphNode> nodes) {
+	private RoadSegment randomNode(List<RoadSegment> nodes) {
 		return nodes.get( random.nextInt( nodes.size() ) );
 	}
 
@@ -116,11 +116,11 @@ public class CongestedSimulationBuilder {
 	 * @throws ConfigurationException 
 	 */
 	private AdasimMap buildGraph(ConfigurationOptions opts) throws ConfigurationException {
-		AdasimMap g = new AdasimMap( new HashSet<GraphNode>() );
+		AdasimMap g = new AdasimMap( new HashSet<RoadSegment>() );
 		for ( int i = 0; i < opts.getNumNodes(); i++ ) {
 			g.addNode( buildNode( opts, i ) );
 		}
-		for ( GraphNode node : g.getNodes() ) {
+		for ( RoadSegment node : g.getNodes() ) {
 			randomizeNeighbors(node, g.getNodes(), opts.getDegreeProb(), opts.getOneWayProbability() );
 		}
 		return g;
@@ -131,10 +131,10 @@ public class CongestedSimulationBuilder {
 	 * @return a fully configured node
 	 * @throws ConfigurationException 
 	 */
-	private GraphNode buildNode(ConfigurationOptions opts, int id ) throws ConfigurationException {
+	private RoadSegment buildNode(ConfigurationOptions opts, int id ) throws ConfigurationException {
 		SpeedStrategy ss = randomSpeedStrategy( opts );
 		int delay = randomDelay( opts );
-		GraphNode node = new GraphNode(id, ss, delay );
+		RoadSegment node = new RoadSegment(id, ss, delay );
 		return node;
 	}
 
@@ -157,10 +157,10 @@ public class CongestedSimulationBuilder {
 		return ss;
 	}
 
-	private void randomizeNeighbors(GraphNode node, List<GraphNode> nodes, double degreeProb, double oneWayProb ) {
+	private void randomizeNeighbors(RoadSegment node, List<RoadSegment> nodes, double degreeProb, double oneWayProb ) {
 		for ( int i = 0; i < nodes.size(); i++) {
 			if ( random.nextDouble() < degreeProb/2/(1+oneWayProb) && !nodes.get(i).equals(node)) {
-				GraphNode target = nodes.get(i);
+				RoadSegment target = nodes.get(i);
 				node.addEdge(target);
 				if ( random.nextDouble() > oneWayProb ) {
 					target.addEdge( node );

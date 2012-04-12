@@ -29,7 +29,7 @@
 package traffic.strategy;
 
 import traffic.model.AdasimMap;
-import traffic.model.GraphNode;
+import traffic.model.RoadSegment;
 
 /**
  * @author Jochen Wuttke - wuttkej@gmail.com
@@ -38,7 +38,7 @@ import traffic.model.GraphNode;
 public abstract class AbstractVehicleStrategy implements VehicleStrategy {
 	
 	protected AdasimMap graph;
-	protected GraphNode source, target;
+	protected RoadSegment source, target;
 	protected int carID;
 
 	/* (non-Javadoc)
@@ -50,12 +50,12 @@ public abstract class AbstractVehicleStrategy implements VehicleStrategy {
 	}
 
 	@Override
-	public void setStartNode( GraphNode start ) {
+	public void setStartNode( RoadSegment start ) {
 		source = start;
 	}	
 	
 	@Override
-	public void setEndNode( GraphNode end ) {
+	public void setEndNode( RoadSegment end ) {
 		target = end;
 	}
 	

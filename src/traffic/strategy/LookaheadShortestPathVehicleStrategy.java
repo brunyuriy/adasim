@@ -34,7 +34,7 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
-import traffic.model.GraphNode;
+import traffic.model.RoadSegment;
 
 /**
  * This car strategy is the base implementation for all strategies 
@@ -50,7 +50,7 @@ public class LookaheadShortestPathVehicleStrategy extends AbstractVehicleStrateg
 	
 	private final int lookahead;
 	private final int recompute;
-	private List<GraphNode> path;
+	private List<RoadSegment> path;
 	private int steps;
 	private boolean finished = false;
 	
@@ -98,7 +98,7 @@ public class LookaheadShortestPathVehicleStrategy extends AbstractVehicleStrateg
 	}
 
 	
-	public List<GraphNode> getPath(GraphNode source, GraphNode target ) {
+	public List<RoadSegment> getPath(RoadSegment source, RoadSegment target ) {
 		return dijkstra(graph.getNodes(), source, target, lookahead );
 	}
 	
@@ -112,7 +112,7 @@ public class LookaheadShortestPathVehicleStrategy extends AbstractVehicleStrateg
 	 * @param l
 	 * @return the shortest past from <code>source</code> to <code>target</code>
 	 */
-	private List<GraphNode> dijkstra(List<GraphNode> nodes, GraphNode source, GraphNode target, int l) {
+	private List<RoadSegment> dijkstra(List<RoadSegment> nodes, RoadSegment source, RoadSegment target, int l) {
 		int size = nodes.size();
 		int[] dist = new int[size];
 		int[] previous = new int[size];
@@ -124,7 +124,7 @@ public class LookaheadShortestPathVehicleStrategy extends AbstractVehicleStrateg
 			if ( dist[current] == Integer.MAX_VALUE ) break;
 			q.remove( current );
 			
-			for ( GraphNode node : nodes.get(current).getNeighbors() ) {
+			for ( RoadSegment node : nodes.get(current).getNeighbors() ) {
 				int depth = getCurrentDepth(previous, nodes, source, nodes.get(current) ); 
 				int t = dist[current] + ( depth <= l ? node.getCurrentDelay() : node.getDelay() );
 				int thisIndex = getIndex( nodes, node );
@@ -144,9 +144,9 @@ public class LookaheadShortestPathVehicleStrategy extends AbstractVehicleStrateg
 	 * @param current
 	 * @return the current depth of the search path
 	 */
-	private int getCurrentDepth(int[] previous, List<GraphNode> nodes,
-			GraphNode source, GraphNode current) {
-		List<GraphNode> path = reconstructPath(previous, nodes, source, current );
+	private int getCurrentDepth(int[] previous, List<RoadSegment> nodes,
+			RoadSegment source, RoadSegment current) {
+		List<RoadSegment> path = reconstructPath(previous, nodes, source, current );
 		if ( path == null ) return 1;
 		else return path.size() + 1;
 	}
@@ -158,10 +158,10 @@ public class LookaheadShortestPathVehicleStrategy extends AbstractVehicleStrateg
 	 * @param target ID of target node
 	 * @return the path constructed from the intermediate data structures passed in
 	 */
-	private List<GraphNode> reconstructPath(int[] previous, List<GraphNode> nodes, GraphNode source, GraphNode target) {
+	private List<RoadSegment> reconstructPath(int[] previous, List<RoadSegment> nodes, RoadSegment source, RoadSegment target) {
 		int ti = getIndex(nodes, target);
 		if ( previous[ ti ] == -1 ) return null; //no path
-		LinkedList<GraphNode> path = new LinkedList<GraphNode>();
+		LinkedList<RoadSegment> path = new LinkedList<RoadSegment>();
 		int current = ti;
 		do {
 			path.push( nodes.get(current) );
@@ -175,7 +175,7 @@ public class LookaheadShortestPathVehicleStrategy extends AbstractVehicleStrateg
 	 * @param node
 	 * @return the index of the node in the list, -1 if the node cannot be found
 	 */
-	private int getIndex(List<GraphNode> nodes, GraphNode node) {
+	private int getIndex(List<RoadSegment> nodes, RoadSegment node) {
 		for ( int i =0 ; i < nodes.size() ; i++ ) {
 			if ( nodes.get(i).equals( node ) ) return i;
 		}
@@ -217,7 +217,7 @@ public class LookaheadShortestPathVehicleStrategy extends AbstractVehicleStrateg
 	 * @see traffic.strategy.CarStrategy#getNextNode()
 	 */
 	@Override
-	public GraphNode getNextNode() {
+	public RoadSegment getNextNode() {
 		if ( finished ) return null;
 		if ( path == null ) {
 			path = getPath(source);
@@ -229,7 +229,7 @@ public class LookaheadShortestPathVehicleStrategy extends AbstractVehicleStrateg
 			return null;
 		}
 		if ( ++steps == recompute ) {
-			GraphNode next = path.remove(0);
+			RoadSegment next = path.remove(0);
 			path = getPath(next);
 			logger.info( "UPDATE: " + pathLogMessage() );
 			steps = 0;
@@ -244,8 +244,8 @@ public class LookaheadShortestPathVehicleStrategy extends AbstractVehicleStrateg
 	 * the passed <code>start</code> node.
 	 * @param start
 	 */
-	private List<GraphNode> getPath(GraphNode start) {
-		List<GraphNode> p = dijkstra(graph.getNodes(), start, target, lookahead );
+	private List<RoadSegment> getPath(RoadSegment start) {
+		List<RoadSegment> p = dijkstra(graph.getNodes(), start, target, lookahead );
 		if ( p == null ) {
 			finished = true;
 		}

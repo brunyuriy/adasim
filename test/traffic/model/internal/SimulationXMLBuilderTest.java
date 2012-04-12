@@ -32,7 +32,7 @@ import traffic.filter.AdasimFilter;
 import traffic.filter.IdentityFilter;
 import traffic.model.ConfigurationException;
 import traffic.model.AdasimMap;
-import traffic.model.GraphNode;
+import traffic.model.RoadSegment;
 import traffic.model.Vehicle;
 import traffic.model.internal.SimulationXMLBuilder;
 import traffic.strategy.AlwaysRecomputeVehicleStrategy;
@@ -58,7 +58,7 @@ public class SimulationXMLBuilderTest {
 	@Test
 	public void nodeNoOptionals() throws JDOMException, IOException {
 		Document doc = parser.build( new StringReader( "<node id=\"27\" neighbors=\"1 2 3\"/>" ) );
-		GraphNode node = builder.buildNode( doc.getRootElement() );
+		RoadSegment node = builder.buildNode( doc.getRootElement() );
 		assertEquals( 27, node.getID() );
 		assertTrue( node.getNeighbors().isEmpty() );
 		assertNull( node.getSpeedStrategy() );
@@ -69,7 +69,7 @@ public class SimulationXMLBuilderTest {
 	@Test
 	public void nodeNoAllOptionals() throws JDOMException, IOException {
 		Document doc = parser.build( new StringReader( "<node id=\"27\" neighbors=\"1 2 3\" delay=\"2\" capacity=\"5\" strategy=\"traffic.strategy.LinearSpeedStrategy\" uncertainty_filter=\"traffic.filter.IdentityFilter\"/>" ) );
-		GraphNode node = builder.buildNode( doc.getRootElement() );
+		RoadSegment node = builder.buildNode( doc.getRootElement() );
 		assertEquals( 27, node.getID() );
 		assertTrue( node.getNeighbors().isEmpty() );
 		assertTrue( node.getSpeedStrategy() instanceof LinearSpeedStrategy );
@@ -88,7 +88,7 @@ public class SimulationXMLBuilderTest {
 				"</graph>" ) );
 		AdasimMap graph = builder.buildGraph( doc.getRootElement() );
 		assertEquals( 3, graph.getNodes().size() );
-		GraphNode node = graph.getNode( 1 );
+		RoadSegment node = graph.getNode( 1 );
 		assertEquals( 3, node.getNeighbors().size() );
 		assertNotNull( "No default speed strategy assigned", node.getSpeedStrategy() );
 		assertTrue( "Default speed strategy has wrong type", node.getSpeedStrategy() instanceof LinearSpeedStrategy );
@@ -109,7 +109,7 @@ public class SimulationXMLBuilderTest {
 				"</graph>" ) );
 		AdasimMap graph = builder.buildGraph( doc.getRootElement() );
 		assertEquals( 3, graph.getNodes().size() );
-		GraphNode node = graph.getNode( 1 );
+		RoadSegment node = graph.getNode( 1 );
 		assertEquals( 3, node.getNeighbors().size() );
 		assertNotNull( "No default speed strategy assigned", node.getSpeedStrategy() );
 		assertTrue( "Default speed strategy has wrong type", node.getSpeedStrategy() instanceof LinearSpeedStrategy );
@@ -132,7 +132,7 @@ public class SimulationXMLBuilderTest {
 				"</graph>" ) );
 		AdasimMap graph = builder.buildGraph( doc.getRootElement() );
 		assertEquals( 3, graph.getNodes().size() );
-		GraphNode node = graph.getNode(4);
+		RoadSegment node = graph.getNode(4);
 		assertNotNull( "No uncertainty filter assigned", node.getUncertaintyFilter() );
 		assertTrue( "Uncertainty filter has wrong type", node.getUncertaintyFilter() instanceof FakeFilter );
 		//this "fake" node has a capacity of -1, because it has not passed validation yet
@@ -153,7 +153,7 @@ public class SimulationXMLBuilderTest {
 				"</graph>" ) );
 		AdasimMap graph = builder.buildGraph( doc.getRootElement() );
 		assertEquals( 3, graph.getNodes().size() );
-		GraphNode node = graph.getNode( 1 );
+		RoadSegment node = graph.getNode( 1 );
 		assertEquals( 3, node.getNeighbors().size() );
 		assertNotNull( "No default speed strategy assigned", node.getSpeedStrategy() );
 		assertTrue( "Default speed strategy has wrong type", node.getSpeedStrategy() instanceof LinearSpeedStrategy );
