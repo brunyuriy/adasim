@@ -36,7 +36,7 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 
 import traffic.agent.AbstractAdasimAgent;
-import traffic.strategy.SpeedStrategy;
+import traffic.strategy.TrafficDelayFunction;
 
 /**
  * A RoadSegment is a single node on the graph. It has a queue of vehicles
@@ -68,7 +68,7 @@ public final class RoadSegment extends AbstractAdasimAgent {
 
 	
 	private Set<RoadSegment> outgoing; //Nodes that this node has an edge directed towards
-	private SpeedStrategy ss; //The strategy by which the speed changes
+	private TrafficDelayFunction ss; //The strategy by which the speed changes
 
 	//PROPERTIES
 	private int nodeNum; //The number of this node on the graph
@@ -83,7 +83,7 @@ public final class RoadSegment extends AbstractAdasimAgent {
 	 * @param s
 	 * @param capacity
 	 */
-	public RoadSegment(int n, SpeedStrategy s, int capacity) {
+	public RoadSegment(int n, TrafficDelayFunction s, int capacity) {
 		this(n, s, 1, capacity);
 	}
 	
@@ -95,7 +95,7 @@ public final class RoadSegment extends AbstractAdasimAgent {
 	 * @param delay
 	 * @param capacity
 	 */
-	public RoadSegment(int n, SpeedStrategy s, int delay, int capacity ) {
+	public RoadSegment(int n, TrafficDelayFunction s, int delay, int capacity ) {
 		nodeNum = n;
 		outgoing = new HashSet<RoadSegment>();
 		ss = s;
@@ -143,14 +143,14 @@ public final class RoadSegment extends AbstractAdasimAgent {
 	/**
 	 * @return this node's speed strategy
 	 */
-	public SpeedStrategy getSpeedStrategy() {
+	public TrafficDelayFunction getSpeedStrategy() {
 		return ss;
 	}
 
 	/**
 	 * @param ss the ss to set
 	 */
-	public void setSpeedStrategy(SpeedStrategy ss) {
+	public void setSpeedStrategy(TrafficDelayFunction ss) {
 		this.ss = ss;
 	}
 

@@ -27,7 +27,7 @@ import traffic.model.ConfigurationException;
 import traffic.model.TrafficSimulator;
 import traffic.strategy.VehicleStrategy;
 import traffic.strategy.LinearSpeedStrategy;
-import traffic.strategy.SpeedStrategy;
+import traffic.strategy.TrafficDelayFunction;
 
 /**
  * This class is hack we used for some experiments. 
@@ -132,7 +132,7 @@ public class CongestedSimulationBuilder {
 	 * @throws ConfigurationException 
 	 */
 	private RoadSegment buildNode(ConfigurationOptions opts, int id ) throws ConfigurationException {
-		SpeedStrategy ss = randomSpeedStrategy( opts );
+		TrafficDelayFunction ss = randomSpeedStrategy( opts );
 		int delay = randomDelay( opts );
 		RoadSegment node = new RoadSegment(id, ss, delay );
 		return node;
@@ -147,13 +147,13 @@ public class CongestedSimulationBuilder {
 		return random.nextInt( nodeDelay[1] - nodeDelay[0] + 1 ) + nodeDelay[0];
 	}
 
-	static SpeedStrategy ss = new LinearSpeedStrategy();
+	static TrafficDelayFunction ss = new LinearSpeedStrategy();
 	/**
 	 * @param opts
 	 * @return ss the currently configured speed strategy, if <code>null</code> this will cause problems
 	 * @throws ConfigurationException 
 	 */
-	private SpeedStrategy randomSpeedStrategy(ConfigurationOptions opts) throws ConfigurationException {
+	private TrafficDelayFunction randomSpeedStrategy(ConfigurationOptions opts) throws ConfigurationException {
 		return ss;
 	}
 

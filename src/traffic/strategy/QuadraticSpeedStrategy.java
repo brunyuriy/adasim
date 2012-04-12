@@ -35,7 +35,7 @@ package traffic.strategy;
  * @author Jonathan Ramaswamy - ramaswamyj12@gmail.com
  */
 
-public class QuadraticSpeedStrategy implements SpeedStrategy {
+public class QuadraticSpeedStrategy implements TrafficDelayFunction {
 
 	public int getDelay(int weight, int capacity, int number) {
 		if (number > capacity) {

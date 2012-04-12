@@ -37,7 +37,7 @@ package traffic.strategy;
  * @author Jochen Wuttke - wuttkej@gmail.com
  *
  */
-public interface SpeedStrategy {
+public interface TrafficDelayFunction {
 	
 	public int getDelay(int weight, int cutoff, int number); //Returns the speed limit for the node depending on the number of cars
 
