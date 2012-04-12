@@ -100,7 +100,7 @@ public class RoadClosureAgentTest {
 		TrafficSimulator sim = SimulationXMLReader.buildSimulator( new File( "resources/test/closure-test.xml" ) );
 		agent.setSimulation(sim);
 		agent.setParameters( "1.0:2" );
-		RoadSegment node = sim.getGraph().getNode( 0 );
+		RoadSegment node = sim.getGraph().getRoadSegment( 0 );
 		assertFalse( "Node is closed", node.isClosed() );
 		agent.takeSimulationStep(1);
 		assertTrue( "Node is open", node.isClosed() );

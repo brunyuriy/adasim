@@ -61,7 +61,7 @@ public class CongestedSimulationBuilder {
 	 */
 	private List<AdasimAgent> buildVehicles(ConfigurationOptions opts, AdasimMap g) throws ConfigurationException {
 		List<AdasimAgent> vehicles = new ArrayList<AdasimAgent>();
-		List<RoadSegment> nodes = g.getNodes();
+		List<RoadSegment> nodes = g.getRoadSegments();
 		RoadSegment start = randomNode( nodes );
 		RoadSegment end;
 		do {
@@ -118,10 +118,10 @@ public class CongestedSimulationBuilder {
 	private AdasimMap buildGraph(ConfigurationOptions opts) throws ConfigurationException {
 		AdasimMap g = new AdasimMap( new HashSet<RoadSegment>() );
 		for ( int i = 0; i < opts.getNumNodes(); i++ ) {
-			g.addNode( buildNode( opts, i ) );
+			g.addRoadSegment( buildNode( opts, i ) );
 		}
-		for ( RoadSegment node : g.getNodes() ) {
-			randomizeNeighbors(node, g.getNodes(), opts.getDegreeProb(), opts.getOneWayProbability() );
+		for ( RoadSegment node : g.getRoadSegments() ) {
+			randomizeNeighbors(node, g.getRoadSegments(), opts.getDegreeProb(), opts.getOneWayProbability() );
 		}
 		return g;
 	}

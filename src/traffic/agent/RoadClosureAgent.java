@@ -111,7 +111,7 @@ public final class RoadClosureAgent extends AbstractAdasimAgent {
 	 */
 	@Override
 	public void takeSimulationStep(long cycle) {
-		for ( RoadSegment r : simulator.getGraph().getNodes() ) {
+		for ( RoadSegment r : simulator.getGraph().getRoadSegments() ) {
 			if ( r.isClosed() ) {
 				int d = closedNodes.get(r);
 				if ( d < closureDuration) {

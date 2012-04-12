@@ -165,7 +165,7 @@ final public class SimulationXMLReader {
 		int end = Integer.parseInt(vehicle.getAttributeValue("end"));
 		int id = Integer.parseInt(vehicle.getAttributeValue("id"));
 
-		List<RoadSegment> nodes = g.getNodes();
+		List<RoadSegment> nodes = g.getRoadSegments();
 		try {
 			Vehicle c = getVehicle( id, vehicles );
 			RoadSegment node = checkEndPoint(nodes, start, id, "Start" );

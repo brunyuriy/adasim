@@ -87,14 +87,14 @@ public class SimulationXMLBuilderTest {
 				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"traffic.algorithm.delay.QuadraticTrafficDelayFunction\"/>" +
 				"</graph>" ) );
 		AdasimMap graph = builder.buildGraph( doc.getRootElement() );
-		assertEquals( 3, graph.getNodes().size() );
-		RoadSegment node = graph.getNode( 1 );
+		assertEquals( 3, graph.getRoadSegments().size() );
+		RoadSegment node = graph.getRoadSegment( 1 );
 		assertEquals( 3, node.getNeighbors().size() );
 		assertNotNull( "No default speed strategy assigned", node.getSpeedStrategy() );
 		assertTrue( "Default speed strategy has wrong type", node.getSpeedStrategy() instanceof LinearTrafficDelayFunction );
 		assertNotNull( "No uncertainty filter assigned", node.getUncertaintyFilter() );
 		assertTrue( "Uncertainty filter has wrong type", node.getUncertaintyFilter() instanceof IdentityFilter );
-		node = graph.getNode(4);
+		node = graph.getRoadSegment(4);
 		assertEquals(0, node.getCapacity() );
 		assertTrue( node.getSpeedStrategy() instanceof QuadraticTrafficDelayFunction );
 	}
@@ -108,14 +108,14 @@ public class SimulationXMLBuilderTest {
 				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"traffic.algorithm.delay.QuadraticTrafficDelayFunction\" uncertainty_filter=\"traffic.filter.IdentityFilter\"/>" +
 				"</graph>" ) );
 		AdasimMap graph = builder.buildGraph( doc.getRootElement() );
-		assertEquals( 3, graph.getNodes().size() );
-		RoadSegment node = graph.getNode( 1 );
+		assertEquals( 3, graph.getRoadSegments().size() );
+		RoadSegment node = graph.getRoadSegment( 1 );
 		assertEquals( 3, node.getNeighbors().size() );
 		assertNotNull( "No default speed strategy assigned", node.getSpeedStrategy() );
 		assertTrue( "Default speed strategy has wrong type", node.getSpeedStrategy() instanceof LinearTrafficDelayFunction );
 		assertNotNull( "No uncertainty filter assigned", node.getUncertaintyFilter() );
 		assertTrue( "Uncertainty filter has wrong type", node.getUncertaintyFilter() instanceof FakeFilter );
-		node = graph.getNode(4);
+		node = graph.getRoadSegment(4);
 		assertEquals(0, node.getCapacity() );
 		assertTrue( node.getSpeedStrategy() instanceof QuadraticTrafficDelayFunction );
 		assertNotNull( "No uncertainty filter assigned", node.getUncertaintyFilter() );
@@ -131,8 +131,8 @@ public class SimulationXMLBuilderTest {
 				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"traffic.algorithm.delay.LinearTrafficDelayFunction\" uncertainty_filter=\"traffic.model.internal.FakeFilter\"/>" +
 				"</graph>" ) );
 		AdasimMap graph = builder.buildGraph( doc.getRootElement() );
-		assertEquals( 3, graph.getNodes().size() );
-		RoadSegment node = graph.getNode(4);
+		assertEquals( 3, graph.getRoadSegments().size() );
+		RoadSegment node = graph.getRoadSegment(4);
 		assertNotNull( "No uncertainty filter assigned", node.getUncertaintyFilter() );
 		assertTrue( "Uncertainty filter has wrong type", node.getUncertaintyFilter() instanceof FakeFilter );
 		//this "fake" node has a capacity of -1, because it has not passed validation yet
@@ -152,14 +152,14 @@ public class SimulationXMLBuilderTest {
 				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"traffic.algorithm.delay.QuadraticTrafficDelayFunction\" privacy_filter=\"traffic.filter.IdentityFilter\"/>" +
 				"</graph>" ) );
 		AdasimMap graph = builder.buildGraph( doc.getRootElement() );
-		assertEquals( 3, graph.getNodes().size() );
-		RoadSegment node = graph.getNode( 1 );
+		assertEquals( 3, graph.getRoadSegments().size() );
+		RoadSegment node = graph.getRoadSegment( 1 );
 		assertEquals( 3, node.getNeighbors().size() );
 		assertNotNull( "No default speed strategy assigned", node.getSpeedStrategy() );
 		assertTrue( "Default speed strategy has wrong type", node.getSpeedStrategy() instanceof LinearTrafficDelayFunction );
 		assertNotNull( "No privacy filter assigned", node.getPrivacyFilter() );
 		assertTrue( "Privacy filter has wrong type", node.getPrivacyFilter() instanceof FakeFilter );
-		node = graph.getNode(4);
+		node = graph.getRoadSegment(4);
 		assertEquals(0, node.getCapacity() );
 		assertTrue( node.getSpeedStrategy() instanceof QuadraticTrafficDelayFunction );
 		assertNotNull( "No privacy filter assigned", node.getPrivacyFilter() );

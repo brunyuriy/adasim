@@ -99,7 +99,7 @@ public class LookaheadShortestPathRoutingAlgorithm extends AbstractRoutingAlgori
 
 	
 	public List<RoadSegment> getPath(RoadSegment source, RoadSegment target ) {
-		return dijkstra(graph.getNodes(), source, target, lookahead );
+		return dijkstra(graph.getRoadSegments(), source, target, lookahead );
 	}
 	
 	/**
@@ -245,7 +245,7 @@ public class LookaheadShortestPathRoutingAlgorithm extends AbstractRoutingAlgori
 	 * @param start
 	 */
 	private List<RoadSegment> getPath(RoadSegment start) {
-		List<RoadSegment> p = dijkstra(graph.getNodes(), start, target, lookahead );
+		List<RoadSegment> p = dijkstra(graph.getRoadSegments(), start, target, lookahead );
 		if ( p == null ) {
 			finished = true;
 		}

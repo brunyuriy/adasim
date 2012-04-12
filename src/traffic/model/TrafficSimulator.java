@@ -102,7 +102,7 @@ public final class TrafficSimulator{
 		for ( AdasimAgent agent : agents ) {
 			agent.takeSimulationStep( cycle );
 		}
-		for ( RoadSegment g: graph.getNodes() ) {
+		for ( RoadSegment g: graph.getRoadSegments() ) {
 			g.takeSimulationStep(cycle);
 		}
 	}

@@ -106,7 +106,7 @@ public class SimulationBuilder {
 	private Vehicle buildVehicle(int i, ConfigurationOptions opts, AdasimMap g) throws ConfigurationException {
 		RoutingAlgorithm cs = randomVehicleStrategy( opts.getStrategies() );
 		cs.setMap(g);
-		List<RoadSegment> nodes = g.getNodes();
+		List<RoadSegment> nodes = g.getRoadSegments();
 		RoadSegment start = randomNode( nodes );
 		RoadSegment end;
 		do {
@@ -155,10 +155,10 @@ public class SimulationBuilder {
 		if ( opts.getGraphFile() == null ) {
 			//we have to generate a graph
 			for ( int i = 0; i < opts.getNumNodes(); i++ ) {
-				g.addNode( buildNode( opts, i ) );
+				g.addRoadSegment( buildNode( opts, i ) );
 			}
-			for ( RoadSegment node : g.getNodes() ) {
-				randomizeNeighbors(node, g.getNodes(), opts.getDegreeProb(), opts.getOneWayProbability() );
+			for ( RoadSegment node : g.getRoadSegments() ) {
+				randomizeNeighbors(node, g.getRoadSegments(), opts.getDegreeProb(), opts.getOneWayProbability() );
 			}
 		} else {
 			//we have to read the graph from a file
