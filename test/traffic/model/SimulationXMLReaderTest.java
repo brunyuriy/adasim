@@ -85,6 +85,21 @@ public class SimulationXMLReaderTest {
 		fail( "This should throw a meaningful exception to be handled by main()" );
 	}
 	
+	@Test(expected=ConfigurationException.class)
+	public void carNegativeTimeThrows() throws JDOMException, IOException, ConfigurationException {
+		SimulationXMLReader.buildSimulator( new File("resources/test/negative-time.xml" ));
+		fail( "Should throw a ConfigurationException" );
+	}
+
+	@Test
+	public void carValidTimeDoesNotThrow() throws JDOMException, IOException, ConfigurationException {
+		TrafficSimulator sim = SimulationXMLReader.buildSimulator( new File("resources/test/valid-time.xml" ));
+		assertEquals( 1, sim.getGraph().getNode(4).getCurrentDelay() );
+		sim.takeSimulationStep(); //cycle 1
+		sim.takeSimulationStep(); //cycle 2, this should add the new car
+		assertEquals( 2, sim.getGraph().getNode(4).getCurrentDelay() );
+	}
+	
 	@Test
 	public void invalidStartEndIsIgnored() throws JDOMException, IOException, ConfigurationException {
 		List<Vehicle> cars = SimulationXMLReader.buildSimulator( new File("resources/test/invalid-start.xml" )).getAgents(Vehicle.class);

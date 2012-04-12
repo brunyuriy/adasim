@@ -26,6 +26,10 @@ import org.jdom.input.SAXBuilder;
 import org.junit.Before;
 import org.junit.Test;
 
+import traffic.agent.AbstractAdasimAgent;
+import traffic.agent.AdasimAgent;
+import traffic.filter.AdasimFilter;
+import traffic.filter.IdentityFilter;
 import traffic.graph.Graph;
 import traffic.graph.GraphNode;
 import traffic.strategy.AlwaysRecomputeVehicleStrategy;
@@ -61,19 +65,21 @@ public class SimulationXMLBuilderTest {
 	
 	@Test
 	public void nodeNoAllOptionals() throws JDOMException, IOException {
-		Document doc = parser.build( new StringReader( "<node id=\"27\" neighbors=\"1 2 3\" delay=\"2\" capacity=\"5\" strategy=\"traffic.strategy.LinearSpeedStrategy\"/>" ) );
+		Document doc = parser.build( new StringReader( "<node id=\"27\" neighbors=\"1 2 3\" delay=\"2\" capacity=\"5\" strategy=\"traffic.strategy.LinearSpeedStrategy\" uncertainty_filter=\"traffic.filter.IdentityFilter\"/>" ) );
 		GraphNode node = builder.buildNode( doc.getRootElement() );
 		assertEquals( 27, node.getID() );
 		assertTrue( node.getNeighbors().isEmpty() );
 		assertTrue( node.getSpeedStrategy() instanceof LinearSpeedStrategy );
 		assertEquals(5, node.getCapacity() );
 		assertEquals(2, node.getDelay() );
+		assertNotNull( "No uncertainty filter assigned", node.getUncertaintyFilter() );
+		assertTrue( "Uncertainty filter has wrong type", node.getUncertaintyFilter() instanceof IdentityFilter );
 	}
 	
 	@Test
 	public void graphWithDefaults() throws JDOMException, IOException, ConfigurationException {
 		Document doc = parser.build( new StringReader( "<graph default_strategy=\"traffic.strategy.LinearSpeedStrategy\" default_capacity=\"0\">" +
-				"<node id=\"1\" neighbors=\"1 2 3 4\" delay=\"2\" capacity=\"5\" strategy=\"traffic.strategy.LinearSpeedStrategy\"/>" +
+				"<node id=\"1\" neighbors=\"1 2 3 4\" delay=\"2\" capacity=\"5\"/>" +
 				"<node id=\"2\" neighbors=\"3\" delay=\"2\" capacity=\"5\" strategy=\"traffic.strategy.LinearSpeedStrategy\"/>" +
 				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"traffic.strategy.QuadraticSpeedStrategy\"/>" +
 				"</graph>" ) );
@@ -81,11 +87,81 @@ public class SimulationXMLBuilderTest {
 		assertEquals( 3, graph.getNodes().size() );
 		GraphNode node = graph.getNode( 1 );
 		assertEquals( 3, node.getNeighbors().size() );
+		assertNotNull( "No default speed strategy assigned", node.getSpeedStrategy() );
+		assertTrue( "Default speed strategy has wrong type", node.getSpeedStrategy() instanceof LinearSpeedStrategy );
+		assertNotNull( "No uncertainty filter assigned", node.getUncertaintyFilter() );
+		assertTrue( "Uncertainty filter has wrong type", node.getUncertaintyFilter() instanceof IdentityFilter );
 		node = graph.getNode(4);
 		assertEquals(0, node.getCapacity() );
 		assertTrue( node.getSpeedStrategy() instanceof QuadraticSpeedStrategy );
 	}
+
 	
+	@Test
+	public void graphWithUncertaintyFilter() throws JDOMException, IOException, ConfigurationException {
+		Document doc = parser.build( new StringReader( "<graph default_strategy=\"traffic.strategy.LinearSpeedStrategy\" default_capacity=\"0\" uncertainty_filter=\"traffic.model.FakeFilter\">" +
+				"<node id=\"1\" neighbors=\"1 2 3 4\" delay=\"2\" capacity=\"5\"/>" +
+				"<node id=\"2\" neighbors=\"3\" delay=\"2\" capacity=\"5\" strategy=\"traffic.strategy.LinearSpeedStrategy\"/>" +
+				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"traffic.strategy.QuadraticSpeedStrategy\" uncertainty_filter=\"traffic.filter.IdentityFilter\"/>" +
+				"</graph>" ) );
+		Graph graph = builder.buildGraph( doc.getRootElement() );
+		assertEquals( 3, graph.getNodes().size() );
+		GraphNode node = graph.getNode( 1 );
+		assertEquals( 3, node.getNeighbors().size() );
+		assertNotNull( "No default speed strategy assigned", node.getSpeedStrategy() );
+		assertTrue( "Default speed strategy has wrong type", node.getSpeedStrategy() instanceof LinearSpeedStrategy );
+		assertNotNull( "No uncertainty filter assigned", node.getUncertaintyFilter() );
+		assertTrue( "Uncertainty filter has wrong type", node.getUncertaintyFilter() instanceof FakeFilter );
+		node = graph.getNode(4);
+		assertEquals(0, node.getCapacity() );
+		assertTrue( node.getSpeedStrategy() instanceof QuadraticSpeedStrategy );
+		assertNotNull( "No uncertainty filter assigned", node.getUncertaintyFilter() );
+		assertTrue( "Uncertainty filter has wrong type", node.getUncertaintyFilter() instanceof IdentityFilter );
+	}
+
+	@Test
+	public void graphWithUncertaintyFilterHookup() throws JDOMException, IOException, ConfigurationException {
+		//test that the uncertainty filter gets called correctly.
+		Document doc = parser.build( new StringReader( "<graph default_strategy=\"traffic.strategy.LinearSpeedStrategy\" default_capacity=\"0\" uncertainty_filter=\"traffic.model.FakeFilter\">" +
+				"<node id=\"1\" neighbors=\"1 2 3 4\" delay=\"2\" capacity=\"5\"/>" +
+				"<node id=\"2\" neighbors=\"3\" delay=\"2\" capacity=\"5\" strategy=\"traffic.strategy.LinearSpeedStrategy\"/>" +
+				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"traffic.strategy.LinearSpeedStrategy\" uncertainty_filter=\"traffic.model.FakeFilter\"/>" +
+				"</graph>" ) );
+		Graph graph = builder.buildGraph( doc.getRootElement() );
+		assertEquals( 3, graph.getNodes().size() );
+		GraphNode node = graph.getNode(4);
+		assertNotNull( "No uncertainty filter assigned", node.getUncertaintyFilter() );
+		assertTrue( "Uncertainty filter has wrong type", node.getUncertaintyFilter() instanceof FakeFilter );
+		//this "fake" node has a capacity of -1, because it has not passed validation yet
+		assertEquals( 0, node.getCapacity() );
+		assertEquals( 3, node.getDelay() );
+		assertEquals( 4, node.getCurrentDelay() );
+		assertEquals( 1, node.numVehiclesAtNode() );
+		assertEquals( 4, node.getID() );
+		assertFalse( node.isClosed() ); 
+	}
+
+	@Test
+	public void graphWithPrivacyFilter() throws JDOMException, IOException, ConfigurationException {
+		Document doc = parser.build( new StringReader( "<graph default_strategy=\"traffic.strategy.LinearSpeedStrategy\" default_capacity=\"0\" privacy_filter=\"traffic.model.FakeFilter\">" +
+				"<node id=\"1\" neighbors=\"1 2 3 4\" delay=\"2\" capacity=\"5\"/>" +
+				"<node id=\"2\" neighbors=\"3\" delay=\"2\" capacity=\"5\" strategy=\"traffic.strategy.LinearSpeedStrategy\"/>" +
+				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"traffic.strategy.QuadraticSpeedStrategy\" privacy_filter=\"traffic.filter.IdentityFilter\"/>" +
+				"</graph>" ) );
+		Graph graph = builder.buildGraph( doc.getRootElement() );
+		assertEquals( 3, graph.getNodes().size() );
+		GraphNode node = graph.getNode( 1 );
+		assertEquals( 3, node.getNeighbors().size() );
+		assertNotNull( "No default speed strategy assigned", node.getSpeedStrategy() );
+		assertTrue( "Default speed strategy has wrong type", node.getSpeedStrategy() instanceof LinearSpeedStrategy );
+		assertNotNull( "No privacy filter assigned", node.getPrivacyFilter() );
+		assertTrue( "Privacy filter has wrong type", node.getPrivacyFilter() instanceof FakeFilter );
+		node = graph.getNode(4);
+		assertEquals(0, node.getCapacity() );
+		assertTrue( node.getSpeedStrategy() instanceof QuadraticSpeedStrategy );
+		assertNotNull( "No privacy filter assigned", node.getPrivacyFilter() );
+		assertTrue( "Privacy filter has wrong type", node.getPrivacyFilter() instanceof IdentityFilter );
+	}
 	@Test
 	public void carNoOptionals() throws JDOMException, IOException {
 		Document doc = parser.build( new StringReader( "<car id=\"27\" start=\"1\" end=\"1\"/>" ) );
@@ -95,7 +171,7 @@ public class SimulationXMLBuilderTest {
 		assertNull( car.getEndNode() );
 		assertNull( car.getStrategy() );
 	}
-
+	
 	@Test
 	public void carAllOptionals() throws JDOMException, IOException {
 		Document doc = parser.build( new StringReader( "<car id=\"27\" start=\"1\" end=\"1\" strategy=\"traffic.strategy.ShortestPathVehicleStrategy\" />" ) );
@@ -147,6 +223,107 @@ class FakeAgent extends AbstractAdasimAgent {
 	 * @see traffic.model.AdasimAgent#takeSimulationStep()
 	 */
 	@Override
-	public void takeSimulationStep() {}
+	public void takeSimulationStep( long cycle) {}
 
+	/* (non-Javadoc)
+	 * @see traffic.agent.AdasimAgent#setUncertaintyFilter(traffic.filter.AdasimFilter)
+	 */
+	@Override
+	public void setUncertaintyFilter(AdasimFilter filter) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see traffic.agent.AdasimAgent#setPrivacyFilter(traffic.filter.AdasimFilter)
+	 */
+	@Override
+	public void setPrivacyFilter(AdasimFilter filter) {
+		// TODO Auto-generated method stub
+		
+	}
+}
+
+class FakeFilter implements AdasimFilter {
+	
+	/* (non-Javadoc)
+	 * @see traffic.filter.AdasimFilter#filter(byte)
+	 */
+	@Override
+	public byte filter(byte b) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	/* (non-Javadoc)
+	 * @see traffic.filter.AdasimFilter#filter(char)
+	 */
+	@Override
+	public char filter(char b) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	/* (non-Javadoc)
+	 * @see traffic.filter.AdasimFilter#filter(short)
+	 */
+	@Override
+	public short filter(short b) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	/* (non-Javadoc)
+	 * @see traffic.filter.AdasimFilter#filter(int)
+	 */
+	@Override
+	public int filter(int b) {
+		return b+1;
+	}
+	
+	/* (non-Javadoc)
+	 * @see traffic.filter.AdasimFilter#filter(long)
+	 */
+	@Override
+	public long filter(long b) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	/* (non-Javadoc)
+	 * @see traffic.filter.AdasimFilter#filter(float)
+	 */
+	@Override
+	public float filter(float b) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	/* (non-Javadoc)
+	 * @see traffic.filter.AdasimFilter#filter(double)
+	 */
+	@Override
+	public double filter(double b) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	/* (non-Javadoc)
+	 * @see traffic.filter.AdasimFilter#filter(boolean)
+	 */
+	@Override
+	public boolean filter(boolean b) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	/* (non-Javadoc)
+	 * @see traffic.filter.AdasimFilter#filter(java.lang.Object)
+	 */
+	@Override
+	public <T> T filter(T b) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 }

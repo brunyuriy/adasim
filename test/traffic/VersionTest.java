@@ -41,7 +41,7 @@ public class VersionTest {
 
 	@Test
 	public void test() {
-		assertEquals( Version.versionString(), "Adasim - Version 0.5.1" );
+		assertEquals( Version.versionString(), "Adasim - Version 0.5.3" );
 	}
 
 }

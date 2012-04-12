@@ -24,47 +24,33 @@
  *    Jochen Wuttke (wuttkej@gmail.com) - initial API and implementation
  ********************************************************************************
  *
- * Created: Mar 21, 2012
+ * Created: Apr 4, 2012
  */
 
-package traffic.model;
+package traffic.filter;
 
 /**
- * This is an abstract adapter class for {@link AdasimAgent}.
- * The methods do nothing. Override those that you need.
- * 
- * It explicitly <em>does not</em> implement <code>takeSimulationStep()</code>
- * as this method must always be provided by implementers.
+ * The abstract interface for uncertainty and
+ * privacy filters.
+ * <p>
+ * Implementers are free to implement the singleton pattern.
+ * If there is a method getInstance(), the simulation loader
+ * will use this method to obtain instances of the implemented
+ * filter. Otherwise, the default constructor will be called.
  * 
  * @author Jochen Wuttke - wuttkej@gmail.com
  *
  */
-public abstract class AbstractAdasimAgent implements AdasimAgent {
-	
-	protected TrafficSimulator simulator;
-
-	/**
-	 * Does nothing (ignores the parameter!).
-	 */
-	@Override
-	public void setParameters(String params) {
-	}
-
-	/**
-	 * Stores the {@link TrafficSimulator} parameter in the protected 
-	 * field <code>simulator</code>.
-	 */
-	@Override
-	public void setSimulation(TrafficSimulator sim) {
-		this.simulator = sim;
-	}
-
-	/**
-	 * This stub implementation will always return <code>true</code>.
-	 */
-	@Override
-	public boolean isFinished() {
-		return true;
-	}
+public interface AdasimFilter {
+		
+	public byte filter(byte b );
+	public char filter(char b );
+	public short filter(short b );
+	public int filter(int b );
+	public long filter(long b );
+	public float filter(float b );
+	public double filter(double b );
+	public boolean filter(boolean b );
+	public <T> T filter(T b );
 
 }

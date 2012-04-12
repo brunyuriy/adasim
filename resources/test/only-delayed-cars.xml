@@ -1,10 +1,7 @@
 <simulation>
 	<cars default_strategy="traffic.strategy.LookaheadShortestPathVehicleStrategy">
-		<car id="0" start="0" end="2" />
-		<car id="1" start="4" end="7" />
-		<car id="2" start="3" end="9" strategy="traffic.strategy.RandomVehicleStrategy" />
-		<car id="3" start="8" end="4" strategy="traffic.strategy.RandomVehicleStrategy" />
-		<car id="4" start="3" end="7" />
+		<car id="1" start="4" end="7" start_time="2"/>
+		<car id="4" start="3" end="7" start_time="20"/>
 	</cars>
 
 	<graph default_strategy="traffic.strategy.QuadraticSpeedStrategy" default_capacity="0">

@@ -32,35 +32,51 @@ import java.util.*;
 
 import org.apache.log4j.Logger;
 
+import traffic.TrafficMain;
+import traffic.agent.AdasimAgent;
 import traffic.graph.Graph;
+import traffic.graph.GraphNode;
+import traffic.model.internal.VehicleManager;
 
 /**
- * TrafficSimulator is the main program for running the simulator. It keeps track
+ * TrafficSimulator is the core the simulator. It keeps track
  * of the graph and where all the vehicles are located on it, and outputs information to
  * the logger object with every step taken.
  * <p>
- * To use, create a {@link TrafficSimulator} instance and call <code>run()</code>.
- * No other interaction with the simulation is encourage or needed.
+ * Usually there is no need to explicitly create an object of this type. Normal use of
+ * the simulator is handled through the commandline interface of {@link TrafficMain}.
+ * <p>
+ * There are several types of agents and other active elements in a
+ * simulation. Currently the simulator enforces the following 
+ * protocol in each cycle <em>t</em>:
+ * <ol>
+ * <li>Vehicles scheduled to start in cycle <em>t</em> are added to the simulation
+ * <li>All agents (including vehicles, but not GraphNodes) can perform an action
+ * <li>All GraphNodes execute the vehicle movement protocol (documented in {@link GraphNode}).
+ * </ol>
  * 
  * @author Jonathan Ramaswamy - ramaswamyj12@gmail.com
  * @author Jochen Wuttke - wuttkej@gmail.com
  */
 
-public class TrafficSimulator{
+public final class TrafficSimulator{
 
 	private static Logger logger = Logger.getLogger(TrafficSimulator.class);
 
 
 	private List<AdasimAgent> agents; //List of vehicles in the simulation
 	private Graph graph; //The graph the vehicles run on
-	private long cycle = 1;
+	private VehicleManager manager;
+	private long cycle = 0;
 
-	public TrafficSimulator( Graph g, List<AdasimAgent> c ) {
-		if(g == null || c == null) {
+	public TrafficSimulator( Graph g, VehicleManager m, List<AdasimAgent> c ) {
+		if(g == null || c == null || m == null ) {
 			throw new IllegalArgumentException();
 		}
 		this.graph = g;
 		this.agents = c;
+		this.manager = m;
+		this.manager.setSimulation(this);
 		//inject this into agents
 		for ( AdasimAgent a : agents ) {
 			a.setSimulation( this );
@@ -79,13 +95,17 @@ public class TrafficSimulator{
 	}
 
 	/**
-	 * All agents in the simulator take one step.
+	 * All agents in the simulator take one step. 
+	 * This is package private for testing only. NEVER call this explicitly!
 	 */
-	private void takeSimulationStep() {
-		logger.info( "SIMULATION: Cycle: " + cycle++ );
-		graph.setClosed();
+	void takeSimulationStep() {
+		logger.info( "SIMULATION: Cycle: " + ++cycle );
+		manager.takeSimulationStep(cycle);
 		for ( AdasimAgent agent : agents ) {
-			agent.takeSimulationStep();
+			agent.takeSimulationStep( cycle );
+		}
+		for ( GraphNode g: graph.getNodes() ) {
+			g.takeSimulationStep(cycle);
 		}
 	}
 
@@ -93,6 +113,7 @@ public class TrafficSimulator{
 	 * @return true if all vehicles return true on their <code>checkFinish()</code> call
 	 */
 	private boolean checkAllFinish() {
+		if ( ! manager.isFinished() ) return false;
 		for(AdasimAgent c: agents) {
 			if(!c.isFinished()) {
 				return false;
@@ -119,6 +140,16 @@ public class TrafficSimulator{
 				return c;
 		}
 		return null;
+	}
+
+	/**
+	 * Add a vehicle to the simulation. It will be added
+	 * to its starting node and start moving in the next simulation cycle.
+	 * @param v
+	 */
+	public void addVehicle( Vehicle v ) {
+		agents.add(v);
+		v.getStartNode().enterNode(v);
 	}
 
 	/**

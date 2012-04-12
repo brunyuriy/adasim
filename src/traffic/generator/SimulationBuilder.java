@@ -25,13 +25,14 @@ import org.jdom.Document;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
+import traffic.agent.AdasimAgent;
 import traffic.graph.Graph;
 import traffic.graph.GraphNode;
-import traffic.model.AdasimAgent;
 import traffic.model.Vehicle;
 import traffic.model.ConfigurationException;
 import traffic.model.SimulationXMLBuilder;
 import traffic.model.TrafficSimulator;
+import traffic.model.internal.VehicleManager;
 import traffic.strategy.VehicleStrategy;
 import traffic.strategy.LinearSpeedStrategy;
 import traffic.strategy.SpeedStrategy;
@@ -79,12 +80,13 @@ public class SimulationBuilder {
 	 */
 	TrafficSimulator build( ConfigurationOptions opts ) throws ConfigurationException, IOException, JDOMException, ClassNotFoundException, InstantiationException, IllegalAccessException {
 		Graph g = buildGraph(opts);
-		return new TrafficSimulator( buildGraph(opts), buildVehicles(opts, g) );
+		VehicleManager m = new VehicleManager();
+		return new TrafficSimulator( buildGraph(opts), m, buildVehicles(opts, g) );
 	}
 
 	/**
 	 * @param opts
-	 * @return
+	 * @return a list of vehicles of the size spec'd on the commandline
 	 * @throws ConfigurationException 
 	 */
 	private List<AdasimAgent> buildVehicles(ConfigurationOptions opts, Graph g) throws ConfigurationException {
@@ -98,7 +100,7 @@ public class SimulationBuilder {
 	/**
 	 * @param i
 	 * @param opts
-	 * @return
+	 * @return a fully configured vehicle
 	 * @throws ConfigurationException 
 	 */
 	private Vehicle buildVehicle(int i, ConfigurationOptions opts, Graph g) throws ConfigurationException {
@@ -116,7 +118,7 @@ public class SimulationBuilder {
 
 	/**
 	 * @param nodes
-	 * @return the ID of the randomly chose node
+	 * @return the ID of the randomly chosen node
 	 */
 	private GraphNode randomNode(List<GraphNode> nodes) {
 		return nodes.get( random.nextInt( nodes.size() ) );
@@ -124,7 +126,7 @@ public class SimulationBuilder {
 
 	/**
 	 * @param strategies
-	 * @return
+	 * @return a random strategy picked uniformly from the list of allowed strategies
 	 * @throws ConfigurationException 
 	 */
 	private VehicleStrategy randomVehicleStrategy(List<String> strategies) throws ConfigurationException {
@@ -140,7 +142,7 @@ public class SimulationBuilder {
 
 	/**
 	 * @param opts
-	 * @return
+	 * @return a fully configured graph
 	 * @throws ConfigurationException 
 	 * @throws IOException 
 	 * @throws JDOMException 
@@ -183,7 +185,7 @@ public class SimulationBuilder {
 
 	/**
 	 * @param opts
-	 * @return
+	 * @return a fully configured node
 	 * @throws ConfigurationException 
 	 */
 	private GraphNode buildNode(ConfigurationOptions opts, int id ) throws ConfigurationException {
@@ -195,26 +197,23 @@ public class SimulationBuilder {
 
 	/**
 	 * @param opts
-	 * @return
+	 * @return a random delay picked uniformly from the allowed range
 	 */
 	private int randomDelay(ConfigurationOptions opts) {
 		int[] nodeDelay = opts.getNodeDelay();
 		return random.nextInt( nodeDelay[1] - nodeDelay[0] + 1 ) + nodeDelay[0];
 	}
 
+	private static SpeedStrategy ss = new LinearSpeedStrategy();
 	/**
 	 * @param opts
-	 * @return
+	 * @return a randomized speed strategy (this is constant right now)
 	 * @throws ConfigurationException 
 	 */
-	private static SpeedStrategy ss = new LinearSpeedStrategy();
 	private SpeedStrategy randomSpeedStrategy(ConfigurationOptions opts) throws ConfigurationException {
 		return ss;
 	}
 
-	/**
-	 * @return
-	 */
 	private void randomizeNeighbors(GraphNode node, List<GraphNode> nodes, double degreeProb, double oneWayProb ) {
 		for ( int i = 0; i < nodes.size(); i++) {
 			if ( random.nextDouble() < degreeProb/2/(1+oneWayProb) && !nodes.get(i).equals(node)) {

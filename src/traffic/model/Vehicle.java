@@ -27,43 +27,57 @@
  */
 
 package traffic.model;
+
+
+import org.apache.log4j.Logger;
+
+import traffic.agent.AbstractAdasimAgent;
+import traffic.graph.GraphNode;
+import traffic.strategy.VehicleStrategy;
+
 /**
  * 
- * The vehicle object represents a single vehicle on the graph, and holds an info object
- * with important information about itself. The vehicle is given a graph traversal strategy
- * that it will use to select its path from start to end
+ * The vehicle object represents a single vehicle on the graph.
+ * <p>
+ * Vehicles are part of the core classes of Adasim and receive
+ * special treatment up to a point. While they also implement the 
+ * AdasimAgent interface, the takeSimulationStep() method is empty.
+ * <p>
+ * Special treatment arises because both TrafficSimulator and 
+ * GraphNode know about Vehicles and implement protocols for communicating 
+ * with them. The specifics of these protocols are documented in the 
+ * corresponding classes.
+ * <p>
+ * User implemented agents and strategies should never <strong>set</strong>
+ * any properties of vehicles (with the possible exception of updating strategies).
+ * Users also must never call protocol methods such as takeSimulationStep() 
+ * and move(). Their internals and use are restricted to the core simulator. 
  * 
  * @author Jonathan Ramaswamy - ramaswamyj12@gmail.com
  * @author Jochen Wuttke - wuttkej@gmail.com
  */
+public final class Vehicle extends AbstractAdasimAgent {
 
-import org.apache.log4j.Logger;
-
-import traffic.graph.GraphNode;
-import traffic.strategy.VehicleStrategy;
-
-public class Vehicle extends AbstractAdasimAgent {
-	
 	private GraphNode start; //Starting position
 	private GraphNode end; //Destination position
 	private GraphNode currentNode; //Current position
 	private int id; //This vehicle's number in the list of vehicles
 	protected VehicleInfo info; //Info for the vehicle
 	private VehicleStrategy cs; //Strategy the vehicle uses to traverse the graph
-	
+
 	private static Logger logger = Logger.getLogger(Vehicle.class);
-	
+
 	protected Vehicle( int id ) {
 		info = new VehicleInfo();
 	}
-	
+
 	public Vehicle(GraphNode start, GraphNode end, VehicleStrategy strat, int num) {
 		setStartNode(start);
 		setEndNode(end);
 		id = num;
 		setStrategy(strat);
 	}
-	
+
 	/**
 	 * @return The starting node for the vehicle
 	 */
@@ -107,7 +121,7 @@ public class Vehicle extends AbstractAdasimAgent {
 	/**
 	 * Sets the current position to the given variable c
 	 */
-	void setCurrentPosition(GraphNode c) {
+	public void setCurrentPosition(GraphNode c) {
 		currentNode = c;
 	}
 
@@ -136,18 +150,18 @@ public class Vehicle extends AbstractAdasimAgent {
 			cs.setVehicleId(id);
 		}
 	}
-	
+
 	/**
 	 * @return the position of the car as a string
 	 */
-	private String vehiclePosition() {
+	public String vehiclePosition() {
 		StringBuffer buf = new StringBuffer( "Vehicle: ");
 		buf.append( getID() );
 		buf.append(" At: " );
 		buf.append( getCurrentPosition().getID() );
 		return buf.toString();
 	}
-	
+
 
 	/**
 	 * @return the info
@@ -160,44 +174,31 @@ public class Vehicle extends AbstractAdasimAgent {
 	 * @see traffic.model.AdasimAgent#takeSimulationStep()
 	 */
 	@Override
-	public void takeSimulationStep() {
+	public void takeSimulationStep( long cycle ) {
+	}
+	
+	/**
+	 * Called by GraphNodes during the vehicle movement protocol.
+	 * The Vehicle responds by calling moveTo() on its
+	 * currentNode.
+	 */
+	public void move() {
 		if (isFinished()) return;	//quick end if we are done
 		
 		GraphNode nextNode = cs.getNextNode();
 		if ( nextNode == null ) {
-			fakeFinish();
-			logger.info( "STOP: " + vehiclePosition() );
-		} else if (!currentNode.isNeighbor(nextNode)) {
-			logger.info( "HALT: Node " + nextNode.getID() + " is not a neighbor of " + currentNode);
-			fakeFinish();
+			getCurrentPosition().park(this);
 		} else {
-			if(nextNode.isClosed()) {
-				logger.info( "HALT: Node " + nextNode.getID() + " is currently closed");
-				fakeFinish();
-			} else if(currentNode.isClosed()) {
-				logger.info( "HALT: Vehicle " + id + " is currently at a closed node");
-				fakeFinish();
-			} else {
-				logger.info( "MOVE: " + vehiclePosition() + " To:" + nextNode.getID() );
-				setCurrentPosition(nextNode);
-				nextNode.enterNode(this);
-			}
-		}
+			logger.info( "MOVE: " + vehiclePosition() + " To:" + nextNode.getID() );
+			currentNode.moveTo(nextNode, this);
+		}		
 	}
 
 	/**
-	 * 
+	 * A vehicle is finished when it either has reached its
+	 * target node, or when the strategy can no longer compute
+	 * a path to the target.
 	 */
-	private void fakeFinish() {
-		//TODO: replace with correct code in GraphNode
-		getCurrentPosition().park(this);
-		setCurrentPosition(end);
-	}
-
-	/* (non-Javadoc)
-	 * @see traffic.model.AbstractAdasimAgent#isFinished()
-	 */
-	@Override
 	public boolean isFinished() {
 		return currentNode != null && currentNode.equals(end);
 	}

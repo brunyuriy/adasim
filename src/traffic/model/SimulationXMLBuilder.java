@@ -35,6 +35,9 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.jdom.Element;
 
+import traffic.agent.AdasimAgent;
+import traffic.filter.AdasimFilter;
+import traffic.filter.IdentityFilter;
 import traffic.graph.Graph;
 import traffic.graph.GraphNode;
 import traffic.strategy.VehicleStrategy;
@@ -63,7 +66,7 @@ public class SimulationXMLBuilder {
 	 * nodes that have explicit declarations.
 	 * 
 	 * @param graphNode
-	 * @return
+	 * @return the fully validated graph
 	 * @throws ConfigurationException
 	 * @throws IllegalAccessException 
 	 * @throws InstantiationException 
@@ -72,12 +75,18 @@ public class SimulationXMLBuilder {
 		try {
 			@SuppressWarnings("unchecked")
 			List<Element> children = graphNode.getChildren("node");		
-			Class<?> cls = Class.forName(graphNode.getAttributeValue("default_strategy"));
-			SpeedStrategy ss = (SpeedStrategy) cls.newInstance();
+			SpeedStrategy ss = (SpeedStrategy) loadClassFromAttribute(graphNode, "default_strategy" );
 			int capacity = Integer.parseInt(graphNode.getAttributeValue("default_capacity"));
-			return new Graph( buildNodes( children, ss, capacity) );
+			AdasimFilter uf = (AdasimFilter) loadClassFromAttribute(graphNode, "uncertainty_filter");
+			if ( uf == null ) {
+				uf = new IdentityFilter();
+			} 
+			AdasimFilter pf = (AdasimFilter) loadClassFromAttribute(graphNode, "privacy_filter");
+			return new Graph( buildNodes( children, ss, uf, pf, capacity) );
+		} catch (ClassCastException e ) {
+			throw new ConfigurationException( "Error loading class: " + e.getMessage() );
 		} catch (Exception e) {
-			throw new ConfigurationException("Invalid default graph strategy: " + graphNode.getAttributeValue("default_strategy"));
+			throw new ConfigurationException("Unexpected error: " + e.getMessage() );
 		}
 	}
 
@@ -93,12 +102,18 @@ public class SimulationXMLBuilder {
 	 * </ul>
 	 * 
 	 * @param nodeElement
-	 * @return
+	 * @return a partically configured node
 	 */
 	public GraphNode buildNode( Element nodeElement ) {
 		int id = Integer.parseInt( nodeElement.getAttributeValue( "id" ) );
-		SpeedStrategy ss = buildStrategy( nodeElement );
-		return new GraphNode( id, ss, getDelay(nodeElement ), getCapacity(nodeElement)) ;
+		SpeedStrategy ss = (SpeedStrategy)loadClassFromAttribute(nodeElement, "strategy" ); 
+		GraphNode gn = new GraphNode( id, ss, getDelay(nodeElement ), getCapacity(nodeElement)) ;
+		AdasimFilter f = (AdasimFilter) loadClassFromAttribute(nodeElement, "uncertainty_filter" ); 
+		gn.setUncertaintyFilter(f);
+		f = (AdasimFilter) loadClassFromAttribute(nodeElement, "privacy_filter" ); 
+		gn.setPrivacyFilter(f);
+		
+		return gn;
 	}
 
 	/**
@@ -107,24 +122,15 @@ public class SimulationXMLBuilder {
 	 * <p>
 	 * Not start/end point validation will occur, as these are not known at this stage.
 	 * @param vehiclesNode
-	 * @return
+	 * @return the list of all fully configured vehicles
 	 * @throws ConfigurationException
 	 */
 	public List<Vehicle> buildVehicles( Element vehiclesNode ) throws ConfigurationException {
 		@SuppressWarnings("unchecked")
 		List<Element> vehicleNodes = vehiclesNode.getChildren("car");
-		VehicleStrategy cs = null;
-		try {
-			Class<?> cls = Class.forName(vehiclesNode.getAttributeValue("default_strategy"));
-			cs = (VehicleStrategy) cls.newInstance();
-			//TODO: assign this somewhere
-			//cs.setGraph(g);
-		} catch (Exception e ) {
-			throw new ConfigurationException("Invalid default vehicle strategy: " + vehiclesNode.getAttributeValue("default_strategy"));
-		}
+		VehicleStrategy cs = (VehicleStrategy)loadClassFromAttribute(vehiclesNode, "default_strategy" );
 		List<Vehicle> vehicles = new ArrayList<Vehicle>();
 		for ( Element vehicle : vehicleNodes ) {
-			//Vehicle c = buildVehicle( vehicle, cs, g );
 			Vehicle c = buildVehicle( vehicle );
 			if ( c != null ) vehicles.add( assignDefaultVehicleValues( c, cs ) );
 		}
@@ -134,7 +140,6 @@ public class SimulationXMLBuilder {
 	/**
 	 * @param c
 	 * @param cs
-	 * @return
 	 */
 	private Vehicle assignDefaultVehicleValues(Vehicle c, VehicleStrategy cs) {
 		if ( c.getStrategy() == null ) {
@@ -150,33 +155,16 @@ public class SimulationXMLBuilder {
 	 * validation is performed, as the graph is not known at this stage.
 	 * 
 	 * @param vehicleNode
-	 * @return
+	 * @return a partially configured vehicle (global default may be missing) 
 	 */
 	public Vehicle buildVehicle( Element vehicleNode ) {
-		//		int start = Integer.parseInt(vehicleNode.getAttributeValue("start"));
-		//		int end = Integer.parseInt(vehicleNode.getAttributeValue("end"));
 		int id = Integer.parseInt(vehicleNode.getAttributeValue("id"));
-		//TODO: move validation somewhere else!!!!
-
-		//		List<GraphNode> nodes = g.getNodes();
-		//		try {
-		//			checkEndPoint(nodes, start, id, "Start" );
-		//			checkEndPoint(nodes, end, id, "End" );
-		//		} catch ( ConfigurationException e ) {
-		//			return null;
-		//		}
-		//VehicleStrategy cs = defaultStrategy;
 		VehicleStrategy cs = null;
 		if(vehicleNode.getAttributeValue("strategy") != null) {
-			String s = null;
 			try {
-				s = vehicleNode.getAttributeValue("strategy");
-				cs = (VehicleStrategy) Class.forName(s).newInstance();
-
-				//TODO: link the graph somewhere else
-				//cs.setGraph(g);
+				cs = (VehicleStrategy) loadClassFromAttribute(vehicleNode, "strategy");
 			} catch (Exception e) {
-				logger.warn( "VehicleStrategy " + s + " not found. Using default." );
+				logger.warn( "VehicleStrategy " + vehicleNode.getAttributeValue("strategy") + " not found. Using default." );
 			}
 		}
 		return new Vehicle(null, null, cs, id );
@@ -187,17 +175,25 @@ public class SimulationXMLBuilder {
 	 * It assigns default values where no explicit values are defined and performs other validation
 	 * as required.
 	 * 
-	 * @param nodes
-	 * @param defaultStrategy
-	 * @param capacity
-	 * @return
+	 * @return the list of fully validated GraphNodes
 	 */
-	private List<GraphNode> buildNodes( List<Element> nodeElements, SpeedStrategy defaultStrategy, int capacity ) {
+	private List<GraphNode> buildNodes( List<Element> nodeElements, SpeedStrategy defaultStrategy,
+			AdasimFilter uncertaintyFilter, AdasimFilter privacyFilter, int capacity ) {
 		List<GraphNode> nodes = new ArrayList<GraphNode>( nodeElements.size() );
 		for( Element node : nodeElements ) {
 			GraphNode gn = buildNode( node );
 			if ( gn != null ) {
 				nodes.add( assignDefaultNodeValues(gn, defaultStrategy, capacity) );
+			}
+			//assign default when needed
+			if ( gn.getUncertaintyFilter() == null ) {
+				gn.setUncertaintyFilter( uncertaintyFilter );
+			}
+			if ( gn.getSpeedStrategy() == null ) {
+				gn.setSpeedStrategy( defaultStrategy );
+			}
+			if ( gn.getPrivacyFilter() == null ) {
+				gn.setPrivacyFilter(privacyFilter);
 			}
 		}
 		for ( Element node: nodeElements ) {
@@ -209,7 +205,7 @@ public class SimulationXMLBuilder {
 
 	/**
 	 * @param gn
-	 * @return
+	 * @return the updated GraphNode (should be reference equal)
 	 */
 	private GraphNode assignDefaultNodeValues(GraphNode gn, SpeedStrategy ss, int capacity ) {
 		if ( gn.getSpeedStrategy() == null ) {
@@ -221,27 +217,22 @@ public class SimulationXMLBuilder {
 		return gn;
 	}
 
-	/**
-	 * @param node
-	 * @param defaultStrategy
-	 * @return
-	 */
-	private SpeedStrategy buildStrategy(Element node) {
-		SpeedStrategy ss = null;
-		String ssn = node.getAttributeValue( "strategy" );
-		if ( ssn != null ) {
+	private Object loadClassFromAttribute(Element node, String attribute ) {
+		Object t = null;
+		String n = node.getAttributeValue( attribute );
+		if ( n != null ) {
 			try {
 				@SuppressWarnings("rawtypes")
-				Class ssc = Class.forName( ssn );
-				ss = (SpeedStrategy) ssc.newInstance();
+				Class c = Class.forName( n );
+				t = c.newInstance();
 			} catch (Exception e) {}
 		}
-		return ss;
+		return t;
 	}
 
 	/**
 	 * @param node
-	 * @return
+	 * @return the delay declared in the XML element or the default 1
 	 * @throws ConfigurationException 
 	 */
 	private int getDelay(Element node) {
@@ -286,7 +277,7 @@ public class SimulationXMLBuilder {
 	/**
 	 * @param nodes
 	 * @param node
-	 * @return
+	 * @return the GraphNode with the same ID as the XML element or <code>null</code>.
 	 */
 	private GraphNode getNode(List<GraphNode> nodes, Element node) {
 		int id = Integer.parseInt( node.getAttributeValue( "id" ) );
@@ -298,7 +289,7 @@ public class SimulationXMLBuilder {
 
 	/**
 	 * @param nodes
-	 * @return
+	 * @return the list of validated nodes
 	 */
 	private List<GraphNode> validate(List<GraphNode> nodes) {
 		List<GraphNode> l = new ArrayList<GraphNode>( nodes );
@@ -313,7 +304,7 @@ public class SimulationXMLBuilder {
 	/**
 	 * Removes links that point to invalid neighbors.
 	 * @param nodes
-	 * @return
+	 * @return the updated list
 	 */
 	private List<GraphNode> reduce(List<GraphNode> nodes) {
 		List<GraphNode> l = new ArrayList<GraphNode>();
@@ -330,14 +321,14 @@ public class SimulationXMLBuilder {
 
 	/**
 	 * @param child
-	 * @return
+	 * @return a list of partially configured agents
 	 * @throws ConfigurationException 
 	 */
 	public List<? extends AdasimAgent> buildAgents(Element child) throws ConfigurationException {
 		List<AdasimAgent> agents = new ArrayList<AdasimAgent>();
 		if ( child != null ) {
 			@SuppressWarnings("unchecked")
-			List<Element> agentNodes = child.getChildren( "agents" );
+			List<Element> agentNodes = child.getChildren( "agent" );
 			for ( Element agentNode : agentNodes ) {
 				AdasimAgent agent = buildAgent( agentNode );
 				if ( agent != null ) {
@@ -350,7 +341,7 @@ public class SimulationXMLBuilder {
 
 	/**
 	 * @param agent
-	 * @return
+	 * @return a partially configured agent
 	 * @throws ConfigurationException 
 	 */
 	public AdasimAgent buildAgent(Element agent) throws ConfigurationException {
