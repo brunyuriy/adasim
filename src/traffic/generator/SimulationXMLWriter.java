@@ -129,7 +129,7 @@ public class SimulationXMLWriter {
 		Element g = factory.element( "graph" );
 		g.setAttribute( factory.attribute( "default_strategy", DEFAULT_SPEED_STRATEGY) );
 		g.setAttribute( factory.attribute( "default_capacity", DEFAULT_NODE_CAPACITY ) );
-		for ( RoadSegment node : graph.getNodes() ) {
+		for ( RoadSegment node : graph.getRoadSegments() ) {
 			writeNode(g, node );
 		}
 		doc.addContent(g);

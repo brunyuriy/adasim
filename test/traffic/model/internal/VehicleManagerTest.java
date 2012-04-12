@@ -84,13 +84,13 @@ public class VehicleManagerTest {
 				"</graph>" ) );
 		graph = builder.buildGraph( doc.getRootElement() );
 		new TrafficSimulator(graph, manager, (List<AdasimAgent>)new ArrayList<AdasimAgent>() );
-		assertEquals( 2, graph.getNode(5).getCurrentDelay() );
-		RoadSegment start = graph.getNode(5);
+		assertEquals( 2, graph.getRoadSegment(5).getCurrentDelay() );
+		RoadSegment start = graph.getRoadSegment(5);
 		manager.addVehicle( new Vehicle(start, null, null, 1), 5);
 		manager.takeSimulationStep(4);
-		assertEquals( 2, graph.getNode(5).getCurrentDelay() );
+		assertEquals( 2, graph.getRoadSegment(5).getCurrentDelay() );
 		manager.takeSimulationStep(5);
-		assertEquals( 3, graph.getNode(5).getCurrentDelay() );
+		assertEquals( 3, graph.getRoadSegment(5).getCurrentDelay() );
 		assertEquals( 0, manager.getQueue().size() );
 	}
 

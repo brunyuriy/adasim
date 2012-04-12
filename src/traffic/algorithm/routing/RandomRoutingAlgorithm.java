@@ -52,7 +52,7 @@ public class RandomRoutingAlgorithm extends AbstractRoutingAlgorithm {
 	public List<RoadSegment> getPath(RoadSegment c, RoadSegment d) {
 		RoadSegment next = c;
 		List<RoadSegment> path = new ArrayList<RoadSegment>();
-		while(!next.equals(d) && path.size() < graph.getNodes().size() ) {
+		while(!next.equals(d) && path.size() < graph.getRoadSegments().size() ) {
 			List<RoadSegment> dest = next.getNeighbors();
 			Random generator = new Random();
 			int rand = generator.nextInt(dest.size());

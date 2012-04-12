@@ -47,14 +47,14 @@ import traffic.algorithm.delay.TrafficDelayFunction;
 
 public final class AdasimMap {
 	
-	private Set<RoadSegment> nodes; //The nodes within the graph
+	private Set<RoadSegment> roads; //The nodes within the graph
 	
 	/**
 	 * Creates a graph comprised of the given set of nodes
 	 * @param nodes
 	 */
 	public AdasimMap( Set<RoadSegment> nodes ) {
-		this.nodes = nodes;
+		this.roads = nodes;
 	}
 	
 	/**
@@ -62,7 +62,7 @@ public final class AdasimMap {
 	 * @param nodes
 	 */
 	public AdasimMap( List<RoadSegment> nodes ) {
-		this.nodes = new HashSet<RoadSegment>( nodes );
+		this.roads = new HashSet<RoadSegment>( nodes );
 	}
 	
 	/**
@@ -72,16 +72,16 @@ public final class AdasimMap {
 	 * @param speed
 	 * @param capacity
 	 */
-	public void addNode(int num, TrafficDelayFunction speed, int capacity) {
-		nodes.add(new RoadSegment(num, speed, capacity));
+	public void addRoadSegment(int num, TrafficDelayFunction speed, int capacity) {
+		roads.add(new RoadSegment(num, speed, capacity));
 	}
 	
 	/**
 	 * Inserts the given node into the graph
 	 * @param node
 	 */
-	public void addNode( RoadSegment node ) {
-		nodes.add(node);
+	public void addRoadSegment( RoadSegment node ) {
+		roads.add(node);
 	}
 	
 	/**
@@ -91,9 +91,9 @@ public final class AdasimMap {
 	 * @param o
 	 */
 	public void addEdge(int i, int o) {
-		RoadSegment n = getNode( i);
+		RoadSegment n = getRoadSegment( i);
 		if ( n != null ) {
-			RoadSegment n2 = getNode( o );
+			RoadSegment n2 = getRoadSegment( o );
 			if ( n2 != null ) n.addEdge( n2 );
 		}
 	}
@@ -103,16 +103,16 @@ public final class AdasimMap {
 	 * @param c
 	 * @param n
 	 */
-	public void addVehicleAtNode(Vehicle c, int n) {
-		RoadSegment gn = getNode(n);
+	public void addVehicleAtSegment(Vehicle c, int n) {
+		RoadSegment gn = getRoadSegment(n);
 		gn.enterNode(c);
 	}
 	
 	/**
 	 * @return the list of nodes in the graph
 	 */
-	public List<RoadSegment> getNodes() {
-		return new ArrayList<RoadSegment>(nodes);
+	public List<RoadSegment> getRoadSegments() {
+		return new ArrayList<RoadSegment>(roads);
 	}
 	
 	/**
@@ -121,8 +121,8 @@ public final class AdasimMap {
 	 * @return the node with ID <code>id</code> or <code>null</code> if
 	 * no such node exists 
 	 */
-	public RoadSegment getNode( int id ) {
-		for ( RoadSegment node : nodes ) {
+	public RoadSegment getRoadSegment( int id ) {
+		for ( RoadSegment node : roads ) {
 			if ( node.getID() == id ) return node;
 		}
 		return null;

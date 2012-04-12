@@ -98,10 +98,10 @@ public class SimulationXMLReaderTest {
 	@Test
 	public void carValidTimeDoesNotThrow() throws JDOMException, IOException, ConfigurationException {
 		TrafficSimulator sim = SimulationXMLReader.buildSimulator( new File("resources/test/valid-time.xml" ));
-		assertEquals( 1, sim.getGraph().getNode(4).getCurrentDelay() );
+		assertEquals( 1, sim.getGraph().getRoadSegment(4).getCurrentDelay() );
 		sim.takeSimulationStep(); //cycle 1
 		sim.takeSimulationStep(); //cycle 2, this should add the new car
-		assertEquals( 2, sim.getGraph().getNode(4).getCurrentDelay() );
+		assertEquals( 2, sim.getGraph().getRoadSegment(4).getCurrentDelay() );
 	}
 	
 	@Test
@@ -117,20 +117,20 @@ public class SimulationXMLReaderTest {
 	public void testStrategies() throws FileNotFoundException, ConfigurationException {
 		TrafficSimulator sim = SimulationXMLReader.buildSimulator( new File("resources/test/config.xml" ) );
 		AdasimMap g = sim.getGraph();
-		assertEquals(1, g.getNode(6).getCurrentDelay());
-		g.addVehicleAtNode(sim.getVehicle(0), 6);
-		g.addVehicleAtNode(sim.getVehicle(1), 6);
-		assertEquals(3, g.getNode(6).getCurrentDelay()); //Tests Quadratic Speed Strategy
-		assertEquals(1, g.getNode(1).getCurrentDelay());
-		g.addVehicleAtNode(sim.getVehicle(2), 1);
-		g.addVehicleAtNode(sim.getVehicle(3), 1);
-		assertEquals(3, g.getNode(1).getCurrentDelay() ); //Tests Linear Speed Strategy
+		assertEquals(1, g.getRoadSegment(6).getCurrentDelay());
+		g.addVehicleAtSegment(sim.getVehicle(0), 6);
+		g.addVehicleAtSegment(sim.getVehicle(1), 6);
+		assertEquals(3, g.getRoadSegment(6).getCurrentDelay()); //Tests Quadratic Speed Strategy
+		assertEquals(1, g.getRoadSegment(1).getCurrentDelay());
+		g.addVehicleAtSegment(sim.getVehicle(2), 1);
+		g.addVehicleAtSegment(sim.getVehicle(3), 1);
+		assertEquals(3, g.getRoadSegment(1).getCurrentDelay() ); //Tests Linear Speed Strategy
 	}
 	
 	@Test
 	public void testNeighbors() throws FileNotFoundException, ConfigurationException {
 		AdasimMap g = SimulationXMLReader.buildSimulator( new File("resources/test/config.xml")).getGraph();
-		List<RoadSegment> neighbors = g.getNodes().get(2).getNeighbors();
+		List<RoadSegment> neighbors = g.getRoadSegments().get(2).getNeighbors();
 		int first = neighbors.get(0).getID();
 		assertEquals(first, 4);
 		int second = neighbors.get(1).getID();
@@ -142,7 +142,7 @@ public class SimulationXMLReaderTest {
 	@Test
 	public void emptyNeighborListIsNotIgnored() throws FileNotFoundException, ConfigurationException {
 		AdasimMap g = SimulationXMLReader.buildSimulator( new File("resources/test/unconnected-node.xml")).getGraph();
-		assertEquals( g.getNodes().size(), 10);
+		assertEquals( g.getRoadSegments().size(), 10);
 	}
 	
 	@Test(expected=ConfigurationException.class)
@@ -167,17 +167,17 @@ public class SimulationXMLReaderTest {
 	@Test
 	public void invalidNeighborIsIgnored() throws FileNotFoundException, ConfigurationException {
 		AdasimMap g = SimulationXMLReader.buildSimulator( new File("resources/test/invalid-neighbor.xml")).getGraph();
-		List<RoadSegment> neighbors = g.getNode( 0 ).getNeighbors(); 
+		List<RoadSegment> neighbors = g.getRoadSegment( 0 ).getNeighbors(); 
 		assertEquals(1, neighbors.size() );
 		assertEquals(4, neighbors.get(0).getID() );
-		neighbors = g.getNode( 1 ).getNeighbors(); 
+		neighbors = g.getRoadSegment( 1 ).getNeighbors(); 
 		assertTrue( neighbors.isEmpty() );
 	}
 	
 	@Test
 	public void invalidSpeedStrategyDefaultsCorrectly() throws FileNotFoundException, ConfigurationException {
 		AdasimMap g = SimulationXMLReader.buildSimulator( new File("resources/test/invalid-strategy2.xml")).getGraph();
-		assertEquals( QuadraticTrafficDelayFunction.class, g.getNodes().get(1).getSpeedStrategy().getClass() );
+		assertEquals( QuadraticTrafficDelayFunction.class, g.getRoadSegments().get(1).getSpeedStrategy().getClass() );
 	}
 
 	@Test
@@ -189,13 +189,13 @@ public class SimulationXMLReaderTest {
 	@Test
 	public void setsDelayCorrectly() throws FileNotFoundException, ConfigurationException {
 		AdasimMap g = SimulationXMLReader.buildSimulator( new File("resources/test/config-weights.xml")).getGraph();
-		assertEquals( 7, g.getNodes().get(1).getDelay() );
+		assertEquals( 7, g.getRoadSegments().get(1).getDelay() );
 	}
 
 	@Test
 	public void setsDelayCorrectly2() throws FileNotFoundException, ConfigurationException {
 		AdasimMap g = SimulationXMLReader.buildSimulator( new File("resources/test/shortest-path-test-weights.xml")).getGraph();
-		assertEquals( 4, g.getNodes().get(3).getDelay() );
+		assertEquals( 4, g.getRoadSegments().get(3).getDelay() );
 	}
 
 	@Test (expected=ConfigurationException.class)
@@ -213,6 +213,6 @@ public class SimulationXMLReaderTest {
 	@Test
 	public void nodesHaveAllVehicles() throws FileNotFoundException, ConfigurationException {
 		AdasimMap g = SimulationXMLReader.buildSimulator( new File("resources/test/shortest-path-test-weights.xml")).getGraph();
-		assertEquals( 3, g.getNode(2).numVehiclesAtNode() );		
+		assertEquals( 3, g.getRoadSegment(2).numVehiclesAtNode() );		
 	}
 }
