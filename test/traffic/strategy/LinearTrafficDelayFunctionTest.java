@@ -24,13 +24,13 @@ import static org.junit.Assert.*;
  * @author Jonathan Ramaswamy - ramaswamyj12@gmail.com
  */
 
-public class LinearSpeedStrategyTest {
+public class LinearTrafficDelayFunctionTest {
 
-	private LinearSpeedStrategy strategy;
+	private LinearTrafficDelayFunction strategy;
 	
 	@Before
 	public void setUp() {
-		strategy = new LinearSpeedStrategy();
+		strategy = new LinearTrafficDelayFunction();
 	}
 	
 	@Test

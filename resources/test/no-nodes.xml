@@ -3,6 +3,6 @@
 		<car id="27" start="1" end="1"/>
 	</cars>
 
-	<graph default_strategy="traffic.strategy.QuadraticSpeedStrategy">
+	<graph default_strategy="traffic.strategy.QuadraticTrafficDelayFunction">
 	</graph>
 </simulation>

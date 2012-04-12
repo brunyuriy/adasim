@@ -57,7 +57,7 @@ import traffic.strategy.VehicleStrategy;
  */
 public class SimulationXMLWriter {
 	
-	private static final String DEFAULT_SPEED_STRATEGY = "traffic.strategy.LinearSpeedStrategy";
+	private static final String DEFAULT_SPEED_STRATEGY = "traffic.strategy.LinearTrafficDelayFunction";
 	private static final String DEFAULT_CAR_STRATEGY = "traffic.strategy.LookaheadShortestPathVehicleStrategy";
 	private static final String DEFAULT_NODE_CAPACITY = "0";
 	

@@ -23,7 +23,7 @@ import org.junit.Test;
 import traffic.model.RoadSegment;
 import traffic.model.Vehicle;
 import traffic.strategy.AbstractVehicleStrategy;
-import traffic.strategy.LinearSpeedStrategy;
+import traffic.strategy.LinearTrafficDelayFunction;
 import static org.junit.Assert.*;
 
 
@@ -39,8 +39,8 @@ public class RoadSegmentTest {
 	
 	@Before
 	public void setUp() {
-		node = new RoadSegment(0, new LinearSpeedStrategy(), 1, 0);
-		node2 = new RoadSegment(1, new LinearSpeedStrategy(), 1,0 ) ;
+		node = new RoadSegment(0, new LinearTrafficDelayFunction(), 1, 0);
+		node2 = new RoadSegment(1, new LinearTrafficDelayFunction(), 1,0 ) ;
 		node.addEdge( node2 );
 	}
 	

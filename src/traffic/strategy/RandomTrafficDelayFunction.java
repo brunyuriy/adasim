@@ -36,7 +36,7 @@ import java.util.Random;
  * @author Jonathan Ramaswamy - ramaswamyj12@gmail.com
  */
 
-public class RandomSpeedStrategy implements TrafficDelayFunction{
+public class RandomTrafficDelayFunction implements TrafficDelayFunction{
 
 	/**
 	 * Picks a random number between 0 and 9 to be the speed limit

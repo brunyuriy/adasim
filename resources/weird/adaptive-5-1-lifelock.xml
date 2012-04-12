@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <simulation>
-  <graph default_strategy="traffic.strategy.LinearSpeedStrategy">
+  <graph default_strategy="traffic.strategy.LinearTrafficDelayFunction">
     <node id="0" delay="3" neighbors="70 26" />
     <node id="1" delay="4" neighbors="96 52 8 92" />
     <node id="2" delay="5" neighbors="67 7 42" />
