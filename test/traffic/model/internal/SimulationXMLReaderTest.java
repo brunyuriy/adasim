@@ -31,7 +31,7 @@ import traffic.model.TrafficSimulator;
 import traffic.model.Vehicle;
 import traffic.model.internal.SimulationXMLReader;
 import traffic.strategy.LookaheadShortestPathVehicleStrategy;
-import traffic.strategy.QuadraticSpeedStrategy;
+import traffic.strategy.QuadraticTrafficDelayFunction;
 
 
 /**
@@ -177,7 +177,7 @@ public class SimulationXMLReaderTest {
 	@Test
 	public void invalidSpeedStrategyDefaultsCorrectly() throws FileNotFoundException, ConfigurationException {
 		AdasimMap g = SimulationXMLReader.buildSimulator( new File("resources/test/invalid-strategy2.xml")).getGraph();
-		assertEquals( QuadraticSpeedStrategy.class, g.getNodes().get(1).getSpeedStrategy().getClass() );
+		assertEquals( QuadraticTrafficDelayFunction.class, g.getNodes().get(1).getSpeedStrategy().getClass() );
 	}
 
 	@Test

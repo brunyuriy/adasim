@@ -1,4 +1,4 @@
-  <graph default_strategy="traffic.strategy.LinearSpeedStrategy" default_capacity="0">
+  <graph default_strategy="traffic.strategy.LinearTrafficDelayFunction" default_capacity="0">
     <node id="0" delay="5" neighbors="42 84" />
     <node id="1" delay="5" neighbors="0 43 85" />
     <node id="2" delay="5" neighbors="1 44 86" />

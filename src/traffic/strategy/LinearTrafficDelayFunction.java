@@ -29,20 +29,16 @@
 package traffic.strategy;
 
 /**
- * The speed limit is set to be equal to the square of the number of cars at the node,
- * above a certain capacity
+ * This sets the delay at a node to be equal to the number of cars
+ * at the node, minus a given maximum capacity
  * 
  * @author Jonathan Ramaswamy - ramaswamyj12@gmail.com
  */
 
-public class QuadraticSpeedStrategy implements TrafficDelayFunction {
+public class LinearTrafficDelayFunction implements TrafficDelayFunction {
 
 	public int getDelay(int weight, int capacity, int number) {
-		if (number > capacity) {
-			return number - capacity + (weight * weight);
-		} else {
-			return weight * weight;
-		}
+		return Math.max(weight, number - capacity + weight);
 	}
 
 }

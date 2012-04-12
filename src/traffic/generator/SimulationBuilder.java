@@ -34,7 +34,7 @@ import traffic.model.TrafficSimulator;
 import traffic.model.internal.SimulationXMLBuilder;
 import traffic.model.internal.VehicleManager;
 import traffic.strategy.VehicleStrategy;
-import traffic.strategy.LinearSpeedStrategy;
+import traffic.strategy.LinearTrafficDelayFunction;
 import traffic.strategy.TrafficDelayFunction;
 
 /**
@@ -204,7 +204,7 @@ public class SimulationBuilder {
 		return random.nextInt( nodeDelay[1] - nodeDelay[0] + 1 ) + nodeDelay[0];
 	}
 
-	private static TrafficDelayFunction ss = new LinearSpeedStrategy();
+	private static TrafficDelayFunction ss = new LinearTrafficDelayFunction();
 	/**
 	 * @param opts
 	 * @return a randomized speed strategy (this is constant right now)

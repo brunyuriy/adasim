@@ -26,7 +26,7 @@ import traffic.model.Vehicle;
 import traffic.model.ConfigurationException;
 import traffic.model.TrafficSimulator;
 import traffic.strategy.VehicleStrategy;
-import traffic.strategy.LinearSpeedStrategy;
+import traffic.strategy.LinearTrafficDelayFunction;
 import traffic.strategy.TrafficDelayFunction;
 
 /**
@@ -147,7 +147,7 @@ public class CongestedSimulationBuilder {
 		return random.nextInt( nodeDelay[1] - nodeDelay[0] + 1 ) + nodeDelay[0];
 	}
 
-	static TrafficDelayFunction ss = new LinearSpeedStrategy();
+	static TrafficDelayFunction ss = new LinearTrafficDelayFunction();
 	/**
 	 * @param opts
 	 * @return ss the currently configured speed strategy, if <code>null</code> this will cause problems

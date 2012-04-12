@@ -36,8 +36,8 @@ import traffic.model.RoadSegment;
 import traffic.model.Vehicle;
 import traffic.model.internal.SimulationXMLBuilder;
 import traffic.strategy.AlwaysRecomputeVehicleStrategy;
-import traffic.strategy.LinearSpeedStrategy;
-import traffic.strategy.QuadraticSpeedStrategy;
+import traffic.strategy.LinearTrafficDelayFunction;
+import traffic.strategy.QuadraticTrafficDelayFunction;
 import traffic.strategy.ShortestPathVehicleStrategy;
 
 /**
@@ -68,11 +68,11 @@ public class SimulationXMLBuilderTest {
 	
 	@Test
 	public void nodeNoAllOptionals() throws JDOMException, IOException {
-		Document doc = parser.build( new StringReader( "<node id=\"27\" neighbors=\"1 2 3\" delay=\"2\" capacity=\"5\" strategy=\"traffic.strategy.LinearSpeedStrategy\" uncertainty_filter=\"traffic.filter.IdentityFilter\"/>" ) );
+		Document doc = parser.build( new StringReader( "<node id=\"27\" neighbors=\"1 2 3\" delay=\"2\" capacity=\"5\" strategy=\"traffic.strategy.LinearTrafficDelayFunction\" uncertainty_filter=\"traffic.filter.IdentityFilter\"/>" ) );
 		RoadSegment node = builder.buildNode( doc.getRootElement() );
 		assertEquals( 27, node.getID() );
 		assertTrue( node.getNeighbors().isEmpty() );
-		assertTrue( node.getSpeedStrategy() instanceof LinearSpeedStrategy );
+		assertTrue( node.getSpeedStrategy() instanceof LinearTrafficDelayFunction );
 		assertEquals(5, node.getCapacity() );
 		assertEquals(2, node.getDelay() );
 		assertNotNull( "No uncertainty filter assigned", node.getUncertaintyFilter() );
@@ -81,43 +81,43 @@ public class SimulationXMLBuilderTest {
 	
 	@Test
 	public void graphWithDefaults() throws JDOMException, IOException, ConfigurationException {
-		Document doc = parser.build( new StringReader( "<graph default_strategy=\"traffic.strategy.LinearSpeedStrategy\" default_capacity=\"0\">" +
+		Document doc = parser.build( new StringReader( "<graph default_strategy=\"traffic.strategy.LinearTrafficDelayFunction\" default_capacity=\"0\">" +
 				"<node id=\"1\" neighbors=\"1 2 3 4\" delay=\"2\" capacity=\"5\"/>" +
-				"<node id=\"2\" neighbors=\"3\" delay=\"2\" capacity=\"5\" strategy=\"traffic.strategy.LinearSpeedStrategy\"/>" +
-				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"traffic.strategy.QuadraticSpeedStrategy\"/>" +
+				"<node id=\"2\" neighbors=\"3\" delay=\"2\" capacity=\"5\" strategy=\"traffic.strategy.LinearTrafficDelayFunction\"/>" +
+				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"traffic.strategy.QuadraticTrafficDelayFunction\"/>" +
 				"</graph>" ) );
 		AdasimMap graph = builder.buildGraph( doc.getRootElement() );
 		assertEquals( 3, graph.getNodes().size() );
 		RoadSegment node = graph.getNode( 1 );
 		assertEquals( 3, node.getNeighbors().size() );
 		assertNotNull( "No default speed strategy assigned", node.getSpeedStrategy() );
-		assertTrue( "Default speed strategy has wrong type", node.getSpeedStrategy() instanceof LinearSpeedStrategy );
+		assertTrue( "Default speed strategy has wrong type", node.getSpeedStrategy() instanceof LinearTrafficDelayFunction );
 		assertNotNull( "No uncertainty filter assigned", node.getUncertaintyFilter() );
 		assertTrue( "Uncertainty filter has wrong type", node.getUncertaintyFilter() instanceof IdentityFilter );
 		node = graph.getNode(4);
 		assertEquals(0, node.getCapacity() );
-		assertTrue( node.getSpeedStrategy() instanceof QuadraticSpeedStrategy );
+		assertTrue( node.getSpeedStrategy() instanceof QuadraticTrafficDelayFunction );
 	}
 
 	
 	@Test
 	public void graphWithUncertaintyFilter() throws JDOMException, IOException, ConfigurationException {
-		Document doc = parser.build( new StringReader( "<graph default_strategy=\"traffic.strategy.LinearSpeedStrategy\" default_capacity=\"0\" uncertainty_filter=\"traffic.model.internal.FakeFilter\">" +
+		Document doc = parser.build( new StringReader( "<graph default_strategy=\"traffic.strategy.LinearTrafficDelayFunction\" default_capacity=\"0\" uncertainty_filter=\"traffic.model.internal.FakeFilter\">" +
 				"<node id=\"1\" neighbors=\"1 2 3 4\" delay=\"2\" capacity=\"5\"/>" +
-				"<node id=\"2\" neighbors=\"3\" delay=\"2\" capacity=\"5\" strategy=\"traffic.strategy.LinearSpeedStrategy\"/>" +
-				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"traffic.strategy.QuadraticSpeedStrategy\" uncertainty_filter=\"traffic.filter.IdentityFilter\"/>" +
+				"<node id=\"2\" neighbors=\"3\" delay=\"2\" capacity=\"5\" strategy=\"traffic.strategy.LinearTrafficDelayFunction\"/>" +
+				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"traffic.strategy.QuadraticTrafficDelayFunction\" uncertainty_filter=\"traffic.filter.IdentityFilter\"/>" +
 				"</graph>" ) );
 		AdasimMap graph = builder.buildGraph( doc.getRootElement() );
 		assertEquals( 3, graph.getNodes().size() );
 		RoadSegment node = graph.getNode( 1 );
 		assertEquals( 3, node.getNeighbors().size() );
 		assertNotNull( "No default speed strategy assigned", node.getSpeedStrategy() );
-		assertTrue( "Default speed strategy has wrong type", node.getSpeedStrategy() instanceof LinearSpeedStrategy );
+		assertTrue( "Default speed strategy has wrong type", node.getSpeedStrategy() instanceof LinearTrafficDelayFunction );
 		assertNotNull( "No uncertainty filter assigned", node.getUncertaintyFilter() );
 		assertTrue( "Uncertainty filter has wrong type", node.getUncertaintyFilter() instanceof FakeFilter );
 		node = graph.getNode(4);
 		assertEquals(0, node.getCapacity() );
-		assertTrue( node.getSpeedStrategy() instanceof QuadraticSpeedStrategy );
+		assertTrue( node.getSpeedStrategy() instanceof QuadraticTrafficDelayFunction );
 		assertNotNull( "No uncertainty filter assigned", node.getUncertaintyFilter() );
 		assertTrue( "Uncertainty filter has wrong type", node.getUncertaintyFilter() instanceof IdentityFilter );
 	}
@@ -125,10 +125,10 @@ public class SimulationXMLBuilderTest {
 	@Test
 	public void graphWithUncertaintyFilterHookup() throws JDOMException, IOException, ConfigurationException {
 		//test that the uncertainty filter gets called correctly.
-		Document doc = parser.build( new StringReader( "<graph default_strategy=\"traffic.strategy.LinearSpeedStrategy\" default_capacity=\"0\" uncertainty_filter=\"traffic.model.FakeFilter\">" +
+		Document doc = parser.build( new StringReader( "<graph default_strategy=\"traffic.strategy.LinearTrafficDelayFunction\" default_capacity=\"0\" uncertainty_filter=\"traffic.model.FakeFilter\">" +
 				"<node id=\"1\" neighbors=\"1 2 3 4\" delay=\"2\" capacity=\"5\"/>" +
-				"<node id=\"2\" neighbors=\"3\" delay=\"2\" capacity=\"5\" strategy=\"traffic.strategy.LinearSpeedStrategy\"/>" +
-				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"traffic.strategy.LinearSpeedStrategy\" uncertainty_filter=\"traffic.model.internal.FakeFilter\"/>" +
+				"<node id=\"2\" neighbors=\"3\" delay=\"2\" capacity=\"5\" strategy=\"traffic.strategy.LinearTrafficDelayFunction\"/>" +
+				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"traffic.strategy.LinearTrafficDelayFunction\" uncertainty_filter=\"traffic.model.internal.FakeFilter\"/>" +
 				"</graph>" ) );
 		AdasimMap graph = builder.buildGraph( doc.getRootElement() );
 		assertEquals( 3, graph.getNodes().size() );
@@ -146,22 +146,22 @@ public class SimulationXMLBuilderTest {
 
 	@Test
 	public void graphWithPrivacyFilter() throws JDOMException, IOException, ConfigurationException {
-		Document doc = parser.build( new StringReader( "<graph default_strategy=\"traffic.strategy.LinearSpeedStrategy\" default_capacity=\"0\" privacy_filter=\"traffic.model.internal.FakeFilter\">" +
+		Document doc = parser.build( new StringReader( "<graph default_strategy=\"traffic.strategy.LinearTrafficDelayFunction\" default_capacity=\"0\" privacy_filter=\"traffic.model.internal.FakeFilter\">" +
 				"<node id=\"1\" neighbors=\"1 2 3 4\" delay=\"2\" capacity=\"5\"/>" +
-				"<node id=\"2\" neighbors=\"3\" delay=\"2\" capacity=\"5\" strategy=\"traffic.strategy.LinearSpeedStrategy\"/>" +
-				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"traffic.strategy.QuadraticSpeedStrategy\" privacy_filter=\"traffic.filter.IdentityFilter\"/>" +
+				"<node id=\"2\" neighbors=\"3\" delay=\"2\" capacity=\"5\" strategy=\"traffic.strategy.LinearTrafficDelayFunction\"/>" +
+				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"traffic.strategy.QuadraticTrafficDelayFunction\" privacy_filter=\"traffic.filter.IdentityFilter\"/>" +
 				"</graph>" ) );
 		AdasimMap graph = builder.buildGraph( doc.getRootElement() );
 		assertEquals( 3, graph.getNodes().size() );
 		RoadSegment node = graph.getNode( 1 );
 		assertEquals( 3, node.getNeighbors().size() );
 		assertNotNull( "No default speed strategy assigned", node.getSpeedStrategy() );
-		assertTrue( "Default speed strategy has wrong type", node.getSpeedStrategy() instanceof LinearSpeedStrategy );
+		assertTrue( "Default speed strategy has wrong type", node.getSpeedStrategy() instanceof LinearTrafficDelayFunction );
 		assertNotNull( "No privacy filter assigned", node.getPrivacyFilter() );
 		assertTrue( "Privacy filter has wrong type", node.getPrivacyFilter() instanceof FakeFilter );
 		node = graph.getNode(4);
 		assertEquals(0, node.getCapacity() );
-		assertTrue( node.getSpeedStrategy() instanceof QuadraticSpeedStrategy );
+		assertTrue( node.getSpeedStrategy() instanceof QuadraticTrafficDelayFunction );
 		assertNotNull( "No privacy filter assigned", node.getPrivacyFilter() );
 		assertTrue( "Privacy filter has wrong type", node.getPrivacyFilter() instanceof IdentityFilter );
 	}
