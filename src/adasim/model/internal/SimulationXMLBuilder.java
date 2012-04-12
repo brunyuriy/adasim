@@ -266,15 +266,8 @@ public class SimulationXMLBuilder {
 		RoadSegment gn = getNode( nodes, node );
 		for ( String n : neighbors ) {
 			int nn = Integer.parseInt(n);
-			gn.addEdge( getNode( nodes, nn ));					
+			gn.addEdge( RoadSegment.getRoadSegment( nodes, nn ));					
 		}
-	}
-
-	private RoadSegment getNode(List<RoadSegment> nodes, int node) {
-		for ( RoadSegment n : nodes ) {
-			if ( n.getID() == node ) return n;
-		}
-		return null;
 	}
 
 	/**
@@ -284,10 +277,7 @@ public class SimulationXMLBuilder {
 	 */
 	private RoadSegment getNode(List<RoadSegment> nodes, Element node) {
 		int id = Integer.parseInt( node.getAttributeValue( "id" ) );
-		for ( RoadSegment n : nodes ) {
-			if ( n.getID() == id ) return n;
-		}
-		return null;
+		return RoadSegment.getRoadSegment(nodes, id);
 	}
 
 	/**
