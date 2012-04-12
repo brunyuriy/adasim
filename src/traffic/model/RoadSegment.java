@@ -73,7 +73,7 @@ public final class RoadSegment extends AbstractAdasimAgent {
 	//PROPERTIES
 	private int nodeNum; //The number of this node on the graph
 	private int delay; //The basic delay of this node. To be modified by the speed strategy
-	private NodeVehicleQueue queue; //Holds the vehicles on this node and deals with the traffic
+	private RoadVehicleQueue queue; //Holds the vehicles on this node and deals with the traffic
 	private int capacity; //The number of vehicles the road can hold before the speed strategy takes effect
 	private boolean closed;
 	
@@ -100,7 +100,7 @@ public final class RoadSegment extends AbstractAdasimAgent {
 		outgoing = new HashSet<RoadSegment>();
 		ss = s;
 		this.delay = delay;
-		queue = new NodeVehicleQueue();
+		queue = new RoadVehicleQueue();
 		this.capacity = capacity;
 	}
 	
