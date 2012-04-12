@@ -29,6 +29,7 @@
 package adasim.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -351,6 +352,23 @@ public final class RoadSegment extends AbstractAdasimAgent {
 	@Override
 	public String toString() {
 		return "" + nodeNum;
+	}
+	
+	/* ***************************************************
+	 * STATIC UTILITY METHODS
+	 *************************************************** */
+	
+	/**
+	 * @param roads a list of road segments
+	 * @param id the ID to search for
+	 * @return the RoadSegment with the ID, or <code>null</code> if 
+	 * none can be found.
+	 */
+	public static RoadSegment getRoadSegment(Collection<RoadSegment> roads, int id) {
+		for ( RoadSegment n : roads ) {
+			if ( n.getID() == id ) return n;
+		}
+		return null;
 	}
 
 }
