@@ -26,7 +26,7 @@ import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
 import traffic.agent.AdasimAgent;
-import traffic.algorithm.VehicleStrategy;
+import traffic.algorithm.RoutingAlgorithm;
 import traffic.algorithm.delay.LinearTrafficDelayFunction;
 import traffic.algorithm.delay.TrafficDelayFunction;
 import traffic.model.AdasimMap;
@@ -104,7 +104,7 @@ public class SimulationBuilder {
 	 * @throws ConfigurationException 
 	 */
 	private Vehicle buildVehicle(int i, ConfigurationOptions opts, AdasimMap g) throws ConfigurationException {
-		VehicleStrategy cs = randomVehicleStrategy( opts.getStrategies() );
+		RoutingAlgorithm cs = randomVehicleStrategy( opts.getStrategies() );
 		cs.setGraph(g);
 		List<RoadSegment> nodes = g.getNodes();
 		RoadSegment start = randomNode( nodes );
@@ -129,12 +129,12 @@ public class SimulationBuilder {
 	 * @return a random strategy picked uniformly from the list of allowed strategies
 	 * @throws ConfigurationException 
 	 */
-	private VehicleStrategy randomVehicleStrategy(List<String> strategies) throws ConfigurationException {
+	private RoutingAlgorithm randomVehicleStrategy(List<String> strategies) throws ConfigurationException {
 		String s = strategies.get( random.nextInt( strategies.size() ) );
 		try {
 			@SuppressWarnings("rawtypes")
 			Class c = Class.forName( s );
-			return (VehicleStrategy) c.newInstance();
+			return (RoutingAlgorithm) c.newInstance();
 		} catch (Exception e) {
 			throw new ConfigurationException(e);
 		} 	

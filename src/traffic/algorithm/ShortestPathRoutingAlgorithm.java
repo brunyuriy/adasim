@@ -35,6 +35,6 @@ package traffic.algorithm;
  * @author Jochen Wuttke - wuttkej@gmail.com
  *
  */
-public class ShortestPathVehicleStrategy extends LookaheadShortestPathVehicleStrategy {
+public class ShortestPathRoutingAlgorithm extends LookaheadShortestPathRoutingAlgorithm {
 
 }

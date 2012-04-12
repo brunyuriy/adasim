@@ -23,18 +23,49 @@
  *    Jochen Wuttke (wuttkej@gmail.com) - initial API and implementation
  ********************************************************************************
  *
- * Created: Dec 16, 2011
+ * Created: Dec 12, 2011
  */
 
 package traffic.algorithm;
+
+import traffic.model.AdasimMap;
+import traffic.model.RoadSegment;
 
 /**
  * @author Jochen Wuttke - wuttkej@gmail.com
  *
  */
-public class AdaptiveVehicleStrategy extends LookaheadShortestPathVehicleStrategy {
+public abstract class AbstractRoutingAlgorithm implements RoutingAlgorithm {
+	
+	protected AdasimMap graph;
+	protected RoadSegment source, target;
+	protected int carID;
 
-	public AdaptiveVehicleStrategy() {
-		super(5);
+	/* (non-Javadoc)
+	 * @see traffic.algorithm.CarStrategy#setGraph(traffic.graph.Graph)
+	 */
+	@Override
+	public void setGraph(AdasimMap g) {
+		this.graph = g;
 	}
+
+	@Override
+	public void setStartNode( RoadSegment start ) {
+		source = start;
+	}	
+	
+	@Override
+	public void setEndNode( RoadSegment end ) {
+		target = end;
+	}
+	
+	/* (non-Javadoc)
+	 * @see traffic.algorithm.CarStrategy#setCarId(int)
+	 */
+	@Override
+	public void setVehicleId(int id) {
+		this.carID = id;
+	}
+	
+
 }

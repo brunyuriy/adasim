@@ -20,7 +20,7 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import traffic.algorithm.LookaheadShortestPathVehicleStrategy;
+import traffic.algorithm.LookaheadShortestPathRoutingAlgorithm;
 import traffic.model.NodeVehicleQueue;
 import traffic.model.Vehicle;
 
@@ -41,13 +41,13 @@ public class NodeVehicleQueueTest {
 	@Test
 	public void parkNonContainedVehicle() {
 		assertTrue( queue.isEmpty() );
-		queue.park( new Vehicle( null, null, new LookaheadShortestPathVehicleStrategy(0), 99) );
+		queue.park( new Vehicle( null, null, new LookaheadShortestPathRoutingAlgorithm(0), 99) );
 		assertTrue( queue.isEmpty() );		
 	}
 	
 	@Test
 	public void parkContainedVehicle() {
-		Vehicle c = new Vehicle(null, null, new LookaheadShortestPathVehicleStrategy(0), 99);
+		Vehicle c = new Vehicle(null, null, new LookaheadShortestPathRoutingAlgorithm(0), 99);
 		queue.enqueue(c, 4);
 		assertFalse(queue.isEmpty());
 		assertEquals(1, queue.size() );
@@ -58,11 +58,11 @@ public class NodeVehicleQueueTest {
 	
 	@Test
 	public void moveMultipleDelays() {
-		Vehicle c0 = new Vehicle(null, null, new LookaheadShortestPathVehicleStrategy(0), 0);
-		Vehicle c1 = new Vehicle(null, null, new LookaheadShortestPathVehicleStrategy(0), 1);
-		Vehicle c3 = new Vehicle(null, null, new LookaheadShortestPathVehicleStrategy(0), 3);
-		Vehicle c33 = new Vehicle(null, null, new LookaheadShortestPathVehicleStrategy(0), 3);
-		Vehicle c5 = new Vehicle(null, null, new LookaheadShortestPathVehicleStrategy(0), 5);
+		Vehicle c0 = new Vehicle(null, null, new LookaheadShortestPathRoutingAlgorithm(0), 0);
+		Vehicle c1 = new Vehicle(null, null, new LookaheadShortestPathRoutingAlgorithm(0), 1);
+		Vehicle c3 = new Vehicle(null, null, new LookaheadShortestPathRoutingAlgorithm(0), 3);
+		Vehicle c33 = new Vehicle(null, null, new LookaheadShortestPathRoutingAlgorithm(0), 3);
+		Vehicle c5 = new Vehicle(null, null, new LookaheadShortestPathRoutingAlgorithm(0), 5);
 		queue.enqueue(c0, 0);
 		queue.enqueue(c1, 1);
 		queue.enqueue(c3, 3);

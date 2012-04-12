@@ -44,9 +44,9 @@ import traffic.model.RoadSegment;
  * @author Jochen Wuttke - wuttkej@gmail.com
  *
  */
-public class LookaheadShortestPathVehicleStrategy extends AbstractVehicleStrategy {
+public class LookaheadShortestPathRoutingAlgorithm extends AbstractRoutingAlgorithm {
 	
-	private final static Logger logger = Logger.getLogger(LookaheadShortestPathVehicleStrategy.class);
+	private final static Logger logger = Logger.getLogger(LookaheadShortestPathRoutingAlgorithm.class);
 	
 	private final int lookahead;
 	private final int recompute;
@@ -61,7 +61,7 @@ public class LookaheadShortestPathVehicleStrategy extends AbstractVehicleStrateg
 	 * unmodified weight of each node, and for this reason will never recompute 
 	 * the path.
 	 */
-	public LookaheadShortestPathVehicleStrategy() {
+	public LookaheadShortestPathRoutingAlgorithm() {
 		this(0);
 	}
 
@@ -76,7 +76,7 @@ public class LookaheadShortestPathVehicleStrategy extends AbstractVehicleStrateg
 	 * 
 	 * @param lookahead
 	 */
-	public LookaheadShortestPathVehicleStrategy( int lookahead ){
+	public LookaheadShortestPathRoutingAlgorithm( int lookahead ){
 		this(lookahead, lookahead );
 	}
 
@@ -91,7 +91,7 @@ public class LookaheadShortestPathVehicleStrategy extends AbstractVehicleStrateg
 	 * 
 	 * @param lookahead
 	 */
-	public LookaheadShortestPathVehicleStrategy( int lookahead, int recomp ){
+	public LookaheadShortestPathRoutingAlgorithm( int lookahead, int recomp ){
 		this.lookahead = lookahead;
 		this.recompute = recomp;
 		this.steps = 0;
