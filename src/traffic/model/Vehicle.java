@@ -61,13 +61,11 @@ public final class Vehicle extends AbstractAdasimAgent {
 	private RoadSegment end; //Destination position
 	private RoadSegment currentNode; //Current position
 	private int id; //This vehicle's number in the list of vehicles
-	protected VehicleInfo info; //Info for the vehicle
 	private RoutingAlgorithm cs; //Strategy the vehicle uses to traverse the graph
 
 	private static Logger logger = Logger.getLogger(Vehicle.class);
 
 	protected Vehicle( int id ) {
-		info = new VehicleInfo();
 	}
 
 	public Vehicle(RoadSegment start, RoadSegment end, RoutingAlgorithm strat, int num) {
@@ -159,14 +157,6 @@ public final class Vehicle extends AbstractAdasimAgent {
 		buf.append(" At: " );
 		buf.append( getCurrentPosition().getID() );
 		return buf.toString();
-	}
-
-
-	/**
-	 * @return the info
-	 */
-	public VehicleInfo getInfo() {
-		return info;
 	}
 
 	/* (non-Javadoc)
