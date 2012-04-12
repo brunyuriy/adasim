@@ -28,10 +28,10 @@ import org.junit.Test;
 
 import traffic.agent.AbstractAdasimAgent;
 import traffic.agent.AdasimAgent;
-import traffic.algorithm.AlwaysRecomputeRoutingAlgorithm;
-import traffic.algorithm.ShortestPathRoutingAlgorithm;
 import traffic.algorithm.delay.LinearTrafficDelayFunction;
 import traffic.algorithm.delay.QuadraticTrafficDelayFunction;
+import traffic.algorithm.routing.AlwaysRecomputeRoutingAlgorithm;
+import traffic.algorithm.routing.ShortestPathRoutingAlgorithm;
 import traffic.filter.AdasimFilter;
 import traffic.filter.IdentityFilter;
 import traffic.model.ConfigurationException;
@@ -177,7 +177,7 @@ public class SimulationXMLBuilderTest {
 	
 	@Test
 	public void carAllOptionals() throws JDOMException, IOException {
-		Document doc = parser.build( new StringReader( "<car id=\"27\" start=\"1\" end=\"1\" strategy=\"traffic.algorithm.ShortestPathRoutingAlgorithm\" />" ) );
+		Document doc = parser.build( new StringReader( "<car id=\"27\" start=\"1\" end=\"1\" strategy=\"traffic.algorithm.routing.ShortestPathRoutingAlgorithm\" />" ) );
 		Vehicle car = builder.buildVehicle( doc.getRootElement() );
 		assertEquals( 27, car.getID() );
 		assertNull( car.getStartNode() );
@@ -187,9 +187,9 @@ public class SimulationXMLBuilderTest {
 
 	@Test
 	public void carListWithDefaults() throws JDOMException, IOException, ConfigurationException {
-		Document doc = parser.build( new StringReader( "<cars default_strategy=\"traffic.algorithm.AlwaysRecomputeRoutingAlgorithm\">" +
+		Document doc = parser.build( new StringReader( "<cars default_strategy=\"traffic.algorithm.routing.AlwaysRecomputeRoutingAlgorithm\">" +
 				"<car id=\"1\" start=\"1\" end=\"1\" />" +
-				"<car id=\"2\" start=\"1\" end=\"1\" strategy=\"traffic.algorithm.ShortestPathRoutingAlgorithm\" />" +
+				"<car id=\"2\" start=\"1\" end=\"1\" strategy=\"traffic.algorithm.routing.ShortestPathRoutingAlgorithm\" />" +
 				"<car id=\"3\" start=\"1\" end=\"1\" />" +
 				"</cars>" ) );
 		List<Vehicle> cars = builder.buildVehicles( doc.getRootElement() );

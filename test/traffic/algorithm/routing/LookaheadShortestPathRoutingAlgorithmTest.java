@@ -12,7 +12,7 @@
  * Created: Nov 22, 2011
  */
 
-package traffic.algorithm;
+package traffic.algorithm.routing;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,7 +23,7 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import traffic.algorithm.LookaheadShortestPathRoutingAlgorithm;
+import traffic.algorithm.routing.LookaheadShortestPathRoutingAlgorithm;
 import traffic.model.AdasimMap;
 import traffic.model.RoadSegment;
 import traffic.model.Vehicle;

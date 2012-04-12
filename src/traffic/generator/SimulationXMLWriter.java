@@ -40,7 +40,7 @@ import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
 import traffic.agent.AdasimAgent;
-import traffic.algorithm.RoutingAlgorithm;
+import traffic.algorithm.routing.RoutingAlgorithm;
 import traffic.model.AdasimMap;
 import traffic.model.RoadSegment;
 import traffic.model.Vehicle;

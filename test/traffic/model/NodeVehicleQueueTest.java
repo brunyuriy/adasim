@@ -20,7 +20,7 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import traffic.algorithm.LookaheadShortestPathRoutingAlgorithm;
+import traffic.algorithm.routing.LookaheadShortestPathRoutingAlgorithm;
 import traffic.model.NodeVehicleQueue;
 import traffic.model.Vehicle;
 

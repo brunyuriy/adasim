@@ -26,7 +26,7 @@
  * Created: Jan 24, 2012
  */
 
-package traffic.algorithm;
+package traffic.algorithm.routing;
 
 /**
  * This is the class implementing the ShortestPath

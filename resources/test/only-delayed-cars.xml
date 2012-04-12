@@ -1,5 +1,5 @@
 <simulation>
-	<cars default_strategy="traffic.algorithm.LookaheadShortestPathRoutingAlgorithm">
+	<cars default_strategy="traffic.algorithm.routing.LookaheadShortestPathRoutingAlgorithm">
 		<car id="1" start="4" end="7" start_time="2"/>
 		<car id="4" start="3" end="7" start_time="20"/>
 	</cars>

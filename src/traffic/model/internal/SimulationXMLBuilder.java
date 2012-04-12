@@ -36,8 +36,8 @@ import org.apache.log4j.Logger;
 import org.jdom.Element;
 
 import traffic.agent.AdasimAgent;
-import traffic.algorithm.RoutingAlgorithm;
 import traffic.algorithm.delay.TrafficDelayFunction;
+import traffic.algorithm.routing.RoutingAlgorithm;
 import traffic.filter.AdasimFilter;
 import traffic.filter.IdentityFilter;
 import traffic.model.ConfigurationException;

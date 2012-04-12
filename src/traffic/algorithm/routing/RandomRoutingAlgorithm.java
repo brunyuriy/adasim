@@ -20,55 +20,55 @@
  * SOFTWARE.
  *
  * Contributors:
- *    Jochen Wuttke (wuttkej@gmail.com) - initial API and implementation
+ *    Jonathan Ramaswamy (ramaswamyj12@gmail.com) - initial API and implementation
  ********************************************************************************
  *
- * Created: Dec 3, 2011
+ * Created: Oct 11, 2011
  */
 
-package traffic.algorithm;
+package traffic.algorithm.routing;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
-import traffic.model.AdasimMap;
 import traffic.model.RoadSegment;
 
 /**
- * This interface defines routing strategies. Given a graph, start and end node,
- * a routing strategy should compute a path from start to end and upon request
- * (via <code>getNextNode()</code>) should return the next node the vehicle
- * has to move to to follow that path.
+ * This class returns a random path for the car to follow
+ * No optimizations for shortest path are made
  * 
- * @author Jochen Wuttke - wuttkej@gmail.com
- *
+ * @author Jonathan Ramaswamy - ramaswamyj12@gmail.com
  */
-public interface RoutingAlgorithm {
-	
-	/**
-	 * This is intended for testing only, as it circumvents the control
-	 * that can be implemented in getNextNode()
-	 * @param from
-	 * @param to
-	 * @return the path computed by this strategy
-	 */
-	public List<RoadSegment> getPath(RoadSegment from, RoadSegment to); 
 
-	/**
-	 * @return The next node according to the routing strategy. May be <code>null</code> 
-	 * if there is no next node.
-	 */
-	public RoadSegment getNextNode();
+public class RandomRoutingAlgorithm extends AbstractRoutingAlgorithm {
+
+	public RandomRoutingAlgorithm(){}	
 	
 	/**
-	 * Required setter to configure the strategy with the graph to work on
-	 * @param g
+	 * Picks random neighbors to move towards until the destination is reached
+	 * Returns the path represented as a list of integers
 	 */
-	public void setGraph( AdasimMap g );
-	
-	public void setStartNode( RoadSegment start );
-	
-	public void setEndNode( RoadSegment end );
-	
-	public void setVehicleId( int id );
+	public List<RoadSegment> getPath(RoadSegment c, RoadSegment d) {
+		RoadSegment next = c;
+		List<RoadSegment> path = new ArrayList<RoadSegment>();
+		while(!next.equals(d) && path.size() < graph.getNodes().size() ) {
+			List<RoadSegment> dest = next.getNeighbors();
+			Random generator = new Random();
+			int rand = generator.nextInt(dest.size());
+			next = dest.get(rand);
+			path.add(next);
+		}
+		return path.get( path.size() - 1 ) == d ? path : null ;	//The random strategy must terminate even it if can't find a path
+	}
+
+	/* (non-Javadoc)
+	 * @see traffic.algorithm.CarStrategy#getNextNode()
+	 */
+	@Override
+	public RoadSegment getNextNode() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }
