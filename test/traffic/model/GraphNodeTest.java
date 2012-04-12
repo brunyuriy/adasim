@@ -20,7 +20,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import traffic.model.GraphNode;
+import traffic.model.RoadSegment;
 import traffic.model.Vehicle;
 import traffic.strategy.AbstractVehicleStrategy;
 import traffic.strategy.LinearSpeedStrategy;
@@ -28,19 +28,19 @@ import static org.junit.Assert.*;
 
 
 /**
- * Tests the GraphNode class
+ * Tests the RoadSegment class
  * 
  * @author Jonathan Ramaswamy - ramaswamyj12@gmail.com
  */
 
 public class GraphNodeTest {
 
-	private GraphNode node, node2;
+	private RoadSegment node, node2;
 	
 	@Before
 	public void setUp() {
-		node = new GraphNode(0, new LinearSpeedStrategy(), 1, 0);
-		node2 = new GraphNode(1, new LinearSpeedStrategy(), 1,0 ) ;
+		node = new RoadSegment(0, new LinearSpeedStrategy(), 1, 0);
+		node2 = new RoadSegment(1, new LinearSpeedStrategy(), 1,0 ) ;
 		node.addEdge( node2 );
 	}
 	
@@ -71,13 +71,13 @@ public class GraphNodeTest {
 		Vehicle v = new Vehicle( node, null, new AbstractVehicleStrategy() {
 			
 			@Override
-			public List<GraphNode> getPath(GraphNode from, GraphNode to) {
+			public List<RoadSegment> getPath(RoadSegment from, RoadSegment to) {
 				return null;
 			}
 			
 			@Override
-			public GraphNode getNextNode() {
-				return new GraphNode(2, null, 4);
+			public RoadSegment getNextNode() {
+				return new RoadSegment(2, null, 4);
 			}
 		}, 1 );
 		
@@ -93,12 +93,12 @@ public class GraphNodeTest {
 		Vehicle v = new Vehicle( node, null, new AbstractVehicleStrategy() {
 			
 			@Override
-			public List<GraphNode> getPath(GraphNode from, GraphNode to) {
+			public List<RoadSegment> getPath(RoadSegment from, RoadSegment to) {
 				return null;
 			}
 			
 			@Override
-			public GraphNode getNextNode() {
+			public RoadSegment getNextNode() {
 				return node2;
 			}
 		}, 1 );

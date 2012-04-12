@@ -41,7 +41,7 @@ import org.jdom.output.XMLOutputter;
 
 import traffic.agent.AdasimAgent;
 import traffic.model.AdasimMap;
-import traffic.model.GraphNode;
+import traffic.model.RoadSegment;
 import traffic.model.Vehicle;
 import traffic.model.TrafficSimulator;
 import traffic.strategy.VehicleStrategy;
@@ -129,7 +129,7 @@ public class SimulationXMLWriter {
 		Element g = factory.element( "graph" );
 		g.setAttribute( factory.attribute( "default_strategy", DEFAULT_SPEED_STRATEGY) );
 		g.setAttribute( factory.attribute( "default_capacity", DEFAULT_NODE_CAPACITY ) );
-		for ( GraphNode node : graph.getNodes() ) {
+		for ( RoadSegment node : graph.getNodes() ) {
 			writeNode(g, node );
 		}
 		doc.addContent(g);
@@ -139,7 +139,7 @@ public class SimulationXMLWriter {
 	 * @param g
 	 * @param node
 	 */
-	private void writeNode(Element g, GraphNode node) {
+	private void writeNode(Element g, RoadSegment node) {
 		Element n = factory.element( "node");
 		n.setAttribute( factory.attribute( "id", "" + node.getID() ) );
 		n.setAttribute( factory.attribute( "delay", "" + node.getDelay() ) );
@@ -152,10 +152,10 @@ public class SimulationXMLWriter {
 	 * @param neighbors
 	 * @return a string representing the list of neighbors 
 	 */
-	private String writeNeighbors(List<GraphNode> neighbors) {
+	private String writeNeighbors(List<RoadSegment> neighbors) {
 		assert neighbors != null;
 		StringBuffer buf = new StringBuffer();
-		for ( GraphNode node : neighbors ) {
+		for ( RoadSegment node : neighbors ) {
 			buf.append( node.getID() );
 			buf.append( ' ');
 		}

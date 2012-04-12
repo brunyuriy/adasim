@@ -35,7 +35,7 @@ public class AlwaysRecomputeVehicleStrategyTest {
 		sim.run();
 
 		//		strategy.setGraph(g);
-//		List<GraphNode> path = strategy.getPath( g.getNode(1), g.getNode(5));
+//		List<RoadSegment> path = strategy.getPath( g.getNode(1), g.getNode(5));
 //		assertNotNull( "No path found", path );
 //		assertEquals( "Path too short", 2, path.size() );
 //		assertEquals( 6, path.get(0).getID() );

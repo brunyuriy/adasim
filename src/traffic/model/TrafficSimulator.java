@@ -50,7 +50,7 @@ import traffic.model.internal.VehicleManager;
  * <ol>
  * <li>Vehicles scheduled to start in cycle <em>t</em> are added to the simulation
  * <li>All agents (including vehicles, but not GraphNodes) can perform an action
- * <li>All GraphNodes execute the vehicle movement protocol (documented in {@link GraphNode}).
+ * <li>All GraphNodes execute the vehicle movement protocol (documented in {@link RoadSegment}).
  * </ol>
  * 
  * @author Jonathan Ramaswamy - ramaswamyj12@gmail.com
@@ -102,7 +102,7 @@ public final class TrafficSimulator{
 		for ( AdasimAgent agent : agents ) {
 			agent.takeSimulationStep( cycle );
 		}
-		for ( GraphNode g: graph.getNodes() ) {
+		for ( RoadSegment g: graph.getNodes() ) {
 			g.takeSimulationStep(cycle);
 		}
 	}

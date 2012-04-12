@@ -43,7 +43,7 @@ import traffic.strategy.VehicleStrategy;
  * AdasimAgent interface, the takeSimulationStep() method is empty.
  * <p>
  * Special treatment arises because both TrafficSimulator and 
- * GraphNode know about Vehicles and implement protocols for communicating 
+ * RoadSegment know about Vehicles and implement protocols for communicating 
  * with them. The specifics of these protocols are documented in the 
  * corresponding classes.
  * <p>
@@ -57,9 +57,9 @@ import traffic.strategy.VehicleStrategy;
  */
 public final class Vehicle extends AbstractAdasimAgent {
 
-	private GraphNode start; //Starting position
-	private GraphNode end; //Destination position
-	private GraphNode currentNode; //Current position
+	private RoadSegment start; //Starting position
+	private RoadSegment end; //Destination position
+	private RoadSegment currentNode; //Current position
 	private int id; //This vehicle's number in the list of vehicles
 	protected VehicleInfo info; //Info for the vehicle
 	private VehicleStrategy cs; //Strategy the vehicle uses to traverse the graph
@@ -70,7 +70,7 @@ public final class Vehicle extends AbstractAdasimAgent {
 		info = new VehicleInfo();
 	}
 
-	public Vehicle(GraphNode start, GraphNode end, VehicleStrategy strat, int num) {
+	public Vehicle(RoadSegment start, RoadSegment end, VehicleStrategy strat, int num) {
 		setStartNode(start);
 		setEndNode(end);
 		id = num;
@@ -80,14 +80,14 @@ public final class Vehicle extends AbstractAdasimAgent {
 	/**
 	 * @return The starting node for the vehicle
 	 */
-	public GraphNode getStartNode() {
+	public RoadSegment getStartNode() {
 		return start;
 	}
 
 	/**
 	 * @param start the start to set
 	 */
-	public void setStartNode(GraphNode start) {
+	public void setStartNode(RoadSegment start) {
 		this.start = start;
 		this.currentNode = start;
 		//reset the strategy
@@ -97,14 +97,14 @@ public final class Vehicle extends AbstractAdasimAgent {
 	/**
 	 * @return The ending node for the vehicle
 	 */
-	public GraphNode getEndNode() {
+	public RoadSegment getEndNode() {
 		return end;
 	}
 
 	/**
 	 * @param end the end to set
 	 */
-	public void setEndNode(GraphNode end) {
+	public void setEndNode(RoadSegment end) {
 		this.end = end;
 		//reset the strategy
 		setStrategy(cs);
@@ -113,14 +113,14 @@ public final class Vehicle extends AbstractAdasimAgent {
 	/**
 	 * @return The current node of the vehicle
 	 */
-	public GraphNode getCurrentPosition() {
+	public RoadSegment getCurrentPosition() {
 		return currentNode;
 	}
 
 	/**
 	 * Sets the current position to the given variable c
 	 */
-	public void setCurrentPosition(GraphNode c) {
+	public void setCurrentPosition(RoadSegment c) {
 		currentNode = c;
 	}
 
@@ -184,7 +184,7 @@ public final class Vehicle extends AbstractAdasimAgent {
 	public void move() {
 		if (isFinished()) return;	//quick end if we are done
 		
-		GraphNode nextNode = cs.getNextNode();
+		RoadSegment nextNode = cs.getNextNode();
 		if ( nextNode == null ) {
 			getCurrentPosition().park(this);
 		} else {

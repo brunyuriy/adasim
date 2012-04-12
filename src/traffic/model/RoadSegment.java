@@ -39,10 +39,10 @@ import traffic.agent.AbstractAdasimAgent;
 import traffic.strategy.SpeedStrategy;
 
 /**
- * A GraphNode is a single node on the graph. It has a queue of vehicles
+ * A RoadSegment is a single node on the graph. It has a queue of vehicles
  * and uses a given speed strategy and delay to determine their movements
  * <p>
- * The GraphNode applies an uncertainty filter to only some properties, 
+ * The RoadSegment applies an uncertainty filter to only some properties, 
  * others it reports faithfully, because precision there is crucial for 
  * the internal working of the simulator. As a convenience for testing, while
  * no filter is configured (i.e. <code>null</code> is assigned
@@ -62,12 +62,12 @@ import traffic.strategy.SpeedStrategy;
  * @author Jochen Wuttke - wuttkej@gmail.com
  */
 
-public final class GraphNode extends AbstractAdasimAgent {
+public final class RoadSegment extends AbstractAdasimAgent {
 	
-	private static Logger logger = Logger.getLogger(GraphNode.class);
+	private static Logger logger = Logger.getLogger(RoadSegment.class);
 
 	
-	private Set<GraphNode> outgoing; //Nodes that this node has an edge directed towards
+	private Set<RoadSegment> outgoing; //Nodes that this node has an edge directed towards
 	private SpeedStrategy ss; //The strategy by which the speed changes
 
 	//PROPERTIES
@@ -83,7 +83,7 @@ public final class GraphNode extends AbstractAdasimAgent {
 	 * @param s
 	 * @param capacity
 	 */
-	public GraphNode(int n, SpeedStrategy s, int capacity) {
+	public RoadSegment(int n, SpeedStrategy s, int capacity) {
 		this(n, s, 1, capacity);
 	}
 	
@@ -95,9 +95,9 @@ public final class GraphNode extends AbstractAdasimAgent {
 	 * @param delay
 	 * @param capacity
 	 */
-	public GraphNode(int n, SpeedStrategy s, int delay, int capacity ) {
+	public RoadSegment(int n, SpeedStrategy s, int delay, int capacity ) {
 		nodeNum = n;
-		outgoing = new HashSet<GraphNode>();
+		outgoing = new HashSet<RoadSegment>();
 		ss = s;
 		this.delay = delay;
 		queue = new NodeVehicleQueue();
@@ -112,7 +112,7 @@ public final class GraphNode extends AbstractAdasimAgent {
 	 * Adds an outgoing edge to the given node
 	 * @param to
 	 */
-	public void addEdge( GraphNode to ) {
+	public void addEdge( RoadSegment to ) {
 		if ( to == null ) return;
 		outgoing.add( to );
 	}
@@ -121,18 +121,18 @@ public final class GraphNode extends AbstractAdasimAgent {
 	 * Removes the given edge from this node's list of outgoing edges
 	 * @param to
 	 */
-	public void removeEdge( GraphNode to ) {
+	public void removeEdge( RoadSegment to ) {
 		outgoing.remove( to );
 	}
 	
 	/**
 	 * @return all nodes this node has an outgoing edge towards
 	 */
-	public List<GraphNode> getNeighbors() {
-		return new ArrayList<GraphNode>(outgoing);
+	public List<RoadSegment> getNeighbors() {
+		return new ArrayList<RoadSegment>(outgoing);
 	}
 	
-	private boolean isNeighbor(GraphNode n) {
+	private boolean isNeighbor(RoadSegment n) {
 		return outgoing.contains(n);
 	}
 
@@ -222,7 +222,7 @@ public final class GraphNode extends AbstractAdasimAgent {
 	}
 	
 	/**
-	 * When a GraphNode (road) is closed, this means two things:
+	 * When a RoadSegment (road) is closed, this means two things:
 	 * <ul>
 	 * <li>Vehicles can no longer enter the road. Trying to enter is considered invalid and vehicles will be removed.
 	 * <li>Vehicles that are already on the road can continue driving and will eventually leave the node.
@@ -280,10 +280,10 @@ public final class GraphNode extends AbstractAdasimAgent {
 	 * the currently allowed maximum speed of this node.
 	 * If a vehicle reaches the end of the street segment, {@link Vehicle#move()}
 	 * is called and the vehicle can propose a new node it wishes to move to
-	 * by calling {@link GraphNode#moveTo(GraphNode, Vehicle)} on this node. 
+	 * by calling {@link RoadSegment#moveTo(RoadSegment, Vehicle)} on this node. 
 	 * This node verifies whether this is legal (the target node must be a 
 	 * neighbor in the graph), and if it is legal, hands off the vehicle
-	 * by calling {@link GraphNode#enterNode(Vehicle)} on the target node.
+	 * by calling {@link RoadSegment#enterNode(Vehicle)} on the target node.
 	 * If the move is not legal, the vehicle is stopped and removed 
 	 * from the simulation. Corresponding events will be logged.
 	 */
@@ -299,13 +299,13 @@ public final class GraphNode extends AbstractAdasimAgent {
 	 * Called by vehicles during the movement protocol. 
 	 * <p>
 	 * This method is used to announce a vehicle's intention to enter
-	 * node <code>targetNode</code>. This GraphNode checks the move for 
+	 * node <code>targetNode</code>. This RoadSegment checks the move for 
 	 * validity and rejects illegal moves.
 	 * 
 	 * @param targetNode
 	 * @param v
 	 */
-	public void moveTo( GraphNode targetNode, Vehicle v ) {
+	public void moveTo( RoadSegment targetNode, Vehicle v ) {
 		if ( isNeighbor(targetNode) ) {
 			targetNode.enterNode(v);
 		} else {
@@ -337,7 +337,7 @@ public final class GraphNode extends AbstractAdasimAgent {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		GraphNode other = (GraphNode) obj;
+		RoadSegment other = (RoadSegment) obj;
 		if (nodeNum != other.nodeNum)
 			return false;
 		return true;

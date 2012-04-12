@@ -45,7 +45,7 @@ import org.junit.Test;
 import traffic.agent.AdasimAgent;
 import traffic.model.ConfigurationException;
 import traffic.model.AdasimMap;
-import traffic.model.GraphNode;
+import traffic.model.RoadSegment;
 import traffic.model.TrafficSimulator;
 import traffic.model.Vehicle;
 
@@ -85,7 +85,7 @@ public class VehicleManagerTest {
 		graph = builder.buildGraph( doc.getRootElement() );
 		new TrafficSimulator(graph, manager, (List<AdasimAgent>)new ArrayList<AdasimAgent>() );
 		assertEquals( 2, graph.getNode(5).getCurrentDelay() );
-		GraphNode start = graph.getNode(5);
+		RoadSegment start = graph.getNode(5);
 		manager.addVehicle( new Vehicle(start, null, null, 1), 5);
 		manager.takeSimulationStep(4);
 		assertEquals( 2, graph.getNode(5).getCurrentDelay() );

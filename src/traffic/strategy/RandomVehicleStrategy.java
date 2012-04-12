@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import traffic.model.GraphNode;
+import traffic.model.RoadSegment;
 
 /**
  * This class returns a random path for the car to follow
@@ -49,11 +49,11 @@ public class RandomVehicleStrategy extends AbstractVehicleStrategy {
 	 * Picks random neighbors to move towards until the destination is reached
 	 * Returns the path represented as a list of integers
 	 */
-	public List<GraphNode> getPath(GraphNode c, GraphNode d) {
-		GraphNode next = c;
-		List<GraphNode> path = new ArrayList<GraphNode>();
+	public List<RoadSegment> getPath(RoadSegment c, RoadSegment d) {
+		RoadSegment next = c;
+		List<RoadSegment> path = new ArrayList<RoadSegment>();
 		while(!next.equals(d) && path.size() < graph.getNodes().size() ) {
-			List<GraphNode> dest = next.getNeighbors();
+			List<RoadSegment> dest = next.getNeighbors();
 			Random generator = new Random();
 			int rand = generator.nextInt(dest.size());
 			next = dest.get(rand);
@@ -66,7 +66,7 @@ public class RandomVehicleStrategy extends AbstractVehicleStrategy {
 	 * @see traffic.strategy.CarStrategy#getNextNode()
 	 */
 	@Override
-	public GraphNode getNextNode() {
+	public RoadSegment getNextNode() {
 		// TODO Auto-generated method stub
 		return null;
 	}

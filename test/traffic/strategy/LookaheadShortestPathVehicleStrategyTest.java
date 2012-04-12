@@ -24,7 +24,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import traffic.model.AdasimMap;
-import traffic.model.GraphNode;
+import traffic.model.RoadSegment;
 import traffic.model.Vehicle;
 import traffic.model.ConfigurationException;
 import traffic.model.internal.SimulationXMLReader;
@@ -47,7 +47,7 @@ public class LookaheadShortestPathVehicleStrategyTest {
 	public void findShortestPathFromStartNoWeights() throws JDOMException, IOException, ConfigurationException {
 		AdasimMap g = SimulationXMLReader.buildSimulator( new File("resources/test/shortest-path-test.xml") ).getGraph();
 		strategy.setGraph(g);
-		List<GraphNode> path = strategy.getPath( g.getNode(1), g.getNode(5));
+		List<RoadSegment> path = strategy.getPath( g.getNode(1), g.getNode(5));
 		assertNotNull( "No path found", path );
 		assertEquals( "Path too short", 2, path.size() );
 		assertEquals( 6, path.get(0).getID() );
@@ -65,7 +65,7 @@ public class LookaheadShortestPathVehicleStrategyTest {
 	public void findShortestPathFromStartNoWeightsRandom() throws JDOMException, IOException, ConfigurationException {
 		AdasimMap g = SimulationXMLReader.buildSimulator( new File("resources/test/shortest-path-test-random-ids.xml") ).getGraph();
 		strategy.setGraph(g);
-		List<GraphNode> path = strategy.getPath( g.getNode(21), g.getNode(5));
+		List<RoadSegment> path = strategy.getPath( g.getNode(21), g.getNode(5));
 		assertNotNull( "No path found", path );
 		assertEquals( "Path too short", 2, path.size() );
 		assertEquals( 60, (int)path.get(0).getID() );
@@ -83,7 +83,7 @@ public class LookaheadShortestPathVehicleStrategyTest {
 	public void findShortestPathFromStartWithWeights() throws JDOMException, IOException, ConfigurationException {
 		AdasimMap g = SimulationXMLReader.buildSimulator( new File("resources/test/shortest-path-test-weights.xml") ).getGraph();
 		strategy.setGraph(g);
-		List<GraphNode> path = strategy.getPath(g.getNode(6), g.getNode(4));
+		List<RoadSegment> path = strategy.getPath(g.getNode(6), g.getNode(4));
 		assertNotNull( "No path found", path );
 		assertEquals( "Path has wrong length", 3, path.size() );
 		assertEquals( 1, (int)path.get(0).getID() );
@@ -95,7 +95,7 @@ public class LookaheadShortestPathVehicleStrategyTest {
 		AdasimMap g = SimulationXMLReader.buildSimulator( new File("resources/test/shortest-path-test-weights.xml") ).getGraph();
 		strategy = new LookaheadShortestPathVehicleStrategy(1);
 		strategy.setGraph(g);
-		List<GraphNode> path = strategy.getPath(g.getNode(6), g.getNode(4));
+		List<RoadSegment> path = strategy.getPath(g.getNode(6), g.getNode(4));
 		assertNotNull( "No path found", path );
 		assertEquals( "Path has wrong length", 3, path.size() );
 		assertEquals( 1, (int)path.get(0).getID() );
@@ -107,7 +107,7 @@ public class LookaheadShortestPathVehicleStrategyTest {
 		AdasimMap g = SimulationXMLReader.buildSimulator( new File("resources/test/shortest-path-test-weights.xml") ).getGraph();
 		strategy = new LookaheadShortestPathVehicleStrategy(2);
 		strategy.setGraph(g);
-		List<GraphNode> path = strategy.getPath(g.getNode(6), g.getNode(4));
+		List<RoadSegment> path = strategy.getPath(g.getNode(6), g.getNode(4));
 		assertNotNull( "No path found", path );
 		assertEquals( "Path has wrong length", 2, path.size() );
 		assertEquals( 5, (int)path.get(0).getID() );
@@ -122,7 +122,7 @@ public class LookaheadShortestPathVehicleStrategyTest {
 		strategy.setStartNode(g.getNode(0));
 		strategy.setEndNode(g.getNode(4));
 		
-		List<GraphNode> firstPath = strategy.getPath(g.getNode(0), g.getNode(4));
+		List<RoadSegment> firstPath = strategy.getPath(g.getNode(0), g.getNode(4));
 		assertEquals( 6, firstPath.get(0).getID() );
 		assertEquals( 1, firstPath.get(1).getID() );
 		assertEquals( 2, firstPath.get(2).getID() );
@@ -132,7 +132,7 @@ public class LookaheadShortestPathVehicleStrategyTest {
 		g.addVehicleAtNode( new Vehicle( g.getNode(1), null, new LookaheadShortestPathVehicleStrategy(), 42 ), 1 );
 		g.addVehicleAtNode( new Vehicle( g.getNode(1), null, new LookaheadShortestPathVehicleStrategy(), 43 ), 1 );
 		
-		GraphNode next = strategy.getNextNode();	//returns the first node of the first path and updates
+		RoadSegment next = strategy.getNextNode();	//returns the first node of the first path and updates
 		assertEquals( 6, next.getID() );	//
 		assertEquals( 5, strategy.getNextNode().getID() );	//this is the next node on the new updated path
 	}
