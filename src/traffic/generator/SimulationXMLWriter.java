@@ -40,7 +40,7 @@ import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
 import traffic.agent.AdasimAgent;
-import traffic.algorithm.VehicleStrategy;
+import traffic.algorithm.RoutingAlgorithm;
 import traffic.model.AdasimMap;
 import traffic.model.RoadSegment;
 import traffic.model.Vehicle;
@@ -49,7 +49,7 @@ import traffic.model.TrafficSimulator;
 /**
  * This class takes a {@link TrafficSimulator} and some additional options
  * and produces an XML file that contains the descirption of the
- * {@link TrafficSimulator}. If optional fields like {@link VehicleStrategy} are not
+ * {@link TrafficSimulator}. If optional fields like {@link RoutingAlgorithm} are not
  * assigned for some objects, this write will create an explicit field for them.
  * 
  * @author Jochen Wuttke - wuttkej@gmail.com
@@ -58,7 +58,7 @@ import traffic.model.TrafficSimulator;
 public class SimulationXMLWriter {
 	
 	private static final String DEFAULT_SPEED_STRATEGY = "traffic.algorithm.LinearTrafficDelayFunction";
-	private static final String DEFAULT_CAR_STRATEGY = "traffic.algorithm.LookaheadShortestPathVehicleStrategy";
+	private static final String DEFAULT_CAR_STRATEGY = "traffic.algorithm.LookaheadShortestPathRoutingAlgorithm";
 	private static final String DEFAULT_NODE_CAPACITY = "0";
 	
 	private DefaultJDOMFactory factory = new DefaultJDOMFactory();

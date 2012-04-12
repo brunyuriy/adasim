@@ -12,12 +12,12 @@
     <node id="8" neighbors="2 3 9 " />
     <node id="9" neighbors="0 2 7 " />
   </graph>
-  <cars default_strategy="traffic.algorithm.LookaheadShortestPathVehicleStrategy">
-    <car id="0" start="2" end="0" strategy="traffic.algorithm.LookaheadShortestPathVehicleStrategy" />
-    <car id="1" start="9" end="2" strategy="traffic.algorithm.LookaheadShortestPathVehicleStrategy" />
-    <car id="2" start="0" end="1" strategy="traffic.algorithm.LookaheadShortestPathVehicleStrategy" />
-    <car id="3" start="9" end="1" strategy="traffic.algorithm.LookaheadShortestPathVehicleStrategy" />
-    <car id="4" start="9" end="2" strategy="traffic.algorithm.LookaheadShortestPathVehicleStrategy" />
+  <cars default_strategy="traffic.algorithm.LookaheadShortestPathRoutingAlgorithm">
+    <car id="0" start="2" end="0" strategy="traffic.algorithm.LookaheadShortestPathRoutingAlgorithm" />
+    <car id="1" start="9" end="2" strategy="traffic.algorithm.LookaheadShortestPathRoutingAlgorithm" />
+    <car id="2" start="0" end="1" strategy="traffic.algorithm.LookaheadShortestPathRoutingAlgorithm" />
+    <car id="3" start="9" end="1" strategy="traffic.algorithm.LookaheadShortestPathRoutingAlgorithm" />
+    <car id="4" start="9" end="2" strategy="traffic.algorithm.LookaheadShortestPathRoutingAlgorithm" />
   </cars>
 </simulation>
 

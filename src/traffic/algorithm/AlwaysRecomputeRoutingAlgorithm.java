@@ -32,9 +32,9 @@ package traffic.algorithm;
  * @author Jochen Wuttke - wuttkej@gmail.com
  *
  */
-public class AlwaysRecomputeVehicleStrategy extends LookaheadShortestPathVehicleStrategy {
+public class AlwaysRecomputeRoutingAlgorithm extends LookaheadShortestPathRoutingAlgorithm {
 
-	public AlwaysRecomputeVehicleStrategy() {
+	public AlwaysRecomputeRoutingAlgorithm() {
 		super(5,1);
 	}
 }

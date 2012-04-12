@@ -24,7 +24,7 @@ import java.util.List;
 import org.jdom.JDOMException;
 import org.junit.Test;
 
-import traffic.algorithm.LookaheadShortestPathVehicleStrategy;
+import traffic.algorithm.LookaheadShortestPathRoutingAlgorithm;
 import traffic.algorithm.delay.QuadraticTrafficDelayFunction;
 import traffic.model.ConfigurationException;
 import traffic.model.AdasimMap;
@@ -67,7 +67,7 @@ public class SimulationXMLReaderTest {
 	@Test
 	public void invalidVehicleStrategyDefaultsCorrectly() throws JDOMException, IOException, ConfigurationException {
 		List<Vehicle> cars = SimulationXMLReader.buildSimulator( new File("resources/test/invalid-strategy.xml" )).getAgents(Vehicle.class);
-		assertEquals( LookaheadShortestPathVehicleStrategy.class, cars.get(1).getStrategy().getClass() );
+		assertEquals( LookaheadShortestPathRoutingAlgorithm.class, cars.get(1).getStrategy().getClass() );
 	}
 	
 	@Test(expected=ConfigurationException.class)

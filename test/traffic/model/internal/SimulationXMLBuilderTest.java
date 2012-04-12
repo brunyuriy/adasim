@@ -28,8 +28,8 @@ import org.junit.Test;
 
 import traffic.agent.AbstractAdasimAgent;
 import traffic.agent.AdasimAgent;
-import traffic.algorithm.AlwaysRecomputeVehicleStrategy;
-import traffic.algorithm.ShortestPathVehicleStrategy;
+import traffic.algorithm.AlwaysRecomputeRoutingAlgorithm;
+import traffic.algorithm.ShortestPathRoutingAlgorithm;
 import traffic.algorithm.delay.LinearTrafficDelayFunction;
 import traffic.algorithm.delay.QuadraticTrafficDelayFunction;
 import traffic.filter.AdasimFilter;
@@ -177,29 +177,29 @@ public class SimulationXMLBuilderTest {
 	
 	@Test
 	public void carAllOptionals() throws JDOMException, IOException {
-		Document doc = parser.build( new StringReader( "<car id=\"27\" start=\"1\" end=\"1\" strategy=\"traffic.algorithm.ShortestPathVehicleStrategy\" />" ) );
+		Document doc = parser.build( new StringReader( "<car id=\"27\" start=\"1\" end=\"1\" strategy=\"traffic.algorithm.ShortestPathRoutingAlgorithm\" />" ) );
 		Vehicle car = builder.buildVehicle( doc.getRootElement() );
 		assertEquals( 27, car.getID() );
 		assertNull( car.getStartNode() );
 		assertNull( car.getEndNode() );
-		assertTrue( car.getStrategy() instanceof ShortestPathVehicleStrategy );
+		assertTrue( car.getStrategy() instanceof ShortestPathRoutingAlgorithm );
 	}
 
 	@Test
 	public void carListWithDefaults() throws JDOMException, IOException, ConfigurationException {
-		Document doc = parser.build( new StringReader( "<cars default_strategy=\"traffic.algorithm.AlwaysRecomputeVehicleStrategy\">" +
+		Document doc = parser.build( new StringReader( "<cars default_strategy=\"traffic.algorithm.AlwaysRecomputeRoutingAlgorithm\">" +
 				"<car id=\"1\" start=\"1\" end=\"1\" />" +
-				"<car id=\"2\" start=\"1\" end=\"1\" strategy=\"traffic.algorithm.ShortestPathVehicleStrategy\" />" +
+				"<car id=\"2\" start=\"1\" end=\"1\" strategy=\"traffic.algorithm.ShortestPathRoutingAlgorithm\" />" +
 				"<car id=\"3\" start=\"1\" end=\"1\" />" +
 				"</cars>" ) );
 		List<Vehicle> cars = builder.buildVehicles( doc.getRootElement() );
 		assertEquals( 3, cars.size() );
 		Vehicle car = cars.get(0);	//this should be the car with id 1
 		assertEquals( 1, car.getID() );
-		assertTrue( car.getStrategy() instanceof AlwaysRecomputeVehicleStrategy );
+		assertTrue( car.getStrategy() instanceof AlwaysRecomputeRoutingAlgorithm );
 		car = cars.get(1);
 		assertEquals( 2, car.getID() );
-		assertTrue( car.getStrategy() instanceof ShortestPathVehicleStrategy );
+		assertTrue( car.getStrategy() instanceof ShortestPathRoutingAlgorithm );
 	}
 	
 	@Test

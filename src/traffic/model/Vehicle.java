@@ -32,7 +32,7 @@ package traffic.model;
 import org.apache.log4j.Logger;
 
 import traffic.agent.AbstractAdasimAgent;
-import traffic.algorithm.VehicleStrategy;
+import traffic.algorithm.RoutingAlgorithm;
 
 /**
  * 
@@ -62,7 +62,7 @@ public final class Vehicle extends AbstractAdasimAgent {
 	private RoadSegment currentNode; //Current position
 	private int id; //This vehicle's number in the list of vehicles
 	protected VehicleInfo info; //Info for the vehicle
-	private VehicleStrategy cs; //Strategy the vehicle uses to traverse the graph
+	private RoutingAlgorithm cs; //Strategy the vehicle uses to traverse the graph
 
 	private static Logger logger = Logger.getLogger(Vehicle.class);
 
@@ -70,7 +70,7 @@ public final class Vehicle extends AbstractAdasimAgent {
 		info = new VehicleInfo();
 	}
 
-	public Vehicle(RoadSegment start, RoadSegment end, VehicleStrategy strat, int num) {
+	public Vehicle(RoadSegment start, RoadSegment end, RoutingAlgorithm strat, int num) {
 		setStartNode(start);
 		setEndNode(end);
 		id = num;
@@ -134,14 +134,14 @@ public final class Vehicle extends AbstractAdasimAgent {
 	/**
 	 * @return the cs
 	 */
-	public VehicleStrategy getStrategy() {
+	public RoutingAlgorithm getStrategy() {
 		return cs;
 	}
 
 	/**
 	 * @param cs the cs to set
 	 */
-	public void setStrategy(VehicleStrategy cs) {
+	public void setStrategy(RoutingAlgorithm cs) {
 		this.cs = cs;
 		if ( cs != null ) {
 			cs.setStartNode(start);

@@ -36,7 +36,7 @@ import org.apache.log4j.Logger;
 import org.jdom.Element;
 
 import traffic.agent.AdasimAgent;
-import traffic.algorithm.VehicleStrategy;
+import traffic.algorithm.RoutingAlgorithm;
 import traffic.algorithm.delay.TrafficDelayFunction;
 import traffic.filter.AdasimFilter;
 import traffic.filter.IdentityFilter;
@@ -130,7 +130,7 @@ public class SimulationXMLBuilder {
 	public List<Vehicle> buildVehicles( Element vehiclesNode ) throws ConfigurationException {
 		@SuppressWarnings("unchecked")
 		List<Element> vehicleNodes = vehiclesNode.getChildren("car");
-		VehicleStrategy cs = (VehicleStrategy)loadClassFromAttribute(vehiclesNode, "default_strategy" );
+		RoutingAlgorithm cs = (RoutingAlgorithm)loadClassFromAttribute(vehiclesNode, "default_strategy" );
 		List<Vehicle> vehicles = new ArrayList<Vehicle>();
 		for ( Element vehicle : vehicleNodes ) {
 			Vehicle c = buildVehicle( vehicle );
@@ -143,7 +143,7 @@ public class SimulationXMLBuilder {
 	 * @param c
 	 * @param cs
 	 */
-	private Vehicle assignDefaultVehicleValues(Vehicle c, VehicleStrategy cs) {
+	private Vehicle assignDefaultVehicleValues(Vehicle c, RoutingAlgorithm cs) {
 		if ( c.getStrategy() == null ) {
 			c.setStrategy(cs);
 		}
@@ -161,12 +161,12 @@ public class SimulationXMLBuilder {
 	 */
 	public Vehicle buildVehicle( Element vehicleNode ) {
 		int id = Integer.parseInt(vehicleNode.getAttributeValue("id"));
-		VehicleStrategy cs = null;
+		RoutingAlgorithm cs = null;
 		if(vehicleNode.getAttributeValue("strategy") != null) {
 			try {
-				cs = (VehicleStrategy) loadClassFromAttribute(vehicleNode, "strategy");
+				cs = (RoutingAlgorithm) loadClassFromAttribute(vehicleNode, "strategy");
 			} catch (Exception e) {
-				logger.warn( "VehicleStrategy " + vehicleNode.getAttributeValue("strategy") + " not found. Using default." );
+				logger.warn( "RoutingAlgorithm " + vehicleNode.getAttributeValue("strategy") + " not found. Using default." );
 			}
 		}
 		return new Vehicle(null, null, cs, id );

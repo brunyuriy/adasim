@@ -27,7 +27,7 @@ import traffic.model.internal.SimulationXMLReader;
  * @author Jochen Wuttke - wuttkej@gmail.com
  *
  */
-public class AlwaysRecomputeVehicleStrategyTest {
+public class AlwaysRecomputeRoutingAlgorithmTest {
 	
 	@Test(timeout=10000)
 	public void cityMapLifelock() throws FileNotFoundException, ConfigurationException {

@@ -20,7 +20,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import traffic.algorithm.AbstractVehicleStrategy;
+import traffic.algorithm.AbstractRoutingAlgorithm;
 import traffic.algorithm.delay.LinearTrafficDelayFunction;
 import traffic.model.RoadSegment;
 import traffic.model.Vehicle;
@@ -68,7 +68,7 @@ public class RoadSegmentTest {
 	
 	@Test
 	public void invalidRoutingPrevented() {
-		Vehicle v = new Vehicle( node, null, new AbstractVehicleStrategy() {
+		Vehicle v = new Vehicle( node, null, new AbstractRoutingAlgorithm() {
 			
 			@Override
 			public List<RoadSegment> getPath(RoadSegment from, RoadSegment to) {
@@ -90,7 +90,7 @@ public class RoadSegmentTest {
 
 	@Test
 	public void validRoutingConfirmed() {
-		Vehicle v = new Vehicle( node, null, new AbstractVehicleStrategy() {
+		Vehicle v = new Vehicle( node, null, new AbstractRoutingAlgorithm() {
 			
 			@Override
 			public List<RoadSegment> getPath(RoadSegment from, RoadSegment to) {

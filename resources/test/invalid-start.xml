@@ -1,11 +1,11 @@
 <simulation>
-	<cars default_strategy="traffic.algorithm.LookaheadShortestPathVehicleStrategy">
+	<cars default_strategy="traffic.algorithm.LookaheadShortestPathRoutingAlgorithm">
 		<car id="0" start="0" end="2" />
 		<!-- this car has an invalid starting point -->
 		<car id="1" start="42" end="7" />
 		<!-- this car has an invalid end point -->
-		<car id="2" start="3" end="29" strategy="traffic.algorithm.RandomVehicleStrategy" />
-		<car id="3" start="8" end="4" strategy="traffic.algorithm.RandomVehicleStrategy" />
+		<car id="2" start="3" end="29" strategy="traffic.algorithm.RandomRoutingAlgorithm" />
+		<car id="3" start="8" end="4" strategy="traffic.algorithm.RandomRoutingAlgorithm" />
 		<car id="4" start="3" end="7" />
 	</cars>
 
