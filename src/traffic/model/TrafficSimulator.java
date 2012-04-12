@@ -38,7 +38,7 @@ import traffic.model.internal.VehicleManager;
 
 /**
  * TrafficSimulator is the core the simulator. It keeps track
- * of the graph and where all the vehicles are located on it, and outputs information to
+ * of the map and where all the vehicles are located on it, and outputs information to
  * the logger object with every step taken.
  * <p>
  * Usually there is no need to explicitly create an object of this type. Normal use of
@@ -63,7 +63,7 @@ public final class TrafficSimulator{
 
 
 	private List<AdasimAgent> agents; //List of vehicles in the simulation
-	private AdasimMap graph; //The graph the vehicles run on
+	private AdasimMap map; //The map the vehicles run on
 	private VehicleManager manager;
 	private long cycle = 0;
 
@@ -71,7 +71,7 @@ public final class TrafficSimulator{
 		if(g == null || c == null || m == null ) {
 			throw new IllegalArgumentException();
 		}
-		this.graph = g;
+		this.map = g;
 		this.agents = c;
 		this.manager = m;
 		this.manager.setSimulation(this);
@@ -102,7 +102,7 @@ public final class TrafficSimulator{
 		for ( AdasimAgent agent : agents ) {
 			agent.takeSimulationStep( cycle );
 		}
-		for ( RoadSegment g: graph.getRoadSegments() ) {
+		for ( RoadSegment g: map.getRoadSegments() ) {
 			g.takeSimulationStep(cycle);
 		}
 	}
@@ -151,13 +151,13 @@ public final class TrafficSimulator{
 	}
 
 	/**
-	 * @return the graph (map) used by this {@link TrafficSimulator}.
+	 * @return the map (map) used by this {@link TrafficSimulator}.
 	 * <p>
 	 * While this instance is mutable, this is strongly discouraged, as 
 	 * effects are unspecified!
 	 */
-	public AdasimMap getGraph() {
-		return graph;
+	public AdasimMap getMap() {
+		return map;
 	}
 
 	/**

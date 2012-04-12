@@ -46,7 +46,7 @@ public class LookaheadShortestPathRoutingAlgorithmTest {
 	
 	@Test
 	public void findShortestPathFromStartNoWeights() throws JDOMException, IOException, ConfigurationException {
-		AdasimMap g = SimulationXMLReader.buildSimulator( new File("resources/test/shortest-path-test.xml") ).getGraph();
+		AdasimMap g = SimulationXMLReader.buildSimulator( new File("resources/test/shortest-path-test.xml") ).getMap();
 		strategy.setMap(g);
 		List<RoadSegment> path = strategy.getPath( g.getRoadSegment(1), g.getRoadSegment(5));
 		assertNotNull( "No path found", path );
@@ -64,7 +64,7 @@ public class LookaheadShortestPathRoutingAlgorithmTest {
 	
 	@Test
 	public void findShortestPathFromStartNoWeightsRandom() throws JDOMException, IOException, ConfigurationException {
-		AdasimMap g = SimulationXMLReader.buildSimulator( new File("resources/test/shortest-path-test-random-ids.xml") ).getGraph();
+		AdasimMap g = SimulationXMLReader.buildSimulator( new File("resources/test/shortest-path-test-random-ids.xml") ).getMap();
 		strategy.setMap(g);
 		List<RoadSegment> path = strategy.getPath( g.getRoadSegment(21), g.getRoadSegment(5));
 		assertNotNull( "No path found", path );
@@ -82,7 +82,7 @@ public class LookaheadShortestPathRoutingAlgorithmTest {
 	
 	@Test
 	public void findShortestPathFromStartWithWeights() throws JDOMException, IOException, ConfigurationException {
-		AdasimMap g = SimulationXMLReader.buildSimulator( new File("resources/test/shortest-path-test-weights.xml") ).getGraph();
+		AdasimMap g = SimulationXMLReader.buildSimulator( new File("resources/test/shortest-path-test-weights.xml") ).getMap();
 		strategy.setMap(g);
 		List<RoadSegment> path = strategy.getPath(g.getRoadSegment(6), g.getRoadSegment(4));
 		assertNotNull( "No path found", path );
@@ -93,7 +93,7 @@ public class LookaheadShortestPathRoutingAlgorithmTest {
 
 	@Test
 	public void findShortestPathFromStartWithWeightsLookahead1() throws JDOMException, IOException, ConfigurationException {
-		AdasimMap g = SimulationXMLReader.buildSimulator( new File("resources/test/shortest-path-test-weights.xml") ).getGraph();
+		AdasimMap g = SimulationXMLReader.buildSimulator( new File("resources/test/shortest-path-test-weights.xml") ).getMap();
 		strategy = new LookaheadShortestPathRoutingAlgorithm(1);
 		strategy.setMap(g);
 		List<RoadSegment> path = strategy.getPath(g.getRoadSegment(6), g.getRoadSegment(4));
@@ -105,7 +105,7 @@ public class LookaheadShortestPathRoutingAlgorithmTest {
 
 	@Test
 	public void findShortestPathFromStartWithWeightsLookahead2() throws JDOMException, IOException, ConfigurationException {
-		AdasimMap g = SimulationXMLReader.buildSimulator( new File("resources/test/shortest-path-test-weights.xml") ).getGraph();
+		AdasimMap g = SimulationXMLReader.buildSimulator( new File("resources/test/shortest-path-test-weights.xml") ).getMap();
 		strategy = new LookaheadShortestPathRoutingAlgorithm(2);
 		strategy.setMap(g);
 		List<RoadSegment> path = strategy.getPath(g.getRoadSegment(6), g.getRoadSegment(4));
@@ -117,7 +117,7 @@ public class LookaheadShortestPathRoutingAlgorithmTest {
 
 	@Test
 	public void recomputeShortestPathFromStartWithWeightsLookahead1() throws JDOMException, IOException, ConfigurationException {
-		AdasimMap g = SimulationXMLReader.buildSimulator( new File("resources/test/lookahead-recompute-test.xml") ).getGraph();
+		AdasimMap g = SimulationXMLReader.buildSimulator( new File("resources/test/lookahead-recompute-test.xml") ).getMap();
 		strategy = new LookaheadShortestPathRoutingAlgorithm(1);	//update after every step
 		strategy.setMap(g);
 		strategy.setStartRoad(g.getRoadSegment(0));
