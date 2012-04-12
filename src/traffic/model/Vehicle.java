@@ -32,7 +32,6 @@ package traffic.model;
 import org.apache.log4j.Logger;
 
 import traffic.agent.AbstractAdasimAgent;
-import traffic.graph.GraphNode;
 import traffic.strategy.VehicleStrategy;
 
 /**

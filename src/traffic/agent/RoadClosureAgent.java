@@ -33,7 +33,7 @@ import java.util.Random;
 
 import org.apache.log4j.Logger;
 
-import traffic.graph.GraphNode;
+import traffic.model.GraphNode;
 
 /**
  * The RoadClosureAgent randomly selects roads to be closed

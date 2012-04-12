@@ -20,8 +20,8 @@ import java.io.FileNotFoundException;
 import org.junit.Test;
 
 import traffic.model.ConfigurationException;
-import traffic.model.SimulationXMLReader;
 import traffic.model.TrafficSimulator;
+import traffic.model.internal.SimulationXMLReader;
 
 /**
  * @author Jochen Wuttke - wuttkej@gmail.com

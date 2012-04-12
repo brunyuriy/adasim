@@ -12,7 +12,7 @@
  * Created: Dec 6, 2011
  */
 
-package traffic.model;
+package traffic.model.internal;
 
 import static org.junit.Assert.*;
 
@@ -24,8 +24,12 @@ import java.util.List;
 import org.jdom.JDOMException;
 import org.junit.Test;
 
-import traffic.graph.Graph;
-import traffic.graph.GraphNode;
+import traffic.model.ConfigurationException;
+import traffic.model.Graph;
+import traffic.model.GraphNode;
+import traffic.model.TrafficSimulator;
+import traffic.model.Vehicle;
+import traffic.model.internal.SimulationXMLReader;
 import traffic.strategy.LookaheadShortestPathVehicleStrategy;
 import traffic.strategy.QuadraticSpeedStrategy;
 

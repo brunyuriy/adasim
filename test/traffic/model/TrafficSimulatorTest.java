@@ -19,6 +19,8 @@ import java.io.FileNotFoundException;
 
 import org.junit.Test;
 
+import traffic.model.internal.SimulationXMLReader;
+
 
 /**
  * @author Jochen Wuttke - wuttkej@gmail.com

@@ -21,8 +21,8 @@ import org.junit.Test;
 import static org.junit.Assert.assertTrue;
 
 import traffic.model.ConfigurationException;
-import traffic.model.SimulationXMLReader;
 import traffic.model.TrafficSimulator;
+import traffic.model.internal.SimulationXMLReader;
 
 
 /**

@@ -30,8 +30,8 @@ package traffic.strategy;
 
 import java.util.List;
 
-import traffic.graph.Graph;
-import traffic.graph.GraphNode;
+import traffic.model.Graph;
+import traffic.model.GraphNode;
 
 /**
  * This interface defines routing strategies. Given a graph, start and end node,

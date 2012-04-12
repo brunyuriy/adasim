@@ -26,7 +26,7 @@
  * Created: Sep 5, 2011
  */
 
-package traffic.graph;
+package traffic.model;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -36,7 +36,6 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 
 import traffic.agent.AbstractAdasimAgent;
-import traffic.model.Vehicle;
 import traffic.strategy.SpeedStrategy;
 
 /**
