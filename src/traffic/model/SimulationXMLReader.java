@@ -86,7 +86,7 @@ final public class SimulationXMLReader {
 	 * and exception detailing the cause of failure.
 	 * 
 	 * @param config
-	 * @return
+	 * @return the configured instance of TrafficSimulator
 	 * @throws FileNotFoundException
 	 * @throws ConfigurationException
 	 */
@@ -104,7 +104,6 @@ final public class SimulationXMLReader {
 	}
 
 	/**
-	 * @return
 	 * @throws ConfigurationException 
 	 */
 	private List<AdasimAgent> allAgents( Graph g, VehicleManager m ) throws ConfigurationException {
@@ -122,7 +121,6 @@ final public class SimulationXMLReader {
 	}
 
 	/**
-	 * @return
 	 * @throws ConfigurationException 
 	 */
 	private List<AdasimAgent> buildVehicles( Element vehiclesNode, Graph g, VehicleManager m ) throws ConfigurationException {
@@ -148,7 +146,6 @@ final public class SimulationXMLReader {
 
 	/**
 	 * @param vehicle
-	 * @return
 	 */
 	private long getStartTime(Element vehicle) {
 		String s = vehicle.getAttributeValue("start_time");
@@ -183,7 +180,7 @@ final public class SimulationXMLReader {
 	/**
 	 * @param id
 	 * @param vehicles
-	 * @return
+	 * @return the vehicle with ID <code>id</code> in the list or <code>null</code>
 	 */
 	private Vehicle getVehicle(int id, List<Vehicle> vehicles) {
 		for ( Vehicle c : vehicles ) {
@@ -193,9 +190,11 @@ final public class SimulationXMLReader {
 	}
 
 	/**
+	 * Checks if the end node is valid, prints a warning and throws an exception if not.
 	 * @param nodes
 	 * @param end
 	 * @param id
+	 * @param s
 	 * @throws ConfigurationException 
 	 */
 	private GraphNode checkEndPoint(List<GraphNode> nodes, int end, int id, String s) throws ConfigurationException {
@@ -208,7 +207,9 @@ final public class SimulationXMLReader {
 	}
 
 	/**
-	 * @param end
+	 * @param id
+	 * @param nodes
+	 * @return the GraphNode with ID <code>id</code> if it's in the list, or <code>null</code>
 	 */
 	private GraphNode isValidNode(int id, List<GraphNode> nodes ) {
 		for ( GraphNode node : nodes ) {

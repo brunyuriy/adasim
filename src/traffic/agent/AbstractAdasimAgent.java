@@ -81,7 +81,7 @@ public abstract class AbstractAdasimAgent implements AdasimAgent {
 	 * The agent is also responsible for ensuring that the 
 	 * filter is applied to all properties that have uncertainty.
 	 * 
-	 * @param the uncertainty filter
+	 * @param filter the uncertainty filter
 	 */
 	@Override
 	public void setUncertaintyFilter(AdasimFilter filter) {
@@ -97,7 +97,7 @@ public abstract class AbstractAdasimAgent implements AdasimAgent {
 	 * Assigning <code>null</code> is legal here. The agent
 	 * implementation is responsible for ensuring safe behavior.
 	 * 
-	 * @param the uncertainty filter
+	 * @param filter the uncertainty filter
 	 */
 	@Override
 	public void setPrivacyFilter(AdasimFilter filter) {

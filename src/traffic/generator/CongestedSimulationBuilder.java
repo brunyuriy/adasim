@@ -30,8 +30,12 @@ import traffic.strategy.LinearSpeedStrategy;
 import traffic.strategy.SpeedStrategy;
 
 /**
+ * This class is hack we used for some experiments. 
+ * It has not been updated for the new configuration file
+ * formats and does not support most of the interesting
+ * features of adasim.
  * @author Jochen Wuttke - wuttkej@gmail.com
- *
+ * @deprecated
  */
 public class CongestedSimulationBuilder {
 	
@@ -52,7 +56,7 @@ public class CongestedSimulationBuilder {
 
 	/**
 	 * @param opts
-	 * @return
+	 * @return a list of vehicles, size determined by commandline argument
 	 * @throws ConfigurationException 
 	 */
 	private List<AdasimAgent> buildVehicles(ConfigurationOptions opts, Graph g) throws ConfigurationException {
@@ -73,7 +77,7 @@ public class CongestedSimulationBuilder {
 	/**
 	 * @param i
 	 * @param opts
-	 * @return
+	 * @return a fully configured vehicle
 	 * @throws ConfigurationException 
 	 */
 	private Vehicle buildVehicle(int i, ConfigurationOptions opts, Graph g, GraphNode start, GraphNode end ) throws ConfigurationException {
@@ -93,7 +97,7 @@ public class CongestedSimulationBuilder {
 
 	/**
 	 * @param strategies
-	 * @return
+	 * @return a random strategy picked from the allowed list
 	 * @throws ConfigurationException 
 	 */
 	private VehicleStrategy randomVehicleStrategy(List<String> strategies) throws ConfigurationException {
@@ -108,7 +112,7 @@ public class CongestedSimulationBuilder {
 
 	/**
 	 * @param opts
-	 * @return
+	 * @return a fully configured graph
 	 * @throws ConfigurationException 
 	 */
 	private Graph buildGraph(ConfigurationOptions opts) throws ConfigurationException {
@@ -124,7 +128,7 @@ public class CongestedSimulationBuilder {
 
 	/**
 	 * @param opts
-	 * @return
+	 * @return a fully configured node
 	 * @throws ConfigurationException 
 	 */
 	private GraphNode buildNode(ConfigurationOptions opts, int id ) throws ConfigurationException {
@@ -136,26 +140,23 @@ public class CongestedSimulationBuilder {
 
 	/**
 	 * @param opts
-	 * @return
+	 * @return some random delay picked from the allowed range
 	 */
 	private int randomDelay(ConfigurationOptions opts) {
 		int[] nodeDelay = opts.getNodeDelay();
 		return random.nextInt( nodeDelay[1] - nodeDelay[0] + 1 ) + nodeDelay[0];
 	}
 
+	static SpeedStrategy ss = new LinearSpeedStrategy();
 	/**
 	 * @param opts
-	 * @return
+	 * @return ss the currently configured speed strategy, if <code>null</code> this will cause problems
 	 * @throws ConfigurationException 
 	 */
-	static SpeedStrategy ss = new LinearSpeedStrategy();
 	private SpeedStrategy randomSpeedStrategy(ConfigurationOptions opts) throws ConfigurationException {
 		return ss;
 	}
 
-	/**
-	 * @return
-	 */
 	private void randomizeNeighbors(GraphNode node, List<GraphNode> nodes, double degreeProb, double oneWayProb ) {
 		for ( int i = 0; i < nodes.size(); i++) {
 			if ( random.nextDouble() < degreeProb/2/(1+oneWayProb) && !nodes.get(i).equals(node)) {

@@ -80,7 +80,7 @@ public final class VehicleManager extends AbstractAdasimAgent {
 	
 	/**
 	 * "Private" accessor method. For testing only.
-	 * @return
+	 * @return the internal representation of the queue
 	 */
 	Map<Long, List<Vehicle>> getQueue() {
 		return startingQueue;

@@ -127,8 +127,7 @@ public final class GraphNode extends AbstractAdasimAgent {
 	}
 	
 	/**
-	 * Returns all nodes this node has an outgoing edge towards
-	 * @return
+	 * @return all nodes this node has an outgoing edge towards
 	 */
 	public List<GraphNode> getNeighbors() {
 		return new ArrayList<GraphNode>(outgoing);
@@ -143,8 +142,7 @@ public final class GraphNode extends AbstractAdasimAgent {
 	 *************************************************** */	
 
 	/**
-	 * Returns this node's speed strategy
-	 * @return
+	 * @return this node's speed strategy
 	 */
 	public SpeedStrategy getSpeedStrategy() {
 		return ss;
@@ -163,8 +161,7 @@ public final class GraphNode extends AbstractAdasimAgent {
 	 *************************************************** */	
 	
 	/**
-	 * Returns this node's ID number
-	 * @return
+	 * @return this node's ID number
 	 */
 	public int getID() {
 		return nodeNum;
@@ -178,8 +175,8 @@ public final class GraphNode extends AbstractAdasimAgent {
 	}
 	
 	/**
-	 * @param filter
-	 * @return
+	 * @param value
+	 * @return the filtered input value
 	 */
 	private int filterValue(int value) {
 		if ( uncertaintyFilter == null ) {
@@ -299,6 +296,16 @@ public final class GraphNode extends AbstractAdasimAgent {
 		}
 	}
 	
+	/**
+	 * Called by vehicles during the movement protocol. 
+	 * <p>
+	 * This method is used to announce a vehicle's intention to enter
+	 * node <code>targetNode</code>. This GraphNode checks the move for 
+	 * validity and rejects illegal moves.
+	 * 
+	 * @param targetNode
+	 * @param v
+	 */
 	public void moveTo( GraphNode targetNode, Vehicle v ) {
 		if ( isNeighbor(targetNode) ) {
 			targetNode.enterNode(v);

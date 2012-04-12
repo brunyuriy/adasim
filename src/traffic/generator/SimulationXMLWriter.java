@@ -97,34 +97,33 @@ public class SimulationXMLWriter {
 	/**
 	 * @param doc
 	 * @param vehicles
-	 * @return
 	 */
-	private void writeVehicles(Element doc, List<AdasimAgent> cars) {
+	private void writeVehicles(Element doc, List<AdasimAgent> vehicles) {
 		Element c = factory.element( "cars" );
 		c.setAttribute( factory.attribute( "default_strategy", DEFAULT_CAR_STRATEGY ) );
-		for ( AdasimAgent car : cars ) {
+		for ( AdasimAgent car : vehicles ) {
 			writeCar( c, (Vehicle)car );
 		}
 		doc.addContent(c);
 	}
-/**
-	 * @param c
-	 * @param vehicle
+	
+	/**
+	 * @param vehicles
+	 * @param v
 	 */
-	private void writeCar(Element cars, Vehicle car) {
+	private void writeCar(Element vehicles, Vehicle v) {
 		Element c = factory.element( "car" );
-		c.setAttribute( factory.attribute( "start", "" + car.getStartNode().getID() ) );
-		c.setAttribute( factory.attribute( "end", "" + car.getEndNode().getID() ) );
-		c.setAttribute( factory.attribute( "id", "" + car.getID() ) );
-		c.setAttribute( factory.attribute( "strategy", "" + car.getStrategy().getClass().getCanonicalName() ) );
-		cars.addContent(c);
+		c.setAttribute( factory.attribute( "start", "" + v.getStartNode().getID() ) );
+		c.setAttribute( factory.attribute( "end", "" + v.getEndNode().getID() ) );
+		c.setAttribute( factory.attribute( "id", "" + v.getID() ) );
+		c.setAttribute( factory.attribute( "strategy", "" + v.getStrategy().getClass().getCanonicalName() ) );
+		vehicles.addContent(c);
 	}
 
 
 	/**
 	 * @param doc
 	 * @param graph
-	 * @return
 	 */
 	private void writeGraph(Element doc, Graph graph) {
 		Element g = factory.element( "graph" );
@@ -151,7 +150,7 @@ public class SimulationXMLWriter {
 
 	/**
 	 * @param neighbors
-	 * @return
+	 * @return a string representing the list of neighbors 
 	 */
 	private String writeNeighbors(List<GraphNode> neighbors) {
 		assert neighbors != null;
