@@ -12,7 +12,7 @@
  * Created: Dec 13, 2011
  */
 
-package traffic.model;
+package traffic.model.internal;
 
 import java.util.Set;
 
@@ -21,8 +21,8 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import traffic.algorithm.routing.LookaheadShortestPathRoutingAlgorithm;
-import traffic.model.RoadVehicleQueue;
 import traffic.model.Vehicle;
+import traffic.model.internal.RoadVehicleQueue;
 
 
 /**

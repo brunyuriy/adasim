@@ -26,7 +26,7 @@
  * Created: Dec 13, 2011
  */
 
-package traffic.model;
+package traffic.model.internal;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -34,6 +34,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+
+import traffic.model.Vehicle;
 
 
 /**
@@ -46,7 +48,7 @@ import java.util.TreeSet;
  * @author Jochen Wuttke - wuttkej@gmail.com
  *
  */
-final class RoadVehicleQueue {
+public final class RoadVehicleQueue {
 	
 	/**
 	 * ID for the special queue tracking parked/stopped vehicles.
@@ -68,7 +70,7 @@ final class RoadVehicleQueue {
 	 * @param c
 	 * @param delay
 	 */
-	void enqueue( Vehicle c, int delay ) {
+	public void enqueue( Vehicle c, int delay ) {
 		assert delay >= 0;
 		ensureBucketExists( delay );
 		queue.get( delay ).add(c);
@@ -87,7 +89,7 @@ final class RoadVehicleQueue {
 	 * Moves all vehicles one step ahead
 	 * @return the list of vehicles that have reached the tip of the queue
 	 */
-	Set<Vehicle> moveVehicles() {
+	public Set<Vehicle> moveVehicles() {
 		Set<Vehicle> fs = queue.remove(0);
 		SortedSet<Integer> keys = new TreeSet<Integer>( queue.keySet() );
 		for ( Integer key : keys ) {
@@ -102,7 +104,7 @@ final class RoadVehicleQueue {
 	 * Removes <code>c</code> from the active list of vehicles.
 	 * @param c
 	 */
-	void park( Vehicle c ) {
+	public void park( Vehicle c ) {
 		removeFromQueue( c );
 		queue.get( PARKED ).add( c );
 	}
