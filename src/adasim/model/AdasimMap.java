@@ -123,10 +123,7 @@ public final class AdasimMap {
 	 * no such node exists 
 	 */
 	public RoadSegment getRoadSegment( int id ) {
-		for ( RoadSegment node : roads ) {
-			if ( node.getID() == id ) return node;
-		}
-		return null;
+		return RoadSegment.getRoadSegment(roads, id);
 	}
 	
 }

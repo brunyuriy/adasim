@@ -201,24 +201,12 @@ final public class SimulationXMLReader {
 	 * @throws ConfigurationException 
 	 */
 	private RoadSegment checkEndPoint(List<RoadSegment> nodes, int end, int id, String s) throws ConfigurationException {
-		RoadSegment n = isValidNode( end, nodes );
+		RoadSegment n = RoadSegment.getRoadSegment(nodes, end );
 		if ( n == null ) { 
 			logger.warn( s + " node " + end + " for vehicle " + id + " does not exist");
 			throw new ConfigurationException("");
 		}
 		return n;
-	}
-
-	/**
-	 * @param id
-	 * @param nodes
-	 * @return the RoadSegment with ID <code>id</code> if it's in the list, or <code>null</code>
-	 */
-	private RoadSegment isValidNode(int id, List<RoadSegment> nodes ) {
-		for ( RoadSegment node : nodes ) {
-			if ( node.getID() == id ) return node;
-		}
-		return null;
 	}
 
 }

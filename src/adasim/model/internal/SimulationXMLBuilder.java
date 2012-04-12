@@ -29,6 +29,7 @@
 package adasim.model.internal;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -115,7 +116,7 @@ public class SimulationXMLBuilder {
 		gn.setUncertaintyFilter(f);
 		f = (AdasimFilter) loadClassFromAttribute(nodeElement, "privacy_filter" ); 
 		gn.setPrivacyFilter(f);
-		
+
 		return gn;
 	}
 
@@ -220,6 +221,17 @@ public class SimulationXMLBuilder {
 		return gn;
 	}
 
+	/**
+	 * Tries to return an instance of the given class. It first
+	 * attempts to call the singleton method <code>getInstance()</code>,
+	 * and if that does not return an object, calls the default constructor.
+	 * If neither returns an object or any exception is thrown, this method
+	 * returns <code>null</code>.
+	 * @param node
+	 * @param attribute
+	 * @return an instance of the specified class, or <code>null</code> if an 
+	 * instance could not be created by reflection.
+	 */
 	private Object loadClassFromAttribute(Element node, String attribute ) {
 		Object t = null;
 		String n = node.getAttributeValue( attribute );
@@ -227,7 +239,14 @@ public class SimulationXMLBuilder {
 			try {
 				@SuppressWarnings("rawtypes")
 				Class c = Class.forName( n );
-				t = c.newInstance();
+				try {
+					@SuppressWarnings("unchecked")
+					Method m = c.getDeclaredMethod("getInstance", new Class[0] );
+					if ( m != null ) {
+						t = m.invoke(null, new Object[0] );
+					} 
+				} catch (NoSuchMethodException e ) {} 
+				if ( t == null )t = c.newInstance();
 			} catch (Exception e) {}
 		}
 		return t;
@@ -266,15 +285,8 @@ public class SimulationXMLBuilder {
 		RoadSegment gn = getNode( nodes, node );
 		for ( String n : neighbors ) {
 			int nn = Integer.parseInt(n);
-			gn.addEdge( getNode( nodes, nn ));					
+			gn.addEdge( RoadSegment.getRoadSegment( nodes, nn ));					
 		}
-	}
-
-	private RoadSegment getNode(List<RoadSegment> nodes, int node) {
-		for ( RoadSegment n : nodes ) {
-			if ( n.getID() == node ) return n;
-		}
-		return null;
 	}
 
 	/**
@@ -284,10 +296,7 @@ public class SimulationXMLBuilder {
 	 */
 	private RoadSegment getNode(List<RoadSegment> nodes, Element node) {
 		int id = Integer.parseInt( node.getAttributeValue( "id" ) );
-		for ( RoadSegment n : nodes ) {
-			if ( n.getID() == id ) return n;
-		}
-		return null;
+		return RoadSegment.getRoadSegment(nodes, id);
 	}
 
 	/**
