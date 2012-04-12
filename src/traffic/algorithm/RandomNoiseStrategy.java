@@ -23,26 +23,25 @@
  *    Jonathan Ramaswamy (ramaswamyj12@gmail.com) - initial API and implementation
  ********************************************************************************
  *
- * Created: Oct 18, 2011
+ * Created: Oct 25, 2011
  */
 
-package traffic.strategy;
+package traffic.algorithm;
+
+import java.util.Random;
 
 /**
- * The speed limit is set to be equal to the square of the number of cars at the node,
- * above a certain capacity
+ * Returns a random noise value
  * 
  * @author Jonathan Ramaswamy - ramaswamyj12@gmail.com
+ *
  */
-
-public class QuadraticTrafficDelayFunction implements TrafficDelayFunction {
-
-	public int getDelay(int weight, int capacity, int number) {
-		if (number > capacity) {
-			return number - capacity + (weight * weight);
-		} else {
-			return weight * weight;
-		}
+public class RandomNoiseStrategy implements NoiseStrategy{
+	
+	public double getNoise() {
+		Random generator = new Random();
+		double rand = generator.nextDouble();
+		return rand;
 	}
 
 }

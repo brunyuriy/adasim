@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <simulation>
-  <graph default_strategy="traffic.strategy.LinearTrafficDelayFunction">
+  <graph default_strategy="traffic.algorithm.LinearTrafficDelayFunction">
     <node id="0" neighbors="60 71 115 308 420 568 607 798" />
     <node id="1" neighbors="671 698 889" />
     <node id="2" neighbors="255 468 808" />
@@ -1002,12 +1002,12 @@
     <node id="998" neighbors="270 295 455 574 682 735 955" />
     <node id="999" neighbors="126 135 316 483 952" />
   </graph>
-  <cars default_strategy="traffic.strategy.AlwaysRecomputeCarStrategy">
-    <car id="0" start="255" end="109" strategy="traffic.strategy.DijkstraCarStrategy" />
-    <car id="1" start="327" end="612" strategy="traffic.strategy.DijkstraCarStrategy" />
-    <car id="2" start="738" end="584" strategy="traffic.strategy.DijkstraCarStrategy" />
-    <car id="3" start="744" end="874" strategy="traffic.strategy.DijkstraCarStrategy" />
-    <car id="4" start="900" end="387" strategy="traffic.strategy.DijkstraCarStrategy" />
+  <cars default_strategy="traffic.algorithm.AlwaysRecomputeCarStrategy">
+    <car id="0" start="255" end="109" strategy="traffic.algorithm.DijkstraCarStrategy" />
+    <car id="1" start="327" end="612" strategy="traffic.algorithm.DijkstraCarStrategy" />
+    <car id="2" start="738" end="584" strategy="traffic.algorithm.DijkstraCarStrategy" />
+    <car id="3" start="744" end="874" strategy="traffic.algorithm.DijkstraCarStrategy" />
+    <car id="4" start="900" end="387" strategy="traffic.algorithm.DijkstraCarStrategy" />
   </cars>
 </simulation>
 

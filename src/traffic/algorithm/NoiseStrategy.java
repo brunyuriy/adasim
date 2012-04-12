@@ -23,22 +23,19 @@
  *    Jonathan Ramaswamy (ramaswamyj12@gmail.com) - initial API and implementation
  ********************************************************************************
  *
- * Created: Oct 18, 2011
+ * Created: Oct 25, 2011
  */
 
-package traffic.strategy;
+package traffic.algorithm;
 
 /**
- * This interface implement traffic delay functions.
- * Given the weight of a node, the number of cars and an additional parameter 
- * (the traffic capacity of a node), it returns the time required
- * to traverse that node.
+ * Superclass for noise strategies
  * 
- * @author Jochen Wuttke - wuttkej@gmail.com
+ * @author Jonathan Ramaswamy - ramaswamyj12@gmail.com
  *
  */
-public interface TrafficDelayFunction {
+public interface NoiseStrategy {
 	
-	public int getDelay(int weight, int cutoff, int number); //Returns the speed limit for the node depending on the number of cars
+	public double getNoise();//Returns the noise value for the given node
 
 }

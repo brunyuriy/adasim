@@ -16,6 +16,8 @@ package traffic.strategy;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import traffic.algorithm.LinearTrafficDelayFunction;
 import static org.junit.Assert.*;
 
 /**

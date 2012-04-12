@@ -1,9 +1,9 @@
 <simulation>
-	<cars default_strategy="traffic.strategy.DijkstraCarStrategy">
+	<cars default_strategy="traffic.algorithm.DijkstraCarStrategy">
 		<car id="27" start="1" end="1"/>
 	</cars>
 
-	<graph default_strategy="traffic.strategy.QuadraticTrafficDelayFunction">
+	<graph default_strategy="traffic.algorithm.QuadraticTrafficDelayFunction">
 		<node id="1" neighbors=""/>
 	</graph>
 </simulation>

@@ -20,14 +20,14 @@ import java.util.List;
 import java.util.Random;
 
 import traffic.agent.AdasimAgent;
+import traffic.algorithm.LinearTrafficDelayFunction;
+import traffic.algorithm.TrafficDelayFunction;
+import traffic.algorithm.VehicleStrategy;
 import traffic.model.AdasimMap;
 import traffic.model.RoadSegment;
 import traffic.model.Vehicle;
 import traffic.model.ConfigurationException;
 import traffic.model.TrafficSimulator;
-import traffic.strategy.VehicleStrategy;
-import traffic.strategy.LinearTrafficDelayFunction;
-import traffic.strategy.TrafficDelayFunction;
 
 /**
  * This class is hack we used for some experiments. 

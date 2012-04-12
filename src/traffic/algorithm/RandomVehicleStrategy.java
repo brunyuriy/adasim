@@ -23,19 +23,52 @@
  *    Jonathan Ramaswamy (ramaswamyj12@gmail.com) - initial API and implementation
  ********************************************************************************
  *
- * Created: Oct 25, 2011
+ * Created: Oct 11, 2011
  */
 
-package traffic.strategy;
+package traffic.algorithm;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+import traffic.model.RoadSegment;
 
 /**
- * Superclass for noise strategies
+ * This class returns a random path for the car to follow
+ * No optimizations for shortest path are made
  * 
  * @author Jonathan Ramaswamy - ramaswamyj12@gmail.com
- *
  */
-public interface NoiseStrategy {
+
+public class RandomVehicleStrategy extends AbstractVehicleStrategy {
+
+	public RandomVehicleStrategy(){}	
 	
-	public double getNoise();//Returns the noise value for the given node
+	/**
+	 * Picks random neighbors to move towards until the destination is reached
+	 * Returns the path represented as a list of integers
+	 */
+	public List<RoadSegment> getPath(RoadSegment c, RoadSegment d) {
+		RoadSegment next = c;
+		List<RoadSegment> path = new ArrayList<RoadSegment>();
+		while(!next.equals(d) && path.size() < graph.getNodes().size() ) {
+			List<RoadSegment> dest = next.getNeighbors();
+			Random generator = new Random();
+			int rand = generator.nextInt(dest.size());
+			next = dest.get(rand);
+			path.add(next);
+		}
+		return path.get( path.size() - 1 ) == d ? path : null ;	//The random strategy must terminate even it if can't find a path
+	}
+
+	/* (non-Javadoc)
+	 * @see traffic.algorithm.CarStrategy#getNextNode()
+	 */
+	@Override
+	public RoadSegment getNextNode() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

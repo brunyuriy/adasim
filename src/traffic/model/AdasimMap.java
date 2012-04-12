@@ -36,7 +36,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import traffic.strategy.TrafficDelayFunction;
+import traffic.algorithm.TrafficDelayFunction;
 
 /**
  * The graph class represents a collection of GraphNodes

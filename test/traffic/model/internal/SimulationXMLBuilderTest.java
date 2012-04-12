@@ -28,6 +28,10 @@ import org.junit.Test;
 
 import traffic.agent.AbstractAdasimAgent;
 import traffic.agent.AdasimAgent;
+import traffic.algorithm.AlwaysRecomputeVehicleStrategy;
+import traffic.algorithm.LinearTrafficDelayFunction;
+import traffic.algorithm.QuadraticTrafficDelayFunction;
+import traffic.algorithm.ShortestPathVehicleStrategy;
 import traffic.filter.AdasimFilter;
 import traffic.filter.IdentityFilter;
 import traffic.model.ConfigurationException;
@@ -35,10 +39,6 @@ import traffic.model.AdasimMap;
 import traffic.model.RoadSegment;
 import traffic.model.Vehicle;
 import traffic.model.internal.SimulationXMLBuilder;
-import traffic.strategy.AlwaysRecomputeVehicleStrategy;
-import traffic.strategy.LinearTrafficDelayFunction;
-import traffic.strategy.QuadraticTrafficDelayFunction;
-import traffic.strategy.ShortestPathVehicleStrategy;
 
 /**
  * @author Jochen Wuttke - wuttkej@gmail.com
@@ -68,7 +68,7 @@ public class SimulationXMLBuilderTest {
 	
 	@Test
 	public void nodeNoAllOptionals() throws JDOMException, IOException {
-		Document doc = parser.build( new StringReader( "<node id=\"27\" neighbors=\"1 2 3\" delay=\"2\" capacity=\"5\" strategy=\"traffic.strategy.LinearTrafficDelayFunction\" uncertainty_filter=\"traffic.filter.IdentityFilter\"/>" ) );
+		Document doc = parser.build( new StringReader( "<node id=\"27\" neighbors=\"1 2 3\" delay=\"2\" capacity=\"5\" strategy=\"traffic.algorithm.LinearTrafficDelayFunction\" uncertainty_filter=\"traffic.filter.IdentityFilter\"/>" ) );
 		RoadSegment node = builder.buildNode( doc.getRootElement() );
 		assertEquals( 27, node.getID() );
 		assertTrue( node.getNeighbors().isEmpty() );
@@ -81,10 +81,10 @@ public class SimulationXMLBuilderTest {
 	
 	@Test
 	public void graphWithDefaults() throws JDOMException, IOException, ConfigurationException {
-		Document doc = parser.build( new StringReader( "<graph default_strategy=\"traffic.strategy.LinearTrafficDelayFunction\" default_capacity=\"0\">" +
+		Document doc = parser.build( new StringReader( "<graph default_strategy=\"traffic.algorithm.LinearTrafficDelayFunction\" default_capacity=\"0\">" +
 				"<node id=\"1\" neighbors=\"1 2 3 4\" delay=\"2\" capacity=\"5\"/>" +
-				"<node id=\"2\" neighbors=\"3\" delay=\"2\" capacity=\"5\" strategy=\"traffic.strategy.LinearTrafficDelayFunction\"/>" +
-				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"traffic.strategy.QuadraticTrafficDelayFunction\"/>" +
+				"<node id=\"2\" neighbors=\"3\" delay=\"2\" capacity=\"5\" strategy=\"traffic.algorithm.LinearTrafficDelayFunction\"/>" +
+				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"traffic.algorithm.QuadraticTrafficDelayFunction\"/>" +
 				"</graph>" ) );
 		AdasimMap graph = builder.buildGraph( doc.getRootElement() );
 		assertEquals( 3, graph.getNodes().size() );
@@ -102,10 +102,10 @@ public class SimulationXMLBuilderTest {
 	
 	@Test
 	public void graphWithUncertaintyFilter() throws JDOMException, IOException, ConfigurationException {
-		Document doc = parser.build( new StringReader( "<graph default_strategy=\"traffic.strategy.LinearTrafficDelayFunction\" default_capacity=\"0\" uncertainty_filter=\"traffic.model.internal.FakeFilter\">" +
+		Document doc = parser.build( new StringReader( "<graph default_strategy=\"traffic.algorithm.LinearTrafficDelayFunction\" default_capacity=\"0\" uncertainty_filter=\"traffic.model.internal.FakeFilter\">" +
 				"<node id=\"1\" neighbors=\"1 2 3 4\" delay=\"2\" capacity=\"5\"/>" +
-				"<node id=\"2\" neighbors=\"3\" delay=\"2\" capacity=\"5\" strategy=\"traffic.strategy.LinearTrafficDelayFunction\"/>" +
-				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"traffic.strategy.QuadraticTrafficDelayFunction\" uncertainty_filter=\"traffic.filter.IdentityFilter\"/>" +
+				"<node id=\"2\" neighbors=\"3\" delay=\"2\" capacity=\"5\" strategy=\"traffic.algorithm.LinearTrafficDelayFunction\"/>" +
+				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"traffic.algorithm.QuadraticTrafficDelayFunction\" uncertainty_filter=\"traffic.filter.IdentityFilter\"/>" +
 				"</graph>" ) );
 		AdasimMap graph = builder.buildGraph( doc.getRootElement() );
 		assertEquals( 3, graph.getNodes().size() );
@@ -125,10 +125,10 @@ public class SimulationXMLBuilderTest {
 	@Test
 	public void graphWithUncertaintyFilterHookup() throws JDOMException, IOException, ConfigurationException {
 		//test that the uncertainty filter gets called correctly.
-		Document doc = parser.build( new StringReader( "<graph default_strategy=\"traffic.strategy.LinearTrafficDelayFunction\" default_capacity=\"0\" uncertainty_filter=\"traffic.model.FakeFilter\">" +
+		Document doc = parser.build( new StringReader( "<graph default_strategy=\"traffic.algorithm.LinearTrafficDelayFunction\" default_capacity=\"0\" uncertainty_filter=\"traffic.model.FakeFilter\">" +
 				"<node id=\"1\" neighbors=\"1 2 3 4\" delay=\"2\" capacity=\"5\"/>" +
-				"<node id=\"2\" neighbors=\"3\" delay=\"2\" capacity=\"5\" strategy=\"traffic.strategy.LinearTrafficDelayFunction\"/>" +
-				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"traffic.strategy.LinearTrafficDelayFunction\" uncertainty_filter=\"traffic.model.internal.FakeFilter\"/>" +
+				"<node id=\"2\" neighbors=\"3\" delay=\"2\" capacity=\"5\" strategy=\"traffic.algorithm.LinearTrafficDelayFunction\"/>" +
+				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"traffic.algorithm.LinearTrafficDelayFunction\" uncertainty_filter=\"traffic.model.internal.FakeFilter\"/>" +
 				"</graph>" ) );
 		AdasimMap graph = builder.buildGraph( doc.getRootElement() );
 		assertEquals( 3, graph.getNodes().size() );
@@ -146,10 +146,10 @@ public class SimulationXMLBuilderTest {
 
 	@Test
 	public void graphWithPrivacyFilter() throws JDOMException, IOException, ConfigurationException {
-		Document doc = parser.build( new StringReader( "<graph default_strategy=\"traffic.strategy.LinearTrafficDelayFunction\" default_capacity=\"0\" privacy_filter=\"traffic.model.internal.FakeFilter\">" +
+		Document doc = parser.build( new StringReader( "<graph default_strategy=\"traffic.algorithm.LinearTrafficDelayFunction\" default_capacity=\"0\" privacy_filter=\"traffic.model.internal.FakeFilter\">" +
 				"<node id=\"1\" neighbors=\"1 2 3 4\" delay=\"2\" capacity=\"5\"/>" +
-				"<node id=\"2\" neighbors=\"3\" delay=\"2\" capacity=\"5\" strategy=\"traffic.strategy.LinearTrafficDelayFunction\"/>" +
-				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"traffic.strategy.QuadraticTrafficDelayFunction\" privacy_filter=\"traffic.filter.IdentityFilter\"/>" +
+				"<node id=\"2\" neighbors=\"3\" delay=\"2\" capacity=\"5\" strategy=\"traffic.algorithm.LinearTrafficDelayFunction\"/>" +
+				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"traffic.algorithm.QuadraticTrafficDelayFunction\" privacy_filter=\"traffic.filter.IdentityFilter\"/>" +
 				"</graph>" ) );
 		AdasimMap graph = builder.buildGraph( doc.getRootElement() );
 		assertEquals( 3, graph.getNodes().size() );
@@ -177,7 +177,7 @@ public class SimulationXMLBuilderTest {
 	
 	@Test
 	public void carAllOptionals() throws JDOMException, IOException {
-		Document doc = parser.build( new StringReader( "<car id=\"27\" start=\"1\" end=\"1\" strategy=\"traffic.strategy.ShortestPathVehicleStrategy\" />" ) );
+		Document doc = parser.build( new StringReader( "<car id=\"27\" start=\"1\" end=\"1\" strategy=\"traffic.algorithm.ShortestPathVehicleStrategy\" />" ) );
 		Vehicle car = builder.buildVehicle( doc.getRootElement() );
 		assertEquals( 27, car.getID() );
 		assertNull( car.getStartNode() );
@@ -187,9 +187,9 @@ public class SimulationXMLBuilderTest {
 
 	@Test
 	public void carListWithDefaults() throws JDOMException, IOException, ConfigurationException {
-		Document doc = parser.build( new StringReader( "<cars default_strategy=\"traffic.strategy.AlwaysRecomputeVehicleStrategy\">" +
+		Document doc = parser.build( new StringReader( "<cars default_strategy=\"traffic.algorithm.AlwaysRecomputeVehicleStrategy\">" +
 				"<car id=\"1\" start=\"1\" end=\"1\" />" +
-				"<car id=\"2\" start=\"1\" end=\"1\" strategy=\"traffic.strategy.ShortestPathVehicleStrategy\" />" +
+				"<car id=\"2\" start=\"1\" end=\"1\" strategy=\"traffic.algorithm.ShortestPathVehicleStrategy\" />" +
 				"<car id=\"3\" start=\"1\" end=\"1\" />" +
 				"</cars>" ) );
 		List<Vehicle> cars = builder.buildVehicles( doc.getRootElement() );

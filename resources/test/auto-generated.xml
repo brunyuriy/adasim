@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <simulation>
-  <graph default_strategy="traffic.strategy.LinearTrafficDelayFunction" default_capacity="5">
+  <graph default_strategy="traffic.algorithm.LinearTrafficDelayFunction" default_capacity="5">
     <node id="0" neighbors="7 9 " />
     <node id="1" neighbors="2 6 8 " />
     <node id="2" neighbors="0 9 " />
@@ -12,12 +12,12 @@
     <node id="8" neighbors="2 3 9 " />
     <node id="9" neighbors="0 2 7 " />
   </graph>
-  <cars default_strategy="traffic.strategy.LookaheadShortestPathVehicleStrategy">
-    <car id="0" start="2" end="0" strategy="traffic.strategy.LookaheadShortestPathVehicleStrategy" />
-    <car id="1" start="9" end="2" strategy="traffic.strategy.LookaheadShortestPathVehicleStrategy" />
-    <car id="2" start="0" end="1" strategy="traffic.strategy.LookaheadShortestPathVehicleStrategy" />
-    <car id="3" start="9" end="1" strategy="traffic.strategy.LookaheadShortestPathVehicleStrategy" />
-    <car id="4" start="9" end="2" strategy="traffic.strategy.LookaheadShortestPathVehicleStrategy" />
+  <cars default_strategy="traffic.algorithm.LookaheadShortestPathVehicleStrategy">
+    <car id="0" start="2" end="0" strategy="traffic.algorithm.LookaheadShortestPathVehicleStrategy" />
+    <car id="1" start="9" end="2" strategy="traffic.algorithm.LookaheadShortestPathVehicleStrategy" />
+    <car id="2" start="0" end="1" strategy="traffic.algorithm.LookaheadShortestPathVehicleStrategy" />
+    <car id="3" start="9" end="1" strategy="traffic.algorithm.LookaheadShortestPathVehicleStrategy" />
+    <car id="4" start="9" end="2" strategy="traffic.algorithm.LookaheadShortestPathVehicleStrategy" />
   </cars>
 </simulation>
 

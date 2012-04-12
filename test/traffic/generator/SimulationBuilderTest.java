@@ -27,7 +27,7 @@ public class SimulationBuilderTest {
 	public void testBuildTerminates() throws Exception {
 		ConfigurationOptions opts = ConfigurationOptions.parse( new String[] { "-N", "1000", "-C", "500", 
 				"-D", "4", "-o", "random.xml", "-d", "3:6", "-S", 
-				"traffic.strategy.LookaheadShortestPathVehicleStrategy", "--one-way-prob", "0.05", "--node-capacity", "0"});
+				"traffic.algorithm.LookaheadShortestPathVehicleStrategy", "--one-way-prob", "0.05", "--node-capacity", "0"});
 		new SimulationBuilder().build(opts);
 		//passes when it doesn't crash
 	}
@@ -36,7 +36,7 @@ public class SimulationBuilderTest {
 	public void loadGraphFile() throws Exception {
 		ConfigurationOptions opts = ConfigurationOptions.parse( new String[] { "-N", "1000", "-C", "500", 
 				"-D", "4", "-o", "random.xml", "-d", "3:6", "-S", 
-				"traffic.strategy.LookaheadShortestPathVehicleStrategy", "--one-way-prob", "0.05", "--node-capacity", "0",
+				"traffic.algorithm.LookaheadShortestPathVehicleStrategy", "--one-way-prob", "0.05", "--node-capacity", "0",
 				"--graph", "resources/xml/city-map.xml"});
 		new SimulationBuilder().build(opts);
 		//for now this passes if it doesn't crash

@@ -36,7 +36,7 @@ def file_prefix(n,c,i):
 def build_simulation(nodes, cars, iteration):
 	print str(iteration) + ": Building simulation with " + nodes + " nodes, " + cars + " cars "
 	print get_cmd_output( "java", ["traffic.generator.Generator", "-N", nodes, "-C", cars, "-D", "4", "-o", file_prefix(nodes, cars, iteration) + ".xml",
-		"-d", "3:6", "-S", "traffic.strategy.LookaheadShortestPathCarStrategy,traffic.strategy.AdaptiveCarStrategy",
+		"-d", "3:6", "-S", "traffic.algorithm.LookaheadShortestPathCarStrategy,traffic.algorithm.AdaptiveCarStrategy",
 		"--one-way-prob", "0.05" ] )
 
 def run_simulation(nodes, cars, iteration):

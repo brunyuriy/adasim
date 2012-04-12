@@ -23,18 +23,18 @@
  *    Jochen Wuttke (wuttkej@gmail.com) - initial API and implementation
  ********************************************************************************
  *
- * Created: Jan 24, 2012
+ * Created: Dec 16, 2011
  */
 
-package traffic.strategy;
+package traffic.algorithm;
 
 /**
- * This is the class implementing the ShortestPath
- * strategy we use for the paper.
- * 
  * @author Jochen Wuttke - wuttkej@gmail.com
  *
  */
-public class ShortestPathVehicleStrategy extends LookaheadShortestPathVehicleStrategy {
+public class AdaptiveVehicleStrategy extends LookaheadShortestPathVehicleStrategy {
 
+	public AdaptiveVehicleStrategy() {
+		super(5);
+	}
 }

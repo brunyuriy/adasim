@@ -1,5 +1,5 @@
 <simulation>
-	<graph default_strategy="traffic.strategy.QuadraticTrafficDelayFunction">
+	<graph default_strategy="traffic.algorithm.QuadraticTrafficDelayFunction">
 		<node id="0" neighbors="0" />
 	</graph>
 </simulation>
