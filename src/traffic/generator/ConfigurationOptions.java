@@ -62,7 +62,7 @@ final class ConfigurationOptions {
 	/**
 	 * Process the options found in the commandline arguments
 	 * and checks that all required options are present.
-	 * @param parse
+	 * @param opts
 	 * @param cfg
 	 * @throws Exception 
 	 */
