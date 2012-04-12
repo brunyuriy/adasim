@@ -86,7 +86,7 @@ public class SimulationXMLWriter {
 	private void writeSim(File f, TrafficSimulator sim) throws IOException {
 		Element s = factory.element( "simulation" );
 		Document doc = factory.document( s );
-		writeGraph( s, sim.getGraph() );
+		writeGraph( s, sim.getMap() );
 		writeVehicles( s, sim.getAgents() );
 		FileOutputStream out = new FileOutputStream( f );
 		XMLOutputter p = new XMLOutputter( Format.getPrettyFormat() );
