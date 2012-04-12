@@ -142,8 +142,8 @@ public final class Vehicle extends AbstractAdasimAgent {
 	public void setStrategy(RoutingAlgorithm cs) {
 		this.cs = cs;
 		if ( cs != null ) {
-			cs.setStartNode(start);
-			cs.setEndNode(end);
+			cs.setStartRoad(start);
+			cs.setEndRoad(end);
 			cs.setVehicleId(id);
 		}
 	}

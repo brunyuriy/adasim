@@ -63,11 +63,11 @@ public interface RoutingAlgorithm {
 	 * Required setter to configure the strategy with the graph to work on
 	 * @param g
 	 */
-	public void setGraph( AdasimMap g );
+	public void setMap( AdasimMap g );
 	
-	public void setStartNode( RoadSegment start );
+	public void setStartRoad( RoadSegment start );
 	
-	public void setEndNode( RoadSegment end );
+	public void setEndRoad( RoadSegment end );
 	
 	public void setVehicleId( int id );
 

@@ -82,7 +82,7 @@ public class CongestedSimulationBuilder {
 	 */
 	private Vehicle buildVehicle(int i, ConfigurationOptions opts, AdasimMap g, RoadSegment start, RoadSegment end ) throws ConfigurationException {
 		RoutingAlgorithm cs = randomVehicleStrategy( opts.getStrategies() );
-		cs.setGraph(g);		
+		cs.setMap(g);		
 		return new Vehicle( start, end, cs, i);
 	}
 
