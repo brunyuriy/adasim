@@ -45,8 +45,12 @@ import adasim.model.TrafficSimulator;
 public abstract class AbstractAdasimAgent implements AdasimAgent {
 	
 	protected TrafficSimulator simulator;
-	protected AdasimFilter privacyFilter;
+	protected PrivacyFilterMap privacyFilters;
 	protected AdasimFilter uncertaintyFilter;
+	
+	protected AbstractAdasimAgent() {
+		privacyFilters = new PrivacyFilterMap();
+	}
 
 	/**
 	 * Does nothing (ignores the parameter!).
@@ -101,11 +105,11 @@ public abstract class AbstractAdasimAgent implements AdasimAgent {
 	 */
 	@Override
 	public void setPrivacyFilter(AdasimFilter filter, Class<?> criterion) {
-		privacyFilter = filter;
+		privacyFilters.addFilter(filter, criterion);
 	}
 	
-	public AdasimFilter getPrivacyFilter() {
-		return privacyFilter;
+	public AdasimFilter getPrivacyFilter(Class<?> criterion) {
+		return privacyFilters.getFilter(criterion);
 	}
 
 }
