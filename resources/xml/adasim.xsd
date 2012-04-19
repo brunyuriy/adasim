@@ -25,7 +25,7 @@
 	
 	<xsd:complexType name="Filter">
 		<xsd:attribute name="type" type="xsd:string" use="required"/>
-		<xsd:attribute name="agent" type="xsd:string" use="required"/>
+		<xsd:attribute name="agent" type="xsd:string"/>
 		<xsd:attribute name="filter" type="xsd:string" use="required"/>
 		<xsd:attribute name="criterion" type="xsd:string" default="java.lang.Object"/>
 	</xsd:complexType>
@@ -67,7 +67,6 @@
         <xsd:attribute name="delay" type="xsd:nonNegativeInteger" />
         <xsd:attribute name="capacity" type="xsd:nonNegativeInteger" />
         <xsd:attribute name="uncertainty_filter" type="xsd:string"/>
-        <xsd:attribute name="privacy_filter" type="xsd:string"/>
     </xsd:complexType>
 
     <xsd:complexType name="Agents">
