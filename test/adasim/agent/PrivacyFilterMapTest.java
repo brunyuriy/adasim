@@ -80,7 +80,7 @@ public class PrivacyFilterMapTest {
 	
 	@Test
 	public void updatesDefaultFilter() {
-		AdasimFilter f = map.addFilter(new FakeFilter(), Object.class );
+		map.addFilter(new FakeFilter(), Object.class );
 		//check default explicitly
 		assertEquals( FakeFilter.class, map.getFilter(Object.class).getClass() );
 		//check default returned for non-existent mapping
