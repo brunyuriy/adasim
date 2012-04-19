@@ -115,7 +115,7 @@ public class SimulationXMLBuilder {
 		AdasimFilter f = (AdasimFilter) loadClassFromAttribute(nodeElement, "uncertainty_filter" ); 
 		gn.setUncertaintyFilter(f);
 		f = (AdasimFilter) loadClassFromAttribute(nodeElement, "privacy_filter" ); 
-		gn.setPrivacyFilter(f);
+		gn.setPrivacyFilter(f, Object.class );
 
 		return gn;
 	}
@@ -197,7 +197,7 @@ public class SimulationXMLBuilder {
 				gn.setSpeedStrategy( defaultStrategy );
 			}
 			if ( gn.getPrivacyFilter() == null ) {
-				gn.setPrivacyFilter(privacyFilter);
+				gn.setPrivacyFilter(privacyFilter, Object.class );
 			}
 		}
 		for ( Element node: nodeElements ) {
