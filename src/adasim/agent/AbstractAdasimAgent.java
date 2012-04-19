@@ -100,7 +100,7 @@ public abstract class AbstractAdasimAgent implements AdasimAgent {
 	 * @param filter the uncertainty filter
 	 */
 	@Override
-	public void setPrivacyFilter(AdasimFilter filter, Class<?> criterion ) {
+	public void setPrivacyFilter(AdasimFilter filter, Class<?> criterion) {
 		privacyFilter = filter;
 	}
 	

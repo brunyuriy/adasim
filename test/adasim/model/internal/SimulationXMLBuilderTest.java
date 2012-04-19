@@ -33,6 +33,7 @@ import adasim.algorithm.delay.QuadraticTrafficDelayFunction;
 import adasim.algorithm.routing.AlwaysRecomputeRoutingAlgorithm;
 import adasim.algorithm.routing.ShortestPathRoutingAlgorithm;
 import adasim.filter.AdasimFilter;
+import adasim.filter.FakeFilter;
 import adasim.filter.IdentityFilter;
 import adasim.model.AdasimMap;
 import adasim.model.ConfigurationException;
@@ -246,88 +247,4 @@ class FakeAgent extends AbstractAdasimAgent {
 		// TODO Auto-generated method stub
 		
 	}
-}
-
-class FakeFilter implements AdasimFilter {
-	
-	/* (non-Javadoc)
-	 * @see adasim.filter.AdasimFilter#filter(byte)
-	 */
-	@Override
-	public byte filter(byte b) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
-	/* (non-Javadoc)
-	 * @see adasim.filter.AdasimFilter#filter(char)
-	 */
-	@Override
-	public char filter(char b) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
-	/* (non-Javadoc)
-	 * @see adasim.filter.AdasimFilter#filter(short)
-	 */
-	@Override
-	public short filter(short b) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
-	/* (non-Javadoc)
-	 * @see adasim.filter.AdasimFilter#filter(int)
-	 */
-	@Override
-	public int filter(int b) {
-		return b+1;
-	}
-	
-	/* (non-Javadoc)
-	 * @see adasim.filter.AdasimFilter#filter(long)
-	 */
-	@Override
-	public long filter(long b) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
-	/* (non-Javadoc)
-	 * @see adasim.filter.AdasimFilter#filter(float)
-	 */
-	@Override
-	public float filter(float b) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
-	/* (non-Javadoc)
-	 * @see adasim.filter.AdasimFilter#filter(double)
-	 */
-	@Override
-	public double filter(double b) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
-	/* (non-Javadoc)
-	 * @see adasim.filter.AdasimFilter#filter(boolean)
-	 */
-	@Override
-	public boolean filter(boolean b) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	
-	/* (non-Javadoc)
-	 * @see adasim.filter.AdasimFilter#filter(java.lang.Object)
-	 */
-	@Override
-	public <T> T filter(T b) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
 }
