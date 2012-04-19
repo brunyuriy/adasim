@@ -242,7 +242,7 @@ class FakeAgent extends AbstractAdasimAgent {
 	 * @see adasim.agent.AdasimAgent#setPrivacyFilter(adasim.filter.AdasimFilter)
 	 */
 	@Override
-	public void setPrivacyFilter(AdasimFilter filter) {
+	public void setPrivacyFilter(AdasimFilter filter, Class<?> criterion) {
 		// TODO Auto-generated method stub
 		
 	}
