@@ -1,13 +1,34 @@
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
 
-    <xsd:element name="simulation" type="Simulation" />
+    <xsd:element name="simulation" type="Simulation" /> 
+    
     <xsd:complexType name="Simulation">
         <xsd:all>
+        	<xsd:element name="defaults" type="Defaults" minOccurs="0" maxOccurs="1"/>
             <xsd:element name="cars" type="Cars" minOccurs="1" maxOccurs="1" />
             <xsd:element name="graph" type="Graph" minOccurs="1" maxOccurs="1" />
             <xsd:element name="agents" type="Agents" minOccurs="0" maxOccurs="1" />
         </xsd:all>
     </xsd:complexType>
+    
+    <xsd:complexType name="Defaults">
+    	<xsd:all>
+    		<xsd:element name="filters" type="Filters" maxOccurs="1"/>
+    	</xsd:all>
+    </xsd:complexType>
+
+	<xsd:complexType name="Filters">
+    	<xsd:all>
+			<xsd:element name="filter" type="Filter" minOccurs="1"/>
+    	</xsd:all>
+	</xsd:complexType>
+	
+	<xsd:complexType name="Filter">
+		<xsd:attribute name="type" type="xsd:string" use="required"/>
+		<xsd:attribute name="agent" type="xsd:string" use="required"/>
+		<xsd:attribute name="filter" type="xsd:string" use="required"/>
+		<xsd:attribute name="criterion" type="xsd:string" default="java.lang.Object"/>
+	</xsd:complexType>
 
     <xsd:complexType name="Cars">
         <xsd:sequence>
@@ -37,6 +58,9 @@
 
 
     <xsd:complexType name="Node">
+    	<xsd:all>
+	        <xsd:element name="filters" type="Filters" minOccurs="0" maxOccurs="1"/>
+    	</xsd:all>
         <xsd:attribute name="id" type="xsd:nonNegativeInteger" use="required" />
         <xsd:attribute name="strategy" type="xsd:string" />
         <xsd:attribute name="neighbors" type="xsd:string" use="required" />
@@ -53,6 +77,9 @@
     </xsd:complexType>
 
     <xsd:complexType name="Agent">
+    	<xsd:all>
+	        <xsd:element name="filters" type="Filters" minOccurs="0" maxOccurs="1"/>
+    	</xsd:all>
         <xsd:attribute name="id" type="xsd:string" use="required"/>
         <xsd:attribute name="class" type="xsd:string" use="required"/>
         <xsd:attribute name="parameters" type="xsd:string" />        
