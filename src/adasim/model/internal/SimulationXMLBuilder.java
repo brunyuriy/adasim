@@ -114,10 +114,7 @@ public class SimulationXMLBuilder {
 		RoadSegment gn = new RoadSegment( id, ss, getDelay(nodeElement ), getCapacity(nodeElement)) ;
 		AdasimFilter f = (AdasimFilter) loadClassFromAttribute(nodeElement, "uncertainty_filter" ); 
 		gn.setUncertaintyFilter(f);
-		f = (AdasimFilter) loadClassFromAttribute(nodeElement, "privacy_filter" ); 
-		if ( f != null  ) {
-			gn.setPrivacyFilter(f, Object.class );
-		}
+		//TODO: add filter processing
 
 		return gn;
 	}

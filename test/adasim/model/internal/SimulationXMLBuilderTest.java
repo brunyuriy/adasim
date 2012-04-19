@@ -147,11 +147,15 @@ public class SimulationXMLBuilderTest {
 	}
 
 	@Test
-	public void graphWithPrivacyFilter() throws JDOMException, IOException, ConfigurationException {
-		Document doc = parser.build( new StringReader( "<graph default_strategy=\"adasim.algorithm.delay.LinearTrafficDelayFunction\" default_capacity=\"0\" privacy_filter=\"adasim.filter.FakeFilter\">" +
+	public void graphWithPrivacyFilterElement() throws JDOMException, IOException, ConfigurationException {
+		Document doc = parser.build( new StringReader( "<graph default_strategy=\"adasim.algorithm.delay.LinearTrafficDelayFunction\" default_capacity=\"0\">" +
 				"<node id=\"1\" neighbors=\"1 2 3 4\" delay=\"2\" capacity=\"5\"/>" +
 				"<node id=\"2\" neighbors=\"3\" delay=\"2\" capacity=\"5\" strategy=\"adasim.algorithm.delay.LinearTrafficDelayFunction\"/>" +
-				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"adasim.algorithm.delay.QuadraticTrafficDelayFunction\" privacy_filter=\"adasim.filter.IdentityFilter\"/>" +
+				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"adasim.algorithm.delay.QuadraticTrafficDelayFunction\" >" +
+				"<filters>" +
+				"<filter type=\"privacy\" filter=\"traffic.filter.IdentityFilter\" criterion=\"traffic.model.internal.SimulationXMLBuilderTest\"/>" +
+				"</filters>" +
+				"</node>" +
 				"</graph>" ) );
 		AdasimMap graph = builder.buildGraph( doc.getRootElement() );
 		assertEquals( 3, graph.getRoadSegments().size() );
@@ -167,6 +171,7 @@ public class SimulationXMLBuilderTest {
 		assertNotNull( "No privacy filter assigned", node.getPrivacyFilter(this.getClass()) );
 		assertTrue( "Privacy filter has wrong type", node.getPrivacyFilter(this.getClass()) instanceof IdentityFilter );
 	}
+	
 	@Test
 	public void carNoOptionals() throws JDOMException, IOException {
 		Document doc = parser.build( new StringReader( "<car id=\"27\" start=\"1\" end=\"1\"/>" ) );
