@@ -96,7 +96,8 @@ final public class SimulationXMLReader {
 	public static TrafficSimulator buildSimulator( File config ) throws FileNotFoundException, ConfigurationException {
 		try {
 			SimulationXMLReader factory = new SimulationXMLReader(config);
-			AdasimMap g = builder.buildGraph( factory.doc.getRootElement().getChild("graph" ) );
+			FilterMap fm = builder.buildFilters(factory.doc.getRootElement().getChild("filters"), new FilterMap() );
+			AdasimMap g = builder.buildGraph( factory.doc.getRootElement().getChild("graph" ), fm );
 			VehicleManager m = new VehicleManager();
 			TrafficSimulator sim = new TrafficSimulator( g, m, factory.allAgents( g, m ) ); 
 			return sim;

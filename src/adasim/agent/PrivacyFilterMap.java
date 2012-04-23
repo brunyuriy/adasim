@@ -30,6 +30,7 @@
 package adasim.agent;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import adasim.filter.AdasimFilter;
@@ -48,7 +49,7 @@ import adasim.filter.IdentityFilter;
  * @author Jochen Wuttke - wuttkej@gmail.com
  *
  */
-public final class PrivacyFilterMap {
+public final class PrivacyFilterMap implements Iterable<Class<?>> {
 
 	private Map<Class<?>, AdasimFilter> filters;
 	
@@ -118,5 +119,22 @@ public final class PrivacyFilterMap {
 		if ( criterion == null )
 			throw new IllegalArgumentException( "criterion must not be null" );
 		filters.remove(criterion);
+	}
+
+	/**
+	 * @return a deep copy of this filter map. <em>Note:</em> The filter instances are not copied.
+	 */
+	public PrivacyFilterMap deepCopy() {
+		PrivacyFilterMap newMap = new PrivacyFilterMap();
+		newMap.filters = new HashMap<Class<?>, AdasimFilter>(this.filters);
+		return newMap;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Iterable#iterator()
+	 */
+	@Override
+	public Iterator<Class<?>> iterator() {
+		return filters.keySet().iterator();
 	}
 }
