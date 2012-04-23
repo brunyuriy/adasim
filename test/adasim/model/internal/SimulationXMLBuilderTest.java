@@ -224,7 +224,7 @@ public class SimulationXMLBuilderTest {
 	@Test
 	public void agentNoOptionals() throws JDOMException, IOException, ConfigurationException {
 		Document doc = parser.build( new StringReader( "<agent id=\"27\" class=\"adasim.model.internal.FakeAgent\" />" ) );
-		AdasimAgent agent = builder.buildAgent( doc.getRootElement() );
+		AdasimAgent agent = builder.buildAgent( doc.getRootElement(), new FilterMap() );
 	}
 
 	@Test
@@ -236,7 +236,7 @@ public class SimulationXMLBuilderTest {
 				"</filters>" +
 				"</agent>"
 		));
-		AbstractAdasimAgent agent = (AbstractAdasimAgent)builder.buildAgent( doc.getRootElement() );
+		AbstractAdasimAgent agent = (AbstractAdasimAgent)builder.buildAgent( doc.getRootElement(), new FilterMap() );
 		assertNotNull( "No default privacy filter assigned", agent.getPrivacyFilter(Object.class) );
 		assertTrue( "Privacy filter has wrong type", agent.getPrivacyFilter(Object.class) instanceof IdentityFilter );
 		assertNotNull( "No privacy filter assigned for THIS", agent.getPrivacyFilter(this.getClass()) );

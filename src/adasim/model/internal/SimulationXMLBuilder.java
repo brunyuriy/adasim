@@ -124,7 +124,7 @@ public class SimulationXMLBuilder {
 	 * @param gn
 	 * @param fm
 	 */
-	private void assignFilters(RoadSegment gn, FilterMap fm) {
+	private void assignFilters(AdasimAgent gn, FilterMap fm) {
 		gn.setUncertaintyFilter( fm.uncertaintyFilter );
 		for ( Class<?> c : fm.pMap ) {
 			gn.setPrivacyFilter(fm.pMap.getFilter(c), c);
@@ -378,13 +378,14 @@ public class SimulationXMLBuilder {
 	 * @return a list of partially configured agents
 	 * @throws ConfigurationException 
 	 */
-	public List<? extends AdasimAgent> buildAgents(Element child) throws ConfigurationException {
+	public List<? extends AdasimAgent> buildAgents(Element child, FilterMap defaultFilters ) throws ConfigurationException {
 		List<AdasimAgent> agents = new ArrayList<AdasimAgent>();
 		if ( child != null ) {
 			@SuppressWarnings("unchecked")
+			//TODO: update filter map
 			List<Element> agentNodes = child.getChildren( "agent" );
 			for ( Element agentNode : agentNodes ) {
-				AdasimAgent agent = buildAgent( agentNode );
+				AdasimAgent agent = buildAgent( agentNode, defaultFilters);
 				if ( agent != null ) {
 					agents.add(agent);
 				}
@@ -398,16 +399,19 @@ public class SimulationXMLBuilder {
 	 * @return a partially configured agent
 	 * @throws ConfigurationException 
 	 */
-	public AdasimAgent buildAgent(Element agent) throws ConfigurationException {
+	public AdasimAgent buildAgent(Element agent, FilterMap defaultFilters ) throws ConfigurationException {
 		String clazz = agent.getAttributeValue("class");
 		assert clazz != null;
 		String parameters = agent.getAttributeValue("parameters");
+		//TODO: update filter map
+		FilterMap fm = buildFilters(agent.getChild("filters"), defaultFilters);
 
 		AdasimAgent agt = null;
 		try {
 			Class<?> cls = this.getClass().getClassLoader().loadClass(clazz);
 			Constructor<?> c = cls.getConstructor( String.class );
 			agt = (AdasimAgent) c.newInstance( parameters );
+			assignFilters(agt, fm );
 		} catch (Exception e) {
 			throw new ConfigurationException( "Invalid agent class " + clazz, e);
 		} 
