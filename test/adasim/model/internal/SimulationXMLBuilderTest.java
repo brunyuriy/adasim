@@ -103,10 +103,17 @@ public class SimulationXMLBuilderTest {
 	
 	@Test
 	public void graphWithUncertaintyFilter() throws JDOMException, IOException, ConfigurationException {
-		Document doc = parser.build( new StringReader( "<graph default_strategy=\"adasim.algorithm.delay.LinearTrafficDelayFunction\" default_capacity=\"0\" uncertainty_filter=\"adasim.filter.FakeFilter\">" +
+		Document doc = parser.build( new StringReader( "<graph default_strategy=\"adasim.algorithm.delay.LinearTrafficDelayFunction\" default_capacity=\"0\" >" +
+				"<filters>" +
+				"<filter type=\"uncertainty\" filter=\"adasim.filter.FakeFilter\"/>" +
+				"</filters>" +
 				"<node id=\"1\" neighbors=\"1 2 3 4\" delay=\"2\" capacity=\"5\"/>" +
 				"<node id=\"2\" neighbors=\"3\" delay=\"2\" capacity=\"5\" strategy=\"adasim.algorithm.delay.LinearTrafficDelayFunction\"/>" +
-				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"adasim.algorithm.delay.QuadraticTrafficDelayFunction\" uncertainty_filter=\"adasim.filter.IdentityFilter\"/>" +
+				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"adasim.algorithm.delay.QuadraticTrafficDelayFunction\">" +
+				"<filters>" +
+				"<filter type=\"uncertainty\" filter=\"adasim.filter.IdentityFilter\" />" +
+				"</filters>" +
+				"</node>" +
 				"</graph>" ) );
 		AdasimMap graph = builder.buildGraph( doc.getRootElement(), new FilterMap() );
 		assertEquals( 3, graph.getRoadSegments().size() );
@@ -126,10 +133,13 @@ public class SimulationXMLBuilderTest {
 	@Test
 	public void graphWithUncertaintyFilterHookup() throws JDOMException, IOException, ConfigurationException {
 		//test that the uncertainty filter gets called correctly.
-		Document doc = parser.build( new StringReader( "<graph default_strategy=\"adasim.algorithm.delay.LinearTrafficDelayFunction\" default_capacity=\"0\" uncertainty_filter=\"adasim.filter.FakeFilter\">" +
+		Document doc = parser.build( new StringReader( "<graph default_strategy=\"adasim.algorithm.delay.LinearTrafficDelayFunction\" default_capacity=\"0\" >" +
+				"<filters>" +
+				"<filter type=\"uncertainty\" filter=\"adasim.filter.FakeFilter\"/>" +
+				"</filters>" +
 				"<node id=\"1\" neighbors=\"1 2 3 4\" delay=\"2\" capacity=\"5\"/>" +
 				"<node id=\"2\" neighbors=\"3\" delay=\"2\" capacity=\"5\" strategy=\"adasim.algorithm.delay.LinearTrafficDelayFunction\"/>" +
-				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"adasim.algorithm.delay.LinearTrafficDelayFunction\" uncertainty_filter=\"adasim.filter.FakeFilter\"/>" +
+				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"adasim.algorithm.delay.LinearTrafficDelayFunction\" />" +
 				"</graph>" ) );
 		AdasimMap graph = builder.buildGraph( doc.getRootElement(), new FilterMap() );
 		assertEquals( 3, graph.getRoadSegments().size() );
@@ -148,11 +158,14 @@ public class SimulationXMLBuilderTest {
 	@Test
 	public void graphWithPrivacyFilterElement() throws JDOMException, IOException, ConfigurationException {
 		Document doc = parser.build( new StringReader( "<graph default_strategy=\"adasim.algorithm.delay.LinearTrafficDelayFunction\" default_capacity=\"0\">" +
+				"<filters>" +
+				"<filter type=\"privacy\" filter=\"adasim.filter.FakeFilter\" criterion=\"adasim.model.internal.SimulationXMLBuilderTest\"/>" +
+				"</filters>" +
 				"<node id=\"1\" neighbors=\"1 2 3 4\" delay=\"2\" capacity=\"5\"/>" +
 				"<node id=\"2\" neighbors=\"3\" delay=\"2\" capacity=\"5\" strategy=\"adasim.algorithm.delay.LinearTrafficDelayFunction\"/>" +
 				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"adasim.algorithm.delay.QuadraticTrafficDelayFunction\" >" +
 				"<filters>" +
-				"<filter type=\"privacy\" filter=\"traffic.filter.IdentityFilter\" criterion=\"traffic.model.internal.SimulationXMLBuilderTest\"/>" +
+				"<filter type=\"privacy\" filter=\"adasim.filter.IdentityFilter\" criterion=\"adasim.model.internal.SimulationXMLBuilderTest\"/>" +
 				"</filters>" +
 				"</node>" +
 				"</graph>" ) );
@@ -163,7 +176,7 @@ public class SimulationXMLBuilderTest {
 		assertNotNull( "No default speed strategy assigned", node.getSpeedStrategy() );
 		assertTrue( "Default speed strategy has wrong type", node.getSpeedStrategy() instanceof LinearTrafficDelayFunction );
 		assertNotNull( "No privacy filter assigned", node.getPrivacyFilter(this.getClass()) );
-		assertTrue( "Privacy filter has wrong type", node.getPrivacyFilter(this.getClass()) instanceof FakeFilter );
+		assertTrue( "Privacy filter has wrong type " + node.getPrivacyFilter(this.getClass()).getClass().getCanonicalName() , node.getPrivacyFilter(this.getClass()) instanceof FakeFilter );
 		node = graph.getRoadSegment(4);
 		assertEquals(0, node.getCapacity() );
 		assertTrue( node.getSpeedStrategy() instanceof QuadraticTrafficDelayFunction );
@@ -218,8 +231,8 @@ public class SimulationXMLBuilderTest {
 	public void agentAllOptionals() throws JDOMException, IOException, ConfigurationException {
 		Document doc = parser.build( new StringReader( "<agent id=\"27\" class=\"adasim.model.internal.FakeAgent\" parameters=\"blabab\">" + 
 				"<filters>" +
-				"<filter type=\"privacy\" filter=\"traffic.filter.FakeFilter\" criterion=\"traffic.model.internal.SimulationXMLBuilderTest\"/>" +
-				"<filter type=\"uncertainty\" filter=\"traffic.model.internal.FakeFilter\" criterion=\"traffic.model.internal.SimulationXMLBuilderTest\"/>" +
+				"<filter type=\"privacy\" filter=\"adasim.filter.FakeFilter\" criterion=\"adasim.model.internal.SimulationXMLBuilderTest\"/>" +
+				"<filter type=\"uncertainty\" filter=\"adasim.filter.FakeFilter\" criterion=\"adasim.model.internal.SimulationXMLBuilderTest\"/>" +
 				"</filters>" +
 				"</agent>"
 		));
@@ -227,7 +240,7 @@ public class SimulationXMLBuilderTest {
 		assertNotNull( "No default privacy filter assigned", agent.getPrivacyFilter(Object.class) );
 		assertTrue( "Privacy filter has wrong type", agent.getPrivacyFilter(Object.class) instanceof IdentityFilter );
 		assertNotNull( "No privacy filter assigned for THIS", agent.getPrivacyFilter(this.getClass()) );
-		assertTrue( "Privacy filter has wrong type", agent.getPrivacyFilter(this.getClass()) instanceof FakeFilter );
+		assertTrue( "Privacy filter has wrong type " + agent.getPrivacyFilter(this.getClass()).getClass(), agent.getPrivacyFilter(this.getClass()) instanceof FakeFilter );
 		assertNotNull( "No uncertainty filter assigned", agent.getUncertaintyFilter() );
 		assertTrue( "Uncertaitny filter has wrong type", agent.getUncertaintyFilter() instanceof FakeFilter );
 	}
