@@ -107,16 +107,9 @@ public class SimulationXMLBuilder {
 		int id = Integer.parseInt( nodeElement.getAttributeValue( "id" ) );
 		TrafficDelayFunction ss = (TrafficDelayFunction)loadClassFromAttribute(nodeElement, "strategy" ); 
 		RoadSegment gn = new RoadSegment( id, ss, getDelay(nodeElement ), getCapacity(nodeElement)) ;
-		//TODO: add filter processing
 		Element filters = nodeElement.getChild( "filters" );
-		FilterMap fm;
-		if ( filters != null ) {
-			fm = buildFilters( filters, defaultFilters );
-		} else {
-			fm = defaultFilters;
-		}
+		FilterMap fm = buildFilters( filters, defaultFilters );
 		assignFilters( gn, fm );
-
 		return gn;
 	}
 
