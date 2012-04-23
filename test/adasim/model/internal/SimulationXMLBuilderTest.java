@@ -59,7 +59,7 @@ public class SimulationXMLBuilderTest {
 	@Test
 	public void nodeNoOptionals() throws JDOMException, IOException {
 		Document doc = parser.build( new StringReader( "<node id=\"27\" neighbors=\"1 2 3\"/>" ) );
-		RoadSegment node = builder.buildNode( doc.getRootElement() );
+		RoadSegment node = builder.buildNode( doc.getRootElement(), new FilterMap() );
 		assertEquals( 27, node.getID() );
 		assertTrue( node.getNeighbors().isEmpty() );
 		assertNull( node.getSpeedStrategy() );
@@ -70,7 +70,7 @@ public class SimulationXMLBuilderTest {
 	@Test
 	public void nodeNoAllOptionals() throws JDOMException, IOException {
 		Document doc = parser.build( new StringReader( "<node id=\"27\" neighbors=\"1 2 3\" delay=\"2\" capacity=\"5\" strategy=\"adasim.algorithm.delay.LinearTrafficDelayFunction\" uncertainty_filter=\"adasim.filter.IdentityFilter\"/>" ) );
-		RoadSegment node = builder.buildNode( doc.getRootElement() );
+		RoadSegment node = builder.buildNode( doc.getRootElement(), new FilterMap() );
 		assertEquals( 27, node.getID() );
 		assertTrue( node.getNeighbors().isEmpty() );
 		assertTrue( node.getSpeedStrategy() instanceof LinearTrafficDelayFunction );
@@ -87,7 +87,7 @@ public class SimulationXMLBuilderTest {
 				"<node id=\"2\" neighbors=\"3\" delay=\"2\" capacity=\"5\" strategy=\"adasim.algorithm.delay.LinearTrafficDelayFunction\"/>" +
 				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"adasim.algorithm.delay.QuadraticTrafficDelayFunction\"/>" +
 				"</graph>" ) );
-		AdasimMap graph = builder.buildGraph( doc.getRootElement() );
+		AdasimMap graph = builder.buildGraph( doc.getRootElement(), new FilterMap() );
 		assertEquals( 3, graph.getRoadSegments().size() );
 		RoadSegment node = graph.getRoadSegment( 1 );
 		assertEquals( 3, node.getNeighbors().size() );
@@ -108,7 +108,7 @@ public class SimulationXMLBuilderTest {
 				"<node id=\"2\" neighbors=\"3\" delay=\"2\" capacity=\"5\" strategy=\"adasim.algorithm.delay.LinearTrafficDelayFunction\"/>" +
 				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"adasim.algorithm.delay.QuadraticTrafficDelayFunction\" uncertainty_filter=\"adasim.filter.IdentityFilter\"/>" +
 				"</graph>" ) );
-		AdasimMap graph = builder.buildGraph( doc.getRootElement() );
+		AdasimMap graph = builder.buildGraph( doc.getRootElement(), new FilterMap() );
 		assertEquals( 3, graph.getRoadSegments().size() );
 		RoadSegment node = graph.getRoadSegment( 1 );
 		assertEquals( 3, node.getNeighbors().size() );
@@ -131,7 +131,7 @@ public class SimulationXMLBuilderTest {
 				"<node id=\"2\" neighbors=\"3\" delay=\"2\" capacity=\"5\" strategy=\"adasim.algorithm.delay.LinearTrafficDelayFunction\"/>" +
 				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"adasim.algorithm.delay.LinearTrafficDelayFunction\" uncertainty_filter=\"adasim.filter.FakeFilter\"/>" +
 				"</graph>" ) );
-		AdasimMap graph = builder.buildGraph( doc.getRootElement() );
+		AdasimMap graph = builder.buildGraph( doc.getRootElement(), new FilterMap() );
 		assertEquals( 3, graph.getRoadSegments().size() );
 		RoadSegment node = graph.getRoadSegment(4);
 		assertNotNull( "No uncertainty filter assigned", node.getUncertaintyFilter() );
@@ -156,7 +156,7 @@ public class SimulationXMLBuilderTest {
 				"</filters>" +
 				"</node>" +
 				"</graph>" ) );
-		AdasimMap graph = builder.buildGraph( doc.getRootElement() );
+		AdasimMap graph = builder.buildGraph( doc.getRootElement(), new FilterMap() );
 		assertEquals( 3, graph.getRoadSegments().size() );
 		RoadSegment node = graph.getRoadSegment( 1 );
 		assertEquals( 3, node.getNeighbors().size() );
@@ -216,8 +216,20 @@ public class SimulationXMLBuilderTest {
 
 	@Test
 	public void agentAllOptionals() throws JDOMException, IOException, ConfigurationException {
-		Document doc = parser.build( new StringReader( "<agent id=\"27\" class=\"adasim.model.internal.FakeAgent\" parameters=\"blabab\"/>" ) );
-		AdasimAgent agent = builder.buildAgent( doc.getRootElement() );
+		Document doc = parser.build( new StringReader( "<agent id=\"27\" class=\"adasim.model.internal.FakeAgent\" parameters=\"blabab\">" + 
+				"<filters>" +
+				"<filter type=\"privacy\" filter=\"traffic.filter.FakeFilter\" criterion=\"traffic.model.internal.SimulationXMLBuilderTest\"/>" +
+				"<filter type=\"uncertainty\" filter=\"traffic.model.internal.FakeFilter\" criterion=\"traffic.model.internal.SimulationXMLBuilderTest\"/>" +
+				"</filters>" +
+				"</agent>"
+		));
+		AbstractAdasimAgent agent = (AbstractAdasimAgent)builder.buildAgent( doc.getRootElement() );
+		assertNotNull( "No default privacy filter assigned", agent.getPrivacyFilter(Object.class) );
+		assertTrue( "Privacy filter has wrong type", agent.getPrivacyFilter(Object.class) instanceof IdentityFilter );
+		assertNotNull( "No privacy filter assigned for THIS", agent.getPrivacyFilter(this.getClass()) );
+		assertTrue( "Privacy filter has wrong type", agent.getPrivacyFilter(this.getClass()) instanceof FakeFilter );
+		assertNotNull( "No uncertainty filter assigned", agent.getUncertaintyFilter() );
+		assertTrue( "Uncertaitny filter has wrong type", agent.getUncertaintyFilter() instanceof FakeFilter );
 	}
 
 }
