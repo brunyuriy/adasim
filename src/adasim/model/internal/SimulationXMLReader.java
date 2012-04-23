@@ -99,7 +99,7 @@ final public class SimulationXMLReader {
 			FilterMap fm = builder.buildFilters(factory.doc.getRootElement().getChild("filters"), new FilterMap() );
 			AdasimMap g = builder.buildGraph( factory.doc.getRootElement().getChild("graph" ), fm );
 			VehicleManager m = new VehicleManager();
-			TrafficSimulator sim = new TrafficSimulator( g, m, factory.allAgents( g, m ) ); 
+			TrafficSimulator sim = new TrafficSimulator( g, m, factory.allAgents( g, m, fm ) ); 
 			return sim;
 		} catch ( ConfigurationException e ) {
 			buildError(e);
@@ -110,10 +110,10 @@ final public class SimulationXMLReader {
 	/**
 	 * @throws ConfigurationException 
 	 */
-	private List<AdasimAgent> allAgents( AdasimMap g, VehicleManager m ) throws ConfigurationException {
+	private List<AdasimAgent> allAgents( AdasimMap g, VehicleManager m, FilterMap defaultFilters ) throws ConfigurationException {
 		List<AdasimAgent> agents;
 		agents = new ArrayList<AdasimAgent>(buildVehicles( doc.getRootElement().getChild("cars" ), g, m ) );
-		agents.addAll( builder.buildAgents( doc.getRootElement().getChild("agents" ) ) );
+		agents.addAll( builder.buildAgents( doc.getRootElement().getChild("agents" ), defaultFilters ) );
 		return agents;
 	}
 	
