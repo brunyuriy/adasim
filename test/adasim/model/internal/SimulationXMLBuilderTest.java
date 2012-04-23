@@ -32,7 +32,6 @@ import adasim.algorithm.delay.LinearTrafficDelayFunction;
 import adasim.algorithm.delay.QuadraticTrafficDelayFunction;
 import adasim.algorithm.routing.AlwaysRecomputeRoutingAlgorithm;
 import adasim.algorithm.routing.ShortestPathRoutingAlgorithm;
-import adasim.filter.AdasimFilter;
 import adasim.filter.FakeFilter;
 import adasim.filter.IdentityFilter;
 import adasim.model.AdasimMap;
@@ -225,9 +224,7 @@ public class SimulationXMLBuilderTest {
 
 class FakeAgent extends AbstractAdasimAgent {
 	
-	public FakeAgent(String s) {
-		
-	}
+	public FakeAgent(String s) {}
 
 	/* (non-Javadoc)
 	 * @see adasim.model.AdasimAgent#takeSimulationStep()
@@ -235,21 +232,4 @@ class FakeAgent extends AbstractAdasimAgent {
 	@Override
 	public void takeSimulationStep( long cycle) {}
 
-	/* (non-Javadoc)
-	 * @see adasim.agent.AdasimAgent#setUncertaintyFilter(adasim.filter.AdasimFilter)
-	 */
-	@Override
-	public void setUncertaintyFilter(AdasimFilter filter) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	/* (non-Javadoc)
-	 * @see adasim.agent.AdasimAgent#setPrivacyFilter(adasim.filter.AdasimFilter)
-	 */
-	@Override
-	public void setPrivacyFilter(AdasimFilter filter, Class<?> criterion) {
-		// TODO Auto-generated method stub
-		
-	}
 }
