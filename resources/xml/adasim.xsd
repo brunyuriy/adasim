@@ -18,9 +18,9 @@
     </xsd:complexType>
 
 	<xsd:complexType name="Filters">
-    	<xsd:all>
-			<xsd:element name="filter" type="Filter" minOccurs="1"/>
-    	</xsd:all>
+    	<xsd:sequence>
+			<xsd:element name="filter" type="Filter" minOccurs="1" maxOccurs="unbounded"/>
+    	</xsd:sequence>
 	</xsd:complexType>
 	
 	<xsd:complexType name="Filter">
@@ -52,10 +52,10 @@
     </xsd:complexType>
     
     <xsd:complexType name="Graph">
-        <xsd:sequence>
-            <xsd:element name="node" type="Node" minOccurs="1" maxOccurs="unbounded" />
-			<xsd:element name="filters" type="Filters" minOccurs="0" maxOccurs="1"/>
-        </xsd:sequence>
+        	<xsd:sequence>
+				<xsd:element name="filters" type="Filters" minOccurs="0" maxOccurs="1"/>
+            	<xsd:element name="node" type="Node" minOccurs="1" maxOccurs="unbounded" />
+        	</xsd:sequence>
         <xsd:attribute name="default_strategy" type="xsd:string" />
         <xsd:attribute name="default_capacity" type="xsd:nonNegativeInteger" />
     </xsd:complexType>
