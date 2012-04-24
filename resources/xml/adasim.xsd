@@ -33,17 +33,12 @@
     <xsd:complexType name="Cars">
         <xsd:sequence>
             <xsd:element name="car" type="Car" minOccurs="1" maxOccurs="unbounded" />
-			<xsd:element name="filters" type="Filters" minOccurs="0" maxOccurs="1"/>
         </xsd:sequence>
         <xsd:attribute name="default_strategy" type="xsd:string" />
     </xsd:complexType>
 
 
-    <xsd:complexType name="Car">
-      	<xsd:all>
-	        <xsd:element name="filters" type="Filters" minOccurs="0" maxOccurs="1"/>
-    	</xsd:all>
-    
+    <xsd:complexType name="Car">    
         <xsd:attribute name="id" type="xsd:nonNegativeInteger" use="required" />
         <xsd:attribute name="start" type="xsd:nonNegativeInteger" use="required" />
         <xsd:attribute name="end" type="xsd:nonNegativeInteger" use="required" />
