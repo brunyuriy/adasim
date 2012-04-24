@@ -374,11 +374,11 @@ public class SimulationXMLBuilder {
 	public List<? extends AdasimAgent> buildAgents(Element child, FilterMap defaultFilters ) throws ConfigurationException {
 		List<AdasimAgent> agents = new ArrayList<AdasimAgent>();
 		if ( child != null ) {
+			FilterMap fm = buildFilters(child.getChild("filters"), defaultFilters);
 			@SuppressWarnings("unchecked")
-			//TODO: update filter map
 			List<Element> agentNodes = child.getChildren( "agent" );
 			for ( Element agentNode : agentNodes ) {
-				AdasimAgent agent = buildAgent( agentNode, defaultFilters);
+				AdasimAgent agent = buildAgent( agentNode, fm);
 				if ( agent != null ) {
 					agents.add(agent);
 				}
@@ -396,7 +396,8 @@ public class SimulationXMLBuilder {
 		String clazz = agent.getAttributeValue("class");
 		assert clazz != null;
 		String parameters = agent.getAttributeValue("parameters");
-		//TODO: update filter map
+		int id = Integer.parseInt(agent.getAttributeValue("id"));
+
 		FilterMap fm = buildFilters(agent.getChild("filters"), defaultFilters);
 
 		AdasimAgent agt = null;
@@ -404,6 +405,7 @@ public class SimulationXMLBuilder {
 			Class<?> cls = this.getClass().getClassLoader().loadClass(clazz);
 			Constructor<?> c = cls.getConstructor( String.class );
 			agt = (AdasimAgent) c.newInstance( parameters );
+			agt.setID(id);
 			assignFilters(agt, fm );
 		} catch (Exception e) {
 			throw new ConfigurationException( "Invalid agent class " + clazz, e);

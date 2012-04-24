@@ -52,10 +52,10 @@
     </xsd:complexType>
     
     <xsd:complexType name="Graph">
-        	<xsd:sequence>
-				<xsd:element name="filters" type="Filters" minOccurs="0" maxOccurs="1"/>
-            	<xsd:element name="node" type="Node" minOccurs="1" maxOccurs="unbounded" />
-        	</xsd:sequence>
+        <xsd:sequence>
+			<xsd:element name="filters" type="Filters" minOccurs="0" maxOccurs="1"/>
+           	<xsd:element name="node" type="Node" minOccurs="1" maxOccurs="unbounded" />
+        </xsd:sequence>
         <xsd:attribute name="default_strategy" type="xsd:string" />
         <xsd:attribute name="default_capacity" type="xsd:nonNegativeInteger" />
     </xsd:complexType>
@@ -74,15 +74,15 @@
 
     <xsd:complexType name="Agents">
         <xsd:sequence>
-            <xsd:element name="agent" type="Agent" />
             <xsd:element name="filters" type="Filters" minOccurs="0" maxOccurs="1"/>
+            <xsd:element name="agent" type="Agent" minOccurs="1" maxOccurs="unbounded"/>
         </xsd:sequence>
     </xsd:complexType>
 
     <xsd:complexType name="Agent">
-    	<xsd:all>
+    	<xsd:sequence>
 	        <xsd:element name="filters" type="Filters" minOccurs="0" maxOccurs="1"/>
-    	</xsd:all>
+    	</xsd:sequence>
         <xsd:attribute name="id" type="xsd:string" use="required"/>
         <xsd:attribute name="class" type="xsd:string" use="required"/>
         <xsd:attribute name="parameters" type="xsd:string" />        
