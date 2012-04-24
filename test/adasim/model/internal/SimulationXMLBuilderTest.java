@@ -33,6 +33,7 @@ import adasim.algorithm.delay.QuadraticTrafficDelayFunction;
 import adasim.algorithm.routing.AlwaysRecomputeRoutingAlgorithm;
 import adasim.algorithm.routing.ShortestPathRoutingAlgorithm;
 import adasim.filter.AdasimFilter;
+import adasim.filter.FakeFilter;
 import adasim.filter.IdentityFilter;
 import adasim.model.AdasimMap;
 import adasim.model.ConfigurationException;
@@ -59,7 +60,7 @@ public class SimulationXMLBuilderTest {
 	@Test
 	public void nodeNoOptionals() throws JDOMException, IOException {
 		Document doc = parser.build( new StringReader( "<node id=\"27\" neighbors=\"1 2 3\"/>" ) );
-		RoadSegment node = builder.buildNode( doc.getRootElement() );
+		RoadSegment node = builder.buildNode( doc.getRootElement(), new FilterMap() );
 		assertEquals( 27, node.getID() );
 		assertTrue( node.getNeighbors().isEmpty() );
 		assertNull( node.getSpeedStrategy() );
@@ -70,7 +71,7 @@ public class SimulationXMLBuilderTest {
 	@Test
 	public void nodeNoAllOptionals() throws JDOMException, IOException {
 		Document doc = parser.build( new StringReader( "<node id=\"27\" neighbors=\"1 2 3\" delay=\"2\" capacity=\"5\" strategy=\"adasim.algorithm.delay.LinearTrafficDelayFunction\" uncertainty_filter=\"adasim.filter.IdentityFilter\"/>" ) );
-		RoadSegment node = builder.buildNode( doc.getRootElement() );
+		RoadSegment node = builder.buildNode( doc.getRootElement(), new FilterMap() );
 		assertEquals( 27, node.getID() );
 		assertTrue( node.getNeighbors().isEmpty() );
 		assertTrue( node.getSpeedStrategy() instanceof LinearTrafficDelayFunction );
@@ -87,7 +88,7 @@ public class SimulationXMLBuilderTest {
 				"<node id=\"2\" neighbors=\"3\" delay=\"2\" capacity=\"5\" strategy=\"adasim.algorithm.delay.LinearTrafficDelayFunction\"/>" +
 				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"adasim.algorithm.delay.QuadraticTrafficDelayFunction\"/>" +
 				"</graph>" ) );
-		AdasimMap graph = builder.buildGraph( doc.getRootElement() );
+		AdasimMap graph = builder.buildGraph( doc.getRootElement(), new FilterMap() );
 		assertEquals( 3, graph.getRoadSegments().size() );
 		RoadSegment node = graph.getRoadSegment( 1 );
 		assertEquals( 3, node.getNeighbors().size() );
@@ -103,12 +104,19 @@ public class SimulationXMLBuilderTest {
 	
 	@Test
 	public void graphWithUncertaintyFilter() throws JDOMException, IOException, ConfigurationException {
-		Document doc = parser.build( new StringReader( "<graph default_strategy=\"adasim.algorithm.delay.LinearTrafficDelayFunction\" default_capacity=\"0\" uncertainty_filter=\"adasim.model.internal.FakeFilter\">" +
+		Document doc = parser.build( new StringReader( "<graph default_strategy=\"adasim.algorithm.delay.LinearTrafficDelayFunction\" default_capacity=\"0\" >" +
+				"<filters>" +
+				"<filter type=\"uncertainty\" filter=\"adasim.filter.FakeFilter\"/>" +
+				"</filters>" +
 				"<node id=\"1\" neighbors=\"1 2 3 4\" delay=\"2\" capacity=\"5\"/>" +
 				"<node id=\"2\" neighbors=\"3\" delay=\"2\" capacity=\"5\" strategy=\"adasim.algorithm.delay.LinearTrafficDelayFunction\"/>" +
-				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"adasim.algorithm.delay.QuadraticTrafficDelayFunction\" uncertainty_filter=\"adasim.filter.IdentityFilter\"/>" +
+				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"adasim.algorithm.delay.QuadraticTrafficDelayFunction\">" +
+				"<filters>" +
+				"<filter type=\"uncertainty\" filter=\"adasim.filter.IdentityFilter\" />" +
+				"</filters>" +
+				"</node>" +
 				"</graph>" ) );
-		AdasimMap graph = builder.buildGraph( doc.getRootElement() );
+		AdasimMap graph = builder.buildGraph( doc.getRootElement(), new FilterMap() );
 		assertEquals( 3, graph.getRoadSegments().size() );
 		RoadSegment node = graph.getRoadSegment( 1 );
 		assertEquals( 3, node.getNeighbors().size() );
@@ -126,12 +134,15 @@ public class SimulationXMLBuilderTest {
 	@Test
 	public void graphWithUncertaintyFilterHookup() throws JDOMException, IOException, ConfigurationException {
 		//test that the uncertainty filter gets called correctly.
-		Document doc = parser.build( new StringReader( "<graph default_strategy=\"adasim.algorithm.delay.LinearTrafficDelayFunction\" default_capacity=\"0\" uncertainty_filter=\"adasim.model.FakeFilter\">" +
+		Document doc = parser.build( new StringReader( "<graph default_strategy=\"adasim.algorithm.delay.LinearTrafficDelayFunction\" default_capacity=\"0\" >" +
+				"<filters>" +
+				"<filter type=\"uncertainty\" filter=\"adasim.filter.FakeFilter\"/>" +
+				"</filters>" +
 				"<node id=\"1\" neighbors=\"1 2 3 4\" delay=\"2\" capacity=\"5\"/>" +
 				"<node id=\"2\" neighbors=\"3\" delay=\"2\" capacity=\"5\" strategy=\"adasim.algorithm.delay.LinearTrafficDelayFunction\"/>" +
-				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"adasim.algorithm.delay.LinearTrafficDelayFunction\" uncertainty_filter=\"adasim.model.internal.FakeFilter\"/>" +
+				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"adasim.algorithm.delay.LinearTrafficDelayFunction\" />" +
 				"</graph>" ) );
-		AdasimMap graph = builder.buildGraph( doc.getRootElement() );
+		AdasimMap graph = builder.buildGraph( doc.getRootElement(), new FilterMap() );
 		assertEquals( 3, graph.getRoadSegments().size() );
 		RoadSegment node = graph.getRoadSegment(4);
 		assertNotNull( "No uncertainty filter assigned", node.getUncertaintyFilter() );
@@ -146,26 +157,34 @@ public class SimulationXMLBuilderTest {
 	}
 
 	@Test
-	public void graphWithPrivacyFilter() throws JDOMException, IOException, ConfigurationException {
-		Document doc = parser.build( new StringReader( "<graph default_strategy=\"adasim.algorithm.delay.LinearTrafficDelayFunction\" default_capacity=\"0\" privacy_filter=\"adasim.model.internal.FakeFilter\">" +
+	public void graphWithPrivacyFilterElement() throws JDOMException, IOException, ConfigurationException {
+		Document doc = parser.build( new StringReader( "<graph default_strategy=\"adasim.algorithm.delay.LinearTrafficDelayFunction\" default_capacity=\"0\">" +
+				"<filters>" +
+				"<filter type=\"privacy\" filter=\"adasim.filter.FakeFilter\" criterion=\"adasim.model.internal.SimulationXMLBuilderTest\"/>" +
+				"</filters>" +
 				"<node id=\"1\" neighbors=\"1 2 3 4\" delay=\"2\" capacity=\"5\"/>" +
 				"<node id=\"2\" neighbors=\"3\" delay=\"2\" capacity=\"5\" strategy=\"adasim.algorithm.delay.LinearTrafficDelayFunction\"/>" +
-				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"adasim.algorithm.delay.QuadraticTrafficDelayFunction\" privacy_filter=\"adasim.filter.IdentityFilter\"/>" +
+				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"adasim.algorithm.delay.QuadraticTrafficDelayFunction\" >" +
+				"<filters>" +
+				"<filter type=\"privacy\" filter=\"adasim.filter.IdentityFilter\" criterion=\"adasim.model.internal.SimulationXMLBuilderTest\"/>" +
+				"</filters>" +
+				"</node>" +
 				"</graph>" ) );
-		AdasimMap graph = builder.buildGraph( doc.getRootElement() );
+		AdasimMap graph = builder.buildGraph( doc.getRootElement(), new FilterMap() );
 		assertEquals( 3, graph.getRoadSegments().size() );
 		RoadSegment node = graph.getRoadSegment( 1 );
 		assertEquals( 3, node.getNeighbors().size() );
 		assertNotNull( "No default speed strategy assigned", node.getSpeedStrategy() );
 		assertTrue( "Default speed strategy has wrong type", node.getSpeedStrategy() instanceof LinearTrafficDelayFunction );
-		assertNotNull( "No privacy filter assigned", node.getPrivacyFilter() );
-		assertTrue( "Privacy filter has wrong type", node.getPrivacyFilter() instanceof FakeFilter );
+		assertNotNull( "No privacy filter assigned", node.getPrivacyFilter(this.getClass()) );
+		assertTrue( "Privacy filter has wrong type " + node.getPrivacyFilter(this.getClass()).getClass().getCanonicalName() , node.getPrivacyFilter(this.getClass()) instanceof FakeFilter );
 		node = graph.getRoadSegment(4);
 		assertEquals(0, node.getCapacity() );
 		assertTrue( node.getSpeedStrategy() instanceof QuadraticTrafficDelayFunction );
-		assertNotNull( "No privacy filter assigned", node.getPrivacyFilter() );
-		assertTrue( "Privacy filter has wrong type", node.getPrivacyFilter() instanceof IdentityFilter );
+		assertNotNull( "No privacy filter assigned", node.getPrivacyFilter(this.getClass()) );
+		assertTrue( "Privacy filter has wrong type", node.getPrivacyFilter(this.getClass()) instanceof IdentityFilter );
 	}
+	
 	@Test
 	public void carNoOptionals() throws JDOMException, IOException {
 		Document doc = parser.build( new StringReader( "<car id=\"27\" start=\"1\" end=\"1\"/>" ) );
@@ -206,22 +225,32 @@ public class SimulationXMLBuilderTest {
 	@Test
 	public void agentNoOptionals() throws JDOMException, IOException, ConfigurationException {
 		Document doc = parser.build( new StringReader( "<agent id=\"27\" class=\"adasim.model.internal.FakeAgent\" />" ) );
-		AdasimAgent agent = builder.buildAgent( doc.getRootElement() );
+		AdasimAgent agent = builder.buildAgent( doc.getRootElement(), new FilterMap() );
 	}
 
 	@Test
 	public void agentAllOptionals() throws JDOMException, IOException, ConfigurationException {
-		Document doc = parser.build( new StringReader( "<agent id=\"27\" class=\"adasim.model.internal.FakeAgent\" parameters=\"blabab\"/>" ) );
-		AdasimAgent agent = builder.buildAgent( doc.getRootElement() );
+		Document doc = parser.build( new StringReader( "<agent id=\"27\" class=\"adasim.model.internal.FakeAgent\" parameters=\"blabab\">" + 
+				"<filters>" +
+				"<filter type=\"privacy\" filter=\"adasim.filter.FakeFilter\" criterion=\"adasim.model.internal.SimulationXMLBuilderTest\"/>" +
+				"<filter type=\"uncertainty\" filter=\"adasim.filter.FakeFilter\" criterion=\"adasim.model.internal.SimulationXMLBuilderTest\"/>" +
+				"</filters>" +
+				"</agent>"
+		));
+		AbstractAdasimAgent agent = (AbstractAdasimAgent)builder.buildAgent( doc.getRootElement(), new FilterMap() );
+		assertNotNull( "No default privacy filter assigned", agent.getPrivacyFilter(Object.class) );
+		assertTrue( "Privacy filter has wrong type", agent.getPrivacyFilter(Object.class) instanceof IdentityFilter );
+		assertNotNull( "No privacy filter assigned for THIS", agent.getPrivacyFilter(this.getClass()) );
+		assertTrue( "Privacy filter has wrong type " + agent.getPrivacyFilter(this.getClass()).getClass(), agent.getPrivacyFilter(this.getClass()) instanceof FakeFilter );
+		assertNotNull( "No uncertainty filter assigned", agent.getUncertaintyFilter() );
+		assertTrue( "Uncertaitny filter has wrong type", agent.getUncertaintyFilter() instanceof FakeFilter );
 	}
 
 }
 
 class FakeAgent extends AbstractAdasimAgent {
 	
-	public FakeAgent(String s) {
-		
-	}
+	public FakeAgent(String s) {}
 
 	/* (non-Javadoc)
 	 * @see adasim.model.AdasimAgent#takeSimulationStep()
@@ -230,104 +259,159 @@ class FakeAgent extends AbstractAdasimAgent {
 	public void takeSimulationStep( long cycle) {}
 
 	/* (non-Javadoc)
-	 * @see adasim.agent.AdasimAgent#setUncertaintyFilter(adasim.filter.AdasimFilter)
+	 * @see adasim.agent.AdasimAgent#getID()
 	 */
-	@Override
-	public void setUncertaintyFilter(AdasimFilter filter) {
-		// TODO Auto-generated method stub
-		
+}
+
+class FakeFilter2 implements AdasimFilter {
+
+	public FakeFilter2() {
 	}
 
-	/* (non-Javadoc)
-	 * @see adasim.agent.AdasimAgent#setPrivacyFilter(adasim.filter.AdasimFilter)
-	 */
 	@Override
-	public void setPrivacyFilter(AdasimFilter filter) {
-		// TODO Auto-generated method stub
-		
+	public byte filter(byte b) {
+		return 0;
+	}
+
+	@Override
+	public char filter(char b) {
+		return 0;
+	}
+
+	@Override
+	public short filter(short b) {
+		return 0;
+	}
+
+	@Override
+	public int filter(int b) {
+		return 0;
+	}
+
+	@Override
+	public long filter(long b) {
+		return 0;
+	}
+
+	@Override
+	public float filter(float b) {
+		return 0;
+	}
+
+	@Override
+	public double filter(double b) {
+		return 0;
+	}
+
+	@Override
+	public boolean filter(boolean b) {
+		return false;
+	}
+
+	@Override
+	public <T> T filter(T b) {
+		return null;
 	}
 }
 
-class FakeFilter implements AdasimFilter {
-	
-	/* (non-Javadoc)
-	 * @see adasim.filter.AdasimFilter#filter(byte)
-	 */
+class FakeFilter3 implements AdasimFilter {
+
+	public FakeFilter3() {
+	}
+
 	@Override
 	public byte filter(byte b) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
-	
-	/* (non-Javadoc)
-	 * @see adasim.filter.AdasimFilter#filter(char)
-	 */
+
 	@Override
 	public char filter(char b) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
-	
-	/* (non-Javadoc)
-	 * @see adasim.filter.AdasimFilter#filter(short)
-	 */
+
 	@Override
 	public short filter(short b) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
-	
-	/* (non-Javadoc)
-	 * @see adasim.filter.AdasimFilter#filter(int)
-	 */
+
 	@Override
 	public int filter(int b) {
-		return b+1;
+		return 0;
 	}
-	
-	/* (non-Javadoc)
-	 * @see adasim.filter.AdasimFilter#filter(long)
-	 */
+
 	@Override
 	public long filter(long b) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
-	
-	/* (non-Javadoc)
-	 * @see adasim.filter.AdasimFilter#filter(float)
-	 */
+
 	@Override
 	public float filter(float b) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
-	
-	/* (non-Javadoc)
-	 * @see adasim.filter.AdasimFilter#filter(double)
-	 */
+
 	@Override
 	public double filter(double b) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
-	
-	/* (non-Javadoc)
-	 * @see adasim.filter.AdasimFilter#filter(boolean)
-	 */
+
 	@Override
 	public boolean filter(boolean b) {
-		// TODO Auto-generated method stub
 		return false;
 	}
-	
-	/* (non-Javadoc)
-	 * @see adasim.filter.AdasimFilter#filter(java.lang.Object)
-	 */
+
 	@Override
 	public <T> T filter(T b) {
-		// TODO Auto-generated method stub
 		return null;
 	}
-	
+}
+
+class FakeFilter4 implements AdasimFilter {
+
+	public FakeFilter4() {
+	}
+
+	@Override
+	public byte filter(byte b) {
+		return 0;
+	}
+
+	@Override
+	public char filter(char b) {
+		return 0;
+	}
+
+	@Override
+	public short filter(short b) {
+		return 0;
+	}
+
+	@Override
+	public int filter(int b) {
+		return 0;
+	}
+
+	@Override
+	public long filter(long b) {
+		return 0;
+	}
+
+	@Override
+	public float filter(float b) {
+		return 0;
+	}
+
+	@Override
+	public double filter(double b) {
+		return 0;
+	}
+
+	@Override
+	public boolean filter(boolean b) {
+		return false;
+	}
+
+	@Override
+	public <T> T filter(T b) {
+		return null;
+	}
 }

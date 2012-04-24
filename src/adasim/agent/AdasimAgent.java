@@ -104,5 +104,15 @@ public interface AdasimAgent {
 	 * Sets the privacy filter that this agent applies to all its output.
 	 * @param filter
 	 */
-	public void setPrivacyFilter( AdasimFilter filter );
+	public void setPrivacyFilter( AdasimFilter filter, Class<?> criterion );
+	
+	/**
+	 * @return the agents unique ID
+	 */
+	public int getID();
+	
+	/**
+	 * @param id - the unique ID of this agent
+	 */
+	public void setID( int id );
 }

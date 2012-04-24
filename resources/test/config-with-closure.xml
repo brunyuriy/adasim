@@ -21,6 +21,6 @@
 	</graph>
 	
 	<agents>
-		<agent id="closure" class="adasim.agent.RoadClosureAgent" parameters="0.5:100" />
+		<agent id="222" class="adasim.agent.RoadClosureAgent" parameters="0.5:100" />
 	</agents>
 </simulation>

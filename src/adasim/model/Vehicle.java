@@ -61,7 +61,6 @@ public final class Vehicle extends AbstractAdasimAgent {
 	private RoadSegment start; //Starting position
 	private RoadSegment end; //Destination position
 	private RoadSegment currentNode; //Current position
-	private int id; //This vehicle's number in the list of vehicles
 	private RoutingAlgorithm cs; //Strategy the vehicle uses to traverse the graph
 
 	private static Logger logger = Logger.getLogger(Vehicle.class);
@@ -121,13 +120,6 @@ public final class Vehicle extends AbstractAdasimAgent {
 	 */
 	public void setCurrentPosition(RoadSegment c) {
 		currentNode = c;
-	}
-
-	/**
-	 * @return The number of this vehicle
-	 */
-	public int getID() {
-		return id;
 	}
 
 	/**
