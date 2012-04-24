@@ -85,7 +85,7 @@ public class VehicleManagerTest {
 				"<node id=\"4\" neighbors=\"2 4\" delay=\"2\" strategy=\"adasim.algorithm.delay.QuadraticTrafficDelayFunction\"/>" +
 				"<node id=\"5\" neighbors=\"2 4\" delay=\"2\" strategy=\"adasim.algorithm.delay.LinearTrafficDelayFunction\"/>" +
 				"</graph>" ) );
-		graph = builder.buildGraph( doc.getRootElement() );
+		graph = builder.buildGraph( doc.getRootElement(), new FilterMap() );
 		new TrafficSimulator(graph, manager, (List<AdasimAgent>)new ArrayList<AdasimAgent>() );
 		assertEquals( 2, graph.getRoadSegment(5).getCurrentDelay() );
 		RoadSegment start = graph.getRoadSegment(5);

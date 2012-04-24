@@ -40,7 +40,6 @@ import adasim.agent.AdasimAgent;
 import adasim.algorithm.delay.TrafficDelayFunction;
 import adasim.algorithm.routing.RoutingAlgorithm;
 import adasim.filter.AdasimFilter;
-import adasim.filter.IdentityFilter;
 import adasim.model.AdasimMap;
 import adasim.model.ConfigurationException;
 import adasim.model.RoadSegment;
@@ -75,18 +74,14 @@ public class SimulationXMLBuilder {
 	 * @throws IllegalAccessException 
 	 * @throws InstantiationException 
 	 */
-	public AdasimMap buildGraph( Element graphNode ) throws ConfigurationException {
+	public AdasimMap buildGraph( Element graphNode, FilterMap defaultFilters ) throws ConfigurationException {
 		try {
 			@SuppressWarnings("unchecked")
 			List<Element> children = graphNode.getChildren("node");		
 			TrafficDelayFunction ss = (TrafficDelayFunction) loadClassFromAttribute(graphNode, "default_strategy" );
 			int capacity = Integer.parseInt(graphNode.getAttributeValue("default_capacity"));
-			AdasimFilter uf = (AdasimFilter) loadClassFromAttribute(graphNode, "uncertainty_filter");
-			if ( uf == null ) {
-				uf = new IdentityFilter();
-			} 
-			AdasimFilter pf = (AdasimFilter) loadClassFromAttribute(graphNode, "privacy_filter");
-			return new AdasimMap( buildNodes( children, ss, uf, pf, capacity) );
+			FilterMap fm = buildFilters( graphNode.getChild("filters"), defaultFilters );
+			return new AdasimMap( buildNodes( children, ss, fm, capacity) );
 		} catch (ClassCastException e ) {
 			throw new ConfigurationException( "Error loading class: " + e.getMessage() );
 		} catch (Exception e) {
@@ -108,16 +103,63 @@ public class SimulationXMLBuilder {
 	 * @param nodeElement
 	 * @return a partically configured node
 	 */
-	public RoadSegment buildNode( Element nodeElement ) {
+	public RoadSegment buildNode( Element nodeElement, FilterMap defaultFilters ) {
 		int id = Integer.parseInt( nodeElement.getAttributeValue( "id" ) );
 		TrafficDelayFunction ss = (TrafficDelayFunction)loadClassFromAttribute(nodeElement, "strategy" ); 
 		RoadSegment gn = new RoadSegment( id, ss, getDelay(nodeElement ), getCapacity(nodeElement)) ;
-		AdasimFilter f = (AdasimFilter) loadClassFromAttribute(nodeElement, "uncertainty_filter" ); 
-		gn.setUncertaintyFilter(f);
-		f = (AdasimFilter) loadClassFromAttribute(nodeElement, "privacy_filter" ); 
-		gn.setPrivacyFilter(f);
-
+		Element filters = nodeElement.getChild( "filters" );
+		FilterMap fm = buildFilters( filters, defaultFilters );
+		assignFilters( gn, fm );
 		return gn;
+	}
+
+	/**
+	 * @param gn
+	 * @param fm
+	 */
+	private void assignFilters(AdasimAgent gn, FilterMap fm) {
+		gn.setUncertaintyFilter( fm.uncertaintyFilter );
+		for ( Class<?> c : fm.pMap ) {
+			gn.setPrivacyFilter(fm.pMap.getFilter(c), c);
+		}
+	}
+
+	/**
+	 * Processes a <code><filters></code> element, if it exists. 
+	 * @param filters
+	 * @param defaultFilters
+	 * 
+	 * @return a new filter map that contains all filters from the argument map, 
+	 * all newly declared filters, and that updates filters mapped by duplicate keys. 
+	 * This way, the latest declaration will always take precedence.
+	 */
+	@SuppressWarnings("unchecked")
+	FilterMap buildFilters(Element filters, FilterMap defaultFilters) {		
+		FilterMap newMap = new FilterMap();
+		newMap.uncertaintyFilter = defaultFilters.uncertaintyFilter;
+		newMap.pMap = defaultFilters.pMap.deepCopy();
+		if ( filters != null ) {
+			for ( Element f : (List<Element>)filters.getChildren( "filter") ) {
+				String type = f.getAttributeValue( "type" );
+				AdasimFilter filter = (AdasimFilter)loadClassFromAttribute(f, "filter" );
+				//TODO: for higher level defaults, we have to track the agent types as well.
+				//AdasimAgent agent = (AdasimAgent)loadClassFromAttribute(f, "agent" );
+				if ( type.equals("uncertainty") && filter != null ) {
+					newMap.uncertaintyFilter = filter;
+				} else if (type.equals( "privacy" ) && filter != null ) {
+					String c = f.getAttributeValue("criterion" );
+					try {
+						Class<?> criterion = Class.forName(c);
+						newMap.pMap.addFilter(filter, criterion);
+					} catch (ClassNotFoundException e) {
+						logger.warn( "Declared illegal criterion type \"" + c + "\". Declaration ignored." );
+					}
+				} else {
+					logger.warn( "Declared illegal filter type \"" + type + "\". Declaration ignored." );
+				}
+			}
+		}
+		return newMap;
 	}
 
 	/**
@@ -182,22 +224,15 @@ public class SimulationXMLBuilder {
 	 * @return the list of fully validated GraphNodes
 	 */
 	private List<RoadSegment> buildNodes( List<Element> nodeElements, TrafficDelayFunction defaultStrategy,
-			AdasimFilter uncertaintyFilter, AdasimFilter privacyFilter, int capacity ) {
+			FilterMap defaultFilters, int capacity ) {
 		List<RoadSegment> nodes = new ArrayList<RoadSegment>( nodeElements.size() );
 		for( Element node : nodeElements ) {
-			RoadSegment gn = buildNode( node );
+			RoadSegment gn = buildNode( node, defaultFilters );
 			if ( gn != null ) {
 				nodes.add( assignDefaultNodeValues(gn, defaultStrategy, capacity) );
 			}
-			//assign default when needed
-			if ( gn.getUncertaintyFilter() == null ) {
-				gn.setUncertaintyFilter( uncertaintyFilter );
-			}
 			if ( gn.getSpeedStrategy() == null ) {
 				gn.setSpeedStrategy( defaultStrategy );
-			}
-			if ( gn.getPrivacyFilter() == null ) {
-				gn.setPrivacyFilter(privacyFilter);
 			}
 		}
 		for ( Element node: nodeElements ) {
@@ -336,13 +371,14 @@ public class SimulationXMLBuilder {
 	 * @return a list of partially configured agents
 	 * @throws ConfigurationException 
 	 */
-	public List<? extends AdasimAgent> buildAgents(Element child) throws ConfigurationException {
+	public List<? extends AdasimAgent> buildAgents(Element child, FilterMap defaultFilters ) throws ConfigurationException {
 		List<AdasimAgent> agents = new ArrayList<AdasimAgent>();
 		if ( child != null ) {
+			FilterMap fm = buildFilters(child.getChild("filters"), defaultFilters);
 			@SuppressWarnings("unchecked")
 			List<Element> agentNodes = child.getChildren( "agent" );
 			for ( Element agentNode : agentNodes ) {
-				AdasimAgent agent = buildAgent( agentNode );
+				AdasimAgent agent = buildAgent( agentNode, fm);
 				if ( agent != null ) {
 					agents.add(agent);
 				}
@@ -356,21 +392,25 @@ public class SimulationXMLBuilder {
 	 * @return a partially configured agent
 	 * @throws ConfigurationException 
 	 */
-	public AdasimAgent buildAgent(Element agent) throws ConfigurationException {
+	public AdasimAgent buildAgent(Element agent, FilterMap defaultFilters ) throws ConfigurationException {
 		String clazz = agent.getAttributeValue("class");
 		assert clazz != null;
 		String parameters = agent.getAttributeValue("parameters");
+		int id = Integer.parseInt(agent.getAttributeValue("id"));
+
+		FilterMap fm = buildFilters(agent.getChild("filters"), defaultFilters);
 
 		AdasimAgent agt = null;
 		try {
 			Class<?> cls = this.getClass().getClassLoader().loadClass(clazz);
 			Constructor<?> c = cls.getConstructor( String.class );
 			agt = (AdasimAgent) c.newInstance( parameters );
+			agt.setID(id);
+			assignFilters(agt, fm );
 		} catch (Exception e) {
 			throw new ConfigurationException( "Invalid agent class " + clazz, e);
 		} 
 
 		return agt;
 	}
-
 }

@@ -127,6 +127,15 @@ public final class TrafficSimulator{
 	public List<AdasimAgent> getAgents() {
 		return Collections.unmodifiableList(agents);
 	}
+	
+	public AdasimAgent getAgent( int id ) {
+		for ( AdasimAgent agt : agents ) {
+			if ( agt.getID() == id ) {
+				return agt;
+			}
+		}
+		return null;
+	}
 
 	/**
 	 * Convenience method that returns the vehicle with the given ID

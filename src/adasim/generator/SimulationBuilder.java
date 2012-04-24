@@ -24,6 +24,7 @@ import java.util.Random;
 import org.jdom.Document;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
+import org.omg.IOP.CodecPackage.FormatMismatch;
 
 import adasim.agent.AdasimAgent;
 import adasim.algorithm.delay.LinearTrafficDelayFunction;
@@ -34,6 +35,7 @@ import adasim.model.ConfigurationException;
 import adasim.model.RoadSegment;
 import adasim.model.TrafficSimulator;
 import adasim.model.Vehicle;
+import adasim.model.internal.FilterMap;
 import adasim.model.internal.SimulationXMLBuilder;
 import adasim.model.internal.VehicleManager;
 
@@ -181,7 +183,7 @@ public class SimulationBuilder {
 	private AdasimMap readGraphFromFile(File graphFile) throws JDOMException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, ConfigurationException {
 		SAXBuilder sbuilder = new SAXBuilder(false);
 		Document doc = sbuilder.build(graphFile);
-		return new SimulationXMLBuilder().buildGraph( doc.getRootElement() );
+		return new SimulationXMLBuilder().buildGraph( doc.getRootElement(), new FilterMap() );
 	}
 
 	/**
