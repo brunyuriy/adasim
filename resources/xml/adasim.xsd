@@ -33,12 +33,17 @@
     <xsd:complexType name="Cars">
         <xsd:sequence>
             <xsd:element name="car" type="Car" minOccurs="1" maxOccurs="unbounded" />
+			<xsd:element name="filters" type="Filters" minOccurs="0" maxOccurs="1"/>
         </xsd:sequence>
         <xsd:attribute name="default_strategy" type="xsd:string" />
     </xsd:complexType>
 
 
     <xsd:complexType name="Car">
+      	<xsd:all>
+	        <xsd:element name="filters" type="Filters" minOccurs="0" maxOccurs="1"/>
+    	</xsd:all>
+    
         <xsd:attribute name="id" type="xsd:nonNegativeInteger" use="required" />
         <xsd:attribute name="start" type="xsd:nonNegativeInteger" use="required" />
         <xsd:attribute name="end" type="xsd:nonNegativeInteger" use="required" />
@@ -49,11 +54,10 @@
     <xsd:complexType name="Graph">
         <xsd:sequence>
             <xsd:element name="node" type="Node" minOccurs="1" maxOccurs="unbounded" />
+			<xsd:element name="filters" type="Filters" minOccurs="0" maxOccurs="1"/>
         </xsd:sequence>
         <xsd:attribute name="default_strategy" type="xsd:string" />
         <xsd:attribute name="default_capacity" type="xsd:nonNegativeInteger" />
-        <xsd:attribute name="uncertainty_filter" type="xsd:string"/>
-        <xsd:attribute name="privacy_filter" type="xsd:string"/>
     </xsd:complexType>
 
 
@@ -71,6 +75,7 @@
     <xsd:complexType name="Agents">
         <xsd:sequence>
             <xsd:element name="agent" type="Agent" />
+            <xsd:element name="filters" type="Filters" minOccurs="0" maxOccurs="1"/>
         </xsd:sequence>
     </xsd:complexType>
 
