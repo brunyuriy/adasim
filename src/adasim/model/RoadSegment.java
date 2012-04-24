@@ -74,7 +74,6 @@ public final class RoadSegment extends AbstractAdasimAgent {
 	private TrafficDelayFunction ss; //The strategy by which the speed changes
 
 	//PROPERTIES
-	private int nodeNum; //The number of this node on the graph
 	private int delay; //The basic delay of this node. To be modified by the speed strategy
 	private RoadVehicleQueue queue; //Holds the vehicles on this node and deals with the adasim
 	private int capacity; //The number of vehicles the road can hold before the speed strategy takes effect
@@ -99,7 +98,7 @@ public final class RoadSegment extends AbstractAdasimAgent {
 	 * @param capacity
 	 */
 	public RoadSegment(int n, TrafficDelayFunction s, int delay, int capacity ) {
-		nodeNum = n;
+		id = n;
 		outgoing = new HashSet<RoadSegment>();
 		ss = s;
 		this.delay = delay;
@@ -162,13 +161,6 @@ public final class RoadSegment extends AbstractAdasimAgent {
 	 * AGENT PROPERTIES
 	 *************************************************** */	
 	
-	/**
-	 * @return this node's ID number
-	 */
-	public int getID() {
-		return nodeNum;
-	}
-
 	/**
 	 * Returns the number of turns a vehicle must stay limited at this node
 	 */
@@ -326,7 +318,7 @@ public final class RoadSegment extends AbstractAdasimAgent {
 	 */
 	@Override
 	public int hashCode() {
-		return nodeNum;
+		return id;
 	}
 
 	/* (non-Javadoc)
@@ -341,7 +333,7 @@ public final class RoadSegment extends AbstractAdasimAgent {
 		if (getClass() != obj.getClass())
 			return false;
 		RoadSegment other = (RoadSegment) obj;
-		if (nodeNum != other.nodeNum)
+		if (id != other.id)
 			return false;
 		return true;
 	}
@@ -351,7 +343,7 @@ public final class RoadSegment extends AbstractAdasimAgent {
 	 */
 	@Override
 	public String toString() {
-		return "" + nodeNum;
+		return "" + id;
 	}
 	
 	/* ***************************************************
