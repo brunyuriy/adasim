@@ -25,7 +25,6 @@ import org.jdom.JDOMException;
 import org.junit.Test;
 
 import adasim.agent.AbstractAdasimAgent;
-import adasim.agent.AdasimAgent;
 import adasim.algorithm.delay.QuadraticTrafficDelayFunction;
 import adasim.algorithm.routing.LookaheadShortestPathRoutingAlgorithm;
 import adasim.filter.FakeFilter;
