@@ -32,6 +32,7 @@ import adasim.algorithm.delay.LinearTrafficDelayFunction;
 import adasim.algorithm.delay.QuadraticTrafficDelayFunction;
 import adasim.algorithm.routing.AlwaysRecomputeRoutingAlgorithm;
 import adasim.algorithm.routing.ShortestPathRoutingAlgorithm;
+import adasim.filter.AdasimFilter;
 import adasim.filter.FakeFilter;
 import adasim.filter.IdentityFilter;
 import adasim.model.AdasimMap;
@@ -257,4 +258,157 @@ class FakeAgent extends AbstractAdasimAgent {
 	@Override
 	public void takeSimulationStep( long cycle) {}
 
+}
+
+class FakeFilter2 implements AdasimFilter {
+
+	public FakeFilter2() {
+	}
+
+	@Override
+	public byte filter(byte b) {
+		return 0;
+	}
+
+	@Override
+	public char filter(char b) {
+		return 0;
+	}
+
+	@Override
+	public short filter(short b) {
+		return 0;
+	}
+
+	@Override
+	public int filter(int b) {
+		return 0;
+	}
+
+	@Override
+	public long filter(long b) {
+		return 0;
+	}
+
+	@Override
+	public float filter(float b) {
+		return 0;
+	}
+
+	@Override
+	public double filter(double b) {
+		return 0;
+	}
+
+	@Override
+	public boolean filter(boolean b) {
+		return false;
+	}
+
+	@Override
+	public <T> T filter(T b) {
+		return null;
+	}
+}
+
+class FakeFilter3 implements AdasimFilter {
+
+	public FakeFilter3() {
+	}
+
+	@Override
+	public byte filter(byte b) {
+		return 0;
+	}
+
+	@Override
+	public char filter(char b) {
+		return 0;
+	}
+
+	@Override
+	public short filter(short b) {
+		return 0;
+	}
+
+	@Override
+	public int filter(int b) {
+		return 0;
+	}
+
+	@Override
+	public long filter(long b) {
+		return 0;
+	}
+
+	@Override
+	public float filter(float b) {
+		return 0;
+	}
+
+	@Override
+	public double filter(double b) {
+		return 0;
+	}
+
+	@Override
+	public boolean filter(boolean b) {
+		return false;
+	}
+
+	@Override
+	public <T> T filter(T b) {
+		return null;
+	}
+}
+
+class FakeFilter4 implements AdasimFilter {
+
+	public FakeFilter4() {
+	}
+
+	@Override
+	public byte filter(byte b) {
+		return 0;
+	}
+
+	@Override
+	public char filter(char b) {
+		return 0;
+	}
+
+	@Override
+	public short filter(short b) {
+		return 0;
+	}
+
+	@Override
+	public int filter(int b) {
+		return 0;
+	}
+
+	@Override
+	public long filter(long b) {
+		return 0;
+	}
+
+	@Override
+	public float filter(float b) {
+		return 0;
+	}
+
+	@Override
+	public double filter(double b) {
+		return 0;
+	}
+
+	@Override
+	public boolean filter(boolean b) {
+		return false;
+	}
+
+	@Override
+	public <T> T filter(T b) {
+		return null;
+	}
 }

@@ -143,7 +143,7 @@ public class SimulationXMLBuilder {
 				String type = f.getAttributeValue( "type" );
 				AdasimFilter filter = (AdasimFilter)loadClassFromAttribute(f, "filter" );
 				//TODO: for higher level defaults, we have to track the agent types as well.
-				AdasimAgent agent = (AdasimAgent)loadClassFromAttribute(f, "agent" );
+				//AdasimAgent agent = (AdasimAgent)loadClassFromAttribute(f, "agent" );
 				if ( type.equals("uncertainty") && filter != null ) {
 					newMap.uncertaintyFilter = filter;
 				} else if (type.equals( "privacy" ) && filter != null ) {
