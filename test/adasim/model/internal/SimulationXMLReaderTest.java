@@ -24,6 +24,8 @@ import java.util.List;
 import org.jdom.JDOMException;
 import org.junit.Test;
 
+import adasim.agent.AbstractAdasimAgent;
+import adasim.agent.AdasimAgent;
 import adasim.algorithm.delay.QuadraticTrafficDelayFunction;
 import adasim.algorithm.routing.LookaheadShortestPathRoutingAlgorithm;
 import adasim.filter.FakeFilter;
@@ -220,7 +222,7 @@ public class SimulationXMLReaderTest {
 	}
 	
 	@Test
-	public void filterConfigHierarchy() throws FileNotFoundException, ConfigurationException {
+	public void filterConfigHierarchyForRoads() throws FileNotFoundException, ConfigurationException {
 		TrafficSimulator sim = 	SimulationXMLReader.buildSimulator( new File("resources/test/default-filter-test.xml"));
 		AdasimMap map = sim.getMap();
 		RoadSegment road = map.getRoadSegment(0);
@@ -239,4 +241,25 @@ public class SimulationXMLReaderTest {
 		assertNotNull( "No default privacy filter configured", road.getPrivacyFilter( this.getClass() ) );
 		assertEquals( "Default privacy filter has wrong type", IdentityFilter.class, road.getPrivacyFilter( this.getClass() ).getClass() );		
 	}
+	
+	@Test
+	public void filterConfigHierarchyForAgents() throws FileNotFoundException, ConfigurationException {
+		TrafficSimulator sim = 	SimulationXMLReader.buildSimulator( new File("resources/test/default-filter-test.xml"));
+		AbstractAdasimAgent agent = (AbstractAdasimAgent)sim.getAgent(101);
+		assertNotNull( "No uncertainty filter configured", agent.getUncertaintyFilter() );
+		assertEquals( "Uncertainty filter has wrong type", FakeFilter4.class, agent.getUncertaintyFilter().getClass() );
+		assertNotNull( "No privacy filter for adasim.model.internal.FakeAgent configured", agent.getPrivacyFilter( FakeAgent.class ) );
+		assertEquals( "Privacy filter for adasim.model.internal.FakeAgent has wrong type", FakeFilter3.class, agent.getPrivacyFilter( FakeAgent.class ).getClass() );		
+		assertNotNull( "No default privacy filter configured", agent.getPrivacyFilter( this.getClass() ) );
+		assertEquals( "Default privacy filter has wrong type", FakeFilter.class, agent.getPrivacyFilter( this.getClass() ).getClass() );		
+		
+		agent = (AbstractAdasimAgent)sim.getAgent(102);
+		assertNotNull( "No uncertainty filter configured", agent.getUncertaintyFilter() );
+		assertEquals( "Uncertainty filter has wrong type", FakeFilter3.class, agent.getUncertaintyFilter().getClass() );
+		assertNotNull( "No privacy filter for adasim.model.internal.FakeAgent configured", agent.getPrivacyFilter( FakeAgent.class ) );
+		assertEquals( "Privacy filter for adasim.model.internal.FakeAgent has wrong type", FakeFilter4.class, agent.getPrivacyFilter( FakeAgent.class ).getClass() );		
+		assertNotNull( "No default privacy filter configured", agent.getPrivacyFilter( this.getClass() ) );
+		assertEquals( "Default privacy filter has wrong type", IdentityFilter.class, agent.getPrivacyFilter( this.getClass() ).getClass() );		
+	}
+
 }

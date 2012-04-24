@@ -40,4 +40,20 @@
 		<node id="9" strategy="adasim.algorithm.delay.LinearTrafficDelayFunction" neighbors="2" />
 	</graph>
 	
+	<agents>
+		<filters>
+			<filter type="uncertainty" agent="java.lang.Object" filter="adasim.model.internal.FakeFilter4"/>
+			<filter type="privacy" agent="adasim.model.RoadSegment" criterion="adasim.model.internal.FakeAgent" filter="adasim.model.internal.FakeFilter3"/>
+			<filter type="privacy" agent="java.lang.Object" criterion="java.lang.Object" filter="adasim.filter.FakeFilter"/>
+		</filters>
+
+		<agent id="101" class="adasim.model.internal.FakeAgent"/>
+		<agent id="102" class="adasim.model.internal.FakeAgent">
+			<filters>
+				<filter type="uncertainty" agent="java.lang.Object" filter="adasim.model.internal.FakeFilter3"/>
+				<filter type="privacy" agent="adasim.model.RoadSegment" criterion="adasim.model.internal.FakeAgent" filter="adasim.model.internal.FakeFilter4"/>
+				<filter type="privacy" agent="java.lang.Object" criterion="java.lang.Object" filter="adasim.filter.IdentityFilter"/>
+			</filters>
+		</agent>	
+	</agents>
 </simulation>

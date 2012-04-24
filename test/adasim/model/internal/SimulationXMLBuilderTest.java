@@ -258,6 +258,9 @@ class FakeAgent extends AbstractAdasimAgent {
 	@Override
 	public void takeSimulationStep( long cycle) {}
 
+	/* (non-Javadoc)
+	 * @see adasim.agent.AdasimAgent#getID()
+	 */
 }
 
 class FakeFilter2 implements AdasimFilter {
