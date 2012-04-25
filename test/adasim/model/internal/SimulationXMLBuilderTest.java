@@ -27,7 +27,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import adasim.agent.AbstractAdasimAgent;
-import adasim.agent.AdasimAgent;
 import adasim.algorithm.delay.LinearTrafficDelayFunction;
 import adasim.algorithm.delay.QuadraticTrafficDelayFunction;
 import adasim.algorithm.routing.AlwaysRecomputeRoutingAlgorithm;
@@ -59,7 +58,7 @@ public class SimulationXMLBuilderTest {
 
 	@Test
 	public void nodeNoOptionals() throws JDOMException, IOException {
-		Document doc = parser.build( new StringReader( "<node id=\"27\" neighbors=\"1 2 3\"/>" ) );
+		Document doc = parser.build( new StringReader( "<node id=\"27\" neighbors=\"1 2 3\" delay=\"1\"/>" ) );
 		RoadSegment node = builder.buildNode( doc.getRootElement(), new FilterMap() );
 		assertEquals( 27, node.getID() );
 		assertTrue( node.getNeighbors().isEmpty() );
@@ -226,7 +225,7 @@ public class SimulationXMLBuilderTest {
 	@Test
 	public void agentNoOptionals() throws JDOMException, IOException, ConfigurationException {
 		Document doc = parser.build( new StringReader( "<agent id=\"27\" class=\"adasim.model.internal.FakeAgent\" />" ) );
-		AdasimAgent agent = builder.buildAgent( doc.getRootElement(), new FilterMap() );
+		builder.buildAgent( doc.getRootElement(), new FilterMap() );
 	}
 
 	@Test

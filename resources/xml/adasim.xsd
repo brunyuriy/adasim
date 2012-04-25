@@ -34,7 +34,7 @@
         <xsd:sequence>
             <xsd:element name="car" type="Car" minOccurs="1" maxOccurs="unbounded" />
         </xsd:sequence>
-        <xsd:attribute name="default_strategy" type="xsd:string" />
+        <xsd:attribute name="default_strategy" type="xsd:string" default="adasim.algorithm.routing.ShortestPathRoutingAlgorithm" />
     </xsd:complexType>
 
 
@@ -52,7 +52,7 @@
            	<xsd:element name="node" type="Node" minOccurs="1" maxOccurs="unbounded" />
         </xsd:sequence>
         <xsd:attribute name="default_strategy" type="xsd:string" />
-        <xsd:attribute name="default_capacity" type="xsd:nonNegativeInteger" />
+        <xsd:attribute name="default_capacity" type="xsd:nonNegativeInteger" default="1"/>
     </xsd:complexType>
 
 
@@ -63,7 +63,7 @@
         <xsd:attribute name="id" type="xsd:nonNegativeInteger" use="required" />
         <xsd:attribute name="strategy" type="xsd:string" />
         <xsd:attribute name="neighbors" type="xsd:string" use="required" />
-        <xsd:attribute name="delay" type="xsd:nonNegativeInteger" />
+        <xsd:attribute name="delay" type="xsd:nonNegativeInteger" default="1"/>
         <xsd:attribute name="capacity" type="xsd:nonNegativeInteger" />
     </xsd:complexType>
 
