@@ -134,7 +134,7 @@ final public class SimulationXMLReader {
 		List<Element> vehicleNodes = vehiclesNode.getChildren( "car" );
 		for ( Element vehicle : vehicleNodes ) {
 			Vehicle c = validateVehicle(vehicle, vehicles, g );
-			long time = getStartTime( vehicle );
+			long time = Long.parseLong( vehicle.getAttributeValue("start_time") );
 			if ( c != null ) {
 				if ( time == 1 ) {
 					l.add(c);
@@ -146,16 +146,6 @@ final public class SimulationXMLReader {
 			}
 		}
 		return l;	
-	}
-
-	/**
-	 * @param vehicle
-	 */
-	private long getStartTime(Element vehicle) {
-		String s = vehicle.getAttributeValue("start_time");
-		if ( s == null ) return 1L;
-		int time = Integer.parseInt( s );
-		return (long)time;
 	}
 
 	/**
