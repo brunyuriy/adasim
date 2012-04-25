@@ -88,7 +88,7 @@ public final class TrafficSimulator{
 	 * to terminate (SIG_INT or suchlike).
 	 */
 	public void run() {
-		while(! checkAllFinish()) {
+		while(! isFinished()) {
 			takeSimulationStep();
 		}
 	}
@@ -111,7 +111,7 @@ public final class TrafficSimulator{
 	/**
 	 * @return true if all vehicles return true on their <code>checkFinish()</code> call
 	 */
-	private boolean checkAllFinish() {
+	boolean isFinished() {
 		if ( ! manager.isFinished() ) return false;
 		for(AdasimAgent c: agents) {
 			if(!c.isFinished()) {
