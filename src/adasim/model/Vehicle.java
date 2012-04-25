@@ -171,7 +171,7 @@ public final class Vehicle extends AbstractAdasimAgent {
 		if ( nextNode == null ) {
 			getCurrentPosition().park(this);
 		} else {
-			logger.info( "MOVE: " + vehiclePosition() + " To:" + nextNode.getID() );
+			logger.info( "MOVE: " + vehiclePosition() + " To: " + nextNode.getID() );
 			currentNode.moveTo(nextNode, this);
 		}		
 	}
