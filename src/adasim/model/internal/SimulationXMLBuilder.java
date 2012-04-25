@@ -105,8 +105,9 @@ public class SimulationXMLBuilder {
 	 */
 	public RoadSegment buildNode( Element nodeElement, FilterMap defaultFilters ) {
 		int id = Integer.parseInt( nodeElement.getAttributeValue( "id" ) );
+		int delay = Integer.parseInt( nodeElement.getAttributeValue( "delay" ) );
 		TrafficDelayFunction ss = (TrafficDelayFunction)loadClassFromAttribute(nodeElement, "strategy" ); 
-		RoadSegment gn = new RoadSegment( id, ss, getDelay(nodeElement ), getCapacity(nodeElement)) ;
+		RoadSegment gn = new RoadSegment( id, ss, delay, getCapacity(nodeElement)) ;
 		Element filters = nodeElement.getChild( "filters" );
 		FilterMap fm = buildFilters( filters, defaultFilters );
 		assignFilters( gn, fm );
@@ -142,8 +143,6 @@ public class SimulationXMLBuilder {
 			for ( Element f : (List<Element>)filters.getChildren( "filter") ) {
 				String type = f.getAttributeValue( "type" );
 				AdasimFilter filter = (AdasimFilter)loadClassFromAttribute(f, "filter" );
-				//TODO: for higher level defaults, we have to track the agent types as well.
-				//AdasimAgent agent = (AdasimAgent)loadClassFromAttribute(f, "agent" );
 				if ( type.equals("uncertainty") && filter != null ) {
 					newMap.uncertaintyFilter = filter;
 				} else if (type.equals( "privacy" ) && filter != null ) {
@@ -295,19 +294,6 @@ public class SimulationXMLBuilder {
 			} catch (Exception e) {}
 		}
 		return t;
-	}
-
-	/**
-	 * @param node
-	 * @return the delay declared in the XML element or the default 1
-	 * @throws ConfigurationException 
-	 */
-	private int getDelay(Element node) {
-		String d = node.getAttributeValue("delay");
-		if ( d == null ) return 1;
-		else {
-			return Integer.parseInt(d); //Delay must be a valid integer due to schema
-		}
 	}
 
 	private int getCapacity(Element node) {
