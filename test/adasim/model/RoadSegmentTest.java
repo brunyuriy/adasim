@@ -15,6 +15,8 @@
 package adasim.model;
 
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.List;
 
 import org.junit.Before;
@@ -24,6 +26,7 @@ import adasim.algorithm.delay.LinearTrafficDelayFunction;
 import adasim.algorithm.routing.AbstractRoutingAlgorithm;
 import adasim.model.RoadSegment;
 import adasim.model.Vehicle;
+import adasim.model.internal.SimulationXMLReader;
 
 import static org.junit.Assert.*;
 
@@ -111,5 +114,11 @@ public class RoadSegmentTest {
 		node.takeSimulationStep(2);
 		assertEquals( 1, node.getCurrentDelay() );	//this should imply that the car has been removed
 		assertEquals( 2, node2.getCurrentDelay() );	//this should imply that the car is still waiting
+	}
+	
+	@Test
+	public void routingFromConfig() throws FileNotFoundException, ConfigurationException {
+		TrafficSimulator sim = SimulationXMLReader.buildSimulator( new File("resources/test/config.xml") );
+		sim.takeSimulationStep();	//move all cars to interesting positions
 	}
 }

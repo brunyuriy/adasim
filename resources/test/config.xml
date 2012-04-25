@@ -7,7 +7,7 @@
 		<car id="4" start="3" end="7" />
 	</cars>
 
-	<graph default_strategy="adasim.algorithm.delay.QuadraticTrafficDelayFunction" default_capacity="0">
+	<graph default_strategy="adasim.algorithm.delay.LinearTrafficDelayFunction" default_capacity="0">
 		<node id="0" neighbors="4 7" />
 		<node id="1" strategy="adasim.algorithm.delay.LinearTrafficDelayFunction" neighbors="5" capacity ="0"/>
 		<node id="2" strategy="adasim.algorithm.delay.LinearTrafficDelayFunction" neighbors="4 7 9" />
