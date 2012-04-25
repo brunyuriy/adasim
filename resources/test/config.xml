@@ -2,8 +2,8 @@
 	<cars default_strategy="adasim.algorithm.routing.LookaheadShortestPathRoutingAlgorithm">
 		<car id="0" start="0" end="2" />
 		<car id="1" start="4" end="7" />
-		<car id="2" start="3" end="9" strategy="adasim.algorithm.routing.RandomRoutingAlgorithm" />
-		<car id="3" start="8" end="4" strategy="adasim.algorithm.routing.RandomRoutingAlgorithm" />
+		<car id="2" start="3" end="9" />
+		<car id="3" start="8" end="4" />
 		<car id="4" start="3" end="7" />
 	</cars>
 
