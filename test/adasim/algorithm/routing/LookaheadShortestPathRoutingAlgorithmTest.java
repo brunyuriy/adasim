@@ -26,6 +26,7 @@ import adasim.algorithm.routing.LookaheadShortestPathRoutingAlgorithm;
 import adasim.model.AdasimMap;
 import adasim.model.ConfigurationException;
 import adasim.model.RoadSegment;
+import adasim.model.TrafficSimulator;
 import adasim.model.Vehicle;
 import adasim.model.internal.SimulationXMLReader;
 import static org.junit.Assert.*;
@@ -137,5 +138,42 @@ public class LookaheadShortestPathRoutingAlgorithmTest {
 		RoadSegment next = strategy.getNextNode();	//returns the first node of the first path and updates
 		assertEquals( 6, next.getID() );	//
 		assertEquals( 5, strategy.getNextNode().getID() );	//this is the next node on the new updated path
+	}
+	
+	@Test
+	public void findCorrectShortestPaths() throws JDOMException, IOException, ConfigurationException {
+		TrafficSimulator sim = SimulationXMLReader.buildSimulator( new File("resources/test/config.xml") );
+		 AdasimMap g = sim.getMap();
+		strategy = new LookaheadShortestPathRoutingAlgorithm(0);
+		strategy.setMap(g);
+		List<RoadSegment> path = strategy.getPath(g.getRoadSegment(0), g.getRoadSegment(2));
+		assertNotNull( "No path found", path );
+		assertEquals( "Path has wrong length", 4, path.size() );
+		assertEquals( 7, (int)path.get(0).getID() );
+		assertEquals( 1, (int)path.get(1).getID() );
+		assertEquals( 5, (int)path.get(2).getID() );
+		assertEquals( 2, (int)path.get(3).getID() );
+		path = strategy.getPath(g.getRoadSegment(4), g.getRoadSegment(7));
+		assertNotNull( "No path found", path );
+		assertEquals( "Path has wrong length", 4, path.size() );
+		assertEquals( 6, (int)path.get(0).getID() );
+		assertEquals( 5, (int)path.get(1).getID() );
+		assertEquals( 0, (int)path.get(2).getID() );
+		assertEquals( 7, (int)path.get(3).getID() );
+		path = strategy.getPath(g.getRoadSegment(3), g.getRoadSegment(7));
+		assertNotNull( "No path found", path );
+		assertEquals( "Path has wrong length", 4, path.size() );
+		assertEquals( 1, (int)path.get(0).getID() );
+		assertEquals( 5, (int)path.get(1).getID() );
+		assertEquals( 0, (int)path.get(2).getID() );
+		assertEquals( 7, (int)path.get(3).getID() );
+		Vehicle v = sim.getVehicle(4);
+		assertFalse( "Vehicle ready to stop", v.isFinished() );
+		sim.takeSimulationStep();
+		assertFalse( "Vehicle ready to stop", v.isFinished() );
+		sim.takeSimulationStep();
+		assertFalse( "Vehicle ready to stop", v.isFinished() );
+		sim.takeSimulationStep();
+		assertFalse( "Vehicle ready to stop", v.isFinished() );
 	}
 }

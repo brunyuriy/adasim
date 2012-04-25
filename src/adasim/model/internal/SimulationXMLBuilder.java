@@ -174,7 +174,8 @@ public class SimulationXMLBuilder {
 	public List<Vehicle> buildVehicles( Element vehiclesNode ) throws ConfigurationException {
 		@SuppressWarnings("unchecked")
 		List<Element> vehicleNodes = vehiclesNode.getChildren("car");
-		RoutingAlgorithm cs = (RoutingAlgorithm)loadClassFromAttribute(vehiclesNode, "default_strategy" );
+		@SuppressWarnings("unchecked")
+		Class<? extends RoutingAlgorithm> cs = (Class<RoutingAlgorithm>)loadClassFromAttribute(vehiclesNode, "default_strategy" ).getClass();
 		List<Vehicle> vehicles = new ArrayList<Vehicle>();
 		for ( Element vehicle : vehicleNodes ) {
 			Vehicle c = buildVehicle( vehicle );
@@ -186,10 +187,15 @@ public class SimulationXMLBuilder {
 	/**
 	 * @param c
 	 * @param cs
+	 * @throws ConfigurationException 
 	 */
-	private Vehicle assignDefaultVehicleValues(Vehicle c, RoutingAlgorithm cs) {
+	private Vehicle assignDefaultVehicleValues(Vehicle c, Class<? extends RoutingAlgorithm> cs) throws ConfigurationException {
 		if ( c.getStrategy() == null ) {
-			c.setStrategy(cs);
+			try {
+				c.setStrategy(cs.newInstance());
+			} catch (Exception e) {
+				throw new ConfigurationException( "Cannot instantiate default routing algorithm " + cs.getCanonicalName() );
+			} 
 		}
 		return c;
 	}

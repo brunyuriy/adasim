@@ -220,6 +220,7 @@ public class SimulationXMLBuilderTest {
 		car = cars.get(1);
 		assertEquals( 2, car.getID() );
 		assertTrue( car.getStrategy() instanceof ShortestPathRoutingAlgorithm );
+		assertFalse( "Routing strategies are ==", cars.get(0).getStrategy() == cars.get(2).getStrategy() );
 	}
 	
 	@Test
