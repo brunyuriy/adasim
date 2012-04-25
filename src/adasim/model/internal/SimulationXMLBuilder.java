@@ -174,8 +174,12 @@ public class SimulationXMLBuilder {
 	public List<Vehicle> buildVehicles( Element vehiclesNode ) throws ConfigurationException {
 		@SuppressWarnings("unchecked")
 		List<Element> vehicleNodes = vehiclesNode.getChildren("car");
+		Object o = loadClassFromAttribute(vehiclesNode, "default_strategy" );
+		if ( o == null ) {
+			throw new ConfigurationException( "Invalid default strategy " + vehiclesNode.getAttributeValue("default_strategy" ) );
+		}
 		@SuppressWarnings("unchecked")
-		Class<? extends RoutingAlgorithm> cs = (Class<RoutingAlgorithm>)loadClassFromAttribute(vehiclesNode, "default_strategy" ).getClass();
+		Class<? extends RoutingAlgorithm> cs = (Class<RoutingAlgorithm>)o.getClass();
 		List<Vehicle> vehicles = new ArrayList<Vehicle>();
 		for ( Element vehicle : vehicleNodes ) {
 			Vehicle c = buildVehicle( vehicle );
