@@ -32,6 +32,7 @@ import java.util.List;
 
 import adasim.model.AdasimMap;
 import adasim.model.RoadSegment;
+import adasim.model.Vehicle;
 
 
 /**
@@ -70,6 +71,6 @@ public interface RoutingAlgorithm {
 	
 	public void setEndRoad( RoadSegment end );
 	
-	public void setVehicleId( int id );
+	public void setVehicle( Vehicle v );
 
 }

@@ -30,6 +30,7 @@ package adasim.algorithm.routing;
 
 import adasim.model.AdasimMap;
 import adasim.model.RoadSegment;
+import adasim.model.Vehicle;
 
 /**
  * @author Jochen Wuttke - wuttkej@gmail.com
@@ -39,7 +40,7 @@ public abstract class AbstractRoutingAlgorithm implements RoutingAlgorithm {
 	
 	protected AdasimMap graph;
 	protected RoadSegment source, target;
-	protected int carID;
+	protected Vehicle vehicle;
 
 	/* (non-Javadoc)
 	 * @see adasim.algorithm.CarStrategy#setGraph(adasim.graph.Graph)
@@ -63,8 +64,8 @@ public abstract class AbstractRoutingAlgorithm implements RoutingAlgorithm {
 	 * @see adasim.algorithm.CarStrategy#setCarId(int)
 	 */
 	@Override
-	public void setVehicleId(int id) {
-		this.carID = id;
+	public void setVehicle( Vehicle v) {
+		this.vehicle = v;
 	}
 	
 
