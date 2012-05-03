@@ -126,8 +126,9 @@ public class LookaheadShortestPathRoutingAlgorithm extends AbstractRoutingAlgori
 			q.remove( current );
 			
 			for ( RoadSegment node : nodes.get(current).getNeighbors() ) {
-				int depth = getCurrentDepth(previous, nodes, source, nodes.get(current) ); 
-				int t = dist[current] + ( depth <= l ? node.getCurrentDelay() : node.getDelay() );
+				int depth = getCurrentDepth(previous, nodes, source, nodes.get(current) );
+				
+				int t = dist[current] + ( depth <= l ? node.getCurrentDelay(vehicle.getClass()) : node.getDelay(vehicle.getClass()) );
 				int thisIndex = getIndex( nodes, node );
 				if ( t < dist[ thisIndex ] ) {
 					dist[thisIndex] = t;
@@ -137,6 +138,7 @@ public class LookaheadShortestPathRoutingAlgorithm extends AbstractRoutingAlgori
 		}
 		return reconstructPath( previous, nodes, source, target );
 	}
+	
 
 	/**
 	 * @param previous
@@ -255,7 +257,7 @@ public class LookaheadShortestPathRoutingAlgorithm extends AbstractRoutingAlgori
 
 	private String pathLogMessage() {
 		StringBuffer buf = new StringBuffer( "PATH: Car: " );
-		buf.append( carID );
+		buf.append( vehicle.getID() );
 		buf.append( " From: " );
 		buf.append( source.getID() );
 		buf.append( " To: " );
