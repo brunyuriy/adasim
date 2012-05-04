@@ -38,6 +38,8 @@ import adasim.model.ConfigurationException;
 import adasim.model.TrafficSimulator;
 import adasim.model.Vehicle;
 import adasim.model.internal.SimulationXMLReader;
+import adasim.util.ReflectionException;
+import adasim.util.ReflectionUtils;
 
 import static org.junit.Assert.*;
 
@@ -52,14 +54,14 @@ import static org.junit.Assert.*;
 public class VehicleTest {
 
 	@Test
-	public void startNodeTest() throws FileNotFoundException, ConfigurationException {
+	public void startNodeTest() throws FileNotFoundException, ConfigurationException, NoSuchMethodException, ReflectionException {
 		TrafficSimulator sim = SimulationXMLReader.buildSimulator( new File( "resources/test/config.xml" ) );
 		List<Vehicle> vehicles = sim.getAgents(Vehicle.class);
-		assertEquals(vehicles.get(0).getStartNode().getID(), 0);
-		assertEquals(vehicles.get(2).getStartNode().getID(), 3);
-		assertEquals(vehicles.get(3).getStartNode().getID(), 8);
-		vehicles.get(3).setStartNode(vehicles.get(2).getStartNode());
-		assertEquals(vehicles.get(3).getStartNode().getID(), 3);
+		assertEquals(((RoadSegment) ReflectionUtils.getProperty( vehicles.get(0), "getStartNode")).getID(), 0);
+		assertEquals(((RoadSegment) ReflectionUtils.getProperty( vehicles.get(2), "getStartNode")).getID(), 3);
+		assertEquals(((RoadSegment) ReflectionUtils.getProperty( vehicles.get(3), "getStartNode")).getID(), 8);
+		vehicles.get(3).setStartNode(((RoadSegment) ReflectionUtils.getProperty( vehicles.get(2), "getStartNode")));
+		assertEquals(3, ((RoadSegment) ReflectionUtils.getProperty( vehicles.get(3), "getStartNode")).getID());
 	}
 	
 	@Test

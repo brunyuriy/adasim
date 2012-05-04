@@ -47,6 +47,8 @@ import adasim.model.ConfigurationException;
 import adasim.model.RoadSegment;
 import adasim.model.TrafficSimulator;
 import adasim.model.Vehicle;
+import adasim.util.ReflectionException;
+import adasim.util.ReflectionUtils;
 
 
 
@@ -139,7 +141,15 @@ final public class SimulationXMLReader {
 				if ( time == 1 ) {
 					l.add(c);
 					//add valid vehicle to their start node
-					c.getStartNode().enterNode(c);
+					try {
+						((RoadSegment) ReflectionUtils.getProperty( c, "getStartNode")).enterNode(c);
+					} catch (NoSuchMethodException e) {
+						//this should never happen
+						e.printStackTrace();
+					} catch (ReflectionException e) {
+						//this should never happen
+						e.printStackTrace();
+					}
 				} else {
 					m.addVehicle(c, time);
 				}
