@@ -39,6 +39,8 @@ import org.apache.log4j.Logger;
 import adasim.agent.AbstractAdasimAgent;
 import adasim.algorithm.delay.TrafficDelayFunction;
 import adasim.model.internal.RoadVehicleQueue;
+import adasim.util.ReflectionException;
+import adasim.util.ReflectionUtils;
 
 
 /**
@@ -162,35 +164,46 @@ public final class RoadSegment extends AbstractAdasimAgent {
 	 *************************************************** */	
 	
 	/**
-	 * Returns the number of turns a vehicle must stay limited at this node
+	 * Returns the number of turns a vehicle must stay limited at this node.
+	 * May be uncertain and privacy filtered.
 	 */
-	public int getDelay() {
-		return filterValue(delay);
+	public int getDelay( Class<?> caller) {
+		return filterValue(delay, caller);
 	}
 	
 	/**
-	 * @param value
-	 * @return the filtered input value
+	 * @return the unfiltered delay. For internal use only.
 	 */
-	private int filterValue(int value) {
-		if ( uncertaintyFilter == null ) {
-			return value;
-		}
-		else { 
-			return uncertaintyFilter.filter(value);
-		}
+	@SuppressWarnings("unused")
+	private int getDelay() {
+		return delay;
 	}
-
+	
 	/**
 	 * @return the adasim dependent delay at this node.
 	 */
-	public int getCurrentDelay() {		
+	public int getCurrentDelay( Class<?> caller ) {		
 		int cd = closed ? Integer.MAX_VALUE : ss.getDelay(delay, capacity, queue.size());
-		return filterValue(cd);
+		return filterValue(cd, caller);
 	}
 	
-	public int getCapacity() {
-		return filterValue(capacity);
+	/**
+	 * @return the unfiltered current delay. For internal use only.
+	 */
+	private int getCurrentDelay() {
+		return closed ? Integer.MAX_VALUE : ss.getDelay(delay, capacity, queue.size());
+	}
+	
+	public int getCapacity(Class<?> caller) {
+		return filterValue(capacity, caller);
+	}
+	
+	/**
+	 * @return the unfiltered capacity. For internal use only.
+	 */
+	@SuppressWarnings("unused")
+	private int getCapacity() {
+		return capacity;
 	}
 	
 	/**
@@ -261,7 +274,12 @@ public final class RoadSegment extends AbstractAdasimAgent {
 		queue.park(c);
 		logger.info( "STOP: " + c.vehiclePosition() );
 		//this is to ensure termination
-		c.setCurrentPosition(c.getEndNode());
+		try {
+			c.setCurrentPosition( (RoadSegment) ReflectionUtils.getProperty(c, "getEndNode"));
+		} catch (Exception e) {
+			// this should never happen
+			e.printStackTrace();
+		} 
 	}
 	
 	/* ***************************************************

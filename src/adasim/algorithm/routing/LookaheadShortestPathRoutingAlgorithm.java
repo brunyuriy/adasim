@@ -35,6 +35,7 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 
 import adasim.model.RoadSegment;
+import adasim.model.Vehicle;
 
 
 /**
@@ -128,7 +129,8 @@ public class LookaheadShortestPathRoutingAlgorithm extends AbstractRoutingAlgori
 			for ( RoadSegment node : nodes.get(current).getNeighbors() ) {
 				int depth = getCurrentDepth(previous, nodes, source, nodes.get(current) );
 				
-				int t = dist[current] + ( depth <= l ? node.getCurrentDelay(vehicle.getClass()) : node.getDelay(vehicle.getClass()) );
+				//if we ever make vehicle extensible, then we have to query the class of the configure vehicle
+				int t = dist[current] + ( depth <= l ? node.getCurrentDelay(Vehicle.class) : node.getDelay(Vehicle.class) );
 				int thisIndex = getIndex( nodes, node );
 				if ( t < dist[ thisIndex ] ) {
 					dist[thisIndex] = t;

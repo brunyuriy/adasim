@@ -65,14 +65,14 @@ public class VehicleTest {
 	}
 	
 	@Test
-	public void endNodeTest() throws FileNotFoundException, ConfigurationException {
+	public void endNodeTest() throws FileNotFoundException, ConfigurationException, NoSuchMethodException, ReflectionException {
 		TrafficSimulator sim = SimulationXMLReader.buildSimulator( new File( "resources/test/config.xml" ) );
 		List<Vehicle> vehicles = sim.getAgents(Vehicle.class);
-		assertEquals(vehicles.get(1).getEndNode().getID(), 7);
-		assertEquals(vehicles.get(2).getEndNode().getID(), 9);
-		assertEquals(vehicles.get(4).getEndNode().getID(), 7);
-		vehicles.get(4).setEndNode(vehicles.get(2).getEndNode());
-		assertEquals(vehicles.get(4).getEndNode().getID(), 9);
+		assertEquals(((RoadSegment) ReflectionUtils.getProperty( vehicles.get(1), "getEndNode")).getID(), 7);
+		assertEquals(((RoadSegment) ReflectionUtils.getProperty( vehicles.get(2), "getEndNode")).getID(), 9);
+		assertEquals(((RoadSegment) ReflectionUtils.getProperty( vehicles.get(4), "getEndNode")).getID(), 7);
+		vehicles.get(4).setEndNode(((RoadSegment) ReflectionUtils.getProperty( vehicles.get(2), "getEndNode")));
+		assertEquals(((RoadSegment) ReflectionUtils.getProperty( vehicles.get(4), "getEndNode")).getID(), 9);
 	}
 	
 }
