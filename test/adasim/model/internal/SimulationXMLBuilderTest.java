@@ -187,21 +187,21 @@ public class SimulationXMLBuilderTest {
 	}
 	
 	@Test
-	public void carNoOptionals() throws JDOMException, IOException {
+	public void carNoOptionals() throws JDOMException, IOException, NoSuchMethodException, ReflectionException {
 		Document doc = parser.build( new StringReader( "<car id=\"27\" start=\"1\" end=\"1\"/>" ) );
 		Vehicle car = builder.buildVehicle( doc.getRootElement() );
 		assertEquals( 27, car.getID() );
-		assertNull( car.getStartNode() );
+		assertNull( ReflectionUtils.getProperty( car, "getStartNode") );
 		assertNull( car.getEndNode() );
 		assertNull( car.getStrategy() );
 	}
 	
 	@Test
-	public void carAllOptionals() throws JDOMException, IOException {
+	public void carAllOptionals() throws JDOMException, IOException, NoSuchMethodException, ReflectionException {
 		Document doc = parser.build( new StringReader( "<car id=\"27\" start=\"1\" end=\"1\" strategy=\"adasim.algorithm.routing.ShortestPathRoutingAlgorithm\" />" ) );
 		Vehicle car = builder.buildVehicle( doc.getRootElement() );
 		assertEquals( 27, car.getID() );
-		assertNull( car.getStartNode() );
+		assertNull( ReflectionUtils.getProperty( car, "getStartNode") );
 		assertNull( car.getEndNode() );
 		assertTrue( car.getStrategy() instanceof ShortestPathRoutingAlgorithm );
 	}

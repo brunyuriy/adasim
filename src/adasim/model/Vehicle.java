@@ -75,14 +75,23 @@ public final class Vehicle extends AbstractAdasimAgent {
 		setStrategy(strat);
 	}
 
+	
+	public RoadSegment getStartNode( Class<?> caller ) {
+		return filterValue(start, caller);
+	}
+	
 	/**
-	 * @return The starting node for the vehicle
+	 * @return The unfiltered starting node for the vehicle
 	 */
-	public RoadSegment getStartNode() {
+	private RoadSegment getStartNode() {
 		return start;
 	}
 
 	/**
+	 * Setting the start node also resets the current node of the vehicle.
+	 * This is intended only for initializing the car and should
+	 * not be called more than once.
+	 * 
 	 * @param start the start to set
 	 */
 	public void setStartNode(RoadSegment start) {
@@ -137,7 +146,7 @@ public final class Vehicle extends AbstractAdasimAgent {
 		if ( cs != null ) {
 			cs.setStartRoad(start);
 			cs.setEndRoad(end);
-			cs.setVehicleId(id);
+			cs.setVehicle(this);
 		}
 	}
 
