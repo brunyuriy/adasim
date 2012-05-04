@@ -35,6 +35,8 @@ import adasim.model.RoadSegment;
 import adasim.model.TrafficSimulator;
 import adasim.model.Vehicle;
 import adasim.model.internal.SimulationXMLReader;
+import adasim.util.ReflectionException;
+import adasim.util.ReflectionUtils;
 
 
 
@@ -100,12 +102,12 @@ public class SimulationXMLReaderTest {
 	}
 
 	@Test
-	public void carValidTimeDoesNotThrow() throws JDOMException, IOException, ConfigurationException {
+	public void carValidTimeDoesNotThrow() throws JDOMException, IOException, ConfigurationException, NoSuchMethodException, ReflectionException {
 		TrafficSimulator sim = SimulationXMLReader.buildSimulator( new File("resources/test/valid-time.xml" ));
-		assertEquals( 1, sim.getMap().getRoadSegment(4).getCurrentDelay() );
+		assertEquals( 1, ReflectionUtils.getProperty(sim.getMap().getRoadSegment(4), "getCurrentDelay") );
 		sim.takeSimulationStep(); //cycle 1
 		sim.takeSimulationStep(); //cycle 2, this should add the new car
-		assertEquals( 2, sim.getMap().getRoadSegment(4).getCurrentDelay() );
+		assertEquals( 2, ReflectionUtils.getProperty(sim.getMap().getRoadSegment(4), "getCurrentDelay") );
 	}
 	
 	@Test
@@ -118,17 +120,17 @@ public class SimulationXMLReaderTest {
 	}
 	
 	@Test
-	public void testStrategies() throws FileNotFoundException, ConfigurationException {
+	public void testStrategies() throws FileNotFoundException, ConfigurationException, NoSuchMethodException, ReflectionException {
 		TrafficSimulator sim = SimulationXMLReader.buildSimulator( new File("resources/test/config.xml" ) );
 		AdasimMap g = sim.getMap();
-		assertEquals(1, g.getRoadSegment(6).getCurrentDelay());
+		assertEquals(1, ReflectionUtils.getProperty(g.getRoadSegment(6), "getCurrentDelay"));
 		g.addVehicleAtSegment(sim.getVehicle(0), 6);
 		g.addVehicleAtSegment(sim.getVehicle(1), 6);
-		assertEquals(3, g.getRoadSegment(6).getCurrentDelay()); //Tests Quadratic Speed Strategy
-		assertEquals(1, g.getRoadSegment(1).getCurrentDelay());
+		assertEquals(3, ReflectionUtils.getProperty(g.getRoadSegment(6), "getCurrentDelay")); //Tests Quadratic Speed Strategy
+		assertEquals(1, ReflectionUtils.getProperty(g.getRoadSegment(1), "getCurrentDelay"));
 		g.addVehicleAtSegment(sim.getVehicle(2), 1);
 		g.addVehicleAtSegment(sim.getVehicle(3), 1);
-		assertEquals(3, g.getRoadSegment(1).getCurrentDelay() ); //Tests Linear Speed Strategy
+		assertEquals(3, ReflectionUtils.getProperty(g.getRoadSegment(1), "getCurrentDelay") ); //Tests Linear Speed Strategy
 	}
 	
 	@Test
@@ -191,15 +193,15 @@ public class SimulationXMLReaderTest {
 	}
 
 	@Test
-	public void setsDelayCorrectly() throws FileNotFoundException, ConfigurationException {
+	public void setsDelayCorrectly() throws FileNotFoundException, ConfigurationException, NoSuchMethodException, ReflectionException {
 		AdasimMap g = SimulationXMLReader.buildSimulator( new File("resources/test/config-weights.xml")).getMap();
-		assertEquals( 7, g.getRoadSegments().get(1).getDelay() );
+		assertEquals( 7, ReflectionUtils.getProperty(g.getRoadSegments().get(1), "getDelay" ) );
 	}
 
 	@Test
-	public void setsDelayCorrectly2() throws FileNotFoundException, ConfigurationException {
+	public void setsDelayCorrectly2() throws FileNotFoundException, ConfigurationException, NoSuchMethodException, ReflectionException {
 		AdasimMap g = SimulationXMLReader.buildSimulator( new File("resources/test/shortest-path-test-weights.xml")).getMap();
-		assertEquals( 4, g.getRoadSegments().get(3).getDelay() );
+		assertEquals( 4, ReflectionUtils.getProperty(g.getRoadSegments().get(3), "getDelay" ) );
 	}
 
 	@Test (expected=ConfigurationException.class)
