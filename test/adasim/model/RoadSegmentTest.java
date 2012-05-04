@@ -27,6 +27,8 @@ import adasim.algorithm.routing.AbstractRoutingAlgorithm;
 import adasim.model.RoadSegment;
 import adasim.model.Vehicle;
 import adasim.model.internal.SimulationXMLReader;
+import adasim.util.ReflectionException;
+import adasim.util.ReflectionUtils;
 
 import static org.junit.Assert.*;
 
@@ -49,7 +51,7 @@ public class RoadSegmentTest {
 	}
 	
 	@Test
-	public void testNodeDelay() {
+	public void testNodeDelay() throws NoSuchMethodException, ReflectionException {
 		Vehicle c = new Vehicle(null, null, null, 0);
 		node.enterNode(c);
 		c = new Vehicle(null, null, null, 1);
@@ -57,21 +59,21 @@ public class RoadSegmentTest {
 		c = new Vehicle(null, null, null, 2);
 		node.enterNode(c);
 		//Number < Capacity
-		assertEquals(1, node.getDelay());
-		assertEquals(4, node.getCurrentDelay());
+		assertEquals(1, ReflectionUtils.getProperty(node, "getDelay"));
+		assertEquals(4, ReflectionUtils.getProperty(node, "getCurrentDelay"));
 		//Number = Capacity
 		node.setCapacity(3);
-		assertEquals(1, node.getDelay());
-		assertEquals(1, node.getCurrentDelay() );
+		assertEquals(1, ReflectionUtils.getProperty(node, "getDelay"));
+		assertEquals(1, ReflectionUtils.getProperty(node, "getCurrentDelay") );
 		//Number > Capacity
 		Vehicle c2 = new Vehicle(null, null, null, 3);
 		node.enterNode(c2);
-		assertEquals(1, node.getDelay());
-		assertEquals(2, node.getCurrentDelay());
+		assertEquals(1, ReflectionUtils.getProperty(node, "getDelay"));
+		assertEquals(2, ReflectionUtils.getProperty(node, "getCurrentDelay"));
 	}
 	
 	@Test
-	public void invalidRoutingPrevented() {
+	public void invalidRoutingPrevented() throws NoSuchMethodException, ReflectionException {
 		Vehicle v = new Vehicle( node, null, new AbstractRoutingAlgorithm() {
 			
 			@Override
@@ -86,14 +88,14 @@ public class RoadSegmentTest {
 		}, 1 );
 		
 		node.enterNode(v);
-		assertEquals( 2, node.getCurrentDelay() );	//this should imply that the car is still waiting
+		assertEquals( 2, ReflectionUtils.getProperty(node, "getCurrentDelay") );	//this should imply that the car is still waiting
 		node.takeSimulationStep(1);
 		node.takeSimulationStep(2);
-		assertEquals( 1, node.getCurrentDelay() );	//this should imply that the car has been removed
+		assertEquals( 1, ReflectionUtils.getProperty(node, "getCurrentDelay") );	//this should imply that the car has been removed
 	}
 
 	@Test
-	public void validRoutingConfirmed() {
+	public void validRoutingConfirmed() throws NoSuchMethodException, ReflectionException {
 		Vehicle v = new Vehicle( node, null, new AbstractRoutingAlgorithm() {
 			
 			@Override
@@ -108,12 +110,12 @@ public class RoadSegmentTest {
 		}, 1 );
 		
 		node.enterNode(v);
-		assertEquals( 2, node.getCurrentDelay() );	//this should imply that the car is still waiting
-		assertEquals( 1, node2.getCurrentDelay() );	//this should imply that the car is still waiting
+		assertEquals( 2, ReflectionUtils.getProperty(node, "getCurrentDelay") );	//this should imply that the car is still waiting
+		assertEquals( 1, ReflectionUtils.getProperty(node2, "getCurrentDelay") );	//this should imply that the car is still waiting
 		node.takeSimulationStep(1);
 		node.takeSimulationStep(2);
-		assertEquals( 1, node.getCurrentDelay() );	//this should imply that the car has been removed
-		assertEquals( 2, node2.getCurrentDelay() );	//this should imply that the car is still waiting
+		assertEquals( 1, ReflectionUtils.getProperty(node, "getCurrentDelay") );	//this should imply that the car has been removed
+		assertEquals( 2, ReflectionUtils.getProperty(node2, "getCurrentDelay") );	//this should imply that the car is still waiting
 	}
 	
 	@Test

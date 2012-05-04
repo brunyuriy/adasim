@@ -50,6 +50,8 @@ import adasim.model.TrafficSimulator;
 import adasim.model.Vehicle;
 import adasim.model.internal.SimulationXMLBuilder;
 import adasim.model.internal.VehicleManager;
+import adasim.util.ReflectionException;
+import adasim.util.ReflectionUtils;
 
 
 /**
@@ -76,7 +78,7 @@ public class VehicleManagerTest {
 	}
 
 	@Test
-	public void cycleVehiclesIntoGraph() throws JDOMException, IOException, ConfigurationException {
+	public void cycleVehiclesIntoGraph() throws JDOMException, IOException, ConfigurationException, NoSuchMethodException, ReflectionException {
 		SAXBuilder parser = new SAXBuilder( false );
 		SimulationXMLBuilder builder = new SimulationXMLBuilder();
 		Document doc = parser.build( new StringReader( "<graph default_strategy=\"adasim.algorithm.delay.LinearTrafficDelayFunction\" default_capacity=\"0\">" +
@@ -87,13 +89,13 @@ public class VehicleManagerTest {
 				"</graph>" ) );
 		graph = builder.buildGraph( doc.getRootElement(), new FilterMap() );
 		new TrafficSimulator(graph, manager, (List<AdasimAgent>)new ArrayList<AdasimAgent>() );
-		assertEquals( 2, graph.getRoadSegment(5).getCurrentDelay() );
+		assertEquals( 2, ReflectionUtils.getProperty(graph.getRoadSegment(5), "getCurrentDelay") );
 		RoadSegment start = graph.getRoadSegment(5);
 		manager.addVehicle( new Vehicle(start, null, null, 1), 5);
 		manager.takeSimulationStep(4);
-		assertEquals( 2, graph.getRoadSegment(5).getCurrentDelay() );
+		assertEquals( 2, ReflectionUtils.getProperty(graph.getRoadSegment(5), "getCurrentDelay") );
 		manager.takeSimulationStep(5);
-		assertEquals( 3, graph.getRoadSegment(5).getCurrentDelay() );
+		assertEquals( 3, ReflectionUtils.getProperty(graph.getRoadSegment(5), "getCurrentDelay") );
 		assertEquals( 0, manager.getQueue().size() );
 	}
 
