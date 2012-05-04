@@ -192,7 +192,7 @@ public class SimulationXMLBuilderTest {
 		Vehicle car = builder.buildVehicle( doc.getRootElement() );
 		assertEquals( 27, car.getID() );
 		assertNull( ReflectionUtils.getProperty( car, "getStartNode") );
-		assertNull( car.getEndNode() );
+		assertNull( ReflectionUtils.getProperty( car, "getEndNode") );
 		assertNull( car.getStrategy() );
 	}
 	
@@ -202,7 +202,7 @@ public class SimulationXMLBuilderTest {
 		Vehicle car = builder.buildVehicle( doc.getRootElement() );
 		assertEquals( 27, car.getID() );
 		assertNull( ReflectionUtils.getProperty( car, "getStartNode") );
-		assertNull( car.getEndNode() );
+		assertNull( ReflectionUtils.getProperty( car, "getEndNode") );
 		assertTrue( car.getStrategy() instanceof ShortestPathRoutingAlgorithm );
 	}
 

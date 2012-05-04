@@ -44,6 +44,8 @@ import adasim.model.AdasimMap;
 import adasim.model.ConfigurationException;
 import adasim.model.RoadSegment;
 import adasim.model.Vehicle;
+import adasim.util.ReflectionException;
+import adasim.util.ReflectionUtils;
 
 
 /**
@@ -259,9 +261,17 @@ public class SimulationXMLBuilder {
 		if ( gn.getSpeedStrategy() == null ) {
 			gn.setSpeedStrategy(ss);
 		}
-		if ( gn.getCapacity() == -1 ) {
-			gn.setCapacity(capacity);
-		}
+		try {
+			if ( ReflectionUtils.<Integer>getProperty(gn, "getCapacity" ) == -1 ) {
+				gn.setCapacity(capacity);
+			}
+		} catch (NoSuchMethodException e) {
+			//this should never happen
+			e.printStackTrace();
+		} catch (ReflectionException e) {
+			//this should never happen
+			e.printStackTrace();
+		} 
 		return gn;
 	}
 

@@ -35,6 +35,8 @@ import org.apache.log4j.Logger;
 import adasim.TrafficMain;
 import adasim.agent.AdasimAgent;
 import adasim.model.internal.VehicleManager;
+import adasim.util.ReflectionException;
+import adasim.util.ReflectionUtils;
 
 
 /**
@@ -157,7 +159,12 @@ public final class TrafficSimulator{
 	 */
 	public void addVehicle( Vehicle v ) {
 		agents.add(v);
-		v.getStartNode().enterNode(v);
+		try {
+			((RoadSegment) ReflectionUtils.getProperty( v, "getStartNode")).enterNode(v);
+		} catch (Exception e) {
+			//this should never happen
+			e.printStackTrace();
+		} 
 	}
 
 	/**

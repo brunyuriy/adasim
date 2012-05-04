@@ -76,6 +76,11 @@ public final class Vehicle extends AbstractAdasimAgent {
 	}
 
 	
+	/**
+	 * 
+	 * @param caller
+	 * @return The (possibly) filtered start node of the car
+	 */
 	public RoadSegment getStartNode( Class<?> caller ) {
 		return filterValue(start, caller);
 	}
@@ -83,6 +88,7 @@ public final class Vehicle extends AbstractAdasimAgent {
 	/**
 	 * @return The unfiltered starting node for the vehicle
 	 */
+	@SuppressWarnings("unused")
 	private RoadSegment getStartNode() {
 		return start;
 	}
@@ -100,11 +106,21 @@ public final class Vehicle extends AbstractAdasimAgent {
 		//reset the strategy
 		setStrategy(cs);
 	}
+	
+	/**
+	 * @param caller
+	 * @return the (possibly) filtered target not of the vehicle
+	 */
+	public RoadSegment getEndNode( Class<?> caller ) {
+		return filterValue(end, caller);
+	}
+
 
 	/**
 	 * @return The ending node for the vehicle
 	 */
-	public RoadSegment getEndNode() {
+	@SuppressWarnings("unused")
+	private RoadSegment getEndNode() {
 		return end;
 	}
 
@@ -116,11 +132,19 @@ public final class Vehicle extends AbstractAdasimAgent {
 		//reset the strategy
 		setStrategy(cs);
 	}
+	
+	/**
+	 * @param caller
+	 * @return the (possibly) filtered current node of the vehicle
+	 */
+	public RoadSegment getCurrentPosition( Class<?> caller ) {
+		return filterValue(end, caller);
+	}
 
 	/**
 	 * @return The current node of the vehicle
 	 */
-	public RoadSegment getCurrentPosition() {
+	private RoadSegment getCurrentPosition() {
 		return currentNode;
 	}
 

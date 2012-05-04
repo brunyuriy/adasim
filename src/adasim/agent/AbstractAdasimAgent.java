@@ -132,4 +132,29 @@ public abstract class AbstractAdasimAgent implements AdasimAgent {
 		this.id = id;
 	}
 
+	/**
+	 * @param value
+	 * @return the filtered input value
+	 */
+	protected int filterValue(int value, Class<?> criterion ) {
+		int uncertainValue = value;
+		if ( uncertaintyFilter != null ) {
+			uncertainValue = uncertaintyFilter.filter(value);
+		}
+		if ( privacyFilters != null ) {
+			uncertainValue = privacyFilters.getFilter( criterion ).filter(uncertainValue);
+		} 
+		return uncertainValue;			
+	}
+	
+	protected <T> T filterValue( T value, Class<?> criterion ) {
+		T uncertainValue = value;
+		if ( uncertaintyFilter != null ) {
+			uncertainValue = uncertaintyFilter.filter(value);
+		}
+		if ( privacyFilters != null ) {
+			uncertainValue = privacyFilters.getFilter( criterion ).filter(uncertainValue);
+		} 
+		return uncertainValue;
+	}
 }

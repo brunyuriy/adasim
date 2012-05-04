@@ -45,6 +45,8 @@ import adasim.model.AdasimMap;
 import adasim.model.RoadSegment;
 import adasim.model.TrafficSimulator;
 import adasim.model.Vehicle;
+import adasim.util.ReflectionException;
+import adasim.util.ReflectionUtils;
 
 
 /**
@@ -113,18 +115,28 @@ public class SimulationXMLWriter {
 	 * @param v
 	 */
 	private void writeCar(Element vehicles, Vehicle v) {
-		Element c = factory.element( "car" );
-		c.setAttribute( factory.attribute( "start", "" + v.getStartNode().getID() ) );
-		c.setAttribute( factory.attribute( "end", "" + v.getEndNode().getID() ) );
-		c.setAttribute( factory.attribute( "id", "" + v.getID() ) );
-		c.setAttribute( factory.attribute( "strategy", "" + v.getStrategy().getClass().getCanonicalName() ) );
-		vehicles.addContent(c);
+		try {
+			Element c = factory.element( "car" );
+			c.setAttribute( factory.attribute( "start", "" + ((AdasimAgent) ReflectionUtils.getProperty( v, "getStartNode")).getID() ) );
+			c.setAttribute( factory.attribute( "end", "" + ((RoadSegment) ReflectionUtils.getProperty( v, "getStartNode")).getID() ) );
+			c.setAttribute( factory.attribute( "id", "" + v.getID() ) );
+			c.setAttribute( factory.attribute( "strategy", "" + v.getStrategy().getClass().getCanonicalName() ) );
+			vehicles.addContent(c);
+		} catch (NoSuchMethodException e) {
+			//this should never happen
+			e.printStackTrace();
+		} catch (ReflectionException e) {
+			//this should never happen
+			e.printStackTrace();
+		}
 	}
 
 
 	/**
 	 * @param doc
 	 * @param graph
+	 * @throws ReflectionException 
+	 * @throws NoSuchMethodException 
 	 */
 	private void writeGraph(Element doc, AdasimMap graph) {
 		Element g = factory.element( "graph" );
@@ -139,14 +151,24 @@ public class SimulationXMLWriter {
 	/**
 	 * @param g
 	 * @param node
+	 * @throws ReflectionException 
+	 * @throws NoSuchMethodException 
 	 */
 	private void writeNode(Element g, RoadSegment node) {
-		Element n = factory.element( "node");
-		n.setAttribute( factory.attribute( "id", "" + node.getID() ) );
-		n.setAttribute( factory.attribute( "delay", "" + node.getDelay() ) );
-		n.setAttribute( factory.attribute( "neighbors", writeNeighbors(node.getNeighbors() ) ) );
-		n.setAttribute( factory.attribute( "capacity", "" + node.getCapacity() ) );
-		g.addContent(n);
+		try {
+			Element n = factory.element( "node");
+			n.setAttribute( factory.attribute( "id", "" + node.getID() ) );
+			n.setAttribute( factory.attribute( "delay", "" + ReflectionUtils.getProperty(node, "getDelay") ) );
+			n.setAttribute( factory.attribute( "neighbors", writeNeighbors(node.getNeighbors() ) ) );
+			n.setAttribute( factory.attribute( "capacity", "" + ReflectionUtils.getProperty(node, "getCapacity") ) );
+			g.addContent(n);
+		} catch (NoSuchMethodException e) {
+			//this should never happen
+			e.printStackTrace();
+		} catch (ReflectionException e) {
+			//this should never happen
+			e.printStackTrace();
+		}
 	}
 
 	/**
