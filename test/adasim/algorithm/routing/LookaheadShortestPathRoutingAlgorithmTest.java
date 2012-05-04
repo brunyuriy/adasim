@@ -26,7 +26,6 @@ import adasim.algorithm.routing.LookaheadShortestPathRoutingAlgorithm;
 import adasim.model.AdasimMap;
 import adasim.model.ConfigurationException;
 import adasim.model.RoadSegment;
-import adasim.model.TrafficSimulator;
 import adasim.model.Vehicle;
 import adasim.model.internal.SimulationXMLReader;
 import static org.junit.Assert.*;
@@ -122,6 +121,7 @@ public class LookaheadShortestPathRoutingAlgorithmTest {
 		AdasimMap g = SimulationXMLReader.buildSimulator( new File("resources/test/lookahead-recompute-test.xml") ).getMap();
 		strategy = new LookaheadShortestPathRoutingAlgorithm(1);	//update after every step
 		strategy.setMap(g);
+		strategy.setVehicle( new Vehicle(null, null, null, 0) );
 		strategy.setStartRoad(g.getRoadSegment(0));
 		strategy.setEndRoad(g.getRoadSegment(4));
 		
