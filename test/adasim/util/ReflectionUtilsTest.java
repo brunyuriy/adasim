@@ -46,7 +46,7 @@ public class ReflectionUtilsTest {
 	public void hiddenUtilityAccess() throws NoSuchMethodException, ReflectionException {
 		RoadSegment rs = new RoadSegment(1, null, 4);
 		rs.setUncertaintyFilter( new FakeFilter() );
-		assertEquals( 4, ReflectionUtils.getIntProperty(rs, "getCapacity" ));
+		assertEquals( 4, ReflectionUtils.getProperty(rs, "getCapacity" ));
 	}
 
 }

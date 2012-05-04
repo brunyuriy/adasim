@@ -29,12 +29,11 @@
 
 package adasim.util;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import adasim.model.RoadSegment;
-
 /**
+ * @param s the object to call the method on
+ * @param propery the name of the zero-argument method to be called
  * 
  * @throws NoSuchMethodException if the passed in object does not declare the 
  * property method specified
@@ -45,11 +44,12 @@ import adasim.model.RoadSegment;
  *
  */
 public class ReflectionUtils {
-	public static int getIntProperty( RoadSegment s, String property ) throws NoSuchMethodException, ReflectionException {
+	@SuppressWarnings("unchecked")
+	public static <T> T getProperty( Object target, String property ) throws NoSuchMethodException, ReflectionException {
 		try {
-			Method m = s.getClass().getDeclaredMethod( property, new Class<?>[0] );
+			Method m = target.getClass().getDeclaredMethod( property, new Class<?>[0] );
 			m.setAccessible(true);
-			return (Integer) m.invoke(s, new Object[0] );
+			return (T) m.invoke(target, new Object[0] );
 		} catch (NoSuchMethodException e) {
 			throw e;
 		} catch ( Exception e ) {
