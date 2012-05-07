@@ -33,14 +33,18 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.jdom.Document;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.junit.Before;
 import org.junit.Test;
+
+import pjunit.ProtectedAccessor;
 
 import adasim.agent.AdasimAgent;
 import adasim.model.AdasimMap;
@@ -69,16 +73,16 @@ public class VehicleManagerTest {
 	}
 	
 	@Test
-	public void addVehicle() {
-		int pre_size = manager.getQueue().size();
+	public void addVehicle() throws SecurityException, IllegalArgumentException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+		int pre_size = getQueue(manager).size();
 		manager.addVehicle( new Vehicle(null, null, null, 1), 5);
-		assertEquals( pre_size + 1, manager.getQueue().size() );
-		assertNotNull( manager.getQueue().get(5L) );
-		assertNotNull( manager.getQueue().get(5L).get(0) );
+		assertEquals( pre_size + 1, getQueue(manager).size() );
+		assertNotNull( getQueue(manager).get(5L) );
+		assertNotNull( getQueue(manager).get(5L).get(0) );
 	}
 
 	@Test
-	public void cycleVehiclesIntoGraph() throws JDOMException, IOException, ConfigurationException, NoSuchMethodException, ReflectionException {
+	public void cycleVehiclesIntoGraph() throws JDOMException, IOException, ConfigurationException, NoSuchMethodException, ReflectionException, SecurityException, IllegalArgumentException, IllegalAccessException, InvocationTargetException {
 		SAXBuilder parser = new SAXBuilder( false );
 		SimulationXMLBuilder builder = new SimulationXMLBuilder();
 		Document doc = parser.build( new StringReader( "<graph default_strategy=\"adasim.algorithm.delay.LinearTrafficDelayFunction\" default_capacity=\"0\">" +
@@ -96,7 +100,11 @@ public class VehicleManagerTest {
 		assertEquals( 2, ReflectionUtils.getProperty(graph.getRoadSegment(5), "getCurrentDelay") );
 		manager.takeSimulationStep(5);
 		assertEquals( 3, ReflectionUtils.getProperty(graph.getRoadSegment(5), "getCurrentDelay") );
-		assertEquals( 0, manager.getQueue().size() );
+		assertEquals( 0, getQueue(manager).size() );
+	}
+	
+	private Map<Long, List<Vehicle>> getQueue( VehicleManager manager ) throws SecurityException, IllegalArgumentException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+		return ProtectedAccessor.invoke(manager, "getQueue", new Object[0] );
 	}
 
 }
