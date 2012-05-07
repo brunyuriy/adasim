@@ -29,7 +29,7 @@
 
 package adasim.util;
 
-import java.lang.reflect.Method;
+import pjunit.ProtectedAccessor;
 
 /**
  * @param s the object to call the method on
@@ -44,12 +44,9 @@ import java.lang.reflect.Method;
  *
  */
 public class ReflectionUtils {
-	@SuppressWarnings("unchecked")
 	public static <T> T getProperty( Object target, String property ) throws NoSuchMethodException, ReflectionException {
 		try {
-			Method m = target.getClass().getDeclaredMethod( property, new Class<?>[0] );
-			m.setAccessible(true);
-			return (T) m.invoke(target, new Object[0] );
+			return ProtectedAccessor.invoke(target, property, new Object[0] );
 		} catch (NoSuchMethodException e) {
 			throw e;
 		} catch ( Exception e ) {
