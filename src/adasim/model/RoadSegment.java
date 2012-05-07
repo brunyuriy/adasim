@@ -39,7 +39,6 @@ import org.apache.log4j.Logger;
 import adasim.agent.AbstractAdasimAgent;
 import adasim.algorithm.delay.TrafficDelayFunction;
 import adasim.model.internal.RoadVehicleQueue;
-import adasim.util.ReflectionException;
 import adasim.util.ReflectionUtils;
 
 
