@@ -80,10 +80,11 @@ public final class VehicleManager extends AbstractAdasimAgent {
 	}
 	
 	/**
-	 * "Private" accessor method. For testing only.
+	 * Private accessor method. For testing only.
 	 * @return the internal representation of the queue
 	 */
-	Map<Long, List<Vehicle>> getQueue() {
+	@SuppressWarnings("unused")
+	private Map<Long, List<Vehicle>> getQueue() {
 		return startingQueue;
 	}
 
