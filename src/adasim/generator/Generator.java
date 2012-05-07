@@ -52,6 +52,7 @@ public class Generator {
 	 * @param args
 	 * @throws JDOMException 
 	 */
+	@SuppressWarnings("deprecation")
 	public static void main(String[] args) {
 		ConfigurationOptions opts = null;
 		try {

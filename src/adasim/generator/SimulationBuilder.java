@@ -24,7 +24,6 @@ import java.util.Random;
 import org.jdom.Document;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
-import org.omg.IOP.CodecPackage.FormatMismatch;
 
 import adasim.agent.AdasimAgent;
 import adasim.algorithm.delay.LinearTrafficDelayFunction;

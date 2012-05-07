@@ -35,7 +35,6 @@ import org.apache.log4j.Logger;
 import adasim.TrafficMain;
 import adasim.agent.AdasimAgent;
 import adasim.model.internal.VehicleManager;
-import adasim.util.ReflectionException;
 import adasim.util.ReflectionUtils;
 
 
