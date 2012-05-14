@@ -153,6 +153,9 @@ public final class Vehicle extends AbstractAdasimAgent {
 	 */
 	public void setCurrentPosition(RoadSegment c) {
 		currentNode = c;
+		if ( isFinished() ) {
+			logger.info( "STOP: " + vehiclePosition() );
+		}
 	}
 
 	/**
