@@ -20,6 +20,7 @@ class CarData:
 	hops = 0
 	time = 0
 	strategy = ""
+	invalid_move = False
 
 def parse_arguments():
 	'''
@@ -72,6 +73,7 @@ def process_log(file, prefix, cars):
 	move_re = re.compile(".+MOVE: .+")
 	stop_re = re.compile(".+STOP: .+")
 	time_re = re.compile(".+SIMULATION: .+" )
+	invalid_re = re.compile(".+INVALID: .+" )
 
 	for line in file:
 		if path_re.match( line ):
@@ -88,6 +90,10 @@ def process_log(file, prefix, cars):
 			
 		elif time_re.match(line):
 			time += 1
+		
+		elif invalid_re.match(line):
+			invalid_id = process_move(line) + prefix
+			cars[invalid_id].invalid_move = True
 	return cars
 
 def process_xml(file, prefix, cars):
@@ -124,11 +130,11 @@ def process_files(dir, files, prefix):
 
 def write_line( file, nums, car):
 	write_line2( file, nums[0] , nums[1] , car.id , str(car.hops) , 
-		str(car.time), car.strategy ) 
+		str(car.invalid_move), str(car.time), car.strategy ) 
 
-def write_line2( file, nodes, cars, id, pl, time, strategy):
+def write_line2( file, nodes, cars, id, pl, invalid, time, strategy):
 	file.write( nodes + "," + cars + "," + id + "," + 
-		pl + "," + time + "," + strategy + "\n") 
+		pl + "," + invalid + "," + time + "," + strategy + "\n") 
 	
 
 def write_cars(file, prefix, cars):
@@ -150,7 +156,7 @@ def main(args):
 	files = os.listdir( args.DATA_DIR )
 	for prefix in get_prefixes(files):
 		output_file = open( prefix + ".csv", "w")
-		write_line2(output_file, "Nodes", "Cars", "Car", "Hops", "Time", "Strategy" )
+		write_line2(output_file, "Nodes", "Cars", "Car", "Hops", "Invalid", "Time", "Strategy" )
 		cars = process_files(args.DATA_DIR, files, prefix )
 		write_cars(output_file, prefix, cars)
 		output_file.close()
