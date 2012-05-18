@@ -36,7 +36,7 @@ def file_prefix(n,c,i):
 def build_simulation(nodes, cars, iteration):
 	print str(iteration) + ": Building simulation with " + nodes + " nodes, " + cars + " cars "
 	print get_cmd_output( "java", ["adasim.generator.Generator", "-N", nodes, "-C", cars, "-D", "4", "-o", file_prefix(nodes, cars, iteration) + ".xml",
-		"-d", "3:6", "-S", "adasim.algorithm.LookaheadShortestPathCarStrategy,adasim.algorithm.AdaptiveCarStrategy",
+		"-d", "3:6", "-S", "adasim.algorithm.routing.ShortestPathRoutingAlgorithm,adasim.algorithm.routing.TrafficLookaheadRoutingAlgorithm",
 		"--one-way-prob", "0.05" ] )
 
 def run_simulation(nodes, cars, iteration):
