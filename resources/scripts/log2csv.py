@@ -50,8 +50,7 @@ def run_simulation(nodes, cars, iteration):
 
 def process_path(line):
 	#print line
-	#split_re = re.compile(".+Car: (\d+) From: \d+ To: \d+ Path: [(.+)]")
-	split_re = re.compile(".+Car: (\d+).+\[(.*)]")
+	split_re = re.compile(".+Vehicle: (\d+).+\[(.*)]")
 	result = split_re.match(line)
 	car_id = result.group(1)
 	#print "ID: " + car_id
@@ -64,7 +63,7 @@ def process_path(line):
 	return car
 
 def process_move(line):
-	split_re = re.compile(".+Car: (\d+).+")
+	split_re = re.compile(".+Vehicle: (\d+).+")
 	return split_re.match(line).group(1)
 
 def process_log(file, prefix, cars):
@@ -94,11 +93,13 @@ def process_log(file, prefix, cars):
 def process_xml(file, prefix, cars):
 	doc = xml.dom.minidom.parse(file)
 	car_nodes = doc.documentElement.getElementsByTagName("car")
+	cars_node = doc.documentElement.getElementsByTagName("cars")[0]
+	def_strat = cars_node.getAttribute("default_strategy")
 	for car in car_nodes:
 		#print "Car " + car.getAttribute("id") + " Strategy: " + car.getAttribute("strategy") 
 		car_id = car.getAttribute("id") + prefix
 		if cars.has_key(car_id):
-			cars[car_id].strategy = car.getAttribute("strategy")
+			cars[car_id].strategy = def_strat
 	return cars
 
 def filename_filter(files, regex):

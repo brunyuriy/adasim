@@ -258,7 +258,7 @@ public class LookaheadShortestPathRoutingAlgorithm extends AbstractRoutingAlgori
 	}
 
 	private String pathLogMessage() {
-		StringBuffer buf = new StringBuffer( "PATH: Car: " );
+		StringBuffer buf = new StringBuffer( "PATH: Vehicle: " );
 		buf.append( vehicle.getID() );
 		buf.append( " From: " );
 		buf.append( source.getID() );
