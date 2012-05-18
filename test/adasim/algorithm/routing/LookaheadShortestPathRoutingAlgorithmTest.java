@@ -22,6 +22,7 @@ import org.jdom.JDOMException;
 import org.junit.Before;
 import org.junit.Test;
 
+import adasim.LoggingTest;
 import adasim.algorithm.routing.LookaheadShortestPathRoutingAlgorithm;
 import adasim.model.AdasimMap;
 import adasim.model.ConfigurationException;
@@ -36,7 +37,7 @@ import static org.junit.Assert.*;
  * @author Jochen Wuttke - wuttkej@gmail.com
  *
  */
-public class LookaheadShortestPathRoutingAlgorithmTest {
+public class LookaheadShortestPathRoutingAlgorithmTest extends LoggingTest {
 	
 	private LookaheadShortestPathRoutingAlgorithm strategy;
 	

@@ -22,6 +22,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import adasim.LoggingTest;
 import adasim.algorithm.delay.LinearTrafficDelayFunction;
 import adasim.algorithm.routing.AbstractRoutingAlgorithm;
 import adasim.model.RoadSegment;
@@ -39,7 +40,7 @@ import static org.junit.Assert.*;
  * @author Jonathan Ramaswamy - ramaswamyj12@gmail.com
  */
 
-public class RoadSegmentTest {
+public class RoadSegmentTest extends LoggingTest {
 
 	private RoadSegment node, node2;
 	

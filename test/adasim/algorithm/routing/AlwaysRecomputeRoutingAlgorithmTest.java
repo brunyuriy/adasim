@@ -19,6 +19,7 @@ import java.io.FileNotFoundException;
 
 import org.junit.Test;
 
+import adasim.LoggingTest;
 import adasim.model.ConfigurationException;
 import adasim.model.TrafficSimulator;
 import adasim.model.internal.SimulationXMLReader;
@@ -28,12 +29,13 @@ import adasim.model.internal.SimulationXMLReader;
  * @author Jochen Wuttke - wuttkej@gmail.com
  *
  */
-public class AlwaysRecomputeRoutingAlgorithmTest {
+public class AlwaysRecomputeRoutingAlgorithmTest extends LoggingTest {
 	
 	@Test(timeout=10000)
 	public void cityMapLifelock() throws FileNotFoundException, ConfigurationException {
 		TrafficSimulator sim = SimulationXMLReader.buildSimulator( new File("resources/test/168-1280-0.xml") );
 		sim.run();
+		//this test passes if it does not time out. We take this as an indication that there is no lifelock.
 
 		//		strategy.setGraph(g);
 //		List<RoadSegment> path = strategy.getPath( g.getNode(1), g.getNode(5));

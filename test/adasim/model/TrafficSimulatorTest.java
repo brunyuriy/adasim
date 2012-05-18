@@ -24,6 +24,7 @@ import java.util.List;
 import org.jdom.JDOMException;
 import org.junit.Test;
 
+import adasim.LoggingTest;
 import adasim.algorithm.routing.LookaheadShortestPathRoutingAlgorithm;
 import adasim.algorithm.routing.RoutingAlgorithm;
 import adasim.model.ConfigurationException;
@@ -36,13 +37,13 @@ import adasim.model.internal.SimulationXMLReader;
  * @author Jochen Wuttke - wuttkej@gmail.com
  *
  */
-public class TrafficSimulatorTest {
+public class TrafficSimulatorTest extends LoggingTest {
 	
-	@Test
-	public void zeroLengthPathTest() throws FileNotFoundException, ConfigurationException {
-		TrafficSimulator sim = SimulationXMLReader.buildSimulator( new File( "resources/test/random.xml" ) );
-		sim.run();
-	}
+//	@Test
+//	public void zeroLengthPathTest() throws FileNotFoundException, ConfigurationException {
+//		TrafficSimulator sim = SimulationXMLReader.buildSimulator( new File( "resources/test/random.xml" ) );
+//		sim.run();
+//	}
 	
 	@Test
 	public void basicConfigTest() throws FileNotFoundException, ConfigurationException {

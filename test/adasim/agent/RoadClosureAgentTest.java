@@ -37,6 +37,7 @@ import java.io.FileNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
 
+import adasim.LoggingTest;
 import adasim.agent.RoadClosureAgent;
 import adasim.model.ConfigurationException;
 import adasim.model.RoadSegment;
@@ -48,7 +49,7 @@ import adasim.model.internal.SimulationXMLReader;
  * @author Jochen Wuttke - wuttkej@gmail.com
  *
  */
-public class RoadClosureAgentTest {
+public class RoadClosureAgentTest extends LoggingTest {
 	
 	private RoadClosureAgent agent;
 	

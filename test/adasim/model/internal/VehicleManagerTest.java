@@ -46,6 +46,7 @@ import org.junit.Test;
 
 import pjunit.ProtectedAccessor;
 
+import adasim.LoggingTest;
 import adasim.agent.AdasimAgent;
 import adasim.model.AdasimMap;
 import adasim.model.ConfigurationException;
@@ -62,7 +63,7 @@ import adasim.util.ReflectionUtils;
  * @author Jochen Wuttke - wuttkej@gmail.com
  *
  */
-public class VehicleManagerTest {
+public class VehicleManagerTest extends LoggingTest {
 	
 	private VehicleManager manager;
 	private AdasimMap graph;
