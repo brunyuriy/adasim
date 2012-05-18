@@ -255,9 +255,9 @@ public final class RoadSegment extends AbstractAdasimAgent {
 			logger.info( "INVALID: Node " + this.getID() + " is closed." );
 			park(v);
 		} else {
+			logger.info( "ENTER: " + v.vehiclePosition() );
 			queue.enqueue(v, getCurrentDelay() );
 			v.setCurrentPosition(this);
-			logger.info( "ENTER: " + v.vehiclePosition() );
 		}
 	}
 	
