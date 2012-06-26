@@ -53,11 +53,11 @@ public class RoadSegmentTest extends LoggingTest {
 	
 	@Test
 	public void testNodeDelay() throws NoSuchMethodException, ReflectionException {
-		Vehicle c = new Vehicle(null, null, null, 0);
+		Vehicle c = new Vehicle(node, node, null, 0);
 		node.enterNode(c);
-		c = new Vehicle(null, null, null, 1);
+		c = new Vehicle(node, node, null, 1);
 		node.enterNode(c);
-		c = new Vehicle(null, null, null, 2);
+		c = new Vehicle(node, node, null, 2);
 		node.enterNode(c);
 		//Number < Capacity
 		assertEquals(1, ReflectionUtils.getProperty(node, "getDelay"));
@@ -67,7 +67,7 @@ public class RoadSegmentTest extends LoggingTest {
 		assertEquals(1, ReflectionUtils.getProperty(node, "getDelay"));
 		assertEquals(1, ReflectionUtils.getProperty(node, "getCurrentDelay") );
 		//Number > Capacity
-		Vehicle c2 = new Vehicle(null, null, null, 3);
+		Vehicle c2 = new Vehicle(node, node, null, 3);
 		node.enterNode(c2);
 		assertEquals(1, ReflectionUtils.getProperty(node, "getDelay"));
 		assertEquals(2, ReflectionUtils.getProperty(node, "getCurrentDelay"));
