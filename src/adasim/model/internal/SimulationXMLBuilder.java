@@ -410,23 +410,23 @@ public class SimulationXMLBuilder {
 	 */
 	public AdasimAgent buildAgent(Element agent, FilterMap defaultFilters ) throws ConfigurationException {
 		String clazz = agent.getAttributeValue("class");
-		assert clazz != null;
-		String parameters = agent.getAttributeValue("parameters");
-		int id = Integer.parseInt(agent.getAttributeValue("id"));
-
-		FilterMap fm = buildFilters(agent.getChild("filters"), defaultFilters, null);
-
-		AdasimAgent agt = null;
 		try {
 			Class<?> cls = this.getClass().getClassLoader().loadClass(clazz);
+			assert clazz != null;
+			assert cls != null;
+			String parameters = agent.getAttributeValue("parameters");
+			int id = Integer.parseInt(agent.getAttributeValue("id"));
+			
+			FilterMap fm = buildFilters(agent.getChild("filters"), defaultFilters, cls );
+			
+			AdasimAgent agt = null;
 			Constructor<?> c = cls.getConstructor( String.class );
 			agt = (AdasimAgent) c.newInstance( parameters );
 			agt.setID(id);
 			assignFilters(agt, fm.get(cls) );
+			return agt;
 		} catch (Exception e) {
 			throw new ConfigurationException( "Invalid agent class " + clazz, e);
 		} 
-
-		return agt;
 	}
 }
