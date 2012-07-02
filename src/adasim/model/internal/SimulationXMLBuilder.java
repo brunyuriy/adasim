@@ -141,15 +141,18 @@ public class SimulationXMLBuilder {
 		if ( filters != null ) {
 			FilterMap resultMap = new FilterMap();
 			resultMap.updateAll( defaultFilters );	//make a deep copy
-			Filters newMap = new Filters();
 			for ( Element f : (List<Element>)filters.getChildren( "filter") ) {
-				Object agent = loadClassFromAttribute(f, "agent");
+				String agent = f.getAttributeValue("agent");
 				Class<?> agentClass = null;
-				if ( agent == null ) {
-					agentClass = defaultAgent;
-				} else {
-					agentClass = agent.getClass();
+				try {
+					agentClass = (agent == null ? defaultAgent : Class.forName(agent) );
+				} catch (ClassNotFoundException e1) {
+					//TODO: log warning
 				}
+				if ( agentClass == null ) {
+					agentClass = defaultAgent;
+				} 
+				Filters newMap = resultMap.get(agentClass);
 				String type = f.getAttributeValue( "type" );
 				AdasimFilter filter = (AdasimFilter)loadClassFromAttribute(f, "filter" );
 				if ( type.equals("uncertainty") && filter != null ) {
