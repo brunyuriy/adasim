@@ -228,7 +228,7 @@ public class SimulationXMLReaderTest {
 		AdasimMap map = sim.getMap();
 		RoadSegment road = map.getRoadSegment(0);
 		assertNotNull( "No uncertainty filter configured", road.getUncertaintyFilter() );
-		assertEquals( "Uncertainty filter has wrong type", FakeFilter4.class, road.getUncertaintyFilter().getClass() );
+		assertEquals( "Uncertainty filter has wrong type", FakeFilter2.class, road.getUncertaintyFilter().getClass() );
 		assertNotNull( "No privacy filter for adasim.model.internal.FakeAgent configured", road.getPrivacyFilter( FakeAgent.class ) );
 		assertEquals( "Privacy filter for adasim.model.internal.FakeAgent has wrong type", FakeFilter3.class, road.getPrivacyFilter( FakeAgent.class ).getClass() );		
 		assertNotNull( "No default privacy filter configured", road.getPrivacyFilter( this.getClass() ) );

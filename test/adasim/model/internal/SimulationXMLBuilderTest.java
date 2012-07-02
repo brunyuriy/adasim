@@ -14,7 +14,11 @@
 
 package adasim.model.internal;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -38,7 +42,6 @@ import adasim.model.AdasimMap;
 import adasim.model.ConfigurationException;
 import adasim.model.RoadSegment;
 import adasim.model.Vehicle;
-import adasim.model.internal.SimulationXMLBuilder;
 import adasim.util.ReflectionException;
 import adasim.util.ReflectionUtils;
 
@@ -124,7 +127,7 @@ public class SimulationXMLBuilderTest {
 		assertNotNull( "No default speed strategy assigned", node.getSpeedStrategy() );
 		assertTrue( "Default speed strategy has wrong type", node.getSpeedStrategy() instanceof LinearTrafficDelayFunction );
 		assertNotNull( "No uncertainty filter assigned", node.getUncertaintyFilter() );
-		assertTrue( "Uncertainty filter has wrong type", node.getUncertaintyFilter() instanceof FakeFilter );
+		assertTrue( "Uncertainty filter has wrong type " + node.getUncertaintyFilter().getClass(), node.getUncertaintyFilter() instanceof FakeFilter );
 		node = graph.getRoadSegment(4);
 		assertEquals(0, ReflectionUtils.getProperty(node, "getCapacity") );
 		assertTrue( node.getSpeedStrategy() instanceof QuadraticTrafficDelayFunction );
@@ -246,6 +249,18 @@ public class SimulationXMLBuilderTest {
 		assertTrue( "Privacy filter has wrong type " + agent.getPrivacyFilter(this.getClass()).getClass(), agent.getPrivacyFilter(this.getClass()) instanceof FakeFilter );
 		assertNotNull( "No uncertainty filter assigned", agent.getUncertaintyFilter() );
 		assertTrue( "Uncertaitny filter has wrong type", agent.getUncertaintyFilter() instanceof FakeFilter );
+	}
+	
+	@Test
+	public void filtersWithoutAgentDeclaration() throws JDOMException, IOException {
+		Document doc = parser.build( new StringReader( "<filters>" +
+				"<filter type=\"privacy\" filter=\"adasim.filter.FakeFilter\" criterion=\"adasim.model.internal.SimulationXMLBuilderTest\"/>" +
+				"<filter type=\"uncertainty\" filter=\"adasim.filter.FakeFilter\" criterion=\"adasim.model.internal.SimulationXMLBuilderTest\"/>" +
+				"</filters>" 
+		));
+		FilterMap fm = builder.buildFilters(doc.getRootElement(), new FilterMap(), Object.class );
+		assertNotNull( "Default agent has no uncertainty filter", fm.get( Object.class ) );
+		assertEquals( "Default agent has wrong uncertainty filter type", FakeFilter.class, fm.get( Object.class).uncertaintyFilter.getClass() );
 	}
 
 }

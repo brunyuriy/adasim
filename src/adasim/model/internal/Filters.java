@@ -43,7 +43,7 @@ import adasim.filter.IdentityFilter;
  * @author Jochen Wuttke - wuttkej@gmail.com
  *
  */
-class Filters {
+public class Filters {
 	
 	AdasimFilter uncertaintyFilter;
 	PrivacyFilterMap pMap;
