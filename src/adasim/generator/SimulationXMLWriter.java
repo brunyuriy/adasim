@@ -60,8 +60,8 @@ import adasim.util.ReflectionUtils;
  */
 public class SimulationXMLWriter {
 	
-	private static final String DEFAULT_SPEED_STRATEGY = "adasim.algorithm.LinearTrafficDelayFunction";
-	private static final String DEFAULT_CAR_STRATEGY = "adasim.algorithm.LookaheadShortestPathRoutingAlgorithm";
+	private static final String DEFAULT_SPEED_STRATEGY = "adasim.algorithm.delay.LinearTrafficDelayFunction";
+	private static final String DEFAULT_CAR_STRATEGY = "adasim.algorithm.routing.LookaheadShortestPathRoutingAlgorithm";
 	private static final String DEFAULT_NODE_CAPACITY = "0";
 	
 	private DefaultJDOMFactory factory = new DefaultJDOMFactory();
