@@ -33,9 +33,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.jdom.Document;
@@ -115,7 +113,7 @@ final public class SimulationXMLReader {
 	/**
 	 * @throws ConfigurationException 
 	 */
-	private List<AdasimAgent> allAgents( AdasimMap g, VehicleManager m, @SuppressWarnings("rawtypes") FilterMap defaultFilters ) throws ConfigurationException {
+	private List<AdasimAgent> allAgents( AdasimMap g, VehicleManager m, FilterMap defaultFilters ) throws ConfigurationException {
 		List<AdasimAgent> agents;
 		agents = new ArrayList<AdasimAgent>(buildVehicles( doc.getRootElement().getChild("cars" ), g, m ) );
 		agents.addAll( builder.buildAgents( doc.getRootElement().getChild("agents" ), defaultFilters ) );

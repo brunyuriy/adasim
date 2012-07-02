@@ -69,6 +69,7 @@ public class FilterMap {
 	 */
 	void update( Class<?> clazz, Filters filters ) {
 		Filters f = filterMap.get(clazz);
+		if ( f == filters ) return; //no updating needed
 		if ( f == null ) {
 			filterMap.put( clazz, filters );
 		} else {
@@ -100,7 +101,10 @@ public class FilterMap {
 	public Filters get(Class<?> clazz) {
 		Filters f = filterMap.get(clazz);
 		if ( f == null ) {
-			f = filterMap.get( Object.class );
+			Filters t = filterMap.get( Object.class );
+			f = new Filters();
+			f.uncertaintyFilter = t.uncertaintyFilter;
+			f.pMap = t.pMap.deepCopy();
 		}
 		assert f != null;
 		return f;

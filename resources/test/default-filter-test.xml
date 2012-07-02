@@ -20,16 +20,16 @@
 		<filters>
 			<filter type="uncertainty" agent="java.lang.Object" filter="adasim.model.internal.FakeFilter4"/>
 			<filter type="privacy" agent="adasim.model.RoadSegment" criterion="adasim.model.internal.FakeAgent" filter="adasim.model.internal.FakeFilter3"/>
-			<filter type="privacy" agent="java.lang.Object" criterion="java.lang.Object" filter="adasim.filter.FakeFilter"/>
+			<filter type="privacy" agent="adasim.model.RoadSegment" criterion="java.lang.Object" filter="adasim.filter.FakeFilter"/>
 		</filters>
 		<node id="0" neighbors="4 7" />
 		<node id="1" strategy="adasim.algorithm.delay.LinearTrafficDelayFunction" neighbors="5" capacity ="0"/>
 		<node id="2" strategy="adasim.algorithm.delay.LinearTrafficDelayFunction" neighbors="4 7 9" />
 		<node id="3" neighbors="1" >
 			<filters>
-				<filter type="uncertainty" agent="java.lang.Object" filter="adasim.model.internal.FakeFilter3"/>
+				<filter type="uncertainty" filter="adasim.model.internal.FakeFilter3"/>
 				<filter type="privacy" agent="adasim.model.RoadSegment" criterion="adasim.model.internal.FakeAgent" filter="adasim.model.internal.FakeFilter4"/>
-				<filter type="privacy" agent="java.lang.Object" criterion="java.lang.Object" filter="adasim.filter.IdentityFilter"/>
+				<filter type="privacy" agent="adasim.model.RoadSegment" criterion="java.lang.Object" filter="adasim.filter.IdentityFilter"/>
 			</filters>
 		</node>
 		<node id="4" strategy="adasim.algorithm.delay.LinearTrafficDelayFunction" neighbors="6 8" />
