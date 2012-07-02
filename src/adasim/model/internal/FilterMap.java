@@ -24,33 +24,85 @@
  *    Jochen Wuttke (wuttkej@gmail.com) - initial API and implementation
  ********************************************************************************
  *
- * Created: Apr 23, 2012
+ * Created: Jun 26, 2012
  */
 
 package adasim.model.internal;
 
-import adasim.agent.PrivacyFilterMap;
-import adasim.filter.AdasimFilter;
+import java.util.HashMap;
+import java.util.Map;
+
 import adasim.filter.IdentityFilter;
 
 /**
- * 
- * This class is used internally to load and manage
- * default filters.
- * <p>
- * This class also hard-codes required defaults.
- * 
  * @author Jochen Wuttke - wuttkej@gmail.com
  *
  */
 public class FilterMap {
+
+	@SuppressWarnings("unused")
+	private static final long serialVersionUID = 1L;
 	
-	AdasimFilter uncertaintyFilter;
-	PrivacyFilterMap pMap;
+	private Map<Class<?>, Filters> filterMap;
 	
+	/**
+	 * Creates a new filter map that contains only the default mappings for 
+	 * <code>java.lang.Object</code>:
+	 * <ul>
+	 * <li><code>uncertaintyFilter</code>: <code>adasim.filter.Identityfilter</code>
+	 * <li><code>privacyFilter</code>: <code>adasim.filter.IndentityFilter</code>
+	 */
 	public FilterMap() {
-		uncertaintyFilter = new IdentityFilter();
-		pMap = new PrivacyFilterMap();
+		this.filterMap = new HashMap<Class<?>, Filters>();
+		Filters f = new Filters();
+		f.uncertaintyFilter = new IdentityFilter();
+		f.pMap.addFilter(new IdentityFilter(), Object.class );
+		filterMap.put(Object.class, f);
+	}
+
+	/**
+	 * Updates the filter map for class <code>clazz</code>. 
+	 * Updating can only add filterMap, but cannot remove them.
+	 * 
+	 * @param clazz
+	 * @param filterMap
+	 */
+	void update( Class<?> clazz, Filters filters ) {
+		Filters f = filterMap.get(clazz);
+		if ( f == null ) {
+			filterMap.put( clazz, filters );
+		} else {
+			if ( filters.uncertaintyFilter != null ) {
+				f.uncertaintyFilter = filters.uncertaintyFilter;
+			}
+			for ( Class<?> c : filters.pMap ) {
+				f.pMap.addFilter(filters.pMap.getFilter(c), c);
+			}
+		}
 	}
 	
+	/**
+	 * Updates this map with all elements in the other map. Deleting
+	 * elements is not possible.
+	 * 
+	 * @param other
+	 */
+	void updateAll( FilterMap other ) {
+		for ( Class<?> c : other.filterMap.keySet() ) {
+			this.update(c, other.get(c) );
+		}
+	}
+	
+	/**
+	 * @param clazz
+	 * @return the filter mapping for the class, or the default mapping
+	 */
+	public Filters get(Class<?> clazz) {
+		Filters f = filterMap.get(clazz);
+		if ( f == null ) {
+			f = filterMap.get( Object.class );
+		}
+		assert f != null;
+		return f;
+	}
 }

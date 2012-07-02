@@ -33,7 +33,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.jdom.Document;
@@ -98,7 +100,8 @@ final public class SimulationXMLReader {
 	public static TrafficSimulator buildSimulator( File config ) throws FileNotFoundException, ConfigurationException {
 		try {
 			SimulationXMLReader factory = new SimulationXMLReader(config);
-			FilterMap fm = builder.buildFilters(factory.doc.getRootElement().getChild("filters"), new FilterMap() );
+			Element defaults = factory.doc.getRootElement().getChild("defaults");
+			FilterMap fm = builder.buildFilters( (defaults == null? null : defaults.getChild("filters") ), new FilterMap(), Object.class );
 			AdasimMap g = builder.buildGraph( factory.doc.getRootElement().getChild("graph" ), fm );
 			VehicleManager m = new VehicleManager();
 			TrafficSimulator sim = new TrafficSimulator( g, m, factory.allAgents( g, m, fm ) ); 
@@ -112,7 +115,7 @@ final public class SimulationXMLReader {
 	/**
 	 * @throws ConfigurationException 
 	 */
-	private List<AdasimAgent> allAgents( AdasimMap g, VehicleManager m, FilterMap defaultFilters ) throws ConfigurationException {
+	private List<AdasimAgent> allAgents( AdasimMap g, VehicleManager m, @SuppressWarnings("rawtypes") FilterMap defaultFilters ) throws ConfigurationException {
 		List<AdasimAgent> agents;
 		agents = new ArrayList<AdasimAgent>(buildVehicles( doc.getRootElement().getChild("cars" ), g, m ) );
 		agents.addAll( builder.buildAgents( doc.getRootElement().getChild("agents" ), defaultFilters ) );
