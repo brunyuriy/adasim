@@ -250,7 +250,7 @@ public class SimulationXMLReaderTest {
 		assertNotNull( "No uncertainty filter configured", agent.getUncertaintyFilter() );
 		assertEquals( "Uncertainty filter has wrong type", FakeFilter4.class, agent.getUncertaintyFilter().getClass() );
 		assertNotNull( "No privacy filter for adasim.model.internal.FakeAgent configured", agent.getPrivacyFilter( FakeAgent.class ) );
-		assertEquals( "Privacy filter for adasim.model.internal.FakeAgent has wrong type", FakeFilter3.class, agent.getPrivacyFilter( FakeAgent.class ).getClass() );		
+		assertEquals( "Privacy filter for adasim.model.internal.FakeAgent has wrong type", FakeFilter.class, agent.getPrivacyFilter( FakeAgent.class ).getClass() );		
 		assertNotNull( "No default privacy filter configured", agent.getPrivacyFilter( this.getClass() ) );
 		assertEquals( "Default privacy filter has wrong type", FakeFilter.class, agent.getPrivacyFilter( this.getClass() ).getClass() );		
 		
