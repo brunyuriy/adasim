@@ -29,7 +29,7 @@ java -jar adasim.jar -I config.xml
 where 'config.xml' must be a configuration file.
 For furhter details on running Adasim, check
 the Wiki at 
-https://code.google.com/p/adasim/wiki/Inst050
+https://github.com/brunyuriy/adasim/wiki/Inst090
 
 
 Compiling with Eclipse
