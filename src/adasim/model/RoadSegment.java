@@ -66,7 +66,7 @@ import adasim.util.ReflectionUtils;
  * @author Jochen Wuttke - wuttkej@gmail.com
  */
 
-public final class RoadSegment extends AbstractAdasimAgent {
+public final class RoadSegment extends AbstractAdasimAgent implements Comparable<RoadSegment> {
 	
 	private static Logger logger = Logger.getLogger(RoadSegment.class);
 
@@ -378,6 +378,12 @@ public final class RoadSegment extends AbstractAdasimAgent {
 			if ( n.getID() == id ) return n;
 		}
 		return null;
+	}
+
+	@Override
+	public int compareTo(RoadSegment o) {
+		// TODO Auto-generated method stub
+		return this.getID() - o.getID();
 	}
 
 }
