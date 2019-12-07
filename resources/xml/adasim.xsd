@@ -44,6 +44,7 @@
         <xsd:attribute name="end" type="xsd:nonNegativeInteger" use="required" />
         <xsd:attribute name="strategy" type="xsd:string" />
         <xsd:attribute name="start_time" type="xsd:nonNegativeInteger" default="1"/>
+        <xsd:attribute name="car_type" type="xsd:nonNegativeInteger" use="required" />
     </xsd:complexType>
     
     <xsd:complexType name="Graph">
