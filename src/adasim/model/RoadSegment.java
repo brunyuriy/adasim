@@ -30,7 +30,9 @@ package adasim.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -115,8 +117,15 @@ public final class RoadSegment extends AbstractAdasimAgent implements Comparable
 	 * Adds an outgoing edge to the given node
 	 * @param to
 	 */
+	public static String linksOfNodes ="";
 	public void addEdge( RoadSegment to ) {
 		if ( to == null ) return;
+		if(linksOfNodes=="") {
+			linksOfNodes = "{source: \""+this.getID() +"\", target: \""+to.getID() +"\", type: \"view\"}";
+				
+		}else {
+            linksOfNodes = linksOfNodes+",\n{source: \""+this.getID() +"\", target: \""+to.getID() +"\", type: \"view\"}";
+		}
 		outgoing.add( to );
 	}
 	
@@ -301,8 +310,26 @@ public final class RoadSegment extends AbstractAdasimAgent implements Comparable
 	 */
 	public void takeSimulationStep( long cycle ) {
 		Set<Vehicle> finishedVehicles = queue.moveVehicles();
+
 		if ( finishedVehicles == null ) return;
-		for ( Vehicle c : finishedVehicles ) {
+		
+
+		LinkedList<Vehicle> finishedVehiclesSorted = new LinkedList<Vehicle>();
+		finishedVehiclesSorted.addAll(finishedVehicles);
+		Collections.sort(finishedVehiclesSorted);
+		
+		
+		//For debug only
+		for (Vehicle vehicle : finishedVehiclesSorted) {
+			// vehicle reach destination
+			if(vehicle.isFinished()) {
+				continue;
+			}
+			logger.info( "================> selected " + vehicle.vehiclePosition() +
+					", carType:"+ vehicle.getCarType() );
+		}
+		
+		for ( Vehicle c : finishedVehiclesSorted ) {
 			c.move();
 		}
 	}

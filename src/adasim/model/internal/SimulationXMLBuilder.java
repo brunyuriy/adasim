@@ -304,6 +304,7 @@ public class SimulationXMLBuilder {
 		String n = node.getAttributeValue( attribute );
 		if ( n != null ) {
 			try {
+				System.out.println(n);
 				@SuppressWarnings("rawtypes")
 				Class c = Class.forName( n );
 				try {

@@ -28,8 +28,10 @@
 
 package adasim;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 
 import org.apache.log4j.Logger;
@@ -37,6 +39,7 @@ import org.apache.log4j.BasicConfigurator;
 import org.jdom.JDOMException;
 
 import adasim.model.ConfigurationException;
+import adasim.model.RoadSegment;
 import adasim.model.TrafficSimulator;
 import adasim.model.internal.SimulationXMLReader;
 
@@ -87,6 +90,22 @@ public class TrafficMain {
 		} catch (FileNotFoundException e) {
 			logger.info("Exiting because file cannot be found " + e.getMessage());
 		}
+		
+		String content = "var links = [\n"+ RoadSegment.linksOfNodes +"\n];";
+		//logger.info(content);
+		//Write to file
+		try {
+			File file = new File("visual/js/mappingData.js");
+			FileWriter fw = new FileWriter(file.getAbsoluteFile());
+			BufferedWriter bw = new BufferedWriter(fw);
+			bw.write(content);
+			bw.close(); // Be sure to close BufferedWriter
+			logger.info("To view visual map  open visual/index.html");
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	
+		
 		//NO CODE BEYOND THIS LINE
 	}
 }

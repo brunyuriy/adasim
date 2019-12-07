@@ -1,0 +1,20 @@
+var links = [
+{source: "0", target: "4", type: "view"},
+{source: "0", target: "7", type: "view"},
+{source: "1", target: "5", type: "view"},
+{source: "2", target: "4", type: "view"},
+{source: "2", target: "7", type: "view"},
+{source: "2", target: "9", type: "view"},
+{source: "3", target: "1", type: "view"},
+{source: "4", target: "6", type: "view"},
+{source: "4", target: "8", type: "view"},
+{source: "5", target: "0", type: "view"},
+{source: "5", target: "2", type: "view"},
+{source: "5", target: "9", type: "view"},
+{source: "6", target: "5", type: "view"},
+{source: "6", target: "8", type: "view"},
+{source: "7", target: "0", type: "view"},
+{source: "7", target: "1", type: "view"},
+{source: "8", target: "3", type: "view"},
+{source: "9", target: "2", type: "view"}
+];
