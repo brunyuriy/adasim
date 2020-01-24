@@ -56,12 +56,13 @@ import adasim.algorithm.routing.RoutingAlgorithm;
  * @author Jonathan Ramaswamy - ramaswamyj12@gmail.com
  * @author Jochen Wuttke - wuttkej@gmail.com
  */
-public final class Vehicle extends AbstractAdasimAgent {
+public final class Vehicle extends AbstractAdasimAgent implements Comparable<Vehicle> {
 
 	private RoadSegment start; //Starting position
 	private RoadSegment end; //Destination position
 	private RoadSegment currentNode; //Current position
 	private RoutingAlgorithm cs; //Strategy the vehicle uses to traverse the graph
+	private int carType;
 
 	private static Logger logger = Logger.getLogger(Vehicle.class);
 
@@ -74,7 +75,16 @@ public final class Vehicle extends AbstractAdasimAgent {
 		id = num;
 		setStrategy(strat);
 	}
+	
+	
 
+	public void setCarType(int carType) {
+		 this.carType =  carType;
+	}
+	
+	public int getCarType( ) {
+		return this.carType  ;
+	}
 	
 	/**
 	 * 
@@ -219,6 +229,12 @@ public final class Vehicle extends AbstractAdasimAgent {
 	 */
 	public boolean isFinished() {
 		return currentNode != null && currentNode.equals(end);
+	}
+
+	@Override
+	public int compareTo(Vehicle o) {
+		// TODO Auto-generated method stub
+		return  o.carType - this.carType  ; // compare two cares if police move to first
 	}
 
 }

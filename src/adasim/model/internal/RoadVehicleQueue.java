@@ -27,7 +27,7 @@
  */
 
 package adasim.model.internal;
-
+import org.apache.log4j.Logger;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -35,7 +35,11 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import org.apache.log4j.Logger;
+
+import adasim.model.RoadSegment;
 import adasim.model.Vehicle;
+import adasim.model.VehicleType;
 
 
 
@@ -51,6 +55,7 @@ import adasim.model.Vehicle;
  */
 public final class RoadVehicleQueue {
 	
+	private static Logger logger = Logger.getLogger(RoadSegment.class);
 	/**
 	 * ID for the special queue tracking parked/stopped vehicles.
 	 */
@@ -86,15 +91,63 @@ public final class RoadVehicleQueue {
 		}
 	}
 
+	
+	boolean hasSpecailVehicles(Set<Vehicle> listOFCars) {
+		for (Vehicle vehicle : listOFCars) {
+			
+			if(vehicle.getCarType() == VehicleType.specailCAR.ordinal()) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
 	/**
 	 * Moves all vehicles one step ahead
 	 * @return the list of vehicles that have reached the tip of the queue
 	 */
 	public Set<Vehicle> moveVehicles() {
-		Set<Vehicle> fs = queue.remove(0);
+		
+		int keyIndex =0;
+		Set<Vehicle> fs = null;
 		SortedSet<Integer> keys = new TreeSet<Integer>( queue.keySet() );
+		
+		//For debug only
 		for ( Integer key : keys ) {
 			if ( key == PARKED ) continue;	//default cases handled separately
+			Set<Vehicle> c = queue.get(key);	
+			for (Vehicle vehicle : c) {
+				// vehicle reach destination
+				if(vehicle.isFinished()) {
+					continue;
+				}
+				logger.info( "================> Option " + vehicle.vehiclePosition() +
+						", carType:"+ vehicle.getCarType() );
+			}
+		}
+		
+		// search for special cars. If there is one it should move first
+		for ( Integer key : keys ) {
+			if ( key == PARKED ) continue;	//default cases handled separately
+			Set<Vehicle> c = queue.get(key);	
+			if(hasSpecailVehicles(c)) {
+				keyIndex = key;
+				fs =  queue.remove(keyIndex);
+				break;
+			}
+			
+		}
+		
+		// in case there is no special car(First come first service)
+		if( fs == null) {
+	 
+			fs =  queue.remove(keyIndex);
+		}
+		
+		// Re-order the waiting cars in intersection in queue best on (First come first service)
+		 keys = new TreeSet<Integer>( queue.keySet() );
+		for ( Integer key : keys ) {
+			if ( key == PARKED || key < keyIndex ) continue;	//default cases handled separately
 			Set<Vehicle> c = queue.remove(key);
 			queue.put(key-1, c );
 		}

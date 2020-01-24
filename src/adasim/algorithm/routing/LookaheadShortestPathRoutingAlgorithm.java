@@ -97,6 +97,7 @@ public class LookaheadShortestPathRoutingAlgorithm extends AbstractRoutingAlgori
 		this.lookahead = lookahead;
 		this.recompute = recomp;
 		this.steps = 0;
+		logger.info( "LookaheadShortestPathRoutingAlgorithm(" + lookahead + "," + recompute +")" );
 	}
 
 	

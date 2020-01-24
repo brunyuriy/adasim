@@ -167,6 +167,7 @@ final public class SimulationXMLReader {
 		int start = Integer.parseInt(vehicle.getAttributeValue("start"));
 		int end = Integer.parseInt(vehicle.getAttributeValue("end"));
 		int id = Integer.parseInt(vehicle.getAttributeValue("id"));
+		int car_type = Integer.parseInt(vehicle.getAttributeValue("car_type"));
 
 		List<RoadSegment> nodes = g.getRoadSegments();
 		try {
@@ -176,6 +177,7 @@ final public class SimulationXMLReader {
 			node = checkEndPoint(nodes, end, id, "End" );
 			c.setEndNode(node);
 			c.getStrategy().setMap(g);
+			c.setCarType(car_type);
 			return c;
 		} catch ( ConfigurationException e ) {
 			return null;
